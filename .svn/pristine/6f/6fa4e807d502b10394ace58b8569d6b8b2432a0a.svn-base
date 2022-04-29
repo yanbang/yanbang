@@ -1,0 +1,380 @@
+<template>
+
+  <div class="container">
+    <!-- 页头 -->
+    <Header :isiframepage = true ref="">
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">宽带端到端-{{$route.query.title}}<span v-show="$route.query.mapLevel!=='3'">公司</span></div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox  style="margin-top: -10px">
+      <div style="width: 100%;position: relative;">
+        <!-- timestType  T T-2 -->
+        <div class = "tagtabs">
+          <div class="tabsbox">
+            
+            <div class="tabs-item " :class="{'active': timestType == 'T' }" @click="ywtjClick('T')">
+              <div class="tab_borderleft"></div>
+              <div class="tabfon">月累(截止当天)</div>
+              <div class="tab_borderright"></div>
+            </div>
+
+            <div class="tabs-item" :class="{'active': timestType == 'T-2' }" @click="ywtjClick('T-2')">
+              <div class="tab_borderleft"></div>
+              <div class="tabfon">月累(截止2天前)</div>
+              <div class="tab_borderright"></div>
+            </div>
+           
+          </div>
+        </div>
+        <el-row :gutter="20" style="margin-top: 15px;">
+          <el-col :span="12">
+            <top-data title="sss" @click.native="showFixData('1')" :datad="leftData" :title-data="rightTitleAndData1">
+            </top-data>
+
+          </el-col>
+          <el-col :span="12">
+            <top-data title="sss"  @click.native="showFixData('0')" :datad="rightData" :title-data="rightTitleAndData2">
+            </top-data>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" style="margin-top: 15px">
+          <el-col :span="24">
+            <center-top :args-data="centerTopData"
+                        @getbndealdata="lzBtBDoingDtaM"
+                        title="sss" style="height: 228px">
+            </center-top>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" style="margin-top: 15px">
+          <el-col :span="24">
+            <center-data :args-data="centerData"
+                         @getbndealdatad="getBtBUndealData"
+                         title="sss" style="height: 228px">
+            </center-data>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" style="margin-top: 15px">
+          <el-col :span="24">
+            <bottom-data :args-data="bottomData" title="sss" style="height: 228px">
+            </bottom-data>
+          </el-col>
+        </el-row>
+      </div>
+    </FlexBox>
+    <fix-data-dialog v-if="showFixDataDalog" :title="selectTitle" :args-data="resouceDetailData" @changeShow="closeChild">
+    </fix-data-dialog>
+  </div>
+</template>
+
+<script>
+import CenterTop from '@/views/BToB/components/centerTop'
+import TopData from '@/views/BToB/components/topData'
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import centerData from '@/views/BToB/components/centerData'
+import BottomData from '@/views/BToB/components/bottomData'
+import resourceApi from '@/api/resource'
+import FixDataDialog from '@/views/BToB/components/fixDataDialog'
+export default {
+  name: "index",
+  components: {
+    BottomData,
+    TopData,
+    CenterTop,
+    Header,
+    FlexBox,
+    FixDataDialog,
+    centerData,
+  },
+  data(){
+    return{
+      timestType: 'T',
+      showFixDataDalog:false,
+      regionallevel:"",
+      selectTitle:'',
+      rightTitleAndData1:{
+        title:'装机工单',
+        dateTitle:['受理量','竣工量','在途量','注销率','24小时竣工率','48小时竣工率'],
+        chatName:'接触率'
+      },
+      rightTitleAndData2:{
+        title:'移机工单',
+        dateTitle:['受理量','竣工量','在途量','注销率','24小时竣工率','48小时竣工率'],
+        chatName:'取号率'
+      },
+      //
+      leftData:{},
+      rightData:{},
+      centerTopData:{},
+      centerData:{},
+      bottomData:{},
+      time:'',
+      params:{},
+      resouceDetailData:[],
+      type:'1',
+      componyName:"公司"
+    }
+  },
+  watch:{
+    $route(){
+      let params2 = {
+        "timest": this.$route.query.timest,
+        "eparchyCode": this.$route.query.eparchyCode,
+        "areaCode": this.$route.query.areaCode,
+        "gridId": this.$route.query.gridId,
+      }
+      if (this.$route.query.gridId&&this.$route.query.gridId!==''){
+        this.componyName = ""
+      }
+      this.params = params2;
+      this.getBtBResouceData(this.params)
+      this.getBtBUndealData('1')
+      this.lzBtBPintDataM(this.params)
+      this.lzBtBDoingDtaM('1')
+    }
+  },
+  mounted() {
+    // alert (JSON.stringify(this.$route.query.title))
+    let params2 = {
+      "timest": this.$route.query.timest,
+      "eparchyCode": this.$route.query.eparchyCode,
+      "areaCode": this.$route.query.areaCode,
+      "gridId": this.$route.query.gridId,
+      "timestType": this.timestType,
+    }
+    if (this.$route.query.gridId&&this.$route.query.gridId!==''){
+      this.componyName = ""
+    }
+    this.params = params2;
+    this.getBtBResouceData(this.params)
+    this.getBtBUndealData('1')
+    this.lzBtBPintDataM(this.params)
+    this.lzBtBDoingDtaM('1')
+
+  },
+  methods:{
+    ywtjClick(val) {
+      this.timestType = val;
+      this.params.timestType = val
+      this.getBtBResouceData( this.params)
+      this.getBtBUndealData( this.type)
+      this.lzBtBPintDataM( this.params)
+      this.lzBtBDoingDtaM(this.type )
+    },
+    showFixData(type){
+      if (type === '1'){
+        this.type = type
+        this.selectTitle = '装机工单'
+      }else {
+        this.selectTitle = '移机工单'
+      }
+      this.getResouceDetail(type)
+      this.showFixDataDalog = true
+    },
+    closeChild(){
+      this.showFixDataDalog = false
+    },
+    getDate(date){
+      
+      this.time = date
+      let params2 = {
+        "timest": this.time,
+        "eparchyCode": this.$route.query.eparchyCode,
+        "areaCode": this.$route.query.areaCode,
+        "gridId": this.$route.query.gridId,
+         "timestType": this.timestType
+      }
+      this.params = params2
+      this.getBtBResouceData( this.params)
+      this.getBtBUndealData( this.type)
+      this.lzBtBPintDataM( this.params)
+      this.lzBtBDoingDtaM(this.type )
+    },
+    getResouceDetail(type){
+      this.params.actionType = type
+      this.type = type
+      resourceApi.getBtBResouceDetai(this.params).then(data => {
+        if (data.rspCode = '0000' ) {
+          if ( data.result && data.result.data.length>0) {
+
+            this.resouceDetailData = data.result.data
+          } else {
+
+          }
+        }
+      })
+    },
+    //获取数据
+    getBtBResouceData(params){
+      resourceApi.getBtBResouce(this.params).then(data => {
+        if (data.rspCode = '0000' ) {
+          if ( data.result && data.result.zj.length>0 && data.result.yj.length>0 ) {
+            this.leftData = data.result.zj[0]
+            this.rightData = data.result.yj[0]
+          } else {
+            this.leftData = {}
+            this.rightData = {}
+          }
+        }
+      })
+    },
+    //获取数据
+    getBtBUndealData(actionType){
+      this.params.actionType = actionType
+      this.type = actionType
+      resourceApi.getBtBUndeal(this.params).then(data => {
+        if (data.rspCode = '0000') {
+          if (data.result.data) {
+            this.centerData = data.result.data
+          } else {
+            this.centerData = {}
+          }
+        }
+      })
+    },
+    //获取数据
+    lzBtBPintDataM(params){
+      resourceApi.lzBtBPintData(this.params).then(data => {
+        if (data.rspCode = '0000') {
+          if (data.result.data) {
+            this.bottomData = data.result.data;
+          } else {
+            this.bottomData = {}
+          }
+        }
+      })
+    },
+    //获取数据
+    lzBtBDoingDtaM(actionType){
+      this.params.actionType = actionType
+      this.type = actionType
+      resourceApi.lzBtBDoingDta(this.params).then(data => {
+        if (data.rspCode = '0000') {
+          if (data.result.data) {
+            this.centerTopData = data.result.data
+          } else {
+            this.centerTopData = {}
+          }
+        }
+      })
+    },
+
+
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background: #01153B;
+  // background-image: image-set(
+  //     url("~@/assets/images/bigScreen/bg.jpg") 1x,
+  //     url("~@/assets/images/bigScreen/bg@2x.jpg") 2x
+  // );
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle{
+    font-size: 36px;
+    font-family:MFBanHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-top: -7px;
+  }
+  /deep/ .header-bg{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 100;
+    background-image: image-set(
+      url("~@/assets/images/bigScreen/btob_header_bg.png") 1x,
+      url("~@/assets/images/bigScreen/btob_header_bg.png") 2x
+    );
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  /deep/ .el-dialog {
+    -webkit-transform: none;
+    transform: none;
+    left: 0;
+    position: relative;
+    margin: 0 auto;
+    background-image: url("../../assets/images/bigScreen/fullService/fixDataBg.png");
+    background-size: 100% 100%;
+    background-color:rgba(220,38,38,0);
+  }
+}
+
+.tabsbox {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 16px;
+}
+.tabs-item {
+  position: relative;
+  flex: 1;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  margin-right: 30px;
+}
+.tab_borderleft {
+  contain: '';
+  height: 24px;
+  width: 15px;
+  position: absolute;
+  border: 1px solid #4f98f7;
+  left: 0;
+  top: 0;
+  border-right: none;
+}
+.tab_borderright {
+  contain: '';
+  height: 25px;
+  width: 15px;
+  position: absolute;
+  border: 1px solid #4f98f7;
+  right: 0;
+  top: 0;
+  border-left: none;
+}
+.tabfon {
+  color: #4f98f7;
+  cursor: pointer;
+  font-size: 16px;
+}
+.tabs-item.active .tab_borderleft {
+  border: 1px solid #02f6ff;
+  border-right: none;
+}
+.tabs-item.active .tab_borderright {
+  border: 1px solid #02f6ff;
+  border-left: none;
+}
+.tabs-item.active .tabfon {
+  color: #02f6ff;
+}
+.tabs-item.active {
+  background: radial-gradient(#4df0f775, #144e9836);
+}
+.tagtabs {
+  position: absolute;
+  width: 380px;
+  top: -35px;
+  left: 220px;
+}
+
+</style>

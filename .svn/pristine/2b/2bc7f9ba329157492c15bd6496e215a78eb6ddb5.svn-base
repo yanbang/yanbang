@@ -1,0 +1,33 @@
+<!-- 测试 -->
+<template>
+  <div>
+    <el-row>
+      <el-button type="primary" @click = "jumpage('5g')">5g—5g端网业</el-button>
+      <el-button type="success" @click = "jumpage('nc')">nc—农村</el-button>
+      <el-button type="info" @click = "jumpage('ly')">ly—政企商务楼宇</el-button>
+      <el-button type="warning" @click = "jumpage('3k')">3k—三千兆</el-button>
+    </el-row>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+
+    }
+  },
+  components: {},
+  mounted () {},
+  watch: {},
+  computed: {},
+  methods: {
+    jumpage (type) {
+      this.getToken(type);
+    }
+  }
+}
+</script>
+
+<style lang='css' scoped>
+</style>

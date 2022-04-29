@@ -1,0 +1,103 @@
+<template>
+    <div class="contentbox">
+        <div class="contentbody">
+            <iframe class="aqifrme" :src="gmeciframezwyy" frameborder="0" v-show="showzwyy"></iframe>
+            <iframe class="aqifrme" :src="gmeciframezfw" frameborder="0" v-show="showzfw"></iframe>
+            <iframe class="aqifrme" :src="gmeciframezzkzt" frameborder="0" v-show="showzzkzt"></iframe>
+            <iframe class="aqifrme" :src="gmeciframeqbnlkf" frameborder="0" v-show="showqbnlkf"></iframe>
+        </div>
+    </div>
+</template>
+
+<script>
+import axios from 'axios'
+    export default {
+        data() {
+            return {
+                // gmeciframezwyy: null,
+                // gmeciframezfw: null,
+                // gmeciframezzkzt: null,
+                gmeciframezwyy: 'http://10.186.0.122:8131/#/PnViewDemo',
+                gmeciframezfw: 'http://cupn.unicom.local:8193/#/login',
+                gmeciframezzkzt: 'https://123.6.50.8:10443',
+                gmeciframeqbnlkf: 'http://10.186.0.175:21001/csmf/#/csmf/slicev2/home?isShow=true',
+                showzwyy: false,
+                showzfw: false,
+                showzzkzt: false,
+                showqbnlkf: false
+            }
+        },
+        mounted () {
+            // this.getToken()
+            this.iframeshow()
+        },
+        methods: {
+            // async getToken(){
+            //    var tokenqingqiu={
+            //         "uid":"lijn194public",
+            //         "pwd":"ax8tO;SkXCPOCo&d",
+            //         "code":"Qwer1234",
+            //         "test":"test",
+            //         "subSystem":"CS" 
+            //     }
+            //     const resulttoken = await axios({
+            //         url:'/iopsm/api/auth/tokens',
+            //         method:'post', 
+            //         data:JSON.parse(JSON.stringify(tokenqingqiu))
+            //     })
+            //     var gmectoken=resulttoken.data.data.token;
+            //     var gmecuser=JSON.parse(JSON.stringify(resulttoken.data.data.user));
+            //     this.gmeciframezwyy = `http://10.186.0.122:8131/#/PnViewDemo?token=${gmectoken}&userInfo=${JSON.stringify(gmecuser)}`;
+            //     this.gmeciframezfw = `http://10.186.0.122:8136/?token=${gmectoken}`;
+            //     // this.gmeciframezzkzt = 'https://123.6.50.8:10443';//先保留
+            //     // 切片能力开放不需要token     MEC下的第四个菜单    北京暂时进不去，先放着
+            //     this.gmeciframezzkzt = 'http://10.186.0.175:21001/csmf/#/csmf/slicev2/home?isShow=true';
+            // },
+            iframeshow(){
+                if(this.$route.params.gmec_iframe=='zwyy'){
+                    this.showzwyy=true
+                    this.showzfw=false
+                    this.showzzkzt=false
+                    this.showqbnlkf=false
+                }else if(this.$route.params.gmec_iframe=='zfw'){
+                    this.showzwyy=false
+                    this.showzfw=true
+                    this.showzzkzt=false
+                    this.showqbnlkf=false
+                }else if(this.$route.params.gmec_iframe=='zzkzt'){
+                    this.showzwyy=false
+                    this.showzfw=false
+                    this.showzzkzt=true
+                    this.showqbnlkf=false
+                }else if(this.$route.params.gmec_iframe=='qpnlkf'){
+                    this.showzwyy=false
+                    this.showzfw=false
+                    this.showzzkzt=false
+                    this.showqbnlkf=true
+                }
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .contentbody {
+        flex: 1;
+        padding: 10px;
+        box-sizing: border-box;
+        // margin-top: -100px;// 解决顶部不全
+        margin-top: -10px;// 解决顶部不全
+        position: relative;
+        height:100%;
+    }
+    .aqifrme {
+        width: 100%;
+        height:100%;
+        border: none;
+        // overflow-y: auto;
+        overflow-y:visible;
+
+        // 解决顶部不全
+        // margin-top: 10px;
+    }
+</style>

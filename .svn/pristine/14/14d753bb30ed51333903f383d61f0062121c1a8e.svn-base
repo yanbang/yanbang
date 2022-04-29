@@ -1,0 +1,58 @@
+import request from '@/utils/request'
+// 分地市统计系统的登录次数（省公司+17地市）（根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectLoginLogSum
+// 登录总次数（不受统计时间区间限制）
+// http://localhost:9001/view/log/selectLoginLogSumNoTime
+
+// 大屏点击总次数（不受统计时间区间限制）
+// http://localhost:9001/view/log/selectDpDjLogNoTime
+
+// 大屏应用点击总次数（不受统计时间区间限制）
+// http://localhost:9001/view/log/selectDpYyDjLogNoTime
+
+// 分地市统计大屏的点击次数（省公司+17地市，柱状图） （根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectDpDjLogSum
+
+// 分地市统计大屏应用的点击次数（省公司+17地市，柱状图） （根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectDpYyDjLogSum
+
+// 分“云、网、端、业、服、安、网络洞察”统计各类大屏的点击次数（饼图）
+// http://localhost:9001/view/log/selectDpFlDjLogSum
+
+// 分“三个面向”统计各类应用的点击次数（饼图） （根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectDpYyFlDjLogSum
+
+// 大屏的TOPN（以每张大屏的颗粒度进行统计） （根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectDpTopoDjLogTime
+
+// 应用的TOPN（以每个应用的颗粒度进行统计）根据选定的日期区间统计）
+// http://localhost:9001/view/log/selectDpYyTopoDjLogTime
+const api = {
+    getLogInfo: '/log/getLogInfo',
+    selectLoginLogSum: '/log/selectLoginLogSum', //分地市统计系统的登录次数（省公司+17地市）（根据选定的日期区间统计）
+    selectLoginLogSumNoTime: '/log/selectLoginLogSumNoTime', //登录总次数（不受统计时间区间限制）
+    selectDpDjLogNoTime: '/log/selectDpDjLogNoTime', // 大屏点击总次数（不受统计时间区间限制）
+    selectDpYyDjLogNoTime: '/log/selectDpYyDjLogNoTime', // 大屏应用点击总次数（不受统计时间区间限制）
+    selectDpDjLogSum: '/log/selectDpDjLogSum', // 分地市统计大屏的点击次数（省公司+17地市，柱状图） （根据选定的日期区间统计）
+    selectDpYyDjLogSum: '/log/selectDpYyDjLogSum', // 分地市统计大屏应用的点击次数（省公司+17地市，柱状图） （根据选定的日期区间统计）
+    selectDpFlDjLogSum: '/log/selectDpFlDjLogSum', // 分“云、网、端、业、服、安、网络洞察”统计各类大屏的点击次数（饼图）
+    selectDpYyFlDjLogSum: '/log/selectDpYyFlDjLogSum', // 分“三个面向”统计各类应用的点击次数（饼图） （根据选定的日期区间统计）
+    selectDpTopoDjLogTime: '/log/selectDpTopoDjLogTime', // 大屏的TOPN（以每张大屏的颗粒度进行统计） （根据选定的日期区间统计）
+    selectDpYyTopoDjLogTime: '/log/selectDpYyTopoDjLogTime', // 应用的TOPN（以每个应用的颗粒度进行统计）根据选定的日期区间统计）
+    selectLogTime: '/log/selectLogTime', //大屏/应用/系统登录的趋势
+    logExcel: '/log/logExcel'
+}
+
+var serviceApi = {}
+Object.keys(api).forEach(key => {
+    serviceApi[key] = function(parameter) {
+
+        return request({
+            url: api[key],
+            method: 'post',
+            data: parameter
+        })
+    }
+})
+
+export default serviceApi

@@ -1,0 +1,1023 @@
+<!--业务云 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-云" subtitle="业务云" explaincode = "business_yun"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+        <div class="box-item flex colflex flex1" style="margin-bottom: 10px">
+          <div class="item-title titlefont">
+            <span>网络能力</span>
+            <!-- <span class="zdmore pull-right ">
+              <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+          <div class="flex1">
+            <div class="flex1 flex rowicbox">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{ wlnlData.num_storage | formatVal }}</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/images/储存.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwfont">储存数量（台）</div>
+                </div>
+              </div>
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{ wlnlData.capacity_storage | formatVal }}</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/images/容量.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwfont">储存容量（T）</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex1 flex rowicbox">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{ wlnlData.num_internet | formatVal }}</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/images/网络.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwfont">网络设备（台）</div>
+                </div>
+              </div>
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{ wlnlData.num_security | formatVal }}</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/images/安全.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwfont">安全设备（台）</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex1 flex rowicbox" style="border-bottom:none;">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{ wlnlData.num_server | formatVal }}</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/images/机房.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwfont">X86服务器（台）</div>
+                </div>
+              </div>
+              <div class="flex1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>资源池</span>
+            <!-- <span class="zdmore pull-right ">
+              <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+
+          <div class="flex1">
+            <div class="rightTable">
+              <div class="tHead">
+                <div class="emptyth" style="min-width: 100px;"></div>
+                <div>物理数</div>
+                <div>虚拟数</div>
+              </div>
+              <div class="tBody" v-for="(colitem, pindex) in zycData" :key="pindex">
+                <div class="td bg titlecell titlefont">
+                  {{ colitem.changjia }}
+                </div>
+                <div class="td bg titlecell titlefont">
+                  {{ colitem.num_suzhu }}
+                </div>
+                <div class="td bg titlecell titlefont">
+                  {{ colitem.num_xuji }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="centerbox flex colflex">
+        <div class="gistitle">
+          <span class="titlefont">{{ gisTitle }}</span>
+        </div>
+        <div class="tjbtn" @click="getEyesConten"><img src="../zhyeys.png" alt="" srcset="" /></div>
+        <iframe
+          ref="gisiframe"
+          id="gisiframe"
+          :src="iframeSrc"
+          style="widh: 100%; height: 100%"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="rightbox flex colflex ">
+        <div class="box-item flex colflex flex1 mslylbox">
+          <div class="item-title titlefont">
+            <span>忙时利用率</span>
+            <!-- <span class="zdmore pull-right ">
+              <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+
+          <div class="flex1 flex " style="padding-top: 40px">
+            <el-table
+              class="custom_table2 custom_table grouptable groupheadtable"
+              :data="mslylTable"
+              size="small"
+            >
+              <el-table-column prop="equipment" label="设备名" > </el-table-column>
+              <el-table-column prop="" label="CPU">
+                <el-table-column prop="rate_dis_cpu" label="分配率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_dis_cpu'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="rate_use_cpu" label="利用率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_use_cpu'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+              
+               <el-table-column prop="" label="内存">
+                <el-table-column prop="rate_dis_nc" label="分配率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_dis_nc'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="rate_use_nc" label="利用率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_use_nc'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+
+               <el-table-column prop="" label="存储">
+                <el-table-column prop="rate_dis_cc" label="分配率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_dis_cc'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="rate_use_cc" label="利用率" width="65px">
+                  <template slot-scope="scope">
+                    <span > {{scope.row['rate_use_cc'] | formatVal}}%</span>
+                  </template>
+                </el-table-column>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>故障次数</span>
+            <!-- <span class="zdmore pull-right ">
+              <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+
+          <div class="flex1" style="padding-top: 30px;">
+            <div id="stackBar1" class="chartbox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <el-dialog :visible.sync="isDialogShow_ZHY" width="50%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">智慧眼详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+           <div class="eyesmodelbox" v-html="zhy_content">
+             <!-- <p>XC云云资源池分配率比较高，建议扩容。</p>
+             <p>德州云资源池整体利用率偏低，建议增加客户使用数量或者回访客户查看业务使用情况。</p> -->
+            </div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <!-- <Footer :tabdata="tabdata" class="initfoot"></Footer> -->
+  </div>
+</template>
+
+<script>
+import Header from '@/components/resource_visual/header2'
+import Footer from '@/components/resource_visual/footer'
+import store from 'store'
+import { mapState } from 'vuex'
+var _ = require('@/utils/lodash.js')
+var Qs = require('@/utils/qs.js')
+import echartInit from '../wisdomeyes/initechart'
+import serviceApi from '@/api/cloudService'
+var self = null
+export default {
+  data() {
+    return {
+      isDialogShow_ZHY: false,
+      rt1status: '1',
+      pmstatus: '1',
+      dialogTitle: '',
+      isDialogShow: false,
+      gisTitle: '山东省',
+      cityCode: '370000',
+      iframeSrc: '',
+      rowttabStatus: '1',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tableData1: [],
+      control: [],
+      zycData: [],
+      wlnlData: {},
+      mslylTable: [],
+      zhy_content: ''
+    }
+  },
+  components: {
+    Header,
+    Footer
+  },
+  created() {
+    self = this
+  },
+  mounted() {
+    var initArea_id = '370000'
+    this.mapLevel = 1
+    if (store.get('userInfo')) {
+      var userInfo = store.get('userInfo')
+      var mapLevel = userInfo.levelAreaLevel
+
+      initArea_id = '370000'
+      self.gisTitle = '山东省'
+      self.mapLevel = '1'
+      self.control = []
+      // if (mapLevel == '1') {
+      //   // 全省
+      //   initArea_id = '370000'
+      //   self.gisTitle = '山东省'
+      //   self.mapLevel = '1'
+      //   self.control = []
+      // } else if (mapLevel == '2') {
+      //   // 地市
+      //   initArea_id = '370000'
+      //   self.gisTitle = '山东省'
+      //   self.mapLevel = '1'
+      //   self.control = ['370000', userInfo.levelAreaCode]
+      // } else if (mapLevel >= '3') {
+      //   // 区县
+      //   initArea_id = userInfo.levelAreaCode
+      //   self.mapLevel = '2'
+      //   self.gisTitle = userInfo.levelAreaName
+      //   self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode]
+      // }
+    }
+    this.cityCode = initArea_id
+    this.initGisMap(initArea_id)
+    this.initgisTitle = this.gisTitle + ''
+
+    // 注册地图事件
+    window.addEventListener('message', self.gismapListener, true)
+
+    // this.initEchart()
+
+    this.initService()
+  },
+  watch: {},
+  computed: {
+    ...mapState({
+      searchDate: state => state.resource.searchDate
+    })
+  },
+  methods: {
+    initService() {
+      this.serviceYwyWlnl()
+      this.serviceYwyResource()
+      this.serviceYwyEquipuserate()
+      this.serviceYwyGuzhangnum()
+    },
+    getEyesConten () {//地市智慧眼
+       this.isDialogShow_ZHY = true;
+       var params = {
+        code:'yun-yewu',
+        "area_code": '370000',
+      };
+      this.queryEyesInfo(params).then(res => {
+        this.zhy_content = res
+      })
+      
+    },
+    serviceYwyGuzhangnum () {
+      let params = {
+        cityCode: this.cityCode
+      }
+      
+      serviceApi.serviceYwyGuzhangnum(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+
+          var legend =  [
+              {'name': '行业云', key: 'yun_hy'},
+              {'name': '骨干云池', key: 'yun_gg'},
+              {'name': 'XC云', key: 'yun_xc'},
+          ]
+           var echartParams = {
+                domId: 'stackBar1',
+                rotate: 45,
+                sumtotal:  datal.map(item => {
+                    return item.total
+                }),
+                xData: datal.map(item => {
+                    return item.yeartime
+                }),
+                legend:  legend.map(item => {
+                    return item.name
+                }),
+                data: legend.map(item => {
+                  return  datal.map(sitem => {
+                        return ( Number(sitem[item.key]) || 0)
+                    })
+                }) 
+            }
+             new echartInit.initEchart_sckbar(echartParams)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    serviceYwyWlnl() {
+      let params = {
+        cityCode: this.cityCode
+      }
+
+      serviceApi.serviceYwyWlnl(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.wlnlData = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    serviceYwyResource() {
+      let params = {
+        cityCode: this.cityCode
+      }
+  
+      serviceApi.serviceYwyResource(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.zycData = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    serviceYwyEquipuserate () {
+      let params = {
+        cityCode: this.cityCode
+      }
+ 
+      serviceApi.serviceYwyEquipuserate(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.mslylTable = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    rowttabsClick(type) {
+      this.rowttabStatus = type
+    },
+    gismapListener(e) {
+      if (e.data.message == 'levelSwitch') {
+        ;(self.gisTitle = e.data.area_name || '山东省'), (self.mapLevel = e.data.level)
+        self.areaCode = e.data.area_id
+        self.gisMapData = e.data
+        self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+        self.gisQueryParams.area_name = ''
+        console.log('message', e.data)
+        self.cityCode = e.data.area_id || '370000'
+      }
+    },
+
+    initGisMap(initArea_id) {
+      // 初始化地图参数
+      this.gisQueryParams = {
+        level: '1' || this.mapLevel,
+        sceneid: '016',
+        gis_sceneid: '016',
+        area_id: '370000' || initArea_id,
+        poi_city_id: '',
+        system_type: 'C40',
+        login_no: store.get('staffId') || '',
+        timest: this.$store.state.resource.searchDate
+      }
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.iframeSrc = window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`
+    },
+
+    initEchart() {
+      // var echartParams2 = {
+      //   domId: 'chartGauge1',
+      //   value: 40,
+      //   name: 'CPU'
+      // }
+      // new echartInit.initEcahrt_Sgauge(echartParams2)
+
+      //  var echartParams3 = {
+      //   domId: 'chartGauge2',
+      //   value: 15,
+      //   name: '内存'
+      // }
+      // new echartInit.initEcahrt_Sgauge(echartParams3)
+
+      //  var echartParams22 = {
+      //   domId: 'chartGauge3',
+      //   value: 40,
+      //   name: '储存(分配率)'
+      // }
+      // new echartInit.initEcahrt_Sgauge(echartParams22)
+
+      //  var echartParams33 = {
+      //   domId: 'chartGauge4',
+      //   value: 15,
+      //   name: '网路端口利用率'
+      // }
+      // new echartInit.initEcahrt_Sgauge(echartParams33)
+
+      var echartParams = {
+        domId: 'stackBar1',
+        xData: ['1月', '2月', '3月', '4月', '5月', '6月'],
+        legend: ['一级警告', '二级警告'],
+        data: [
+          [100, 120, 46, 56, 87, 45],
+          [110, 180, 66, 36, 67, 34]
+        ]
+      }
+
+      new echartInit.initEchart_sckbar(echartParams)
+    }
+  },
+  destroyed() {
+    // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('../comtable.scss');
+ /deep/ .grouptable.el-table tbody td {
+   border-right: 1px dashed rgb(45, 61, 94) !important
+ }
+ /deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.el-table__fixed{
+  background: #00133e !important;
+}
+/deep/ .bottom-tab {
+  width: 60%;
+}
+
+/deep/ .bottom-tab .bottom-item {
+  padding: 4px 10px !important;
+}
+
+.contentbody {
+  height: 100%;
+  background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+  background-size: auto 100%;
+  margin: -30px 15px 10px 15px;
+  position: relative;
+  display: flex;
+}
+
+.leftbox,
+.rightbox {
+  width: 500px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  padding-bottom: 30px;
+}
+
+
+.centerbox {
+  flex: 1;
+  background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+  background-size: 100% 100%;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 100px 20px 20px 20px;
+  position: relative;
+}
+
+// .item-title {
+//   font-size: 22px;
+//   color: aqua;
+//   background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat;
+//   background-size: 100% 100%;
+//   line-height: 38px;
+//   padding-left: 58px;
+// }
+
+.item-title {
+  font-size: 18px;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 46px;
+  padding-left: 36px;
+  margin-bottom: 5px;
+  font-weight: bolder;
+}
+
+.chartbox {
+  width: 100%;
+  height: 100%;
+}
+.mslylbox {
+  .chartbox {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 15px 20px;
+  }
+}
+
+.gdjkitem {
+  height: 68px;
+  width: 72px;
+  margin: 0 auto;
+  background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.gdjkitembox {
+  text-align: center;
+  position: relative;
+  margin-top: 12px;
+
+  &:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -8px;
+    top: 26px;
+  }
+}
+
+.mtheader {
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  color: #51d1ee;
+  border-bottom: 1px solid #308497;
+}
+
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4, 54, 108, 0.7);
+}
+
+.centTab {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  top: 30px;
+  text-align: center;
+
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+    background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+  }
+  .centtabitem.active {
+    opacity: 1;
+  }
+}
+
+.rowttabs {
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #5b7bc9;
+    margin-right: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+    color: #45d8e2;
+  }
+}
+.substTab {
+  text-align: center;
+  .el-radio {
+    color: #ddd;
+    margin-right: 20px;
+  }
+  /deep/ .el-radio__input .el-radio__inner {
+    border-color: #ddd;
+    background: #ddd;
+  }
+  /deep/ .el-radio__input.is-checked + .el-radio__label {
+    color: #f3c911;
+  }
+  /deep/ .el-radio__input.is-checked .el-radio__inner {
+    order-color: #ede90f;
+    background: #e4ac47;
+  }
+}
+.alink {
+  cursor: pointer;
+  color: #27b5ee;
+  text-decoration: underline;
+}
+.pull-right {
+  float: right;
+  .alink {
+    cursor: pointer;
+    color: #27b5ee;
+    text-decoration: underline;
+    margin-right: 15px;
+  }
+}
+
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn {
+  z-index: 9999;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 13px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 14px !important;
+}
+
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  padding: 6px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4, 54, 108, 0.4) !important;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 20px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+
+.pmdetalibox {
+  display: flex;
+  min-height: 500px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.left_pmtb {
+  width: 380px;
+}
+.right_pmtb {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px dashed #404e77;
+  .rpmtitle {
+    position: absolute;
+    color: aqua;
+    font-size: 20px;
+    top: -34px;
+    text-align: center;
+    width: 100%;
+    .subtagtab {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      .rowttabs {
+        height: 30px;
+        line-height: 30px;
+        .rowttabs-item {
+          padding: 3px 6px;
+        }
+      }
+    }
+  }
+}
+.box-item {
+  position: relative;
+  .trowttabs {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+.sutabtitle {
+  background: rgba(25, 89, 162, 0.3);
+  height: 38px;
+  border-radius: 20px;
+  line-height: 38px;
+}
+.sutabtitle .flex1 {
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.4;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/ligtdian.png') no-repeat;
+  background-position: center -38px;
+}
+.rowicbox {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #044063;
+}
+
+.lgwbox {
+  text-align: center;
+  padding-top: 10px;
+
+  .lgwnum {
+    font-size: 24px;
+    color: #f7e713;
+  }
+  .lgwimg {
+    margin: 10px 0;
+    img {
+      width: 40px;
+    }
+  }
+  .lgwfont {
+    font-size: 20px;
+  }
+}
+.rightTable {
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #02f6ff;
+  margin-top: 10px;
+  .tHead,
+  .tBody {
+    display: flex;
+    .wid19 {
+      background-image: none;
+    }
+  }
+  .tHead {
+    margin-top: 10px;
+    line-height: 60px;
+    font-size: 18px;
+    div {
+      flex: 1;
+      text-align: center;
+      background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center 18px;
+      font-weight: bolder;
+    }
+    .wid19 {
+      background-image: none;
+    }
+    .emptyth {
+      background-image: none;
+    }
+  }
+  .tBody {
+    .td {
+      flex: 1;
+      text-align: center;
+      font-size: 18px;
+      color: #fff;
+      div {
+        line-height: 60px;
+        border-bottom: 1px dashed #134192;
+      }
+    }
+
+    .bg {
+      background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+      background-repeat: no-repeat;
+      background-position: center left;
+      background-size: 1px 100%;
+      div {
+        font-size: 18px;
+        color: #bbebf3;
+      }
+    }
+    .bg:first-child {
+      background-image: none;
+    }
+    .titlecell {
+      font-size: 18px;
+      line-height: 60px;
+      min-width: 80px;
+    }
+  }
+}
+
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.tjbtn {
+  position: absolute;
+  right: 60px;
+  top: 40px;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 10px rgb(56, 148, 235);
+  cursor: pointer;
+  animation: turn 8s linear infinite;
+  z-index: 99;
+  img {
+    width: 44px;
+    z-index: 99;
+  }
+}
+
+.tjtitle {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  background: linear-gradient(45deg, #1a92d4, transparent);
+  line-height: 34px;
+  padding-left: 15px;
+  border-radius: 20px 0 0 20px;
+  width: 60%;
+}
+.tjitem {
+  // padding: 10px;
+  color: #fff;
+  font-size: 20px;
+  p {
+    line-height: 48px;
+    margin-bottom: 0;
+  }
+}
+
+/deep/.custom_table2.el-table th {
+  font-size: 16px !important;
+}
+/deep/.custom_table2.el-table td .cell{
+  padding: 16px 0 !important;
+  font-size: 16px;
+}
+/deep/.custom_table2.el-table th.is-leaf {
+  font-size: 15px !important;
+}
+</style>

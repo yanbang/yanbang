@@ -1,0 +1,82 @@
+import request from '@/utils/request'
+const api = {
+    serviceYwVolet: '/ZhyDgwCon/serviceYwVolet', //   5.4.2.4VOLET注册情况
+    serviceYw5gst: 'ZhyDgwCon/serviceYw5gst', //   5.4.2.35G终端渗透率-月
+    serviceYw5g: 'ZhyDgwCon/serviceYw5g', //   5.4.2.2 移网5G覆盖情况
+    serviceDgwGm: '/ZhyDgwCon/serviceDgwGm ', //   5.4.1.1光猫、路由数量及不匹配率统计
+    serviceDgwJdh: '/ZhyDgwCon/serviceDgwJdh', //   5.4.1.2机顶盒不匹配情况
+    serviceYw234: '/ZhyDgwCon/serviceYw234 ', //   5.4.2.1移网3G/4G/5G 用户占比
+    serviceYwZdnum: 'ZhyDgwCon/serviceYwZdnum', //   5.4.2.5移网终端数量
+    servicejkdTc: '/ZhyJkdCon/servicejkdTc2', // 智慧眼弹框接口
+    serviceYwVoletXq: '/ZhyDgwCon/serviceYwVoletXq',
+}
+
+var serviceApi = {
+    serviceYwVoletXq(parameter) {
+        return request({
+            url: api.serviceYwVoletXq,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceYwVolet(parameter) {
+        return request({
+            url: api.serviceYwVolet,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceYw5gst(parameter) {
+        return request({
+            url: api.serviceYw5gst,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceYw5g(parameter) {
+        return request({
+            url: api.serviceYw5g,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceDgwGm(parameter) {
+        return request({
+            url: api.serviceDgwGm,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceDgwJdh(parameter) {
+        return request({
+            url: api.serviceDgwJdh,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceYw234(parameter) {
+        return request({
+            url: api.serviceYw234,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceYwZdnum(parameter) {
+        return request({
+            url: api.serviceYwZdnum,
+            method: 'post',
+            data: parameter
+        })
+    },
+    servicejkdTc(parameter) {
+        return request({
+            url: api.servicejkdTc,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+
+}
+
+export default serviceApi

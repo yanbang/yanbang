@@ -1,0 +1,263 @@
+<template>
+  <div  style="padding: 0 23px">
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <el-col :span="12"  >
+          <div style="padding: 15px 15px 15px 0;position: relative;">
+            <img src="../../assets/images/bigScreen/fullService/img_zuokuang.png" style="width: 15px;height: 183px;float: left">
+            <div style="margin-top: 30px">
+              <div class="finish">周完成情况</div>
+              <div class="good-city">
+                <div class="marginAuto">
+                  <img width="114" height="99" src="../../assets/images/bigScreen/fullService/pingjia_jiaohao.png" alt=""/>
+                </div>
+                <div class="city">
+                  <p v-for="item in beaterWeekData">
+                    <a v-if="item.areaCode==='00'" style="color: #00B050 !important" >{{item.eparchyName}}</a>
+                    <a v-if="item.areaCode!=='00'&&item.gridId==='00'" style="color: #00B050 !important">{{item.areaName}}</a>
+                    <a v-if="item.gridId!=='00'" style="color: #00B050 !important">{{item.gridName}}</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="youkuang" ></div>
+          </div>
+        </el-col>
+        <el-col :span="12" >
+          <div style="padding: 15px;position: relative" >
+            <div class="bad-city ">
+              <div class="marginAuto">
+                <img width="114" height="99" src="../../assets/images/bigScreen/fullService/pingjia_bad.png" alt=""/>
+              </div>
+
+              <div class="city">
+                <p v-for="item in badderWeekData">
+                  <a v-if="item.areaCode==='00'" style="color: #C00000 !important">{{item.eparchyName}}</a>
+                  <a v-if="item.areaCode!=='00'&&item.gridId==='00'" style="color: #C00000 !important">{{item.areaName}}</a>
+                  <a v-if="item.gridId!=='00'" style="color: #C00000 !important">{{item.gridName}}</a>
+                </p>
+              </div>
+
+
+            </div>
+            <img src="../../assets/images/bigScreen/fullService/img_youkuang.png" style="width: 15px;height: 183px;position: absolute;right: 0;top: 16px;">
+          </div>
+
+        </el-col>
+      </el-col>
+      <el-col :span="12">
+        <el-col :span="12">
+          <div style="padding: 15px;position: relative">
+            <img src="../../assets/images/bigScreen/fullService/img_zuokuang.png" style="width: 15px;height: 183px;float: left">
+            <div style="margin-top: 30px">
+              <div class="finish">季度序时完成</div>
+              <div class="good-city" >
+                <div class="marginAuto">
+                  <img width="114" height="99" src="../../assets/images/bigScreen/fullService/pingjia_jiaohao.png" alt=""/>
+                </div>
+                <div class="city">
+                  <p v-for="item in beaterQuaData">
+                    <a v-if="item.areaCode==='00'" style="color: #00B050 !important">{{item.eparchyName}}</a>
+                    <a v-if="item.areaCode!=='00'&&item.gridId==='00'" style="color: #00B050 !important">{{item.areaName}}</a>
+                    <a v-if="item.gridId!=='00'" style="color: #00B050 !important">{{item.gridName}}</a>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+            <div class="youkuang" ></div>
+          </div>
+
+        </el-col>
+        <el-col :span="12">
+          <div style="padding: 15px;position: relative">
+            <div class="bad-city">
+              <div class="marginAuto">
+                <img width="114" height="99" src="../../assets/images/bigScreen/fullService/pingjia_bad.png" alt=""/>
+              </div>
+              <div class="city">
+                <p v-for="item in badderQuaData">
+                  <a v-if="item.areaCode==='00'"
+                     style="color: #C00000 !important">{{item.eparchyName}}</a>
+                  <a v-if="item.areaCode!=='00'&&item.gridId==='00'"
+                     style="color: #C00000 !important">{{item.areaName}}</a>
+                  <a v-if="item.gridId!=='00'"
+                     style="color: #C00000 !important">{{item.gridName}}</a>
+                </p>
+              </div>
+            </div>
+            <img src="../../assets/images/bigScreen/fullService/img_youkuang.png" style="width: 15px;height: 183px;position: absolute;right: 0;top: 16px;">
+          </div>
+
+        </el-col>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "performance",
+  props:{
+    cityData:Array
+  },
+  data(){
+    return{
+      beaterWeekData:[],
+      beaterQuaData:[],
+      badderWeekData:[],
+      badderQuaData:[],
+      goodCity:{
+        fristCity:'菏泽',
+        nextCity:'济南',
+        lastCity:'聊城'
+      },
+      badCity:{
+        fristCity:'菏泽',
+        nextCity:'济南',
+        lastCity:'聊城'
+      },
+      GoodQuarter:{
+        fristCity:'菏泽',
+        nextCity:'济南',
+        lastCity:'聊城'
+      },
+      badQuarter:{
+        fristCity:'菏泽',
+        nextCity:'济南',
+        lastCity:'聊城'
+      }
+    }
+  },
+  watch:{
+    cityData(val){
+      this.initData(val)
+    }
+  },
+  mounted() {
+  },
+  methods:{
+
+    initData(val){
+      //较好周数据
+      let tempBeaterData = []
+      //较好的季度数据
+      let tempBeaterQuaData = []
+      //较差的季度数据
+      let tempBadderWeekData = []
+      //较好的季度数据
+      let tempBadderQuaData = []
+      //获取记
+      val.forEach(obj => {
+        if (obj.weekStatus === 1) {
+          obj.weekAchive = parseFloat(obj.weekAchive)
+          tempBeaterData.push(obj)
+        }
+        if (obj.weekStatus === 2) {
+          obj.weekAchive = parseFloat(obj.weekAchive)
+          tempBadderWeekData.push(obj)
+        }
+        if (obj.qthStatus === 1) {
+          obj.qthAchive = parseFloat(obj.qthAchive)
+          tempBeaterQuaData.push(obj)
+        }
+        if (obj.qthStatus === 2) {
+          obj.qthAchive = parseFloat(obj.qthAchive)
+          tempBadderQuaData.push(obj)
+        }
+      })
+
+      this.beaterWeekData = this.sortByKey(tempBeaterData,'weekAchive')
+      this.badderWeekData = this.sort(tempBadderWeekData,'weekAchive')
+      this.beaterQuaData = this.sortByKey(tempBeaterQuaData,'qthAchive')
+      this.badderQuaData = this.sort(tempBadderQuaData,'qthAchive')
+      if (this.beaterWeekData.length > 3){
+        this.beaterWeekData.splice(2,this.beaterWeekData.length - 3)
+        //alert(this.beaterWeekData)
+      }
+      if (this.badderWeekData.length > 3){
+        this.badderWeekData.splice(2,this.badderWeekData.length - 3)
+      }
+      if (this.beaterQuaData.length > 3){
+        this.beaterQuaData.splice(2,this.beaterQuaData.length - 3)
+      }
+
+      if (this.badderQuaData.length > 3){
+        this.badderQuaData.splice(2,this.badderQuaData.length - 3)
+      }
+
+    },
+    // 顺序
+    sortByKey(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+        return x > y;
+      })
+    },
+    //倒叙
+    sort(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+        return x < y;
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+.finish{
+  background-image: url("../../assets/images/bigScreen/fullService/Rectangle 1304.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 148px;
+  height:30px ;
+  text-align: center;
+  line-height: 30px;
+  margin: 10px 0 15px 15px;
+  color: #02F6FF;
+  font-size: 18px;
+}
+.good-city ,.bad-city{
+  display: flex;
+}
+.bad-city{
+  margin-top: 70px;
+
+}
+.city{
+  margin-right: 0px;
+  font-size:17px
+}
+.borderedLeft{
+  background-image: url('../../assets/images/bigScreen/fullService/img_zuokuang.png') ;
+  background-repeat: no-repeat;
+  background-position: left top,0% 0% ;
+  height: 183px;
+}
+.borderedRight{
+  background-image: url('../../assets/images/bigScreen/fullService/img_youkuang.png');
+  height: 183px;
+  background-repeat: no-repeat;
+  background-position: right top,0% 0% ;
+}
+.marginAuto{
+  margin: 0 auto;
+}
+.marginAuto img{
+  display: block;
+  margin: 0 auto;
+}
+.youkuang{
+  width: 1px;
+  height: 132px;
+  /*background: linear-gradient(0deg, #135AA0 0%, #00FFFF 100%);*/
+  position: absolute;
+  right: -28px;
+  top: 70px;
+  background-image: url("../../assets/images/bigScreen/fullService/line_duan.png");
+  background-repeat: no-repeat;
+}
+</style>

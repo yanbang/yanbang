@@ -1,0 +1,78 @@
+import echarts from 'echarts'
+
+export default {
+    initChart(data) {
+        var echart = echarts.init(document.getElementById(data.id))
+        let maxArr = 0
+        for (let i = 0; i < 6; i++) {
+            maxArr += data.date.length > 0 ? Number(data.date[i].value) : 0
+        }
+
+
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            title: {
+                text: `${maxArr}\n总量`,  //图形标题，配置在中间对应效果图的80%
+                left: "center",
+                top: "40%",
+                textStyle: {
+                    color: "rgb(50,197,233)",
+                    fontSize: 22,
+                    align: "center"
+                }
+            },
+            color: ['#FD6B76', '#69F2AA', '#09FFFF', '#FEF55C', '#8014C5', '#00B0FF'],
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    // labelLine: {
+                    //     length: 15,
+                    //     lineStyle: {
+                    //         color: 'rgb(255, 255, 255)'
+                    //     },
+                    // },
+                    avoidLabelOverlap: true,
+                    // label: {
+                    //     formatter: '{b|{b}:}\n {per|{d}%},{c}户',
+                    //     color: '#fff',
+                    //     fontSize: 12,
+                    //     rich: {
+                    //         // b: {
+                    //         //     color: '#fff',
+                    //         //     fontSize: 8,
+                    //         // },
+                    //         // c: {
+                    //         //     color: '#fff',
+                    //         //     fontSize: 10,
+                    //         // },
+                    //         per: {
+                    //             color: '#fff',
+                    //             fontSize: 12,
+
+                    //             padding: [3, 0],
+                    //         }
+                    //     }
+                    // },
+                    label: {
+                        normal: {
+                            position: 'inner',
+                            show: false
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: data.date
+                }
+            ]
+        };
+        echart.setOption(option)
+    }
+}

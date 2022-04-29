@@ -1,0 +1,273 @@
+<template>
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">渠道</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 左边 -->
+        <div class="left">
+          <div style="position: absolute; height: 93%; width: 100%;">
+            <moveNetDevelopment></moveNetDevelopment>
+          </div>
+        </div>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="center-content" style="z-index: 2; position: absolute; width: 100%; height: 100%">
+            <div class='centerBottom'>
+              <div class="titleLeft">各地市发展量</div>
+              <iframe ref="iframe" :src="iframeSrc" frameborder="0" style="width: 100%; height: 100%"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <div style="position: absolute; height: 93%; width: 100%;">
+            <broadband style='height: 60vh'></broadband>
+            <country style='height: 39vh;margin-top: 30px'></country>
+          </div>
+        </div>
+      </template>
+    </FlexBox>
+
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import moveNetDevelopment from '@/components/rural/moveNetDevelopment'
+import broadband from '@/components/rural/broadband'
+import country from '@/components/rural/country'
+import store from "store";
+import charts from '@/views/channel/businessHall/components/charts'
+export default {
+  components: {
+    charts,
+    Header,
+    FlexBox,
+    moveNetDevelopment,
+    broadband,
+    country
+  },
+  name: 'index',
+  data() {
+    return {
+      dialogVisible: false,
+      radio: '全部',
+      //map地址
+      iframeSrc: '',
+      bottomList: [{
+        name: '营业厅',
+        url: '/channel/businessHall/index',
+      }, {
+        name: '渠道门店',
+        url: '/channelShop/index',
+      }, {
+        name: '卖场',
+        url: '/channel/sale/index',
+
+      }, {
+        name: '轻触点',
+        url: '/channel/touchPoint/index',
+
+      }, {
+        name: '小微商户',
+        url: '/SmallBusinesses/index',
+
+      }, {
+        name: '农村',
+        url: '/rural/index',
+        active: true
+      }],
+      timest: '',
+      mapData: {},
+      userInfo: {},
+      params: {},
+    }
+  },
+  async mounted() {
+    //获取时间
+    this.timest = window.sessionStorage.getItem('selectTime')
+    window.addEventListener('message', (e) => {
+      this.mapDate = e.data
+    })
+    //初始化地图
+    this.initParam()
+  },
+  methods: {
+    initParam() {
+      this.userInfo = store.get('userInfo');
+      Object.assign(this.mapData, { label: store.get('userInfo').dataAreaName || '各地市' })
+
+      if (store.get('userInfo').gridId) {
+        this.mapData.level = 4;
+
+      } else if (store.get('userInfo').areaCode) {
+        this.mapData.level = 3;
+
+      } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+        this.mapData.level = 2;
+
+      } else {
+        this.mapData.level = 1;
+      };
+
+      // 默认参数
+      this.param = {
+        "timest": this.timest,
+        "eparchyCode": this.userInfo.eparchyCode || '',
+        "areaCode": this.userInfo.areaCode || '',
+        "gridId": this.userInfo.gridId || '',
+        "flag": "1",
+        "chnlKindId": ""
+      }
+      this.init()
+    },
+    //初始化地图参数
+    mapInit() {
+      let that = this
+      window.addEventListener('message', e => {
+        that.mapData = e.data
+        if (e.data.message == 'levelSwitch') {
+          if (e.data.level == 1) {
+            that.param.eparchyCode = '0000'
+            that.param.areaCode = ''
+            that.param.gridId = ''
+            that.param.mLevel = '1'
+          } else if (e.data.level == 2) {
+            that.param.eparchyCode = e.data.area_id
+            that.param.areaCode = ''
+            that.param.gridId = ''
+            that.param.mLevel = '2'
+          } else if (e.data.level == 3) {
+            // that.param.eparchyCode = ''
+            that.param.areaCode = e.data.area_id
+            that.param.gridId = ''
+            that.param.mLevel = '3'
+          } else if (e.data.level == 4) {
+            // that.param.eparchyCode = ''
+            // that.param.areaCode = ''
+            that.param.gridId = e.data.area_id
+            that.param.mLevel = '4'
+          }
+          that.param.timest = that.timest
+          that.init()
+        }
+      })
+    },
+
+    //初始化参数
+    async init() {
+      let level = this.mapData.level
+      let eparchyCode = this.userInfo.eparchyCode
+      let areaCode = this.userInfo.areaCode
+      let gridId = this.userInfo.gridId
+      let timest = this.timest
+      let se_type = this.params.se_type
+      let yyt_type = this.params.yyt_type
+      let type = this.params.type
+      this.iframeSrc = `http://134.32.115.253:18080/sdresview/?type=${type}&yyt_type=${yyt_type}&se_type=${se_type}&level=${level}&sceneid=3&gis_sceneid=6&area_id=${gridId || areaCode || eparchyCode}&poi_city_id=370100&timest=${timest}`
+    },
+    //获取时间
+    async getDate(date) {
+      this.timest = date
+      this.userInfo = store.get('userInfo');
+      // 默认参数
+      this.param = {
+        "timest": this.timest,
+        "eparchyCode": this.userInfo.eparchyCode || '',
+        "areaCode": this.userInfo.areaCode || '',
+        "gridId": this.userInfo.gridId || '',
+        "mLevel": this.mapData.level || '',
+        "flag": "1",
+        "chnlKindId": ""
+      }
+      window.frames[0].postMessage(this.params, "*");
+      this.$forceUpdate()
+    },
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.mapInit, true)
+  }
+}
+</script>
+
+<style lang="less" scoped>
+/deep/ .bottom {
+  width: 40% !important;
+  left: 30% !important;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: url('../../assets/images/bgImage.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  position: relative;
+  z-index: 100;
+  .left {
+    width: 24%;
+    position: relative;
+  }
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    position: relative;
+    height: calc(93.5%);
+    overflow: hidden;
+    .centerBottom {
+      flex: 1;
+      position: relative;
+      height: calc(100%);
+      overflow: hidden;
+      width: 100%;
+      background-image: -webkit-image-set(url(/img/mapBg.6a03860f.png) 1x, url(/img/mapBg@2x.b1314878.png) 2x);
+      background-image: image-set(url(/img/mapBg.6a03860f.png) 1x, url(/img/mapBg@2x.b1314878.png) 2x);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      .titleLeft {
+        width: 250px;
+        font-size: 22px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        margin: 5% 0 0 5%;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+    }
+  }
+  .right {
+    width: 24%;
+    height: 100%;
+    position: relative;
+  }
+}
+/deep/.v-modal {
+  background: none !important;
+}
+</style>

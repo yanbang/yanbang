@@ -1,0 +1,1121 @@
+<!--应急通信 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-宽带" subtitle="综合效能"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>宽带装移机竣工率</span>
+          </div>
+
+          <div class="flex1">
+            <div class="chartbox" id="chart_line1"></div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>业务发展完成率</span>
+          </div>
+
+          <div class="flex1">
+            <div class="chartbox" id="chart_line2"></div>
+          </div>
+        </div>
+
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>公客感知</span>
+          </div>
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}" @click="rowttabsClick('1')">装机</span>
+            <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}" @click="rowttabsClick('2')">修机</span>
+          </div>
+          <div class="flex1">
+            <div class="chartbox" id="chart_line3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="centerbox flex colflex">
+         <div class="tjbtn"  @click="isDialogShow_ZHY=true" ><img src="../zhyeys.png" alt="" srcset=""></div>
+        <div class="centTab">
+          <div class="centtabitem titlefont" :class="{'active': tabstatus == '0301'}" @click="tabStatusFn('0301')">
+            <span>装机</span>
+          </div>
+          <div class="centtabitem titlefont" :class="{'active': tabstatus == '0302'}" @click="tabStatusFn('0302')">
+            <span>修机</span>
+          </div>
+
+          <div class="centtabitem titlefont" :class="{'active': tabstatus == '0303'}" @click="tabStatusFn('0303')">
+            <span>移机</span>
+          </div>
+
+          <div class="centtabitem titlefont" :class="{'active': tabstatus == '0304'}" @click="tabStatusFn('0304')">
+            <span>投诉</span>
+          </div>
+        </div>
+         <div class="gistitle">
+          <span class="titlefont">{{gisTitle}}</span>
+         </div>
+        <iframe ref="gisiframe" id="gisiframe" :src="iframeSrc" style="widh: 100%; height: 100%"
+                frameborder="0"></iframe>
+      </div>
+      <div class="rightbox flex colflex">
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>完成效能</span>
+          </div>
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': wcxnStatus1 == 'day'}" @click="wcxntabsClick1('day')">日</span>
+            <span class="rowttabs-item" :class="{'active': wcxnStatus1 == 'week'}" @click="wcxntabsClick1('week')">周</span>
+            <span class="rowttabs-item" :class="{'active': wcxnStatus1 == 'mon'}" @click="wcxntabsClick1('mon')">月</span>
+           
+          </div>
+
+          <div class="flex1">
+            <el-table
+              id = "ftpTable1"
+              ref="ftpTable1"
+              class="custom_table"
+              :data="ftphList"
+              style="width: 100%" :height="tbheight" size="mini">
+              <el-table-column
+                v-for="(col, index) in tcolums1" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || '60px'" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>在途装机工单</span>
+            <span v-show= false>{{ztzjSelectType}}</span>
+          </div>
+          <div class="rowttabs">
+            <el-select  popper-class= "initselect" v-model="selectVal1" placeholder="请选择" style="width: 100px; margin-right: 10px">
+              <el-option
+                v-for="item in selectOptions1"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-select   popper-class= "initselect"  v-model="selectVal2" placeholder="请选择" style="width: 70px">
+              <el-option
+                v-for="item in selectOptions2"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="flex1">
+            <el-table
+              id = "ftpTable2"
+              ref="ftpTable2"
+              class="custom_table"
+              :data="ftphList"
+              style="width: 100%" :height="tbheight" size="mini">
+              <el-table-column
+                v-for="(col, index) in tcolums2" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || 65" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>无资源待装工单</span>
+          </div>
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': wcxnStatus2 == '1'}" @click="wcxntabsClick2('1')">资源落地</span>
+            <span class="rowttabs-item" :class="{'active': wcxnStatus2 == '2'}" @click="wcxntabsClick2('2')">收入落地</span>
+          </div>
+
+          <div class="flex1">
+            <el-table
+               id = "ftpTable3"
+               ref="ftpTable3"
+              class="custom_table"
+              :data="ftphList"
+              style="width: 100%" :height="tbheight" size="mini">
+              <el-table-column
+                v-for="(col, index) in tcolums3" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || '56px'" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+
+        <div class="box-item flex colflex flex1" v-show="leve2CityCode == '0531'">
+          <div class="item-title titlefont">
+            <span>地市建设工单</span>
+          </div>
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': wcxnStatus3 == '1'}" @click="wcxntabsClick3('1')">资源落地</span>
+            <span class="rowttabs-item" :class="{'active': wcxnStatus3 == '2'}" @click="wcxntabsClick3('2')">收入落地</span>
+          </div>
+
+          <div class="flex1">
+            <el-table
+              id = "ftpTable4"
+              ref="ftpTable4"
+              class="custom_table"
+              :data="ftphList"
+              style="width: 100%" :height="tbheight" size="mini">
+              <el-table-column
+                v-for="(col, index) in tcolums4" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || 'auto'" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <el-dialog :visible.sync="isDialogShow_ZHY" width="50%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">网络智慧眼</div>
+          </div>
+          <div class="dialogTableBg">
+             <div style="min-height: 280px; position: relative;">
+               <div class="tjtitle">
+                 {{gisTitle}}分析
+               </div>
+             
+               <div class = "tjbody" style="margin-top: 10px; margin-left: 10px; margin-bottom: 50px">
+            
+                 <div class="tjitem">
+                   <p>{{gisTitle}}宽带业务发展平均完成率<span class="bcolor">{{zhyData.avg1}}</span>，最好地区为<span class="bcolor">{{zhyData.name1}}</span>，完成率为<span class="bcolor">{{zhyData.value1}}%</span>。 </p>
+                   <p>{{gisTitle}}宽带装机竣工率最高地区为<span class="bcolor">{{zhyData.name2}}</span>, 竣工率为<span class="bcolor">{{zhyData.value2}}%</span>。 </p>
+                   <p>{{gisTitle}}宽带移机竣工率最高地区为<span class="bcolor">{{zhyData.name3}}</span>,  竣工率为<span class="bcolor">{{zhyData.value3}}%</span>。 </p>
+                  
+                 </div> 
+               </div>
+               
+             </div>
+          </div>
+        </div>
+      </el-dialog>
+    <Footer :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+  import Header from '@/components/resource_visual/header';
+  import Footer from '@/components/resource_visual/footer';
+  import {efficacyList} from "@/api/broadband/efficacy";
+  import echarts_init from './echart_lines';
+  import vueSeamlessScroll from 'vue-seamless-scroll'
+  import store from 'store'
+  import {mapState} from 'vuex'
+  import echarts_zq from "../echarts_component/echarts_zq";
+
+  var Qs = require('@/utils/qs.js')
+  var _ = require('@/utils/lodash.js')
+
+  var self = null
+  export default {
+    data() {
+      return {
+      isDialogShow_ZHY: false,
+       zhyData: {
+           avg1: '',
+          name1: '',
+          name2: '',
+          name3: '',
+          value1: '',
+          value2: '',
+          value3: '',
+        },
+        gisTitle: '山东省',
+        leve2CityCode: '',
+        cityCode: '370000',
+        selectOptions1: [{
+          value: '1',
+          label: '资源落地'
+        }, {
+          value: '2',
+          label: '收入落地'
+        }],
+        selectVal1: '1',
+        selectOptions2: [{
+          value: '1',
+          label: '宽带'
+        }, {
+          value: '2',
+          label: '固话'
+        }],
+        selectVal2: '1',
+        tbheight: '250', //180
+        iframeSrc: '',
+        wcxnStatus: '1',
+        wcxnStatus1: 'day',
+        wcxnStatus2: '1',
+        wcxnStatus3: '1',
+        rowttabStatus: '1',
+        tabstatus: '0301',
+        //  活动名称、活动地点、保障单位、保障车辆（数量）、人员（数量）、收入（万元
+        tcolums1: [
+          {title: '地市', filed: 'name', width: '100'},
+          {title: '装机', filed: 'zhuangji_', width: '46'},
+          {title: '修机', filed: 'xiuji_',  width: '46'},
+          {title: '投诉', filed: 'tousu_',  width: '46'},
+          {title: '质差', filed: 'bad_nums_', width: '46'},
+          {title: 'IPV6', filed: 'ipv_nums_'},
+          {title: '5G发展', filed: 'g_fz_nums_'},
+          {title: '宽带发展', filed: 'kd_fz_nums_', width: '80'},
+        ],
+
+        tcolums2: [
+          {title: '地市', filed: 'name', width: '80'},
+          {title: '营业', filed: 'yy_on_way_nums'},
+          {title: '配置', filed: 'pz_on_way_nums'},
+          {title: '无资源', filed: 'wzy_on_way_nums'},
+          {title: '装机', filed: 'zj_on_way_nums', width: '80'},
+          {title: '用户缓装', filed: 'yhhz_on_way_nums'},
+          {title: '系统异常', filed: 'ztyc_on_way_nums'}
+        ],
+        tcolums3: [
+          {title: '地市', filed: 'name', width: '80'},
+          {title: '外勘', filed: 'wai_kan_nums'},
+          {title: '用户激活库', filed: 'user_in_nums', width: '80'},
+          {title: '一访', filed: 'first_call_nums'},
+          {title: '建设评估', filed: 'bulid_pg_nums', width: '80'},
+          {title: '二访', filed: 'second_call_nums'},
+          {title: '建设回笼', filed: 'bulid_back_nums', width: '80'}
+        ],
+
+        tcolums4: [
+          {title: '地市', filed: 'name'},
+          {title: '评估', filed: 'city_pg_nums'},
+          {title: '设计', filed: 'city_plan_nums'},
+          {title: '施工', filed: 'city_bulid_nums'}
+        ],
+        tableData1: [], // 保障活动
+        tableData2: [],
+        tableData3: [],
+        tableData4: [],
+
+        gisQueryParams: {},
+        queryParams: {},
+        gisMapData: {},
+        mapLevel: 1,
+        areaCode: '',
+        tabdata: [
+          {title: '网络能力', href: ''},
+          {title: '综合预警', active: false, href: '/resource_visual/broadband_ceo'},
+          {title: '综合效能', active: true, href: '/resource_visual/broadband_zhxn'},
+          {title: '宽带赋能', active: false, href: '/resource_visual/jsc_kdfn'},
+          {title: '存量经营', active: false, href: ''}
+        ],
+        ftphList: [],
+        cityList: [],
+        kd_xz_rate: [],
+        kd_yz_rate: [],
+        kd_fz_rate: [],
+        gh_fz_rate: [],
+        yw_fz_rate: [],
+        zj_intime_rate: [],
+        zj_hurry_rate: [],
+        zj_linlk_intime_rate: [],
+        gz_intime_rate: [],
+        gz_cf_rate: [],
+        gz_hurry_rate: [],
+        gz_linlk_intime_rate: [],
+        averageData: {},
+        control: [],
+        initgisTitle: '',
+      }
+    },
+    components: {
+      Header,
+      Footer,
+      vueSeamlessScroll
+    },
+    created() {
+      self = this;
+    },
+    mounted() {
+      var self = this;
+      var initArea_id = '370000'
+      this.mapLevel = 1;
+      if (store.get('userInfo')) {
+          var userInfo =  store.get('userInfo')
+           var mapLevel = userInfo.levelAreaLevel;
+          if (mapLevel == '1') {
+            // 全省
+            initArea_id = '370000'
+            self.gisTitle  = '山东省'
+            self.mapLevel = '1';
+            self.control = []
+          } else if (mapLevel == '2') {
+            // 地市
+            initArea_id = '370000'
+            self.gisTitle  = '山东省'
+            self.mapLevel = '1';
+            self.control = ['370000', userInfo.levelAreaCode]
+          } else if (mapLevel == '3') {
+            // 区县
+            initArea_id = userInfo.levelAreaCode;
+            self.mapLevel = '2';
+            self.gisTitle  = userInfo.levelAreaName
+            self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode]
+          } else if (mapLevel >= '4') {
+            // 营服
+            initArea_id = userInfo.levelCityCode;
+            self.gisTitle  = userInfo.levelCityName
+            self.mapLevel = '3';
+            self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode, userInfo.levelYfCode]
+          }
+      }
+      this.cityCode = initArea_id;
+      this.initGisMap(initArea_id);
+      // 注册地图事件
+      this.initgisTitle = this.gisTitle + '';
+      window.addEventListener('message', self.gismapListener, true)
+      this.getList();
+    },
+    watch: {
+      ztzjSelectType (val) {
+         this.render_ztgdTable()
+      },
+      leve2CityCode (val) {
+        if (val == '0531') {
+          this.tbheight = '180'
+        } else {
+           this.tbheight = '250'
+        }
+        this.$nextTick(() => {
+          this.$refs['ftpTable1'].doLayout()
+          this.$refs['ftpTable2'].doLayout()
+          this.$refs['ftpTable3'].doLayout()
+          this.$refs['ftpTable4'].doLayout()
+        })
+      }
+    },
+    computed: {
+      ...mapState({
+        searchDate: state => state.resource.searchDate,
+      }),
+      ztzjSelectType () {
+        return this.selectVal1 + ''  + this.selectVal2
+      }
+    },
+
+    methods: {
+        orderDataFn (datas, key) {
+            return  _.orderBy(datas, function (item) {
+                return Number(item[key])  || 0;
+            }, ['desc']);
+        },
+        wcxntabsClick1(type) {
+          this.wcxnStatus1 = type
+          this.render_wcxnTable()
+        },
+        wcxntabsClick2(type) {
+          this.wcxnStatus2 = type;
+          this.render_ztzjTable()
+        },
+         wcxntabsClick3(type) {
+          this.wcxnStatus3 = type;
+          this.render_csjsTable()
+        },
+        // 在途装机工单
+        render_ztgdTable () {
+          var tcolums = [
+              {title: '地市', filed: 'name', width: '80'},
+              {title: '营业', filed: 'yy_on_way_nums'},
+              {title: '配置', filed: 'pz_on_way_nums'},
+              {title: '无资源', filed: 'wzy_on_way_nums'},
+              {title: '装机', filed: 'zj_on_way_nums',  width: '80'},
+              {title: '用户缓装', filed: 'yhhz_on_way_nums'},
+              {title: '系统异常', filed: 'ztyc_on_way_nums'}
+          ];
+         
+          var ztzjSelectType = this.ztzjSelectType;
+          var coltype = ''
+          if (ztzjSelectType == '11') {
+            // 资源宽带
+            coltype = ''
+          } else if (ztzjSelectType == '12') {
+            // 资源固话
+              coltype = '_gh' 
+          }  else if (ztzjSelectType == '21') {
+            // 收入宽带
+               coltype = '_z_kd' 
+          }  else if (ztzjSelectType == '22') {
+            // 收入固话
+             coltype = '_z_gh' 
+          }
+          
+          this.tcolums2 = tcolums.map((item, index) => {
+            var citem = _.cloneDeep(item);
+            if (index > 0) {
+              citem.filed = citem.filed + coltype;
+            }
+            return citem
+          })    
+        },
+
+        // 地市建设工单
+        render_csjsTable () {
+          var tcolums = [
+            {title: '地市', filed: 'name'},
+            {title: '评估', filed: 'city_pg_nums'},
+            {title: '设计', filed: 'city_plan_nums'},
+            {title: '施工', filed: 'city_bulid_nums'}
+          ]
+          if (this.wcxnStatus3 == '1') {
+            this.tcolums4 = tcolums;
+          } else {
+               this.tcolums4 = tcolums.map((item, index) => {
+                var citem = _.cloneDeep(item);
+                if (index > 0) {
+                  citem.filed = citem.filed + '2';
+                }
+                return citem
+              })    
+          }
+        },
+        // 无资源待装
+        render_ztzjTable () {
+            var tcolums =  [
+              {title: '地市', filed: 'name', width: '80'},
+              {title: '外勘', filed: 'wai_kan_nums'},
+              {title: '用户激活库', filed: 'user_in_nums', width: '80'},
+              {title: '一访', filed: 'first_call_nums'},
+              {title: '建设评估', filed: 'bulid_pg_nums',  width: '80'},
+              {title: '二访', filed: 'second_call_nums'},
+              {title: '建设回笼', filed: 'bulid_back_nums',  width: '80'}
+            ]
+            if (this.wcxnStatus2 == '1') {
+              this.tcolums3 = tcolums;
+            } else {
+               this.tcolums3 = tcolums.map((item, index) => {
+                var citem = _.cloneDeep(item);
+                if (index > 0) {
+                  citem.filed = citem.filed + '2';
+                }
+                return citem
+              })    
+            }
+        },
+        // 完成效能
+        render_wcxnTable () {
+          var wcxnStatus1 = this.wcxnStatus1;
+          var tcolums = [
+            {title: '地市', filed: 'name', width: '100'},
+            {title: '装机', filed: 'zhuangji_', width: '46'},
+            {title: '修机', filed: 'xiuji_',  width: '46'},
+            {title: '投诉', filed: 'tousu_',  width: '46'},
+            {title: '质差', filed: 'bad_nums_', width: '46'},
+            {title: 'IPV6', filed: 'ipv_nums_'},
+            {title: '5G发展', filed: 'g_fz_nums_'},
+            {title: '宽带发展', filed: 'kd_fz_nums_', width: '80'},
+          ]
+           this.tcolums1 = tcolums.map((item, index) => {
+             var citem = _.cloneDeep(item);
+             if (index > 0) {
+               citem.filed = citem.filed + wcxnStatus1
+             }
+             return citem
+           })  
+           
+                   
+       },
+
+      fillParam(type) {
+        var ftphList = this.ftphList;
+        var tabstatus = this.rowttabStatus;
+        var Xdata = ftphList.map(item => {
+          return item.name
+        });
+        let charts3 = {
+            domId: 'chart_line3',
+            unit: '百分比',
+            names: ['公客履约率', '联系客户及时率', '催单率', '7天重复障碍率'],
+            lineX: Xdata,
+            value: [],
+            bar_markLine: [],
+
+          }
+        if (tabstatus == '1') {
+          // 装机
+          var keyarr = ['zj_intime_rate', 'zj_linlk_intime_rate', 'zj_hurry_rate']
+          var orderData1 = this.orderDataFn(ftphList, 'zj_intime_rate');
+          
+          charts3.names = ['公客履约率', '联系客户及时率', '催单率'],
+          charts3.Xdata = orderData1.map(item => {
+            return item.name
+          });
+          charts3.value = keyarr.map(key => {
+             return orderData1.map(item => {
+                  return item[key]
+              })
+          })
+          charts3.bar_markLine = [this.averageData.zj_intime_rate, this.averageData.zj_linlk_intime_rate, this.averageData.zj_hurry_rate ]
+        } else  if(tabstatus == '2') {
+          // 修机
+          var orderData2 = this.orderDataFn(ftphList, 'gz_hurry_rate');
+          charts3.Xdata = orderData2.map(item => {
+            return item.name
+          });
+          var keyarr = [ 'gz_linlk_intime_rate', 'gz_hurry_rate', 'gz_cf_rate']
+          charts3.names = [ '联系客户及时率', '催单率', '7天重复障碍率'],
+          charts3.value = keyarr.map(key => {
+             return orderData2.map(item => {
+                  return item[key]
+              })
+          })
+          charts3.bar_markLine = [this.averageData.gz_linlk_intime_rate, this.averageData.gz_hurry_rate, this.averageData.gz_cf_rate ]
+        } 
+        echarts_init.initechart_lines(charts3);
+
+        if (type && type == 'change_status') {
+          return;
+        };
+
+        var params1_orderData = this.orderDataFn(ftphList, 'kd_xz_rate');
+        var params1_orderData_yj =  this.orderDataFn(ftphList, 'kd_yz_rate');
+
+        this.zhyData.name2 = params1_orderData[0].name;
+        this.zhyData.value2 = params1_orderData[0].kd_xz_rate;
+
+         this.zhyData.name3 = params1_orderData_yj[0].name;
+        this.zhyData.value3 = params1_orderData_yj[0].kd_yz_rate;
+
+        let charts = {
+            domId: 'chart_line1',
+            unit: '百分比',
+            names: ['装机', '移机'],
+            lineX: params1_orderData.map(item => {
+              return item.name
+            }),
+            bar_markLine: [this.averageData.kd_xz_rate, this.averageData.kd_yz_rate],
+            value: [
+                params1_orderData.map(item => {
+                  return item.kd_xz_rate
+                }),
+                params1_orderData.map(item => {
+                  return item.kd_yz_rate
+                })
+            ]
+
+          }
+          echarts_init.initechart_lines(charts)
+
+          var params2_orderData = this.orderDataFn(ftphList, 'kd_fz_rate');
+          this.zhyData.avg1 = this.averageData.kd_fz_rate;
+          this.zhyData.name1 = params2_orderData[0].name;
+          this.zhyData.value1 = params2_orderData[0].kd_fz_rate;
+          let charts2 = {
+            domId: 'chart_line2',
+            unit: '百分比',
+            names: ['宽带发展', '固话发展', '移网发展'],
+            lineX: params2_orderData.map(item => {
+              return item.name
+            }),
+            value: [
+               params2_orderData.map(item => {
+                  return item.kd_fz_rate
+                }),
+                params2_orderData.map(item => {
+                  return item.gh_fz_rate
+                }),
+                params2_orderData.map(item => {
+                  return item.yw_fz_rate
+                }),
+            ],
+           bar_markLine: [this.averageData.kd_fz_rate, this.averageData.gh_fz_rate, this.averageData.yw_fz_rate],
+
+          }
+          echarts_init.initechart_lines(charts2);
+      },
+      
+
+      getList() {
+         var cityCode = this.cityCode
+         efficacyList(cityCode).then(response => {
+            var datal = response.filter(item => {
+              return item.code != '0000'
+            })
+            var avdatal = response.filter(item => {
+              return item.code == '0000'
+            })
+            this.ftphList = datal;
+            this.averageData = avdatal.length > 0 ? avdatal[0] : {}
+            this.render_wcxnTable()
+            this.render_ztzjTable()
+            this.render_csjsTable()
+            this.render_ztgdTable()
+            this.fillParam()
+
+            // this.$nextTick(() => {
+            //     window.setTimeout(function (params) {
+            //       self.$eltable_scrollAuto('ftpTable1')
+            //       self.$eltable_scrollAuto('ftpTable2')
+            //       self.$eltable_scrollAuto('ftpTable3')
+            //       self.$eltable_scrollAuto('ftpTable4')
+            //     }, 3000)
+            // })
+          })
+      },
+
+     
+
+      wcxntabsClick(type) {
+        this.wcxnStatus = type
+      },
+      rowttabsClick(type) {
+        this.rowttabStatus = type;
+        this.fillParam('change_status')
+      },
+      gismapListener(e) {
+        var self = this;
+        if (e.data.message == 'levelSwitch') {
+          self.gisTitle = e.data.area_name || this.initgisTitle;
+          self.mapLevel = e.data.level
+          self.areaCode = e.data.area_id;
+          self.gisMapData = e.data;
+          self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+          self.gisQueryParams.area_name = '';
+          console.log('message', e.data)
+          self.cityCode = e.data.area_id
+
+          if (e.data.level == 2) {
+            self.leve2CityCode =  e.data.area_id;
+          } else if (e.data.level == 1) {
+            self.leve2CityCode =  ''
+          }
+          this.getList()
+        }
+      },
+      initGisMap(initArea_id) {
+        // 初始化地图参数
+        this.gisQueryParams = {
+           control: this.control.join(','),
+          level: this.mapLevel,
+          sceneid: 3,
+          gis_sceneid: this.tabstatus,
+          area_id: initArea_id,
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no: store.get('staffId') || '',
+          timest: this.$store.state.resource.searchDate
+        };
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+        this.iframeSrc = window.gis_iframeSrc +  `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+
+      },
+
+      tabStatusFn(type) {
+        this.tabstatus = type;
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams));
+        gisQueryParams.message = "changeType";
+        gisQueryParams.gis_sceneid = type;
+        this.$refs['gisiframe'].contentWindow.postMessage(gisQueryParams, '*')
+      },
+      initEchart() {
+
+        var charts = {
+          domId: 'chart_line1',
+          unit: '百分比',
+          names: ['装机', '移机'],
+          lineX: ['济南1', '济南2', '济南3', '济南4', '济南5', '济南6', '济南7', '济南8'],
+          value: [
+            [41, 32, 33, 34, 95, 36, 17, 28],
+            [36, 45, 80, 12, 30, 50, 92, 80]
+          ]
+
+        }
+        echarts_init.initechart_lines(charts)
+
+
+        var charts2 = {
+          domId: 'chart_line2',
+          unit: '百分比',
+          names: ['宽带发展', '固话发展', '移网发展'],
+          lineX: ['济南1', '济南2', '济南3', '济南4', '济南5', '济南6', '济南7', '济南8'],
+          value: [
+            [41, 32, 33, 34, 95, 36, 17, 28],
+            [36, 45, 80, 12, 30, 50, 92, 80],
+            [16, 55, 20, 78, 10, 60, 82, 10]
+          ]
+
+        }
+        echarts_init.initechart_lines(charts2)
+
+        var charts2 = {
+          domId: 'chart_line3',
+          unit: '百分比',
+          names: ['公客履约率', '联系客户及时率', '催单率', '7天重复障碍率'],
+          lineX: ['济南1', '济南2', '济南3', '济南4', '济南5', '济南6', '济南7', '济南8'],
+          value: [
+            [41, 32, 33, 34, 95, 36, 17, 28],
+            [36, 45, 80, 12, 30, 50, 92, 80],
+            [16, 55, 20, 78, 10, 60, 82, 10],
+            [16, 25, 20, 52, 70, 10, 22, 60],
+          ]
+
+        }
+        echarts_init.initechart_lines(charts2)
+
+
+      }
+    },
+    destroyed() { // 在组件生命周期结束的时候销毁。
+      window.removeEventListener('message', this.gismapListener, true)
+    }
+  }
+</script>
+
+<style lang='scss' scoped>
+  @import url('../comtable.scss');
+
+  /deep/ .el-select .el-input__inner {
+    height: 28px;
+    // width: 100px;
+    background: transparent;
+    color: #1fe3ef;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-color: #3bc8d9;
+  }
+
+  /deep/ .bottom-tab {
+    width: 60%;
+  }
+
+  /deep/ .bottom-tab .bottom-item {
+    padding: 4px 10px !important;
+  }
+
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: -30px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+
+  .leftbox, .rightbox {
+    width: 500px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    padding-bottom: 30px;
+  }
+  .rightbox {
+     width: 520px;
+  }
+
+  .centerbox {
+    flex: 1;
+    background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 100px 20px 20px 20px;
+    position: relative;
+
+  }
+
+  // .item-title {
+  //   font-size: 22px;
+  //   color: aqua;
+  //   background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat;
+  //   background-size: 100% 100%;
+  //   line-height: 38px;
+  //   padding-left: 58px;
+  //   position: relative;
+  // }
+
+ .item-title {
+  font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+
+  .chartbox {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gdjkitem {
+    height: 68px;
+    width: 72px;
+    margin: 0 auto;
+    background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+    background-size: 100% 100%;
+    line-height: 68px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bolder;
+
+  }
+
+  .gdjkitembox {
+    text-align: center;
+    position: relative;
+    margin-top: 12px;
+
+    &:not(:last-child)::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: -8px;
+      top: 26px;
+    }
+  }
+
+
+  .mtheader {
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+  }
+
+  .mtbody {
+    height: 100%;
+    margin: 6px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mtbody .scrollitem {
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 5px;
+  }
+
+  .mtbody .scrollitem:nth-child(odd) {
+    background: rgba(4, 54, 108, 0.7);
+  }
+
+  .centTab {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 30px;
+    text-align: center;
+
+    .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+       font-weight: bold;
+    }
+  }
+
+  .box-item {
+    position: relative;
+  }
+
+  .rowttabs {
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .rowttabs-item {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid #5b7bc9;
+      margin-left: 10px;
+      color: #698bdf;
+      cursor: pointer;
+    }
+
+    .rowttabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+    }
+  }
+  @keyframes turn{
+      0%{-webkit-transform:rotate(0deg);}
+      25%{-webkit-transform:rotate(90deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      75%{-webkit-transform:rotate(270deg);}
+      100%{-webkit-transform:rotate(360deg);}
+  }
+  .tjbtn {
+     position: absolute;
+    right: 60px;
+    top: 40px;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 10px rgb(56, 148, 235);
+    cursor: pointer;
+    animation:turn 8s linear infinite; 
+    z-index: 99;
+    img {
+      width: 44px;
+      z-index: 99;
+    }
+  }
+
+
+ .tjtitle {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, #1a92d4, transparent);
+    line-height: 34px;
+    padding-left: 15px;
+    border-radius: 20px 0 0 20px;
+    width: 60%;
+  }
+  .tjitem {
+    // padding: 10px;
+    color: #fff;
+    font-size: 20px;
+    p {
+      line-height: 48px;
+      margin-bottom: 0;
+    }
+  }
+
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn {
+z-index: 9999;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+  
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 20px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+</style>
+
+<style lang="css">
+.initselect.el-select-dropdown {
+    background: rgb(9,55,112) !important;
+  }
+
+.initselect .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #07234d;
+}
+.initselect .el-select-dropdown__item {
+  color: #fff;
+}
+.initselect .el-select-dropdown__item.selected {
+  color: aqua;
+}
+.initselect.el-select-dropdown {
+  border: solid 1px #93b1f7;
+}
+.initselect .popper__arrow::after {
+  border-bottom-color: #093770 !important;
+}
+</style>

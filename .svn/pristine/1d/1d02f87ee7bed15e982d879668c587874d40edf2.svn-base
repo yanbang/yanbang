@@ -1,0 +1,71 @@
+<template>
+  <div id="app">
+    <div
+      style="width: 400px; height: 400px"
+      class="echarts"
+      ref="chart"
+    >
+    
+    </div>
+  </div>
+</template>
+
+<script>
+import * as echarts from "echarts";
+export default {
+  name: "HelloPie",
+
+  data() {
+    return {
+      total:'888'
+    };
+  },
+
+  mounted() {
+    var myChart = echarts.init(this.$refs.chart);
+    myChart.setOption({
+      tooltip: {
+        trigger: "item",
+        formatter: "{a} <br/>{b}: {c} ({d}%)",
+      },
+      color: ["rgb(75,139,253)", "rgb(245,125,125)"],
+
+      series: [
+        {
+          name: "宏站",
+          type: "pie",
+          selectedMode: "single",
+          radius: ["25%", "30%"],
+          label: {
+            position: "inner",
+            fontSize: 14,
+          },
+          data: [
+            { value: 6562, name: "" },
+            { value: 888, name: "" },
+          
+          ],
+        },
+        {
+          name: "室分",
+          type: "pie",
+          radius: ["20%", "19%"],
+          label: {
+            position: "inner",
+            fontSize: 14,
+          },
+          data: [
+            { value: 2717, name: "" },
+            { value: 888, name: "" },
+          ],
+        },
+      ],
+    });
+  },
+
+  methods: {},
+};
+</script>
+
+<style lang="less" scoped>
+</style>

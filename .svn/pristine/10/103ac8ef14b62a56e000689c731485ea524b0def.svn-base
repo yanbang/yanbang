@@ -1,0 +1,185 @@
+<template>
+    <div class="g-home relative"  @click="methods1">                                     
+            <div id="map" ref="myEchart"  @click="showChinaMap"></div>
+    </div>
+</template>
+
+<script>
+import echarts from "echarts";
+
+import china from '@/assets/get/s/china.json'
+import {realconsole} from '@/assets/get/s/china.js' // 引入中国地图数据
+import guangdong from '@/assets/get/s/guangdong.json'
+import fujian from '@/assets/get/s/fujian.json'
+export default {
+    data(){
+        var jsonMap = {
+            '广东': guangdong,
+            '福建': fujian,            
+        };
+        //循环遍历注册地图
+        for (let index in jsonMap) {
+            this.$echarts.registerMap(index, jsonMap[index])
+        }; 
+
+        return {                                   
+            provinces: ['shanghai', 'hebei','shanxi','neimenggu','liaoning','jilin','heilongjiang','jiangsu','zhejiang','anhui','fujian','jiangxi','shandong','henan','hubei','hunan','guangdong','guangxi','hainan','sichuan','guizhou','yunnan','xizang','shanxi1','gansu','qinghai','ningxia','xinjiang', 'beijing', 'tianjin', 'chongqing', 'xianggang', 'aomen', 'taiwan'],
+            provincesText: ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林','黑龙江',  '江苏', '浙江', '安徽', '福建', '江西', '山东','河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门', '台湾'],
+
+            map :{},
+            province: '',     //记录进入的省级地图名称
+        }
+    },    
+
+    mounted(){  
+      
+        this.$nextTick(() => {  //使用vue.$nextTick()方法可以dom数据更新后延迟执行
+            this.initMap();
+        });   
+        
+    },
+
+    methods:{   
+       methods1:function(){  
+          realconsole();  
+       } ,
+    	//地图参数配置                 
+        getMapOpt(place) {
+            let option = { // 进行相关配置               
+                title: {
+                    text: '客户区域分布', 
+                    left: 'center',  
+                    top: 30,      
+                    textStyle:{fontSize: 20}       
+                },
+                tooltip: {}, // 鼠标移到图里面的浮动提示框
+                dataRange: {
+                    show: false,
+                    min: 0,
+                    max: 1000,
+                    text: ['High', 'Low'],
+                    realtime: true,
+                    calculable: true,
+                    color: ['orangered', 'yellow', 'lightskyblue']
+                },
+                geo: { // 这个是重点配置区
+                    map: place?place:'china', // 表示中国地图
+                    roam: true,
+                    label: {
+                        normal: {
+                            show: true, // 是否显示对应地名
+                            textStyle: {
+                                color: 'rgba(0,0,0)',                                
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderColor: 'rgba(0, 0, 0, 0.2)'
+                        },
+                        emphasis: {
+                            areaColor: null,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 0,
+                            shadowBlur: 20,
+                            borderWidth: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'scatter',
+                    coordinateSystem: 'geo' // 对应上方配置
+                    },
+                    {
+                        name: '客户数量', // 浮动框的标题
+                        type: 'map',
+                        geoIndex: 0,                        
+                        data: [{   //如果有业务数据,就按该格式绑定到这里
+                            "name": "北京",
+                            "value": 599
+                        }, {
+                            "name": "上海",
+                            "value": 142
+                        }, {
+                            "name": "黑龙江",
+                            "value": 44
+                        }, {
+                            "name": "深圳",
+                            "value": 92
+                        }, {
+                            "name": "湖北",
+                            "value": 810
+                        }, {
+                            "name": "四川",
+                            "value": 453
+                        }]                        
+                    }],                            
+            }
+            return option
+        },
+
+    	//用于在省级地图,点击空白处返回全国地图,这里要根据自己的业务数据来判断是否返回
+    	showChinaMap(){
+        	this.map.dispose()
+            this.initMap()
+    	},
+    
+    	//显示各省地图
+        getProvinceMap(province){
+            this.fetchGet('@/assets/get/s/province/' + province + '.json').then(
+                res => {                
+                    echarts.registerMap(province, res.data)  //注册省级地图
+                    this.initMap(province)                           
+                },                
+            )       
+        },
+
+    	initMap(place) {              
+            this.map = echarts.init(document.getElementById("map"));
+            window.onresize = this.map.resize;
+            this.map.showLoading()   //加动画效果
+            let option = this.getMapOpt(place)
+            if (option && typeof option === "object") {
+                this.map.setOption(option, true);
+                setTimeout(() => {                 
+                    this.map.hideLoading()
+                }, 500)
+            }
+            this.map.on('click', (param)=> {                
+                event.stopPropagation()// 阻止冒泡
+                // 找到省份名           
+                let provinceIndex = this.provincesText.findIndex(x=>{
+                    return param.name ===x
+                })           
+                if(provinceIndex===-1){
+                    // 没找到省份名,代表进入到了市图层,这里可以放业务代码
+                    return                                                          
+                }else{                    
+                    this.map.dispose()
+                    this.province = this.provinces[provinceIndex]
+                    // 重新渲染各省份地图
+                    this.getProvinceMap(this.province)                   
+                }                                          
+            })
+            
+        },
+    
+    },
+}
+</script>
+
+<style lang="less">
+.g-home {
+    height: 100%;
+    overflow: hidden;          
+    #map{          
+        width: 49.5%;
+        height: 100%;
+        background: #fff;
+        border-radius: 4px;
+        border: 1px solid #ebeef5;
+        box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);        
+    }    
+}
+</style>

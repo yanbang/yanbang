@@ -1,0 +1,88 @@
+.custom_table.el-table {
+    background: rgba(16, 40, 68, 0.4);
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 5px;
+}
+
+.custom_table.el-table th {
+    background: none;
+    text-align: center;
+    color: #02f6ff !important;
+    font-size: 14px;
+}
+
+.custom_table.el-table tr {
+    background: none !important;
+}
+
+.custom_table.el-table td {
+    background: none !important;
+    border: none !important;
+    text-align: center !important;
+    color: #ffffff;
+}
+
+.custom_table.el-table td.is-left {
+    text-align: left !important;
+}
+
+.custom_table.el-table th.is-leaf,
+.custom_table.el-table td {
+    color: #ffffff;
+}
+
+.custom_table.el-table th {
+    border-bottom: 1px solid rgb(45, 61, 94) !important;
+}
+
+.custom_table.el-table tbody tr td {
+    border-bottom: 1px dashed rgb(45, 61, 94) !important;
+    font-size: 14px !important;
+}
+
+.custom_table.el-table::before {
+    height: 0 !important;
+}
+
+.custom_table.el-table th>.cell {
+    display: contents !important;
+}
+
+.custom_table.el-table .cell {
+    line-height: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.custom_table.el-table--mini th,
+.custom_table.el-table--mini td {
+    padding: 5px 0;
+}
+
+.custom_table.el-table thead.is-group th {
+    background: transparent;
+}
+
+.custom_table.el-table {
+    border: none !important;
+}
+
+.custom_table.el-table--group::after,
+.custom_table.el-table--border::after,
+.custom_table.el-table::before {
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.custom_table.el-table--border th,
+.custom_table.el-table--border td {
+    border-right: none;
+}
+
+.custom_table .el-table__header-wrapper {
+    border-bottom: 1px solid #132d71;
+}
+.bcolor{
+    color:#3be21a;
+}

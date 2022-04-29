@@ -1,0 +1,1038 @@
+<template>
+  <div class="main">
+    <div class="column">
+      <div class="leftpanel1">
+        <dv-decoration-8 style="width:400px;height:20px;" />
+        <div class="leftpanel1-title">提升5G流量占比</div>
+        <div class="leftpanel1-btn">
+          <div class="leftpanel1-day" >天</div>
+          <div class="leftpanel1-mouth">月</div>
+        </div>
+        <div class="leftpanel1-box">
+          <div class="leftpanel1-left">
+            <div class="fiveG-title">
+              <div class="fiveG">
+                <div class="fiveG-count">888</div>
+              </div>
+              <div><div class="title">5G终端用户数</div></div>
+            </div>
+            <div class="user-number"></div>
+            <div class="sequential">
+              <div class="sequential-title">环比</div>
+              <div class="sequential-count">88%</div>
+              <div class="sequential-img"></div>
+            </div>
+          </div>
+          <div class="leftpanel1-right">
+            <div class="fiveG-title">
+              <div class="fiveG">
+                <div class="fiveG-count">88%</div>
+              </div>
+              <div><div class="title">5G终端渗透率</div></div>
+            </div>
+            <div class="penetration"></div>
+            <div class="sequential">
+              <div class="sequential-title">环比</div>
+              <div class="sequential-count">88%</div>
+              <div class="sequential-img"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="leftpanel2">
+        <dv-decoration-10 style="width:95%;height:5px;" />
+        <div class="leftpanel2-box">
+          <div class="leftpanel2-left">
+            <div class="fiveG-user">
+              <div class="fiveG-count">888</div>
+            </div>
+            <div class="fiveG-title">5G开关开启用户数</div>
+          </div>
+          <div class="leftpanel2-center">
+            <div class="sphere">
+              <dv-decoration-9
+                :color="['#35FFFA']"
+                style="width:100px;height:100px;color:#35FFFA;font-size:20px;margin-left:20px;margin-top:20px;"
+                >88%</dv-decoration-9
+              >
+              <dv-decoration-7 style="width:150px;height:30px;font-size:12px;color:#fff;margin-left:-10px"
+                >5G开关开启率</dv-decoration-7
+              >
+            </div>
+          </div>
+          <div class="leftpanel2-right">
+            <dv-decoration-9
+              style="width:100px;height:100px;color:#2A8AE3;font-size:20px;margin-left:25px;margin-top:20px"
+              >88%</dv-decoration-9
+            >
+            <dv-decoration-7 style="width:150px;height:30px;font-size:12px;color:#fff"
+              >5G登网用户登网率</dv-decoration-7
+            >
+          </div>
+        </div>
+      </div>
+      <div class="leftpanel3">
+        <dv-decoration-10 style="width:95%;height:5px;" />
+        <div class="leftpanel2-box">
+          <div class="leftpanel2-left">
+            <div class="fiveG-user">
+              <div class="fiveG-count">888</div>
+            </div>
+            <div class="fiveG-title">SA开关开启用户数</div>
+          </div>
+          <div class="leftpanel2-center">
+            <div class="sphere">
+              <dv-decoration-9
+                :color="['#35FFFA']"
+                style="width:100px;height:100px;color:#35FFFA;font-size:20px;margin-left:20px;margin-top:20px;"
+                >88%</dv-decoration-9
+              >
+              <dv-decoration-7 style="width:150px;height:30px;font-size:12px;color:#fff;margin-left:-10px"
+                >SA开关开启率</dv-decoration-7
+              >
+            </div>
+          </div>
+          <div class="leftpanel2-right">
+            <dv-decoration-9
+              style="width:100px;height:100px;color:#2A8AE3;font-size:20px;margin-left:25px;margin-top:20px"
+              >88%</dv-decoration-9
+            >
+            <dv-decoration-7 style="width:150px;height:30px;font-size:12px;color:#fff"
+              >SA登网用户登网率</dv-decoration-7
+            >
+          </div>
+        </div>
+      </div>
+      <div class="leftpanel4">
+        <dv-decoration-10 style="width:95%;height:5px;" />
+        <div class="leftpanel4-box">
+          <div class="leftpanel4-left">
+            <div class="sphere">
+              <div class="sphere-title">环比</div>
+              <div class="sphere-count">88%</div>
+            </div>
+            <div class="numberborder"></div>
+            <div class="leftpanel4-title">
+              5G签约用户数 机套比*
+            </div>
+          </div>
+          <div class="leftpanel4-center">
+            <div class="up"></div>
+            <div class="fiveG-count">88%</div>
+            <div class="fiveG"></div>
+            <div class="fiveG-title">5G流量占比**</div>
+          </div>
+          <div class="leftpanel4-right">
+            <div class="signing">
+              <div class="signing-count">88%</div>
+              <div class="signing-title">5G签约用机套比*</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="cneterpanel1">
+        <div class="cneterpanel1-button">
+          <div class="btn111">5G流量占比</div>
+          <div class="btn222">Volte注册率</div>
+        </div>
+        <WyxtMap class="mymap"></WyxtMap>
+        <div class="map-radio">
+          <div class="radio1"></div>
+          <div class="radio2"></div>
+          <div class="radio3"></div>
+        </div>
+      </div>
+      <div class="cneterpanel2">
+        <GhjsC2 :mydate1="mydate1" :mydate2="mydate2" :flag="flag"></GhjsC2>
+      </div>
+    </div>
+    <div class="column">
+      <div class="rightpanel1">
+        <dv-decoration-8 style="width:400px;height:20px;" />
+        <div class="rightpanel1-title">提升vlite注册率</div>
+        <div class="rightpanel1-btn">
+          <div class="rightpanel1-day">天</div>
+          <div class="rightpanel1-mouth">月</div>
+        </div>
+        <div class="rightpanel1-box">
+          <div class="rightpanel1-left">
+            <div class="circular-top">
+              <div class="circular-count">888</div>
+              <div class="circular-title">Volte终端用户数</div>
+            </div>
+            <div class="circular-buttom">
+              <div class="circular-count">888</div>
+              <div class="circular-title">Volte开关开启用户数</div>
+            </div>
+          </div>
+          <div class="rightpanel1-right">
+            <div class="circular-top">
+              <div class="circular-count">88%</div>
+              <div class="circular-title">Volte终端渗透率</div>
+            </div>
+            <div class="circular-buttom">
+              <div class="circular-count">88%</div>
+              <div class="circular-title">Volte开关开启率</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="rightpanel2">
+        <dv-decoration-10 style="width:95%;height:5px;" />
+        <div class="rightpanel2-box">
+           <div class="img1">
+             <div class="img1-count">888</div>
+             <div class="img1-title">volte业务签约用户数</div>
+           </div>
+           <div class="img2">
+             <div class="img1-count">88%</div>
+             <div class="img1-title">volte业务签约率</div>
+           </div>
+           <div class="img3">
+             <div class="img1-count">888</div>
+             <div class="img1-title">volte话务量</div>
+           </div>
+           <div class="img4">
+             <div class="img1-count">88%</div>
+             <div class="img1-title">volte话务量占比</div>
+           </div>
+           <div class="img5">
+             <div class="img1-count">888</div>
+             <div class="img1-title">volte终端用户注册率</div>
+           </div>
+          
+        </div>
+
+         <dv-scroll-ranking-board percent :config="config" style="width:340px;height:137px;margin-left:30px;margin-top:30px" />
+      </div>
+      
+      <div class="rightpanel3">
+        <div class="rightpanel3-title">端网页协同</div>
+        <dv-decoration-8 style="width:400px;height:20px;" />
+       
+        <div class="rightpanel3-button">
+          <div class="button111">主流终端占比</div>
+          <div class="button222">主流终端性能</div>
+          <div class="button333">主流终端投诉率</div>
+        </div> 
+        <Mypic></Mypic>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import GhjsC2 from '@/components/Ghjs/GhjsC2.vue'
+import Mypic from '@/components/Wyxt/mypic.vue'
+import WyxtMap from '@/components/Wyxt/WyxtMap.vue'
+export default {
+  name:'wyxt',
+  data() {
+    return {
+      mydate1: [5000, 3440, 5440, 1200, 3999, 5600, 5444],
+      mydate2: [8000, 5000, 4000, 2000, 1000, 3000, 6000],
+      flag: 2,
+      config:{
+         data: [
+    {
+      name: 'Volte接通率',
+      value: 55
+    },
+    {
+      name: 'VOLTE单通次数/话务次数占比',
+      value: 120
+    },
+    {
+      name: 'Volte掉话率',
+      value: 78
+    },
+    {
+      name: 'VoTE&EPSFB网络连续质差小区占比',
+      value: 66
+    },
+    {
+      name: 'VOLTE MOS均值',
+      value: 80
+    },
+    {
+      name: 'VoLTE&EPSFB网络连续质差小区解决率',
+      value: 45
+    },
+    
+  ],
+   unit: '%',
+   sort:false
+      }
+    }
+  },
+  components: {
+    GhjsC2,
+    Mypic,
+    WyxtMap
+  },
+  created() {},
+  computed: {},
+  methods: {}
+}
+</script>
+<style lang="less" scoped>
+.main {
+  //   background-color: red;
+  display: flex;
+  .column {
+    flex: 3;
+  }
+  .column:nth-child(2) {
+    flex: 5;
+    margin: 0 10px 10px;
+    overflow: hidden;
+  }
+  // 左
+  .leftpanel1 {
+    height: 230px;
+    margin-top: 20px;
+    // background: url('~@/assets/img/网络规模.png') no-repeat;
+    // background-size: 100% 100%;
+    .leftpanel1-title {
+      color: #00b8b9;
+      margin: -30px 50px;
+    }
+    .leftpanel1-btn {
+      display: flex;
+      margin-left: 230px;
+      .leftpanel1-day {
+        width: 70px;
+        height: 26px;
+        background: url('../../assets/img/标题按钮选中.png') no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+
+        text-align: center;
+        line-height: 26px;
+      }
+      .leftpanel1-mouth {
+        width: 70px;
+        height: 26px;
+        background: url('../../assets/img/标题按钮未选中.png') no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+
+        text-align: center;
+        line-height: 26px;
+      }
+    }
+    .leftpanel1-box {
+      width: 370px;
+      height: 200px;
+
+      margin: 15px auto;
+      display: flex;
+      justify-content: space-around;
+      .leftpanel1-left {
+        width: 150px;
+        height: 200px;
+
+        .user-number {
+          width: 80px;
+          height: 60px;
+          background: url('../../assets/img/用户数.png') no-repeat;
+          background-size: 100% 100%;
+          margin: 30px auto;
+        }
+        .fiveG-title {
+          margin-top: 20px;
+          width: 120px;
+          height: 30px;
+          display: flex;
+          justify-content: space-between;
+          .fiveG {
+            width: 20px;
+            height: 20px;
+            background: url('../../assets/img/5G.png') no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+            .fiveG-count {
+              color: #20ebfd;
+              position: absolute;
+              top: 30px;
+              left: 55px;
+              font-size: 25px;
+            }
+          }
+          .title {
+            width: 90px;
+            height: 30px;
+            color: #78e7ff;
+            background: url('../../assets/img/字底部阴影.png') no-repeat;
+            background-size: 100% 100%;
+            text-align: center;
+          }
+        }
+        .sequential {
+          width: 115px;
+          height: 40px;
+          display: flex;
+          justify-content: space-between;
+          margin-top: -20px;
+          margin-left: 20px;
+          .sequential-title {
+            color: #fff;
+            font-size: 20px;
+          }
+          .sequential-count {
+            color: #00b8b9;
+            font-size: 20px;
+            font-weight: 700;
+          }
+          .sequential-img {
+            width: 25px;
+            height: 40px;
+            background: url('../../assets/img/用户数-箭头.png') no-repeat;
+            background-size: 100% 100%;
+            margin-top: -20px;
+          }
+        }
+      }
+      .leftpanel1-right {
+        width: 150px;
+        height: 200px;
+        // border: 1px solid #fff;
+        .penetration {
+          width: 80px;
+          height: 60px;
+          background: url('../../assets/img/流量.png') no-repeat;
+          background-size: 100% 100%;
+          margin: 30px auto;
+        }
+        .fiveG-title {
+          margin-top: 20px;
+          width: 120px;
+          height: 30px;
+          display: flex;
+          justify-content: space-between;
+          .fiveG {
+            width: 20px;
+            height: 20px;
+            background: url('../../assets/img/5G1.png') no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+            .fiveG-count {
+              color: #66ec6c;
+              position: absolute;
+              top: 30px;
+              left: 55px;
+              font-size: 25px;
+            }
+          }
+          .title {
+            width: 90px;
+            height: 30px;
+            color: #78e7ff;
+            background: url('../../assets/img/字底部阴影.png') no-repeat;
+            background-size: 100% 100%;
+            text-align: center;
+          }
+        }
+        .sequential {
+          width: 115px;
+          height: 40px;
+          display: flex;
+          justify-content: space-between;
+          margin-top: -20px;
+          margin-left: 20px;
+          .sequential-title {
+            color: #fff;
+            font-size: 20px;
+          }
+          .sequential-count {
+            color: #66ec6c;
+            font-size: 20px;
+            font-weight: 700;
+          }
+          .sequential-img {
+            width: 25px;
+            height: 40px;
+            background: url('../../assets/img/流量-箭头.png') no-repeat;
+            background-size: 100% 100%;
+            margin-top: -20px;
+          }
+        }
+      }
+    }
+  }
+  .leftpanel2 {
+    height: 170px;
+    .leftpanel2-box {
+      width: 390px;
+      height: 170px;
+
+      display: flex;
+      .leftpanel2-left {
+        width: 130px;
+        height: 170px;
+
+        .fiveG-user {
+          width: 130px;
+          height: 45px;
+          margin-top: 40px;
+          background: url('../../assets/img/流量背景.png') no-repeat;
+          background-size: 100% 100%;
+          .fiveG-count {
+            color: #fff;
+            text-align: center;
+            line-height: 45px;
+            font-size: 20px;
+          }
+        }
+        .fiveG-title {
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+      .leftpanel2-center {
+        width: 130px;
+        height: 170px;
+      }
+      .leftpanel2-right {
+        width: 130px;
+        height: 170px;
+      }
+    }
+  }
+  .leftpanel3 {
+    height: 170px;
+    .leftpanel2-box {
+      width: 390px;
+      height: 170px;
+
+      display: flex;
+      .leftpanel2-left {
+        width: 130px;
+        height: 170px;
+
+        .fiveG-user {
+          width: 130px;
+          height: 45px;
+          margin-top: 40px;
+          background: url('../../assets/img/流量背景.png') no-repeat;
+          background-size: 100% 100%;
+          .fiveG-count {
+            color: #fff;
+            text-align: center;
+            line-height: 45px;
+            font-size: 20px;
+          }
+        }
+        .fiveG-title {
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+      .leftpanel2-center {
+        width: 130px;
+        height: 170px;
+      }
+      .leftpanel2-right {
+        width: 130px;
+        height: 170px;
+      }
+    }
+  }
+  .leftpanel4 {
+    height: 170px;
+    .leftpanel4-box {
+      width: 390px;
+      height: 170px;
+      display: flex;
+      .leftpanel4-left {
+        width: 130px;
+        height: 170px;
+
+        .sphere {
+          width: 120px;
+          height: 100px;
+          background: url('../../assets/img/满意度.png') no-repeat;
+          background-size: 100% 100%;
+          position: relative;
+          .sphere-title {
+            color: #fff;
+            position: absolute;
+            left: 30px;
+            top: 45px;
+          }
+          .sphere-count {
+            color: #66ec6c;
+            position: absolute;
+            left: 95px;
+            top: 30px;
+          }
+        }
+        .numberborder {
+          width: 130px;
+          height: 30px;
+          background: url('../../assets/img/数字框.png') no-repeat;
+          background-size: 100% 100%;
+        }
+        .leftpanel4-title {
+          color: #fff;
+          font-size: 12px;
+          margin-top: 10px;
+        }
+      }
+      .leftpanel4-center {
+        width: 130px;
+        height: 170px;
+
+        .up {
+          width: 40px;
+          height: 50px;
+          background: url('../../assets/img/用户数-箭头.png');
+          margin: 0 auto;
+        }
+        .fiveG-count {
+          color: #b5eef9;
+          font-size: 25px;
+          text-align: center;
+        }
+        .fiveG {
+          width: 70px;
+          height: 25px;
+          background: url('../../assets/img/5G流量占比.png') no-repeat;
+          background-size: 100% 100%;
+          margin: 0 auto;
+        }
+        .fiveG-title {
+          font-size: 14px;
+          color: #00b8b9;
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+      .leftpanel4-right {
+        width: 130px;
+        height: 170px;
+
+        .signing {
+          width: 130px;
+          height: 130px;
+          background: url('../../assets/img/5G签约用机套比.png') no-repeat;
+          background-size: 100% 100%;
+          position: relative;
+          margin-top: 20px;
+          .signing-count {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+            color: #fff;
+            font-size: 25px;
+          }
+          .signing-title {
+            position: absolute;
+            width: 60px;
+            top: 70px;
+            left: 30px;
+            color: #fff;
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+  //中
+  .cneterpanel1 {
+    height: 490px;
+    background: url('~@/assets/img/地图.png') no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+    position: relative;
+    .mymap {
+      position: absolute;
+      left: 70px;
+      top: 0px;
+    }
+    .cneterpanel1-button {
+      width: 220px;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 30px;
+      margin-left: 30px;
+      .btn111 {
+        width: 100px;
+        height: 30px;
+        background: url('../../assets/img/按钮.png') no-repeat;
+        background-size: 100% 100%;
+        color: #20ebfd;
+        text-align: center;
+        line-height: 30px;
+      }
+      .btn222 {
+        width: 100px;
+        height: 30px;
+        background: url('../../assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        color: #969ba0;
+        text-align: center;
+        line-height: 30px;
+      }
+    }
+    .map-radio {
+      position: absolute;
+      left: 530px;
+      top: 30px;
+      width: 130px;
+      height: 30px;
+      display: flex;
+      justify-content: space-between;
+      .radio1 {
+        width: 35px;
+        height: 35px;
+        background: url('../../assets/img/green.png') no-repeat;
+        background-size: 100% 100%;
+      }
+      .radio2 {
+        width: 35px;
+        height: 35px;
+        background: url('../../assets/img/yellow.png') no-repeat;
+        background-size: 100% 100%;
+      }
+      .radio3 {
+        width: 35px;
+        height: 35px;
+        background: url('../../assets/img/red.png') no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .cneterpanel2 {
+    margin: 10px 0 0 0;
+    height: 240px;
+    background: url('~@/assets/img/折线图.png') no-repeat;
+    background-size: 100% 100%;
+  }
+  //   右
+  .rightpanel1 {
+    height: 280px;
+    margin-top: 20px;
+    // background: url('~@/assets/img/网络规模.png') no-repeat;
+    // background-size: 100% 100%;
+    .rightpanel1-title {
+      color: #00b8b9;
+      margin: -30px 50px;
+    }
+    .rightpanel1-btn {
+      display: flex;
+      // margin-top: -40px;
+      margin-left: 230px;
+      .rightpanel1-day {
+        width: 70px;
+        height: 26px;
+        background: url('../../assets/img/标题按钮选中.png') no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+
+        text-align: center;
+        line-height: 26px;
+      }
+      .rightpanel1-mouth {
+        width: 70px;
+        height: 26px;
+        background: url('../../assets/img/标题按钮未选中.png') no-repeat;
+        background-size: 100% 100%;
+        color: #fff;
+
+        text-align: center;
+        line-height: 26px;
+      }
+    }
+    .rightpanel1-box {
+      width: 390px;
+      height: 280px;
+      // background-color: #00b8b9;
+      display: flex;
+
+      .rightpanel1-left {
+        width: 195px;
+        height: 280px;
+        // background-color: #66ec6c;
+        .circular-top {
+          margin-top: 30px;
+          margin-left: 40px;
+          width: 115px;
+          height: 90px;
+          background: url('../../assets/img/5G签约用机套比.png') no-repeat;
+          background-size: 100% 100%;
+          position: relative;
+          .circular-count {
+            color: #20ebfd;
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            font-size: 20px;
+          }
+          .circular-title {
+            color: #ffff;
+            position: absolute;
+            top: 100px;
+            left: 5px;
+            font-size: 12px;
+          }
+        }
+        .circular-buttom {
+          width: 115px;
+          height: 90px;
+          margin-left: 40px;
+          background: url('../../assets/img/5G签约用机套比.png') no-repeat;
+          background-size: 100% 100%;
+          margin-top: 40px;
+          position: relative;
+          .circular-count {
+            color: #20ebfd;
+            position: absolute;
+            top: 31px;
+            left: 30px;
+            font-size: 20px;
+          }
+          .circular-title {
+            color: #fff;
+            position: absolute;
+            top: 93px;
+            font-size: 12px;
+          }
+        }
+      }
+      .rightpanel1-right {
+        width: 195px;
+        height: 280px;
+        // background-color: #66ec6c;
+        .circular-top {
+          margin-top: 12px;
+          width: 150px;
+          height: 110px;
+          background: url('../../assets/img/volte终端参透率.png') no-repeat;
+          background-size: 100% 100%;
+          position: relative;
+          .circular-count {
+            color: #20ebfd;
+            position: absolute;
+            top: 45px;
+            left: 37px;
+            font-size: 20px;
+          }
+          .circular-title {
+            color: #ffff;
+            position: absolute;
+            top: 112px;
+            left: 20px;
+            font-size: 12px;
+          }
+        }
+        .circular-buttom {
+          width: 150px;
+          height: 110px;
+          background: url('../../assets/img/volte终端参透率.png') no-repeat;
+          background-size: 100% 100%;
+          margin-top: 26px;
+          position: relative;
+          .circular-count {
+            color: #20ebfd;
+            position: absolute;
+            top: 45px;
+            left: 37px;
+            font-size: 20px;
+          }
+          .circular-title {
+            color: #fff;
+            position: absolute;
+            top: 110px;
+            left: 20px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .rightpanel2 {
+    height: 230px;
+    .rightpanel2-box{
+      width: 320px;
+    
+      display: flex;
+      justify-content: space-between;
+      margin-left: 30px;
+      margin-top: 3px;
+      .img1{
+        width: 40px;
+        height: 45px;
+        background: url("../../assets/img/volte业务签约用户数.png") no-repeat;
+        background-size: 100% 100%;
+        position: relative;
+        .img1-count{
+          color:#A7E7FC;
+          position: absolute;
+          left: 8px;
+          top: 10px;
+        
+        }
+        .img1-title{
+          font-size: 12px;
+          height: 12px;
+          width: 70px;
+          color: #fff;
+          position: absolute;
+          top: 50px;
+          left: -20px;
+          line-height: 12px;
+            text-align: center;
+        }
+      }
+      .img2{
+        width: 70px;
+        height: 50px;
+        background: url("../../assets/img/volte业务签约率.png") no-repeat;
+        background-size: 100% 100%;
+        position: relative;
+        .img1-count{
+          color:#654FEB;
+          position: absolute;
+          left: 13px;
+          top: 15px;
+        
+        }
+        .img1-title{
+          font-size: 12px;
+          height: 12px;
+          width: 60px;
+          color: #fff;
+          position: absolute;
+          top: 52px;
+          left: -3px;
+          line-height: 12px;
+            text-align: center;
+        }
+      }
+      .img3{
+        width: 40px;
+        height: 45px;
+        background: url("../../assets/img/volte话务量.png") no-repeat;
+        background-size: 100% 100%;
+          position: relative;
+        .img1-count{
+          color:#D88B40;
+          position: absolute;
+          left: 8px;
+          top: 10px;
+        
+        }
+        .img1-title{
+          font-size: 12px;
+          height: 12px;
+          width: 70px;
+          color: #fff;
+          position: absolute;
+          top: 50px;
+          left: -20px;
+          line-height: 12px;
+            text-align: center;
+        }
+      }
+      .img4{
+         width: 70px;
+        height: 50px;
+        background: url("../../assets/img/volte业务签约率.png") no-repeat;
+        background-size: 100% 100%;
+            position: relative;
+        .img1-count{
+          color:#654FEB;
+          position: absolute;
+          left: 13px;
+          top: 15px;
+        
+        }
+        .img1-title{
+          font-size: 12px;
+          height: 12px;
+          width: 60px;
+          color: #fff;
+          position: absolute;
+          top: 52px;
+          left: -3px;
+          line-height: 12px;
+            text-align: center;
+        }
+      }
+      .img5{
+        width: 40px;
+        height: 45px;
+        background: url("../../assets/img/volte业务签约用户数.png") no-repeat;
+        background-size: 100% 100%;
+         position: relative;
+        .img1-count{
+          color:#A7E7FC;
+          position: absolute;
+          left: 8px;
+          top: 10px;
+        
+        }
+        .img1-title{
+          font-size: 12px;
+          height: 12px;
+          width: 70px;
+          color: #fff;
+          position: absolute;
+          top: 50px;
+          left: -20px;
+          line-height: 12px;
+            text-align: center;
+        }
+      }
+    }
+  }
+  .rightpanel3 {
+    height: 240px;
+    .rightpanel3-title {
+      color: #00b8b9;
+      margin: -10px 45px;
+    }
+    .rightpanel3-button {
+      width: 360px;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+      .button111 {
+        width: 110px;
+        height: 30px;
+        background: url('../../assets/img/按钮.png') no-repeat;
+        background-size: 100% 100%;
+        color: #20ebfd;
+        text-align: center;
+        line-height: 30px;
+      }
+      .button222 {
+        width: 110px;
+        height: 30px;
+        background: url('../../assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        color: #719daa;
+        text-align: center;
+        line-height: 30px;
+      }
+      .button333 {
+        width: 120px;
+        height: 30px;
+        background: url('../../assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        color: #719daa;
+        text-align: center;
+        line-height: 30px;
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,111 @@
+<!-- 政企 交付保障 -->
+<template>
+  <div class = "contentbox2">
+    <div class="back" @click="backToIndex()">
+      <div class="back-arrow" />
+      <div class="back-font" />
+    </div>
+     <iframe id="iframdom" class="iframdom" :src="iframeSrc"  frameborder="0"></iframe>
+     <Footer :tabdata = "tabdata"></Footer>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/resource_visual/header2';
+import Footer from '@/components/resource_visual/footer';
+import store from 'store'
+import { mapState } from 'vuex'
+export default {
+  data () {
+    return {
+      iframeSrc: '',
+      cityCode: '370000',
+       tabdata: [
+         {title: '智慧营销',active: false, href: '/unicomwisdomeyes/zhengqi_zhyx' },
+         {title: '客户保障', active: false, href: '/unicomwisdomeyes/zhengqi_khbz'},
+         {title: '商务楼宇', active: true, href: '/unicomwisdomeyes/zhengqi_swly'}
+      ],
+      
+    }
+  },
+  components: {
+    Header,
+    Footer,
+  },
+  mounted () {
+     var self = this;
+     function callbk (url) {
+         self.iframeSrc = url
+     }
+      this.getToken('ly', callbk);
+    
+  },
+  watch: {},
+  computed: {
+    ...mapState({
+       searchDate: state => state.resource.searchDate,
+    }),
+  },
+  methods: {
+   // 返回引导页
+    backToIndex() {
+       this.$router.push({ path: '/unicomwisdomeyes/home' })
+    },
+    
+  },
+ destroyed() { // 在组件生命周期结束的时候销毁。
+   
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    // margin: -30px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+  .contentbox2 {
+     height: 100%;
+     background: #010431;
+    position: relative;
+  }
+  .iframdom {
+    width: 1920px;
+    height: 1080px;
+    box-sizing: border-box;
+    overflow: auto;
+    position: relative;
+    top: -40px;
+    transform: scale(1, 0.92);
+  }
+  .back {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    top: 1.40rem;
+    left: 100px;
+    cursor: pointer;
+    z-index: 101;
+    .back-arrow {
+      margin-right: 0.6875rem;
+      width: 4.125rem;
+      height: 1.625rem;
+      background-image: url('~@/assets/images/bigScreen/header-back-arrow.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .back-font {
+      width: 2.5rem;
+      height: 1.2rem;
+      background-image: url('~@/assets/images/bigScreen/header-back-font.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+ 
+</style>

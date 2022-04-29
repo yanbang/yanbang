@@ -1,0 +1,347 @@
+<template>
+  <div class="map" id="map"></div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+import zjJson from '@/assets/map/zhejiang.json'
+import hangzhou from '@/assets/map/杭州市.json'
+import huzhou from '@/assets/map/湖州市.json'
+import jiaxin from '@/assets/map/嘉兴市.json'
+import jinhua from '@/assets/map/金华市.json'
+import lishui from '@/assets/map/丽水市.json'
+import ningbo from '@/assets/map/宁波市.json'
+import quzhou from '@/assets/map/衢州市.json'
+import shaoxing from '@/assets/map/绍兴市.json'
+import taizhou from '@/assets/map/台州市.json'
+import wenzhou from '@/assets/map/温州市.json'
+
+export default {
+  data() {
+    return {
+      dataValue:[],
+      dataName:Object,
+      mapName:'',
+      myChart: null,
+      targetData: [
+        { name: '杭州市', value: 197 },
+        { name: '湖州市', value: 199 },
+        { name: '嘉兴市', value: 199 },
+        { name: '金华市', value: 199 },
+        { name: '丽水市', value: 199 },
+        { name: '宁波市', value: 199 },
+        { name: '衢州市', value: 199 },
+        { name: '绍兴市', value: 19 },
+        { name: '台州市', value: 199 },
+        { name: '温州市', value: 1 },
+        { name: '舟山市', value: 199 },
+      ],
+    }
+  },
+  props: ['mapData'],
+  watch: {
+    mapData() {
+      this.myChart.clear()
+
+      if (this.mapData == 1) {
+        this.targetData = [
+          { name: '杭州市', value: 197 },
+          { name: '湖州市', value: 199 },
+          { name: '嘉兴市', value: 199 },
+          { name: '金华市', value: 149 },
+          { name: '丽水市', value: 191 },
+          { name: '宁波市', value: 192 },
+          { name: '衢州市', value: 193 },
+          { name: '绍兴市', value: 19 },
+          { name: '台州市', value: 194 },
+          { name: '温州市', value: 1 },
+          { name: '舟山市', value: 195 },
+        ]
+      } else if (this.mapData == 2) {
+        this.targetData = [
+          { name: '杭州市', value: 99 },
+          { name: '湖州市', value: 199 },
+          { name: '嘉兴市', value: 179 },
+          { name: '金华市', value: 159 },
+          { name: '丽水市', value: 149 },
+          { name: '宁波市', value: 119 },
+          { name: '衢州市', value: 139 },
+          { name: '绍兴市', value: 19 },
+          { name: '台州市', value: 19 },
+          { name: '温州市', value: 1 },
+          { name: '舟山市', value: 9 },
+        ]
+      } else {
+        this.targetData = [
+          { name: '杭州市', value: 199 },
+          { name: '湖州市', value: 199 },
+          { name: '嘉兴市', value: 199 },
+          { name: '金华市', value: 199 },
+          { name: '丽水市', value: 199 },
+          { name: '宁波市', value: 199 },
+          { name: '衢州市', value: 199 },
+          { name: '绍兴市', value: 19 },
+          { name: '台州市', value: 199 },
+          { name: '温州市', value: 1 },
+          { name: '舟山市', value: 199 },
+        ]
+      }
+
+      console.log(this.targetData)
+      this.initMap()
+    },
+  },
+  mounted() {
+    this.initMap()
+    
+  },
+  created() {
+    console.log(this.mapData)
+  },
+  methods: {
+    initMap() {
+      switch(this.cityName){
+        case '杭州市'
+         : this.dataName=hangzhou
+         this.mapName='hangzhou'
+         break
+        case '湖州市'
+         : this.dataName=huzhou
+         this.mapName='huzhou'
+         break
+        case '嘉兴市'
+         : this.dataName=jiaxin
+         this.mapName='jiaxin'
+         break
+        case '金华市'
+         : this.dataName=jinhua
+         this.mapName='jinhua'
+         break
+        case '丽水市'
+         : this.dataName=lishui
+         this.mapName='lishui'
+         break
+        case '宁波市'
+         : this.dataName=ningbo
+         this.mapName='ningbo'
+         break
+        case '衢州市'
+         : this.dataName=quzhou
+         this.mapName='quzhou'
+         break
+        case '绍兴市'
+         : this.dataName=shaoxing
+         this.mapName='shaoxing'
+         break
+        case '台州市'
+         : this.dataName=taizhou
+         this.mapName='taizhou'
+         break
+        case '温州市'
+         : this.dataName=wenzhou
+         this.mapName='wenzhou'
+         break
+      }
+      this.myChart = echarts.init(document.getElementById('map'))
+      this.myChart.showLoading()
+      echarts.registerMap('zhejiang', zjJson)
+      this.myChart.hideLoading()
+      var geoCoordMap = {
+        杭州市: [120.161693, 30.280059],
+        湖州市: [120.094566, 30.899015],
+        嘉兴市: [120.762045, 30.750912],
+        金华市: [119.654027, 29.084455],
+        丽水市: [119.929503, 28.472979],
+        宁波市: [121.556686, 29.880177],
+        衢州市: [118.880768, 28.941661],
+        绍兴市: [120.586673, 30.036519],
+        台州市: [121.426996, 28.662297],
+        温州市: [120.705869, 28.001095],
+        舟山市: [122.214339, 29.991092],
+      }
+      var data = this.targetData
+      var max = 480,
+        min = 9 // todo
+      var maxSize4Pin = 100,
+        minSize4Pin = 20
+
+      var convertData = function (data) {
+        var res = []
+        for (var i = 0; i < data.length; i++) {
+          var geoCoord = geoCoordMap[data[i].name]
+          if (geoCoord) {
+            res.push({
+              name: data[i].name,
+              value: geoCoord.concat(data[i].value),
+            })
+          }
+        }
+        return res
+      }
+      var option = {
+        title: {
+          text: '',
+          subtext: '',
+          x: 'center',
+          textStyle: {
+            color: '#ccc',
+          },
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: function (params) {
+            if (typeof params.value[2] == 'undefined') {
+              return params.name + ' : ' + params.value
+            } else {
+              return params.name + ' : ' + params.value[2]
+            }
+          },
+        },
+        legend: {
+          orient: 'vertical',
+          y: 'bottom',
+          x: 'right',
+          data: [''],
+          textStyle: {
+            color: '#fff',
+          },
+        },
+        visualMap: {
+          show: false,
+          min: 0,
+          max: 500,
+          left: 'left',
+          top: 'bottom',
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true,
+          seriesIndex: [1],
+          inRange: {
+            color: ['#1488CC', '#2B32B2'],
+          },
+        },
+        // toolbox: {
+        //     show: true,
+        //     orient: 'vertical',
+        //     left: 'right',
+        //     top: 'center',
+        //     feature: {
+        //             dataView: {readOnly: false},
+        //             restore: {},
+        //             saveAsImage: {}
+        //             }
+        // },
+        geo: {
+          show: true,
+          map: 'zhejiang',
+          label: {
+            normal: {
+              show: false,
+            },
+            emphasis: {
+              show: false,
+            },
+          },
+          roam: true,
+          itemStyle: {
+            normal: {
+              areaColor: '#031525',
+              borderColor: '#0c0bae',
+            },
+            emphasis: {
+              areaColor: '#01fea8',
+            },
+          },
+        },
+        series: [
+          {
+            name: 'credit_pm2.5',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: convertData(data),
+            symbolSize: 5,
+            label: {
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: true,
+              },
+              emphasis: {
+                show: true,
+              },
+            },
+            itemStyle: {
+              normal: {
+                color: '#fff',
+              },
+            },
+          },
+          {
+            type: 'map',
+            map: 'zhejiang',
+            geoIndex: 0,
+            aspectScale: 0.75, //长宽比
+            showLegendSymbol: false, // 存在legend时显示
+            label: {
+              normal: {
+                show: false,
+              },
+              emphasis: {
+                show: false,
+                textStyle: {
+                  color: '#fff',
+                },
+              },
+            },
+            roam: true,
+            itemStyle: {
+              normal: {
+                areaColor: '#031525',
+                borderColor: '#3B5077',
+              },
+              emphasis: {
+                areaColor: '#2B91B7',
+              },
+            },
+            animation: false,
+            data: data,
+          },
+          {
+            name: '点',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            symbol: 'pin',
+            symbolSize: [50, 50],
+            label: {
+              normal: {
+                show: true,
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 9,
+                },
+                formatter(value) {
+                  return value.data.value[2]
+                },
+              },
+            },
+            itemStyle: {
+              normal: {
+                color: '#D8BC37', //标志颜色
+              },
+            },
+            zlevel: 6,
+            data: convertData(data),
+          },
+        ],
+      }
+      this.myChart.setOption(option)
+    },
+  },
+}
+</script>
+
+<style scoped>
+.map {
+  width: 560px;
+  height: 540px;
+}
+</style>

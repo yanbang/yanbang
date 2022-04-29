@@ -1,0 +1,28 @@
+import request from '@/utils/request';
+const api = {
+    serviceDhJzslXq: '/ZhyDhCon/serviceDhJzslXq', //  //5.3.6.1局站数量统计-详情
+    serviceDhJzsl: '/ZhyDhCon/serviceDhJzsl', //5.3.6.2局站数量统计
+    serviceDhZdfxXq: '/ZhyDhCon/serviceDhZdfxXq', //5.3.6.3重大风险监测-详情
+    serviceDhZdfx: '/ZhyDhCon/serviceDhZdfx', //5.3.6.4重大风险监测
+    serviceDhZdfxMx: '/ZhyDhCon/serviceDhZdfxMx', //5.3.6.5重大风险监测明细
+    serviceDhZdyw: '/ZhyDhCon/serviceDhZdyw',
+    serviceDhDhGyYj: '/ZhyDhCon/serviceDhDhGyYj', // 5.3.6.10高压油机数量
+    serviceDhjiance: '/ZhyDhCon/serviceDhjiance',
+    serviceDhSheBei:   '/ZhyDhCon/serviceDhSheBei',
+    serviceDhGzNums: '/ZhyDhCon/serviceDhGzNums', //5.3.6.9   故障热力
+    serviceDhAlarmNumsXq: '/ZhyDhCon/serviceDhAlarmNumsXq', //  故障告警详情
+    serviceDhAlarmNums: '/ZhyDhCon/serviceDhAlarmNums', //故障告警
+}
+
+var serviceApi = {}
+Object.keys(api).forEach(key => {
+    serviceApi[key] = function(parameter) {
+        return request({
+            url: api[key],
+            method: 'post',
+            data: parameter
+        })
+    }
+})
+
+export default serviceApi

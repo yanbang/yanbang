@@ -1,0 +1,1330 @@
+<!--应急通信 -->
+<template>
+  <div class = "contentbox">
+     <Header v-if = "or_he == '0'"   explaincode = "w_yj_yjnl"  backurl =  "/unicomwisdomeyes/yhzl_index"  title="山东联通网络智慧眼-沿黄战略" subtitle="应急通信"></Header>
+     <Header v-else explaincode = "w_yj_yjnl" title = "山东联通网络智慧眼-网" subtitle = "应急"></Header>
+    <div class = "contentbody">
+      <div class = "leftbox flex colflex">
+      
+        <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>荣誉简介</span>
+             <span class="zdmore pull-right" @click="ryDetailFn"><span class="el-icon-more"></span></span>
+           </div>
+            <div  class = "flex1" style=" margin-top: 10px;">
+                <swiper class="swiperClass2" :options="swiperOption2" ref="mySwiper2" >
+                  <!-- slides -->
+                      <swiper-slide v-for="(item,  index) in ryzsImgs" :key="index">
+                        <img :src="item.url" alt="">
+                      </swiper-slide>
+                     
+                      <!-- Optional controls -->
+                      <div class="swiper-pagination"  slot="pagination"></div>
+                      <div class="swiper-button-prev" slot="button-prev"></div>
+                      <div class="swiper-button-next" slot="button-next"></div>
+                  </swiper>
+            </div>
+            <div class="jjdetail" style="padding: 10px 0">
+              <p>
+                山东联通机动通信局是由工信部在省内唯一指定的具有国家一类应急通信保障资质的队伍，承担了国家一类应急通信保障职责，是国家公共安全体系的重要组成部分。
+              </p>
+            </div>
+        </div>
+
+ 
+
+           <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>应急能力</span>
+           </div>
+
+           <div  class = "flex1">
+             <el-table
+              id = "yjnlTable"
+              class = "custom_table"
+              :data="yjnl_tableData"
+              style="width: 100%" height="270px" size = "mini">
+              <el-table-column
+                v-for="(col, index) in yjnl_colums" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || '55px'" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+           </div>
+        </div>
+       <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>车辆效能</span>
+              <!-- <span class = "tunit">(次)</span> -->
+           </div>
+
+             <div  class = "flex1" style="position: relative;">
+              <div class="chartbox" id = "chart_zbsyl"></div>
+            </div>
+        </div>
+
+      </div>
+      <div class = "centerbox flex colflex">
+        <div class="centTab">
+          <!-- <div class="centtabitem titlefont" :class="{'active': tabstatus == '0201'}" @click="tabStatusFn('0201')">
+            <span>应急车辆</span>
+          </div>
+          <div class="centtabitem titlefont" :class="{'active': tabstatus == '0202'}" @click="tabStatusFn('0202')">
+            <span>保障活动</span>
+          </div> -->
+
+           <!-- <div class="centtabitem titlefont" :class="{'active': tabstatus == '0203'}" @click="tabStatusFn('0203')">
+            <span>综合信息</span>
+          </div> -->
+        </div>
+        <div class="gistitle">
+          <span class="titlefont">{{gisTitle}}</span>
+        </div>
+        <iframe  ref="gisiframe" id="gisiframe" :src="iframeSrc"  style="widh: 100%; height: 100%" frameborder="0"></iframe>
+      </div>
+      <div class = "rightbox flex colflex">
+
+         <!-- <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>保障活动</span>
+             <div class="checkgroupbox">
+                <el-checkbox-group v-model="bzhd_checkList">
+                  <el-checkbox class="checkstate01" label="01">进行中</el-checkbox>
+                  <el-checkbox class="checkstate00" label="00">已完成</el-checkbox>
+                  <el-checkbox class="checkstate02" label="02">计划中</el-checkbox>
+                </el-checkbox-group>
+             </div>
+           </div>
+
+           <div  class = "flex1">
+             <el-table
+              class = "custom_table"
+              id = "bzhdTable"
+              :data="fiter_bzhd_tableData"
+              style="width: 100%" height="300px" size = "mini" :row-class-name = "classNameFn" @row-click = "rowClickFn">
+              <el-table-column
+                v-for="(col, index) in bzhd_colums" :key="index"
+                :prop="col.filed"
+                :label="col.title"
+                :width="col.width || 'auto'" :align="col.align || 'center'" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+           </div>
+         </div>  -->
+
+          <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>应急预案</span>
+             
+           </div>
+            <div  class = "flex1">
+              <vue-seamless-scroll :data="yjya_tableData" :class-option="optionSingleHeightTime" class="seamless-warp">
+                  <ul class="listitem">
+                      <li v-for="(row, index) in yjya_tableData" :key="index" @click="yjya_clickRow(row,index)">
+                          <span class="index">{{index + 1}}</span>    
+                          <span class="title">{{row.yjyuan}}</span>
+                      </li>
+                  </ul>
+              </vue-seamless-scroll>
+              
+            </el-table>
+            </div>
+         </div> 
+
+          <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+              <span>人员构成</span>
+           </div>
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}" @click="rowttabsClick('1')">年龄</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}" @click="rowttabsClick('2')">学历</span>
+
+           </div>
+
+            <div  class = "flex1">
+              <div class="chartbox"  id = "chart_rygc" ></div>
+            </div>
+         </div>
+         
+
+         <div class = "box-item flex colflex flex1" >
+           <div class = "item-title titlefont">
+             <span>{{rowttabStatus2 == '1' ? '当年': '历年'}}社会化保障收入</span>
+             <span class = "tunit">(万元)</span>
+           </div>
+
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus2 == '1'}" @click="rowttabsClick2('1')">当年</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus2 == '2'}" @click="rowttabsClick2('2')">历年</span>
+           </div>
+
+           <div  class = "flex1">
+              <div class="chartbox" id = "chart_shhbzfw"  v-show="rowttabStatus2 == '1'"></div>
+              <div class="chartbox" id = "chart_shhbzfw2"  v-show="rowttabStatus2 == '2'"></div>
+            </div>
+         </div>
+
+      </div>
+    </div>
+      <el-dialog :visible.sync="isDialogShow" width="50%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{carnamt}}简介</div>
+          </div>
+          <div class="dialogTableBg">
+             <div class = "cardetailbox">
+                <div class="imgbox">
+                  <img :src="carInfo.car_imgurl" alt="" srcset="">
+                </div>
+                <div class="felx1 fontbox">
+                  <p>{{carInfo.car_name}}</p>
+                  <p>{{carInfo.car_remark}}</p>
+                  <p>车辆能力:{{carInfo.car_power}}</p>
+                  <p><span style="margin-right: 15px">{{carInfo.car_user}} </span> <span>{{carInfo.car_user_tel}}</span></p>
+                </div>
+             </div>
+          </div>
+        </div>
+      </el-dialog>
+
+     <el-dialog :visible.sync="isDialogShow2" width="50%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">保障活动详情</div>
+          </div>
+          <div class="dialogTableBg">
+             <div class = "videobox" style="height: auto" v-show="hddetail">
+                     <swiper class="swiperClass" :options="swiperOption" ref="mySwiper" >
+                      <!-- slides -->
+                          <swiper-slide>
+                            <img src="/view/images/bzhd1.jpg" alt="">
+                          </swiper-slide>
+                          <swiper-slide>
+                             <img src="/view/images/bzhd2.jpg" alt="">
+                          </swiper-slide>
+                          <swiper-slide>
+                             <img src="/view/images/bzhd3.jpg" alt="">
+                          </swiper-slide>
+                          <swiper-slide>
+                             <video width="100%" height="100%" controls id="myVideo">
+                              <source src="/view/images/VID_20210125_102307.mp4"  type="video/mp4">
+                                您的浏览器不支持 HTML5 video 标签。
+                              </video>
+                          </swiper-slide>
+         
+                          <!-- Optional controls -->
+                          <div class="swiper-pagination"  slot="pagination"></div>
+                          <div class="swiper-button-prev" slot="button-prev"></div>
+                          <div class="swiper-button-next" slot="button-next"></div>
+                     </swiper>
+
+                    <div class = "hddetali">
+                      <h3>山东联通完成栖霞金矿事故现场通信保障</h3>
+                      <div>
+                        <div>1月10日 14:00 山东栖霞笏山金矿发生爆炸，22人被困。</div>
+                         <div> 1月17日 14:03 事故救援孔打通。</div>
+                         <div>1月18日 08:14 被困工人传回纸条。</div>
+                         <div> 1月18日 17:33 首次实现与井下矿工通话。</div>
+                        <div>1月24日 11:14 事故中第一名矿工成功升井。</div>
+                        <div>1月24日 15:18 事故已取得联系的11人全部升井。</div>
+                       
+                        <div>1月10日金矿发生爆炸，截止到1月25日凌晨，除1人基本确定死亡仍未升井外，其余11名
+                        幸存矿工和10名死难矿工已全部升井，这场已历时14天的“地心大营救”仍在延续，一串
+                        串时间，牵动着全国人民的心，一个个数据，见证了中国人民“不抛弃、不放弃”的精
+                        神。</div>
+                        <div> 在这场地心救援中，山东联通秉承央企担当，快速响应，再次展示了国家应急通信铁军的
+                        风采。</div>
+                        <div>
+                        1月24日13:00，山东联通机动通信局接到山东省消防总队的紧急求援，需对矿难坑道进行
+                        4G手机信号的恢复和覆盖，以便抢险队员的4G单兵和通信联络。收到任务后，机动局马
+                        上进行部署，召集技术专家和设备厂家，进行技术攻关，克服了500米远距离供电、免安
+                        装等困难，制定了500米以下矿道4G信号覆盖的解决方案，并提交现场救援指挥部进行讨
+                        论。同时，机动局紧急组织抢险队伍，由省公司领导带队携带应急装备紧急援驰栖霞。从
+                        13:00消防总队提出需求，14:00机动局提交保障方案，19:00救援队奔袭500多公里抵达
+                        救援现场并展开通信保障实施工作，机动局雷厉风行的作风和快速响应，获得了矿难指挥
+                        部和消防总队各级领导的一致肯定和好评，并在随后的表彰大会上，授予了山东联通“牢
+                        记生命至上，聚力笏山救援”锦旗。
+                        </div>
+                       
+                        
+                      </div>
+                    </div>
+
+             </div>
+             <div v-show="!hddetail" style="height: 400px">
+
+             </div>
+            
+          </div>
+        </div>
+      </el-dialog>
+
+
+
+      <el-dialog :visible.sync="ryisDialogShow" width="50%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">荣誉简介详情</div>
+          </div>
+          <div class="dialogTableBg">
+             <div class = "videobox" style="height: auto" >
+                     <swiper class="swiperClass" style="width: 100%" :options="swiperOption2" ref="mySwiper" >
+                        <swiper-slide v-for="(item,  index) in ryzsImgs" :key="index">
+                           <img :src="item.url" alt="">
+                        </swiper-slide>
+                          <!-- Optional controls -->
+                          <div class="swiper-pagination"  slot="pagination"></div>
+                          <div class="swiper-button-prev" slot="button-prev"></div>
+                          <div class="swiper-button-next" slot="button-next"></div>
+                     </swiper>
+
+                    <div class = "hddetali ryhddetali">
+                      <div>
+                        <div class="pdl">山东联通机动通信局是由工信部在省内唯一指定的具有国家一类应急通信保障资质的队伍，承担了国家一类应急通信保障职责，是国家公共安全体系的重要组成部分。</div>
+                        <div class="pdl">十二五期间，根据工信部工信厅电管〔2014〕92号和联通集团网络运维〔2014〕412 号精神，山东联通设立一类保障队伍，成立山东联通机动通信局。</div>
+                        <div class="pdl">2017年工信部一类保障队伍评估中，通过综合评估（组织体系、人员队伍、制度流程、装备配置、支撑手段、应急预案、演练与保障），获取一类队伍证书。</div>
+                        <div style="padding-left: 22px">
+                          <div>主要承担应急通信保障的职责：</div>
+                          <div>◆  负责特殊时期党政领导机关的通信保障；</div>
+                          <div>◆  紧急时期应对自然灾害等突发事件和重大活动的通信支撑；</div>
+                          <div>◆  日常中更兼负着为国家经济建设服务的重大责任；</div>
+                        </div>
+                      </div>
+                    </div>
+
+             </div>
+          </div>
+        </div>
+      </el-dialog>
+
+
+      <el-dialog :visible.sync="yjya_isDialogShow" width="50%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{yjya_title}}</div>
+          </div>
+          <div class="dialogTableBg">
+            <div class="yjyadetailbox" style="height: 680px; padding: 15px 0; overflow: auto">
+              <div class="yjtitle">一、森林火灾场景通信需求:</div>
+              <div class="rowf">1、现网通信弱覆盖;</div>
+              <div class="rowf">2、不易快速搭建网络环境，保底不保底;</div>
+              <div class="rowf">3、设备杂，统一指挥手段弱;</div>
+              <div class="yjtitle">二、保障预案总体技术架构：</div>
+              <div class="imgbox" style="text-align: center;">
+                <img src="./img/img1.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                <div style="font-size: 20px;  margin: 10px 0">系统架构图</div>
+                <img src="./img/img2.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                <div style="font-size: 20px; margin: 10px 0">网络拓扑图</div>
+              </div>
+
+              <div class="yjtitle">三、关键系统及设备：</div>
+              <div class="rowf">1、以Mesh自组网为核心的通信组网平台;</div>
+              <div class="imgbox" style="text-align: center;">
+                <img src="./img/img3.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                <div style="font-size: 20px;  margin: 10px 0">Mesh组网架构</div>
+              </div>
+              <div class="rowf">无中心自组成网，载波带宽灵活可配，支持如点对多点、链状、网状、混合等任意网络拓扑结构。不受环境、场景限制，具有的网络自愈、路径选择、网络负载均衡等功能;</div>
+              <div class="rowf">2、融合通信平台</div>
+              <div class="imgbox" style="text-align: center;">
+                <img src="./img/img4.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+              
+              </div>
+              <div class="rowf"> 本整合接入不同制式、不同频段的通信系统，提供语音、视频、会议、数据及位置的通信传输和展现能力，支撑跨部门、跨手段的应急协同指挥。</div>
+             
+               <div class="rowf">3、无人机基站：</div>
+               <div class="rowf">利用“无人机+”理念，可实现升空200米以上，24小时滞空高空悬浮基站，提供应急场景下灵活的移动信号覆盖。</div>
+                <div class="imgbox" style="text-align: center;">
+                <img src="./img/img5.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                </div>
+                <div class="rowf">4、5G应急通信箱：</div>
+                <div class="rowf">是一种便携轻便化的5G网络环境临时覆盖解决方案。原理是将5G Lampsite设备，整合到4U的便携拉杆仪表箱中，对较大的配电系统和GPS模块进行重新配组选型，减少整个系统的重量</div>
+                 <div class="imgbox" style="text-align: center;">
+                    <img src="./img/img6.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                 </div>
+                  <div class="rowf">5、小型卫星基站车：</div>
+                 <div class="rowf">采用福特F150越野底盘，利用卫星、光纤、微波等传输手段，进行公众移动通信网络的临时覆盖。</div>
+                    <div class="imgbox" style="text-align: center;">
+                  <img src="./img/img7.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                 
+                </div>
+                 <div class="rowf">6、类卫星通信中继平台</div>
+                <div class="rowf">利利用无人机，获得良好的通信视距环境，通过非视距微波或Mesh进行地空多跳的形式进行部署，延长通信距离，达到类似高通量卫星通信的实战效果</div>
+                
+                <div class="imgbox" style="text-align: center;">
+                  <img src="./img/img8.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                  <div style="font-size: 20px;  margin: 10px 0">无人机中继示意图</div>
+                </div>
+
+                 <div class="rowf">7、非视距微波</div>
+                  <div class="rowf">利用自适应调制、MIMO、智能OFDM等技术，实现非视距场景下的可靠稳定高速率传输(500Mbps)，两通信点具有更宽容的对通角度。</div>
+                 <div class="imgbox" style="text-align: center;">
+                  <img src="./img/img9.png" alt="" srcset="" style="width: 80%; margin: 0 auto;">
+                  
+                </div>
+
+
+            </div>
+          </div>
+        </div>
+      </el-dialog>
+       <Footer v-if="or_he == '0'" :tabdata="tabdata2" class="initfoot"></Footer>
+       <Footer v-else :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+var self = null
+import Header from '@/components/resource_visual/header2';
+import Footer from '@/components/resource_visual/footer';
+import echarts_zq from '@/views/resource_visual/echarts_component/echarts_zq';
+import vueSeamlessScroll from 'vue-seamless-scroll'
+import store from 'store'
+import { mapState } from 'vuex'
+import  serviceApi from '@/api/tactics'
+import initEchart from './initechart'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import '@/assets/swiper.css'
+var _ = require('@/utils/lodash.js')
+
+var Qs = require('@/utils/qs.js')
+
+window['bzhdTable_timer'] = null;
+
+var chart_yjbztj1 = null
+var chart_shhbzfw1 = null
+var chart_yjbztj2 = null
+var chart_shhbzfw2 = null
+export default {
+  data () {
+    return {
+      or_he: '1',
+      gisTitle: '山东省',
+      ryisDialogShow: false,
+      swiperOption:{
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination',
+          },
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          //循环
+          loop:true,
+          //每张播放时长3秒，自动播放
+          autoplay: false,
+          //滑动速度
+          speed:1000,
+          // delay:1000  
+      },
+        ryzsImgs: [
+          {id: 1, url: require('@/assets/ryzs/WechatIMG80.jpeg')},
+          {id: 2, url: require('@/assets/ryzs/WechatIMG81.jpeg')},
+          {id: 3, url: require('@/assets/ryzs/WechatIMG82.jpeg')},
+          {id: 4, url: require('@/assets/ryzs/WechatIMG83.jpeg')},
+          {id: 5, url: require('@/assets/ryzs/WechatIMG84.jpeg')},
+          {id: 6, url: require('@/assets/ryzs/WechatIMG85.jpeg')},
+        ],
+       swiperOption2:{
+          // 如果需要分页器
+          slidesPerView: 2,
+          slidesPerGroup: 2,
+          spaceBetween: 10,
+          pagination: {
+            el: '.swiper-pagination',
+          },
+          // 如果需要前进后退按钮
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          grabCursor: true,
+          //循环
+          loop:true,
+          //每张播放时长3秒，自动播放
+           autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+          },
+          //滑动速度
+          speed:300,
+      },
+      hddetail: false,
+      carnamt: '',
+      isDialogShow: false,
+      isDialogShow2: false,
+      bzhdTable_timer: null,
+      rowttabStatus: '1',
+      rowttabStatus2: '1',
+      bzhd_checkList: ['00', '01', '02'],
+      cityCode: '370000',
+      iframeSrc: '',
+      yjnl_colums: [
+        {title: '地市', filed: 'name', width: '60'},
+        {title: '基站车', filed: 'capacity_basestation_car'},
+        {title: '电源车', filed: 'capacity_power_car'},
+        {title: '其它车', filed: 'capacity_other_car'},
+        {title: '卫星装备', filed: 'capacity_satellite_equipment', width: '60'},
+        {title: '应急装备', filed: 'capacity_emergency_equipment', width: '60'},
+        {title: '人员', filed: 'capacity_crew'},
+        {title: '应急物资', filed: 'capacity_emergency_supplies', width: '60'}
+      ],
+      yjnl_tableData: [],
+    //  活动名称、活动地点、保障单位、保障车辆（数量）、人员（数量）、收入（万元
+      bzhd_colums: [
+        {title: '活动名称', filed: 'activity_name', width: '120', align: 'left'},
+        {title: '活动地点', filed: 'activity_address', },
+        {title: '保障单位', filed: 'safeguard_orgname'},
+        {title: '保障车辆', filed: 'safeguard_car_cnt', width: '60'},
+        {title: '人员', filed: 'safeguard_staff_cnt', width: '40'},
+        {title: '收入(万元)', filed: 'safeguard_income'},
+      ],
+      bzhd_tableData: [], // 保障活动
+      tabstatus: '0201',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      carInfo: {},
+      tabdata: [
+        {title: '应急能力', active: true, href: '/unicomwisdomeyes/emergencies_power'},
+        {title: '保障活动', active: false, href: '/unicomwisdomeyes/emergencies_safeguard'},
+      ],
+       tabdata2: [
+        {title: '应急能力', active: true, href: '/unicomwisdomeyes/emergencies_power?pagesource=yhzl'},
+        {title: '保障活动', active: false, href: '/unicomwisdomeyes/emergencies_safeguard?pagesource=yhzl'},
+      ],
+      control: [],
+      rygcData: {},
+      yjya_tableData: [],
+      yjya_isDialogShow: false,
+      yjya_title: ''
+    }
+  },
+  components: {
+    Header,
+    Footer,
+    vueSeamlessScroll,
+    swiper,
+    swiperSlide
+  },
+  created() {
+    self = this;
+    if (this.$route.query.pagesource && this.$route.query.pagesource == 'yhzl') {
+      this.or_he = '0'
+    } else {
+      this.or_he = '1'
+    }
+  },
+  mounted () {
+    var initArea_id = '370000';
+    this.mapLevel = '1';
+    if (store.get('userInfo')) {
+        var userInfo =  store.get('userInfo')
+        var mapLevel = userInfo.levelAreaLevel;
+        if (mapLevel == '1') {
+          // 省级用户
+          this.control = ['370000']
+        } else if (mapLevel >= '2') {
+          this.control = ['370000', userInfo.levelAreaCode]
+        }
+     };
+    this.initGisMap(initArea_id);
+
+     // 注册地图事件
+    window.addEventListener('message',self.gismapListener, true);
+    this.initService()
+  },
+  watch: {
+    fiter_bzhd_tableData (val){
+      if (val && val.length > 0) {
+        var self = this
+        this.$nextTick(() => {
+          var timer = new self.$eltable_scrollAuto('bzhdTable')
+        })
+      }
+       
+    },
+    isDialogShow2 (val) {
+      if (!val) {
+        var myVideo = document.getElementById("myVideo");
+        myVideo.pause();
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+       searchDate: state => state.resource.searchDate,
+    }),
+    optionSingleHeightTime () {
+      return {
+        singleHeight: 34,
+        waitTime: 2000
+      }
+    },
+    swiper() {
+        return this.$refs.mySwiper.swiper
+    },
+    swiper2() {
+        return this.$refs.mySwiper.swiper2
+    },
+    fiter_bzhd_tableData () {
+      var dataList = [];
+      var bzhd_tableData = this.bzhd_tableData;
+      var bzhd_checkList = this.bzhd_checkList;
+      bzhd_tableData.forEach(item => {
+        if ( bzhd_checkList.indexOf(item.activity_state) > -1) {
+          dataList.push(item)
+        }
+      })
+      return dataList
+    }
+  },
+  methods: {
+    yjya_clickRow (row, index) {
+      
+      if (row.id == 6) {
+        this.yjya_title = row.yjyuan
+        this.yjya_isDialogShow = true;
+      }
+    },
+    ryDetailFn () {
+      this.ryisDialogShow = true
+    },
+    serviceWxYjya () {
+       var param = {
+         or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      serviceApi.serviceWxYjya(param).then(res => {
+        this.yjya_tableData = res.result.data || []
+      })
+    },
+    serviceWxLnbz () {
+       var param = {
+         or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      serviceApi.serviceWxLnbz(param).then(res => {
+        if (res.rspCode == '0000') {
+            res.result.data = (res.result.data || [])
+            var datal = _.sortBy(res.result.data, function (item) {
+                return Number(item.year_time)
+             });
+             var chartParams = {
+              domId: 'chart_yjbztj2',
+              name: '急保障统计',
+              uni: '',
+              xData: [],
+              data: []
+            }
+            var chartParams2 = {
+              domId: 'chart_shhbzfw2',
+              name: '社会化保障收入',
+              uni: '',
+              xData: [],
+              data: []
+            }
+            datal.forEach(item => {
+                chartParams.xData.push(item.year_time)
+                chartParams.data.push(item.safeguard_times);
+
+                chartParams2.xData.push(item.year_time)
+                chartParams2.data.push(item.safeguard_income);
+            });
+
+            // chart_yjbztj2 = new echarts_zq.initEchart_singLine(chartParams)
+            chart_shhbzfw2 = new echarts_zq.initEchart_singLine(chartParams2)
+             
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+    serviceWxRygc () {
+      var param = {
+         or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      serviceApi.serviceWxRygc(param).then(res => {
+        if (res.rspCode == '0000') {
+            var datal = (res.result.data[0] || {})
+            this.rygcData = datal
+            this.renderRygcChart()
+        } else {
+           this.$message.error(res.rspMsg)
+         }  
+      })
+    },
+
+    serviceWxClsm (carname) {
+      // //debugger
+      var param = {
+        carName: carname
+      }
+      serviceApi.serviceWxClsm(param).then(res => {
+        this.carInfo = {}
+        if (res.rspCode == '0000') {
+            this.carInfo = res.result.data[0] || {}
+             this.carInfo.car_imgurl  = require(`./carinfo/${carname}.jpg`)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+    rowttabsClick (type) {
+      this.rowttabStatus = type;
+      this.renderRygcChart()
+    },
+    rowttabsClick2 (type) {
+      this.rowttabStatus2 = type;
+      if(type == 1) {
+        this.$nextTick(() => {
+         chart_shhbzfw1 && chart_shhbzfw1.$resize()
+        })
+      } else {
+        this.$nextTick(() => {
+          chart_shhbzfw2 &&  chart_shhbzfw2.$resize()
+        })
+      }
+      
+    },
+    rowClickFn (params) {
+      this.hddetail = false
+      if ( params.activity_name == '栖霞招远金矿救援') {
+        this.hddetail = true
+      }
+      this.isDialogShow2 = true
+    },
+    classNameFn (params) {
+      return 'rowclassname_' + params.row.activity_state;
+    },
+    initService () {
+      this.yjnlList() //应急能力
+      this.bzhdList() //保障活动
+      this.zbsyList() // 装备使用率
+      this.yjBztjsr() //应急保障统计
+      this.serviceWxLnbz()
+      this.serviceWxRygc()
+
+      this.serviceWxYjya()
+    },
+    renderRygcChart () {
+
+      var datal = this.rygcData;
+      var chartParams = {
+        domId: 'chart_rygc',
+        manval: datal.man,
+        womanval:  datal.woman,
+        legend: [],
+        data: []
+      }
+      if (this.rowttabStatus == '1') {
+        // 年龄
+        chartParams.legend = ['35及以下', '35～50', '50以上'],
+        chartParams.data = [
+           {value: datal.ageyoung, name: '35及以下'},
+           {value: datal.agezhong, name: '35～50'},
+           {value: datal.ageold, name: '50以上'},
+        ]
+      } else if (this.rowttabStatus == '2') {
+          chartParams.legend = ['本科以下', '本科', '本科以上'],
+          chartParams.data = [
+            {value: datal.bachelorbelow, name: '本科以下'},
+            {value: datal.bachelor, name: '本科'},
+            {value: datal.bachelorabove, name: '本科以上'},
+          ]
+      }
+       initEchart.initPieCat(chartParams)
+    },
+    yjnlList () {
+       var param = {
+         or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      this.yjnl_tableData = []
+      serviceApi.yjnlList(param).then(res => {
+         if (res.rspCode == '0000') {
+            this.yjnl_tableData = res.result.data || []
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+
+         this.$nextTick(() => {
+           window.setTimeout(function (params) {
+           var timer =  new self.$eltable_scrollAuto('yjnlTable')
+           }, 3000)
+         })
+       
+      })
+    },
+    bzhdList  () {
+      var param = {
+        or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      this.bzhd_tableData = []
+      serviceApi.bzhdList(param).then(res => {
+        if (res.rspCode == '0000') {
+          
+            this.bzhd_tableData = res.result.data || []
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+ 
+    //应急保障统计
+    yjBztjsr () {
+        var param = {
+          or_he: this.or_he,
+          "cityCode": this.cityCode
+        };
+        serviceApi.yjBztjsr(param).then(res => {
+          if (res.rspCode == '0000') {
+             res.result.data = (res.result.data || [])
+             var resData = _.cloneDeep(res.result.data)
+             var averData = (resData.filter(item => {
+               return item.code == '0000'
+             })[0] || {});
+             res.result.data = resData.filter(item => {
+               return item.code != '0000'
+             })
+             // 应急保障统计
+            //  var chartdata1 = {
+            //     domId: 'chart_yjbztj',
+            //     uni: '',
+            //     data: []
+            //  };
+            //  var datasarr = []
+            //  var chartdata1_order = _.sortBy(res.result.data, function (item) {
+            //     return Number(item.safeguard_times_sort)
+            //  });
+            //  chartdata1_order.forEach(item => {
+            //     let ditem = {'name': item.name, val: item.safeguard_times}
+            //     chartdata1.data.push(ditem)
+            //  });
+            //  chart_yjbztj1 = new echarts_zq.initEchart_pm(chartdata1)
+            // 社会化保障收入
+             var chartdata2 = {
+              domId: 'chart_shhbzfw',
+              zoomVal: 100,
+              name: '社会化保障收入',
+              uni: '',
+              line_markLine: averData.safeguard_income,
+              xData: [],
+              data: []
+            }
+            
+            var chartdata2_order = _.sortBy(res.result.data, function (item) {
+                return Number(item.safeguard_income_sort)
+             });
+
+             chartdata2_order.forEach(item => {
+                chartdata2.xData.push(item.name)
+                chartdata2.data.push(item.safeguard_income);
+            });
+           chart_shhbzfw1 = new echarts_zq.initEchart_singLine(chartdata2)
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+    },
+   // 无线装备使用率及收入查询接口
+    zbsyList () {
+      var self = this;
+      var param = {
+        or_he: this.or_he,
+        "cityCode": this.cityCode
+      }
+      serviceApi.zbsyList(param).then(res => {
+        if (res.rspCode == '0000') {
+             
+             res.result.data = (res.result.data || [])
+              var zbsylData = _.sortBy(res.result.data, function (item) {
+                return Number(item.usage_sort)
+              });
+              var barData = []
+        
+              var clparams = {
+              domId: 'chart_zbsyl',
+              legend: ['使用次数', '产出(万元)'],
+              xData: zbsylData.map(item => {
+                return item.emergency_resource_type
+              }),
+              unit: '(万元)',
+   
+              barData: zbsylData.map(item => {
+                return item.usage_freq
+              }),
+              lineData:zbsylData.map(item => {
+                 return item.income
+              }),
+            }
+            initEchart.initEchart_barLine(clparams, chartClickBk)
+              function chartClickBk(params) {
+    
+                  var  name = params.name;
+                  if (params.targetType == "axisLabel") {
+                    name = params.value;
+                  }
+                  self.carnamt = name
+                  self.serviceWxClsm(name)
+                  self.isDialogShow = true
+              }
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+    gismapListener (e) {
+      if (e.data.message == 'levelSwitch') {
+         self.gisTitle = e.data.area_name || '山东省'
+         self.mapLevel = e.data.level
+         self.areaCode = e.data.area_id;
+         self.gisMapData = e.data;
+         self.gisQueryParams = Object.assign({},  self.gisQueryParams, e.data)
+         self.gisQueryParams.area_name = '';
+         console.log('message', e.data)
+         self.cityCode = (e.data.area_id || '370000');
+        //  self.initService()
+      } else if (e.data.message == 'clickAct'){
+          // e.data.actName == "2021世界牡丹大会";
+          this.hddetail = false
+          if ( e.data.actName == '栖霞招远金矿救援') {
+            this.hddetail = true
+          }
+          this.isDialogShow2 = true
+      }
+    },
+     initGisMap (initArea_id) {
+      // 初始化地图参数
+        this.gisQueryParams =  {
+              yanhuang: this.or_he,
+              level: this.mapLevel,
+              control: this.control.join(','),
+              sceneid: 4,
+              gis_sceneid: this.tabstatus,
+              area_id: initArea_id || '370000',
+              poi_city_id: '',
+              system_type: 'C40',
+              login_no:  store.get('staffId') || '',
+              timest:  this.$store.state.resource.searchDate
+          };
+          var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+          this.iframeSrc = window.gis_iframeSrc +  `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+          
+    },
+    tabStatusFn (type) {
+      this.tabstatus = type;
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams));
+      gisQueryParams.message = "changeType";
+      gisQueryParams.gis_sceneid = type;
+      this.$refs['gisiframe'].contentWindow.postMessage(gisQueryParams, '*')
+    },
+  
+  },
+  updated() {
+     var self = this;
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message',this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+  @import url('../../comtable.scss');
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: -30px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+ .leftbox,  .rightbox {
+   width: 500px;
+   height: 100%;
+   box-sizing: border-box;
+   padding: 15px;
+   padding-bottom: 30px;
+ }
+ .centerbox {
+   flex: 1;
+   background: url('~@/assets/images/images_zy/centerborder.png') no-repeat ;
+   background-size: 100% 100%;
+   margin-top: 10px;
+   margin-bottom: 80px;
+   box-sizing: border-box;
+   position: relative;
+   padding: 100px 20px 20px 20px;
+   position: relative;
+
+ }
+  .item-title {
+   font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+ .chartbox {
+   width: 100%;
+   height: 100%;
+ }
+
+ .gdjkitem {
+   height: 68px;
+   width: 72px;
+   margin: 0 auto;
+   background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+  
+ }
+
+ .gdjkitembox {
+   text-align: center;
+   position: relative;
+   margin-top: 12px;
+   &:not(:last-child)::after{
+     content: '';
+     display: block;
+     width: 18px;
+     height: 18px;
+     background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+     background-size: 100% 100%;
+     position: absolute;
+     right: -8px;
+     top: 26px;
+   }
+ }
+
+
+.mtheader {
+  text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+}
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4,54,108,0.7);
+}
+ .centTab {
+   position: absolute;
+   z-index: 10;
+   width: 100%;
+   top: 30px;
+   text-align: center;
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 140px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+    }
+ }
+ .tunit {
+   font-size: 16px;
+ }
+
+
+ .cardetailbox {
+   display: flex;
+   padding: 15px 0;
+   .imgbox {
+     margin-right: 30px;
+     width: 380px;
+     img {
+       width: 380px;
+       height: 250px; 
+     }
+   }
+   .fontbox {
+     color: #fff;
+     font-size: 16px;
+   }
+ }
+ /deep/.el-table tbody tr.rowclassname_00  td{
+   color: rgb(243, 198, 101)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_01  td{
+   color: rgb(92, 235, 74)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_02  td{
+   color: rgb(86, 212, 243)!important;
+ }
+
+ .checkgroupbox {
+   position: absolute;
+   right: 10px;
+   top: 0;
+ }
+ .checkgroupbox .el-checkbox {
+   margin-right: 15px;
+   .el-checkbox__label {
+     margin-left: 6px;
+   }
+ }
+  /deep/ .checkstate01 .el-checkbox__label {
+     color: rgb(92, 235, 74)!important;
+  }
+   /deep/ .checkstate00 .el-checkbox__label {
+     color: rgb(243, 198, 101)!important;
+  }
+  /deep/ .checkstate02 .el-checkbox__label {
+    color: rgb(86, 212, 243)!important;
+  }
+
+  /deep/ #bzhdTable tbody tr {
+    cursor: pointer !important;
+  }
+
+  .box-item {
+  position: relative;
+}
+  .rowttabs {
+   height: 40px;
+  line-height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+     color: #45d8e2;
+  }
+ }
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+ .dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+.hddetali {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  overflow: auto;
+  height: 320px;
+  h3 {
+     color: #fff;
+  }
+}
+.swiperClass2 {
+  width: 100%;
+  height: 160px;
+  margin:  0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.ellipsis {
+   white-space:nowrap;/* 规定文本是否折行 */  
+   overflow: hidden;/* 规定超出内容宽度的元素隐藏 */
+   text-overflow: ellipsis;
+}
+.jjdetail {
+  line-height: 22px;
+  font-size: 15px;
+  font-family: '宋体';
+  p {
+     text-indent: 24px;
+     margin: 0;
+     padding: 0;
+  }
+}
+.swiperClass {
+  width: 80%;
+  height: 280px;
+  margin:  0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #19daec;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+
+.gistitle {
+ position: absolute;
+  left: 30px;
+  top: 50px;
+  font-size: 24px;
+  color: aqua;
+
+}
+.zdmore {
+  float: right;
+  font-size: 16px;
+  cursor: pointer;
+  color: #57b4f1;
+  margin-right: 0px;
+  text-decoration: underline;
+  position:relative;
+  z-index: 999;
+  user-select: none;
+}
+.ryhddetali {
+  font-size: 16px;
+  line-height: 24px;
+  .pdl {
+     text-indent: 24px;
+  }
+}
+ ul, li {
+   margin: 0;
+   padding: 0;
+ }
+ .seamless-warp {
+    height: 300px;
+    overflow: hidden;
+    .listitem {
+      font-size: 16px;
+      li {
+         height: 34px;
+        line-height: 34px;
+          border-bottom: 1px dashed #2f4f94;
+      }
+      .index {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
+      }
+    }
+  }
+
+   .seamless-warp  .listitem  li:nth-child(6) {
+     color: #19daec;
+     cursor: pointer;
+   }
+   .yjyadetailbox {
+     color: #fff;
+     .yjtitle {
+       font-size: 18px;
+       margin: 6px 0px;
+     }
+     .rowf {
+       font-size: 16px;
+       line-height: 28px;
+       text-indent:1.5em;
+     }
+   }
+
+</style>

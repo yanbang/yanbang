@@ -1,0 +1,49 @@
+import request from '@/utils/request'
+
+const tableApi = {
+    // 后端登录需放开
+    // Login: '/login',
+    middleList: '/assess/middleList',
+    rightList: '/assess/rightList',
+    popList: 'assess/popList',
+    provinceCpList: 'assess/provinceCpList',
+    trendList: 'assess/trendList'
+}
+
+export default tableApi
+export function middleList(parameter) {
+    return request({
+        url: tableApi.middleList,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function rightList(parameter) {
+    return request({
+        url: tableApi.rightList,
+        method: 'post',
+        data: parameter
+    })
+}
+export function popList(parameter) {
+    return request({
+        url: tableApi.popList,
+        method: 'post',
+        data: parameter
+    })
+}
+export function provinceCpList(parameter) {
+    return request({
+        url: tableApi.provinceCpList,
+        method: 'post',
+        data: parameter
+    })
+}
+export function trendList(parameter) {
+    return request({
+        url: tableApi.trendList,
+        method: 'post',
+        data: parameter
+    })
+}

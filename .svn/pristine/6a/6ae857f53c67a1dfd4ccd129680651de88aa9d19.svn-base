@@ -1,0 +1,286 @@
+<!--<template>-->
+<!--    <div>-->
+<!--      <el-col :span="24">-->
+<!--        <div class="thisWeek" :data="moths">-->
+<!--          <div class="thisWeek-title" style="padding-top: 10px;">季度发展情况</div>-->
+<!--          <div style="display: flex;margin-top: 18px">-->
+<!--            <div class="thisWeekcontent" >-->
+<!--              <div class="thisWeeksmall">累计发展数</div>-->
+<!--              <span>{{moths.sqNum}}</span> <span style="font-size: 14px">万户</span>-->
+<!--              <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="">-->
+<!--            </div>-->
+<!--            <div class="thisWeekcontent">-->
+<!--              <div class="thisWeeksmall">目标完成率</div>-->
+<!--              <p style="font-size: 26px;line-height: 36px" class="yColor">{{moths.sqPct}}%</p>-->
+<!--              <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="">-->
+<!--            </div>-->
+
+<!--            <div class="thisWeekcontent">-->
+<!--              <div class="thisWeeksmall">北十排名</div>-->
+<!--              <p>No.{{moths.quarterRank}}</p>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--        </div>-->
+<!--      </el-col>-->
+<!--    </div>-->
+<!--</template>-->
+
+<!--<script>-->
+<!--  export default {-->
+<!--    name: 'development',-->
+<!--    props:{-->
+<!--      moths:Object-->
+<!--    },-->
+<!--    data(){-->
+<!--      return{-->
+<!--        cumulative:10379,-->
+<!--        week:-->
+<!--          {-->
+<!--            cumulative:'10379',-->
+<!--            target:'148.7',-->
+<!--            ranking:'02'-->
+<!--          }-->
+<!--      }-->
+<!--    }-->
+<!--  }-->
+<!--</script>-->
+
+<!--<style scoped>-->
+<!--  .thisWeek{-->
+<!--    width: 100%;-->
+<!--    font-size: 14px;-->
+<!--    height: 167px;-->
+<!--    background-image:url("../../assets/images/bigScreen/fullService/img_kuang.png") ;-->
+<!--    background-repeat:no-repeat ;-->
+<!--    background-size: 100% 100%;-->
+<!--    margin-top: 23px;-->
+<!--  }-->
+<!--  .thisWeek .thisWeekcontent{-->
+<!--    width: 33%;-->
+<!--    line-height: 37px;-->
+<!--    position: relative;-->
+<!--    text-align: center;-->
+<!--    font-size: 14px;-->
+<!--    color: #02F6FF;-->
+<!--  }-->
+<!--  .thisWeeksmall{-->
+<!--    padding-bottom: 0;-->
+<!--  }-->
+<!--  .thisWeek p{-->
+<!--    text-align: center;-->
+<!--    color: #FDFEFF;-->
+<!--    width: 100%;-->
+<!--    font-size: 26px;-->
+<!--  }-->
+<!--  .thisWeek span{-->
+<!--    text-align: center;-->
+<!--    color: #FDFEFF;-->
+<!--    font-size: 26px;-->
+<!--  }-->
+<!--  .thisWeek-title{-->
+<!--    color: #02f6fe;-->
+<!--    font-size: 16px;-->
+<!--    text-indent: 15px;-->
+<!--    height: 30px;-->
+<!--    line-height: 30px;-->
+<!--}-->
+<!--  .yColor{-->
+<!--    color: #FFCC00 !important;-->
+<!--    font-size: 21px;-->
+<!--    line-height: 1;-->
+<!--  }-->
+<!--  .imageline{-->
+<!--    height: 100%;-->
+<!--    position: absolute;-->
+<!--    right: 0;-->
+<!--    top: 0;-->
+<!--  }-->
+<!--</style>-->
+<template>
+  <div>
+    <el-col :span="24" style="display: flex">
+      <div class="thisWeek" :data="weekday">
+        <div class="thisWeek-title" style="padding-top: 10px">本周发展情况</div>
+        <div style="margin-top: 18px">
+          <div class="thisWeekcontent">
+            <!-- <div class="thisWeek-title">本周发展情况</div> -->
+            <div class="thisWeeksmall">
+              累计发展数
+              <p style="color: #e3b90c">{{weekday.weekNum}}</p>
+              <span style="color: #e3b90c">万户</span>
+            </div>
+            <!-- <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="" /> -->
+          </div>
+          <div class="thisWeekcontent">
+            <div class="thisWeeksmall">
+              目标完成率
+              <p class="yColor">
+                {{weekday.weekPct}}%
+              </p>
+              <!--              <span class="yColor">%</span>-->
+            </div>
+            <!-- <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="" /> -->
+          </div>
+
+          <div class="thisWeekcontent">
+            <div class="thisWeeksmall">
+              北十排名
+              <p v-if='mothsday.quarterRank>10'><span style="font-family: Helvetica Neue">No.</span>{{weekday.rank }}</p>
+              <p v-if='mothsday.quarterRank<10'><span style="font-family: Helvetica Neue">No.</span>{{weekday.rank }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="thisWeek" :data="mothsday" style="margin-left: 20px">
+        <div class="thisWeek-title" style="padding-top: 10px">季度</div>
+        <div style="margin-top: 18px">
+          <div class="thisWeekcontent">
+            <div class="thisWeeksmall">
+              累计发展数
+              <p style="color: #e3b90c">{{mothsday.sqNum}}</p>
+
+              <span style="color: #e3b90c">万户</span>
+            </div>
+
+            <!-- <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="" /> -->
+          </div>
+          <div class="thisWeekcontent">
+            <div class="thisWeeksmall">
+              目标完成率
+              <p class="yColor">
+                {{ mothsday.sqPct }}%
+              </p>
+              <!--              <span class="yColor">%</span>-->
+            </div>
+            <!-- <img class="imageline" src="../../assets/images/bigScreen/fullService/imageLine@2x.png" alt="" /> -->
+          </div>
+
+          <div class="thisWeekcontent">
+            <div class="thisWeeksmall">
+              北十排名
+              <p v-if='mothsday.quarterRank>10'><span style="font-family: Helvetica Neue">No.</span>{{ mothsday.quarterRank}}</p>
+              <p v-if='mothsday.quarterRank<10'><span style="font-family: Helvetica Neue">No.</span>{{ mothsday.quarterRank}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-col>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'development',
+  props: {
+    moths: Object,
+  },
+  data() {
+    return {
+      // cumulative: 10379,
+      weekday: {
+
+      },
+      mothsday: {
+
+      },
+      developmentData: {},
+    }
+  },
+  mounted() {
+    this.developmentData = JSON.stringify(this.moths)
+    if (this.developmentData) {
+      this.developmentDatas()
+    } else {
+
+    }
+  },
+  created() {
+    this.developmentData = JSON.stringify(this.moths)
+    if (this.moths) {
+      //this.developmentData = JSON.stringify(this.moths)
+      this.weekday = JSON.parse(this.developmentData).weekStatus
+      this.mothsday = JSON.parse(this.developmentData).quarterStatus
+    }
+
+
+  },
+  methods: {
+    developmentDatas() {
+      this.developmentData = JSON.stringify(this.moths)
+      this.weekday = JSON.parse(this.developmentData).weekStatus
+      this.mothsday = JSON.parse(this.developmentData).quarterStatus
+      console.log('我是------' + this.weekday)
+      // alert('我是------' + typeof(this.developmentData))
+    },
+  },
+  watch: {
+    moths() {
+      this.developmentData = JSON.stringify(this.moths)
+      this.weekday = JSON.parse(this.developmentData).weekStatus
+      this.mothsday = JSON.parse(this.developmentData).quarterStatus
+    }
+
+  },
+}
+</script>
+
+<style scoped>
+.thisWeek {
+  width: 50%;
+  font-size: 14px;
+  height: 167px;
+  background-image: url('../../assets/images/bigScreen/fullService/img_kuang.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin-top: 23px;
+}
+.thisWeek .thisWeekcontent {
+  width: 100%;
+  line-height: 30px;
+  /* position: relative; */
+  /* text-align: center; */
+  font-size: 14px;
+  color: #02f6ff;
+}
+.thisWeeksmall {
+  padding: 0px 8px;
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  display: flex;
+  justify-content: space-between;
+}
+.thisWeeksmall p {
+  line-height: 36px;
+  text-align: right;
+  color: #ffffff;
+  font-family: 'DigifaceWide';
+  font-size: 26px;
+}
+
+.thisWeeksmall span {
+  /* text-align: center; */
+  margin-left: 5px;
+  color: #fdfeff;
+  font-size: 14px;
+}
+.thisWeek-title {
+  color: #02f6fe;
+  font-size: 16px;
+  text-indent: 15px;
+  height: 30px;
+  line-height: 30px;
+}
+.yColor {
+  color: #ffcc00 !important;
+  font-size: 21px;
+  line-height: 1;
+}
+.imageline {
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+</style>

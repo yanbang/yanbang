@@ -1,0 +1,163 @@
+import request from '@/utils/request'
+
+const api = {
+    wxYjnl: '/ZhyWxCon/serviceWxYjnl', //无线应急能力
+    wxBzhd: '/ZhyWxCon/serviceWxBzhd', //无线保障活动
+    wxZbsy: '/ZhyWxCon/serviceWxZbsy', //无线装备使用率及收入查询接口
+    yjBztjsr: '/ZhyWxCon/serviceWxZhxx', // 应急保障统计/ 收入
+    serviceWxClsm: '/ZhyWxCon/serviceWxClsm', // 应急保障统计/ 收入
+    serviceWxLnbz: '/ZhyWxCon/serviceWxLnbz',
+    zqJfbz: '/ZhyZqCon/serviceZqJfbz', //政企交付保障接口
+    zqYwbz: '/ZhyZqCon/serviceZqYwbz', //政企重点业务保障
+    zqZhyx: '/ZhyZqCon/serviceZqZhyx', //政企智慧营销
+    zqYwnl: '/ZhyZqCon/serviceZqYwnl',
+    zqApp: '/ZhyZqCon/serviceZqApp',
+    zqZjgd: '/ZhyZqCon/serviceZqZtgd',
+    serviceZqZtgdmx: '/ZhyZqCon/serviceZqZtgdmx', //在途工单-工单明细
+    serviceZqZtqcgd: '/ZhyZqCon/serviceZqYcgdmx', //在途工单-工单明细
+    serviceWxRygc: '/ZhyWxCon/serviceWxRygc', // 应急通信  5.2.7人员构成
+    serviceWxFltj: '/ZhyWxCon/serviceWxFltj', // 保障活动  5.3.1分类统计
+    serviceWxQsfx: '/ZhyWxCon/serviceWxQsfx', // 保障活动  5.3.2趋势分析
+    serviceWxYjya: '/ZhyWxCon/serviceWxYjya' //5.3.4.8应急预案
+}
+
+var serviceApi = {
+    serviceWxYjya(parameter) {
+        return request({
+            url: api.serviceWxYjya,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceWxRygc(parameter) {
+        return request({
+            url: api.serviceWxRygc,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceWxFltj(parameter) {
+        return request({
+            url: api.serviceWxFltj,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceWxQsfx(parameter) {
+        return request({
+            url: api.serviceWxQsfx,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+
+    serviceZqZtqcgd(parameter) {
+        return request({
+            url: api.serviceZqZtqcgd,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceZqZtgdmx(parameter) {
+        return request({
+            url: api.serviceZqZtgdmx,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceWxLnbz(parameter) {
+        return request({
+            url: api.serviceWxLnbz,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceWxClsm(parameter) {
+        return request({
+            url: api.serviceWxClsm,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zqZjgd(parameter) {
+        return request({
+            url: api.zqZjgd,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zqZhyx(parameter) {
+        return request({
+            url: api.zqZhyx,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zqYwnl(parameter) {
+        return request({
+            url: api.zqYwnl,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zqApp(parameter) {
+        return request({
+            url: api.zqApp,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+    yjBztjsr(parameter) {
+        return request({
+            url: api.yjBztjsr,
+            method: 'post',
+            data: parameter
+        })
+    },
+    yjnlList(parameter) {
+        return request({
+            url: api.wxYjnl,
+            method: 'post',
+            data: parameter
+        })
+    },
+    bzhdList(parameter) {
+        return request({
+            url: api.wxBzhd,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zbsyList(parameter) {
+        return request({
+            url: api.wxZbsy,
+            method: 'post',
+            data: parameter
+        })
+    },
+    jfbzList(parameter) {
+        return request({
+            url: api.zqJfbz,
+            method: 'post',
+            data: parameter
+        })
+    },
+    ywbzList(parameter) {
+        return request({
+            url: api.zqYwbz,
+            method: 'post',
+            data: parameter
+        })
+    },
+    zhyxList(parameter) {
+        return request({
+            url: api.zqZhyx,
+            method: 'post',
+            data: parameter
+        })
+    }
+}
+
+export default serviceApi

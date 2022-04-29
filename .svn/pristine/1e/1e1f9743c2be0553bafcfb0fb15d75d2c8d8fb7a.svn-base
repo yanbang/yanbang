@@ -1,0 +1,19 @@
+import request from '@/utils/request'
+const api = {
+    serviceVedio: '/ViedoJk/serviceVedio',
+    serviceDhVedio: '/ViedoJk/serviceDhVedio'
+}
+
+var serviceApi = {}
+Object.keys(api).forEach(key => {
+    serviceApi[key] = function(parameter) {
+
+        return request({
+            url: api[key],
+            method: 'post',
+            data: parameter
+        })
+    }
+})
+
+export default serviceApi

@@ -1,0 +1,609 @@
+<template>
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">评价-构</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 左边 -->
+        <div class="left">
+          <div class="right-title">全省本周5G新入网(占5G发展)</div>
+          <div class="left-top">
+            <img src="~@/assets/images/bigScreen/fullService/img_zuokuang.png" alt="" style="margin-top:20px" />
+            <div class="lt_title" style="width:32%">
+              <div class="lt_name">
+                <div class = "tp_ttitle"> 本周全省新发展5G用户</div>
+                <div class = "tp_stitle"> <span>(含套餐新发展、迁转、升级包)</span></div>
+              </div>
+              <div class="lt_num">{{curWeekAll || '--'}}<span>万户</span></div>
+            </div>
+            <img
+              src="~@/assets/images/bigScreen/fullService/Shape 1387 copy 3.png"
+              alt=""
+              style="height:50%;margin-top:8%"
+            />
+            <div class="lt_title" style="width:32%">
+              <div class="lt_name">
+                 <div class = "tp_ttitle "> 5G套餐新发展用户占比</div>
+                 <div class = "tp_stitle" style="visibility: hidden;"> <span> (占位)</span></div>
+              </div>
+              
+              <div class="lt_num">{{curWeekNewRate || '--'}}<span>%</span></div>
+            </div>
+            <img
+              src="~@/assets/images/bigScreen/fullService/Shape 1387 copy 3.png"
+              alt=""
+              style="height:50%;margin-top:8%"
+            />
+            <div class="lt_title" style="width:36%">
+              <div class="lt_name tp_ttitle">5G套餐新发展用户占比较低</div>
+              <div class="lt_img">
+                <img
+                  src="~@/assets/images/bigScreen/fullService/pingjia_bad.png"
+                  alt=""
+                  style="width:100px;height:85px"
+                />
+                <div class="city">
+                  <div class="city_name" v-for="(item, index) in lowerCitys" :key="index">{{item.eparchyName}}</div>
+                </div>
+              </div>
+            </div>
+            <img src="~@/assets/images/bigScreen/fullService/img_youkuang.png" alt="" style="margin-top:20px" />
+          </div>
+          <div class = "left-bottom">
+            <div class="chartBox" id="stackChart" ref="myCharts"></div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right" style=" box-shadow: 0px 4px 20px rgb(119 197 229 / 90%);">
+          <!-- <div class="date"><span>周日期：</span>2021-03-15~2021-03-21</div> -->
+
+          <el-table :data="tableData" @sort-change="tableSortChange" size = "small">
+            <el-table-column prop="eparchyName" label="地区">
+              <template slot-scope="scope">
+                <span v-if="scope.$index == 0">{{ scope.row.eparchyName}}</span>
+                <span v-else style="cursor:pointer" @click="clickTable(scope.row)">{{ scope.row.eparchyName }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="curWeekAll" label="新发展5G用户" sortable="1"></el-table-column>
+            <el-table-column prop="curWeekUpgrade" label="升级包量(含副卡)" sortable="2"></el-table-column>
+            <el-table-column prop="curWeekChange" label="迁转量(含副卡)" sortable="3"></el-table-column>
+            <el-table-column prop="curWeekNew" label="5G套餐新发展(含副卡)" sortable="4" width = "150"></el-table-column>
+            <el-table-column prop="curWeekNewRate" label="5G套餐新发展占比" sortable="5">
+              <template slot-scope="scope">
+                <span v-if="scope.row._curWeekNewRate_status == 1" style="color: #00B050 !important">{{ scope.row.curWeekNewRate }}%</span>
+                <span v-else-if="scope.row._curWeekNewRate_status == 2" style="color: #C00000 !important">{{ scope.row.curWeekNewRate }}%</span>
+                <span v-else>{{ scope.row.curWeekNewRate || '-' }}%</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import store from 'store'
+import { eval_5G_dev} from '@/api/appraiseService'
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import dialogComponent from '@/components/FifthGeneration/dialogComponent'
+import stackChart from './nodepostit'
+import chartInit from './chartInit'
+var _ = require('@/utils/lodash.js')
+export default {
+  components: {
+    Header,
+    FlexBox,
+    dialogComponent,
+    stackChart
+  },
+  data() {
+    return {
+      isDialog: false,
+      curWeekAll: '',
+      curWeekNewRate: '',
+      lowerCitys: [],
+      param: {
+        timest: '',
+        eparchyCode: '',
+        areaCode: '',
+        gridId: '',
+        mLevel: '1',     
+      },
+
+      bottomList: [
+       {
+          name: '5G新入网(占5G发展)',
+          url: '/bigscreen/5GNew/5GDevelop',
+          active: true
+        },
+        {
+          name: '5G新入网(占移网发展)',
+          url: '/bigscreen/5GNew/ywDevelop',
+          
+        },
+        {
+          name: '融合发展',
+          url: '/bigscreen/5GNew/rongheDevelop'
+        },
+        {
+          name: '单宽转融',
+          url: '/Financial/singleWidth',
+
+        },
+        {
+          name: '单移转融',
+          url: '/Financial/singleShift',
+          active: false
+        },
+        
+        {
+          name: '金融发展',
+          url: '/bigscreen/5GNew/jinrongDevelop'
+        },
+      ],
+      tableData: []
+    }
+  },
+  created() {
+    // var mapLevel = 1;
+    //  if (store.get('userInfo').gridId) {
+    //   mapLevel = 4;
+    // } else if (store.get('userInfo').areaCode) {
+    //   mapLevel = 3;
+    // } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+    //   mapLevel = 2;
+    // } else {
+    //   mapLevel = 1;
+    // };
+
+    // this.param = {
+    //     "timest": this.searchDate,
+    //     "eparchyCode":  store.get('userInfo').eparchyCode || '0000',
+    //     "areaCode": store.get('userInfo').areaCode || '',
+    //     "gridId": store.get('userInfo').gridId || '',
+    //     "mLevel": mapLevel,  // 1省， 2 地市， 3区县， 4 营服
+    // };
+
+    this.param = {
+        "timest": '',
+        "eparchyCode": '0000',
+        "areaCode": '',
+        "gridId": '',
+        "mLevel": '1',  // 1省， 2 地市， 3区县， 4 营服
+    };
+
+
+  },
+  mounted() {
+    if (store.get('userInfo').isAddMask == '1') {
+      this.$watermark(store.get('userInfo').serialNumber);
+    } else {
+      this.$watermark("");
+    }
+  },
+  methods: {
+    queryService () {
+      var params = this.param;
+      this.curWeekAll = '';
+      this.curWeekNewRate = ''
+      this.tableData = []
+      this.lowerCitys = []
+      eval_5G_dev(params).then(data => {
+        if (data.rspCode == '0000') {
+          var datal = data.result.data || [];
+          this.tableData = datal;
+          this.curWeekAll = datal.length && datal[0].curWeekAll ? (Number(datal[0].curWeekAll) / 10000).toFixed(2) : '';
+          this.curWeekNewRate = datal.length ? datal[0].curWeekNewRate : '';
+          this.lowerCitys = datal.filter((item) => {
+            return item._curWeekNewRate_status == 2;
+          })
+          this.stackChartInit(datal)
+        } else {
+          this.$message.error(data.rspMsg)
+        }
+      })
+    },
+    stackChartInit (datas) {
+      var datal = _.cloneDeep(datas)
+      if (datal.length  &&datal[0].eparchyCode == '0000') {
+         datal.shift()
+      }
+     
+      var xAxis = datal.map((item) => {
+        return item.eparchyName
+      });
+      var series  = [
+        {
+          name: '升级包量（含副卡）',
+          data:  datal.map((item) => {
+            return Number(item.curWeekUpgrade) || ''
+          }),
+          stack: 'female',
+          color: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, //横向渐变效果 如果将x2和y2值交换将会变成纵向渐变效果
+            stops: [
+                    [0, Highcharts.Color('#db8914').setOpacity(1).get('rgba')],
+                    [1, 'rgba(219,137,20, 0.6)']
+            ]  
+          }
+        },
+        {
+          name: '迁转量（含副卡）',
+          data:  datal.map((item) => {
+            return Number(item.curWeekChange) || '' 
+          }),
+          stack: 'female',
+          color: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, //横向渐变效果 如果将x2和y2值交换将会变成纵向渐变效果
+            stops: [
+                    [0, Highcharts.Color('#1EE9B5').setOpacity(1).get('rgba')],
+                    [1, 'rgba(30,233,181, 0.4)']
+            ]  
+          }
+          
+        },
+        {
+          name: '5G套餐新发展量（含副卡）',
+          data:  datal.map((item) => {
+            return Number(item.curWeekNew) || '' 
+          }),
+          stack: 'female',
+          color: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, //横向渐变效果 如果将x2和y2值交换将会变成纵向渐变效果
+            stops: [
+                [0, Highcharts.Color('#1e74dc').setOpacity(1).get('rgba')],
+                [1, 'rgba(20,78,149, 0.4)']
+            ]  
+          }
+        },
+        {
+          name: '5G套餐新发展占比',
+          data: datal.map((item) => {
+            return Number(item.curWeekNewRate) || '' 
+          }),
+          type: 'line',
+          color: '#66cffc',
+          zIndex: '100',
+          yAxis: 1,
+          dataLabels: {
+            color: '#fff'
+          },
+          marker: {
+            radius: 6,  //曲线点半径，默认是4
+            symbol: 'circle' //曲线点类型："circle", "square", "diamond", "triangle","triangle-down"，默认是"circle"
+          },
+
+        }
+      ]
+      var params = {
+        domId: 'stackChart',
+        xAxis: xAxis,
+        series: series
+
+      }
+      chartInit.stackChartInit(params)
+    },
+    getDate(date) {
+     
+      this.param.timest = date
+      //   this.init()
+      //   this.leftbarChart()
+      // this.getRightTableData()
+      this.queryService()
+    },
+
+    //监听顺序方法
+    tableSortChange(column) {
+      const self = this
+      let index = 0
+      let tmpList = []
+      this.allData = this.tableData[0]
+      let string = column.prop
+      this.tableData.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+      if (column.order === 'descending') {
+        this.sortA(tmpList, column.prop)
+      } else {
+        this.sortB(tmpList, column.prop)
+      }
+
+      this.tableData.unshift(this.allData)
+    },
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            var temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      this.tableData = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            var temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      this.tableData = arr
+    },
+    clickTable(row) {
+      // row.type = 3
+      var userLevel =  this.$store.state.userLevel;
+      var dillFlag = false
+      if (userLevel == '1') {
+        dillFlag = true
+      } else if (userLevel == '2' || userLevel == '3') {
+        if (row.eparchyCode == store.get('userInfo').eparchyCode) {
+          dillFlag = true
+        }
+      };
+      if (dillFlag) {
+        var qparams = {
+          mapLevel: '2',
+          eparchyCode: row.eparchyCode,
+          eparchyName: row.eparchyName
+        }
+        this.$router.push({ path: '/bigscreen/5GNew/develop5gDetail', query: qparams})
+      } else {
+         this.$notify({
+            title: '提示',
+            message: '您当前账号无权限访问！',
+            type: 'warning'
+        });
+      }
+    },
+
+  }
+}
+</script>
+<style lang="less" scoped>
+
+
+/deep/ .bottom div {
+  padding: 0 30px !important;
+  flex: none!important;
+}
+/deep/ .bottom {
+  width: 92%!important;
+  left: 4%!important;
+  bottom: 10px!important;
+}
+.content {
+  background: url('~@/assets/images/bigScreen/bg-left-1.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right-1.png') right no-repeat;
+  background-size: auto 100%;
+}
+/deep/ .el-table {
+  background: none;
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+}
+/deep/.el-table th {
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') 50% 15px no-repeat;
+  text-align: center;
+  color: #02f6ff !important;
+  font-size: 12px;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-family: DigifaceWide;
+}
+/deep/.el-table td:first-child {
+  font-family: Microsoft YaHei;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: #02f6ff;
+}
+
+/deep/.el-table .descending .sort-caret.descending {
+  border-top-color: #02f6ff;
+}
+
+/deep/.el-dialog {
+  width: 66%;
+  background: transparent;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  /*background-repeat:no-repeat ;*/
+  /*background-size: cover;*/
+  min-height: 550px;
+}
+/deep/.el-icon-close:before {
+  content: none !important;
+}
+/deep/.el-dialog__headerbtn .el-dialog__close {
+  width: 35px;
+  height: 35px;
+  background-image: url('~@/assets/images/bigScreen/close.png');
+  background-repeat: no-repeat;
+  margin: 14px 30px;
+}
+/deep/.el-dialog__title {
+  color: #02f6ff;
+  font-size: 24px;
+  width: 555px;
+  font-size: 24px;
+  font-family: PangMenZhengDao-3;
+  font-weight: 400;
+  background-image: url('~@/assets/images/bigScreen/fullService/biaoti.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  margin-left: 30px;
+  display: block;
+}
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: image-set(url('~@/assets/images/bigScreen/bigbg.jpg') 1x);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.left {
+  width: 57%;
+   height: calc(100% - 120px);
+  padding: 20px;
+  position: relative;
+  margin-right: 1%;
+  display: flex;
+  flex-direction: column;
+  .right-title {
+    width: 50%;
+    height: 65px;
+    line-height: 65px;
+    padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 26px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    background-image: image-set(
+      url('~@/assets/images/bigScreen/fullService/title.png') 1x,
+      url('~@/assets/images/bigScreen/fullService/title@2x.png') 2x
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color: #02f6ff;
+  }
+  .left-bottom {
+    flex: 1;
+  }
+  .left-top {
+    display: flex;
+    width: 100%;
+    height: 200px;
+    // background: url('~@/assets/images/bigScreen/fullService/img_zuokuang.png') left no-repeat;
+    // background-size: 100% 100%;
+    .lt_title {
+      //   width: 20%;
+      height: 100%;
+      text-align: center;
+      margin: 30px 20px 20px 20px;
+      .lt_name {
+        font-size: 24px;
+        font-family: MFBanHei;
+        color: #02f6ff;
+      }
+      .lt_num {
+        font-family: DigifaceWide;
+        color: #fff;
+        font-size: 27px;
+        margin: 20px 0 0 10px;
+        span {
+          font-size: 20px;
+          font-family: MFBanHei;
+          margin-left: 10px;
+        }
+      }
+      .lt_img {
+        display: flex;
+        margin: 5% 0 0 0;
+        .city {
+          display: flex;
+          margin-top: 20px;
+          .city_name {
+            font-size: 16px;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            background: url('~@/assets/images/lowpm.png') no-repeat;
+            background-size: 100% 100%;
+            color:#ed3d3d;
+          }
+        }
+      }
+    }
+  }
+}
+
+.right {
+  flex: 1;
+   height: calc(100% - 120px);
+  margin-top: 20px;
+  
+  .date {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+    font-size: 16px;
+    font-family: DigifaceWide;
+    color: #fff;
+    span {
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+    }
+  }
+
+  .el-table {
+    height: calc(100% - 65px);
+    overflow: auto;
+  }
+}
+.tp_ttitle {
+  font-size: 22px;
+}
+.tp_stitle {
+  font-size: 16px;
+}
+.chartBox {
+  width: 100%;
+  height: 100%;
+}
+</style>
