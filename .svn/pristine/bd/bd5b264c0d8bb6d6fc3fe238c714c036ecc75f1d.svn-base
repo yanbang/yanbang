@@ -1,0 +1,810 @@
+<template>
+  <div class="container">
+     <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">评价-构</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+         <div class = "backbtn" @click="backRoute" v-show = "pageLeve != 1"> <span class="el-icon-d-arrow-left"  ></span>{{bankTitle}}</div>
+        <!-- 左边 -->
+        <div class="left">
+          <div class="right-title">{{currTitleCityName}}本周融合发展500M及以上宽带发展结构</div>
+          <div class="left-top">
+            <img class="leftbgimg" src="~@/assets/images/bigScreen/fullService/img_zuokuang.png" alt="" />
+            <img  class="lrightbgimg" src="~@/assets/images/bigScreen/fullService/img_youkuang.png" alt=""  />
+
+            <div class = "topleftrow">
+              <div class = "tlrowitem flex1">
+                <div class="norfont row-stitle" style="text-align: center">500M及以上宽带发展</div>
+                <div>
+                  <span class="numfont">{{week500Num || '-'}}</span>
+                  <span class="norfont">户</span>
+                </div>
+              </div>
+
+              <div class = "tlrowitem flex1" >
+                <div class="norfont row-stitle" style="text-align: center">占比</div>
+                <div>
+                  <span class="numfont">{{week500Zb || '-'}}</span>
+                  <span class="numfont">%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class = "topleftrow">
+              <div class = "tlrowitem flex1">
+                <div class="norfont row-stitle">500M及以上宽带发展占宽带发展占比较低</div>
+                <div class="lt_img myltimg">
+                    <img  src="~@/assets/images/bigScreen/fullService/pingjia_bad.png" alt="" style="width:100px;height:80px"/>
+                    <div class="city">
+                      <div class="city_name" v-for="(item, index) in lowerDatas1" :key="index">{{item.init_areaName}}</div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+             <div class = "topleftrow">
+              <div class = "tlrowitem flex1">
+                <div class="norfont row-stitle">1000M及以上宽带周完成率较低</div>
+                <div class="lt_img myltimg" >
+                    <img  src="~@/assets/images/bigScreen/fullService/pingjia_bad.png" alt="" style="width:100px;height:80px"/>
+                    <div class="city">
+                       <div class="city_name" v-for="(item, index) in lowerDatas2" :key="index">{{item.init_areaName}}</div>
+                    </div>
+                  </div>
+                
+
+              </div>
+            </div>
+
+
+             <div class = "topleftrow">
+              <div class = "tlrowitem flex1">
+                <div class="norfont row-stitle">1000M及以上宽带季度序时完成率较低</div>
+                <div class="lt_img myltimg">
+                    <img  src="~@/assets/images/bigScreen/fullService/pingjia_bad.png" alt="" style="width:100px;height:80px"/>
+                    <div class="city">
+                       <div class="city_name" v-for="(item, index) in lowerDatas3" :key="index">{{item.init_areaName}}</div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class = "left-bottom left-bottombox">
+            <!-- <div class="right-title">500M及以上宽带近7天发展趋势</div> -->
+            <div class="chartBox" id="barlineChart" ref="myCharts"></div>
+            <div class = "arvdemo">
+              <span style="margin-right: 10px">-----</span>
+              <span>{{averageVal}}</span>
+            </div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right" style=" box-shadow: 0px 4px 20px rgb(119 197 229 / 90%);">
+          <!-- <div class="date"><span>周日期：</span>2021-03-15~2021-03-21</div> -->
+
+          <el-table :data="tableData" @sort-change="tableSortChange" size = "small">
+            <el-table-column prop="eparchyName" label="地区" width = "220px">
+              <template slot-scope="scope">
+                <span v-if="scope.$index == 0">{{ scope.row.init_areaName}}</span>
+                <span v-else style="cursor:pointer" @click="clickTable(scope.row)">{{ scope.row.init_areaName }}</span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="500M及以上宽带">
+              <el-table-column prop="curWeek500M" label="周发展" sortable="1"></el-table-column>
+              <el-table-column prop="weekHb500M" label="周环比" sortable="1">
+                 <template slot-scope="scope">
+                    <span>{{ scope.row.weekHb500M || '-' }}%</span>
+                  </template>
+              </el-table-column>
+              <el-table-column prop="newZb500M" label="发展占比" sortable="1">
+                <template slot-scope="scope">
+                  <span v-if="scope.row._newZb500M_status == 1" style="color: #00B050 !important">{{ scope.row.newZb500M }}%</span>
+                  <span v-else-if="scope.row._newZb500M_status == 2" style="color: #C00000 !important">{{ scope.row.newZb500M }}%</span>
+                  <span v-else>{{ scope.row.newZb500M || '-' }}%</span>
+                </template>
+              </el-table-column>
+            </el-table-column>
+
+            <el-table-column label="1000M及以上宽带">
+              <el-table-column prop="curWeek1000M" label="周发展" sortable="1"></el-table-column>
+              <el-table-column prop="weekAchive1000M" label="周完成率" sortable="1">
+                 <template slot-scope="scope">
+                  <span v-if="scope.row._weekAchive1000M_status == 1" style="color: #00B050 !important">{{ scope.row.weekAchive1000M }}%</span>
+                  <span v-else-if="scope.row._weekAchive1000M_status == 2" style="color: #C00000 !important">{{ scope.row.weekAchive1000M }}%</span>
+                  <span v-else>{{ scope.row.weekAchive1000M || '-' }}%</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="weekHb1000M" label="周环比" sortable="1">
+                <template slot-scope="scope">
+                  <span >{{ scope.row.weekHb1000M || '-' }}%</span>
+                </template>
+              </el-table-column>
+
+               <el-table-column prop="curQt1000M" label="季度累计发展" sortable="1"></el-table-column>
+
+                <el-table-column prop="xsAchive1000M" label="季度序时完成率" sortable="1">
+                <template slot-scope="scope">
+                  <span v-if="scope.row._xsAchive1000M_status == 1" style="color: #00B050 !important">{{ scope.row.xsAchive1000M }}%</span>
+                  <span v-else-if="scope.row._xsAchive1000M_status == 2" style="color: #C00000 !important">{{ scope.row.xsAchive1000M }}%</span>
+                  <span v-else>{{ scope.row.xsAchive1000M || '-' }}%</span>
+                </template>
+              </el-table-column>
+
+              
+            </el-table-column>
+
+          </el-table>
+        </div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import store from 'store'
+import { value_day7_develop, mixdetail} from '@/api/appraiseService'
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import dialogComponent from '@/components/FifthGeneration/dialogComponent'
+import stackChart from './nodepostit'
+import chartInit from './chartInit'
+var _ = require('@/utils/lodash.js')
+export default {
+  components: {
+    Header,
+    FlexBox,
+    dialogComponent,
+    stackChart
+  },
+  data() {
+    return {
+      pageLeve: 1,
+      currCityName: '全省',
+      currTitleCityName: '全省',
+      bankTitle: '全省',
+      averageVal: '',
+      week500Num: '',
+      week500Zb: '',
+      isDialog: false,
+      curWeekAll: '',
+      curWeekNew: '',
+      lowerDatas1: [],
+       lowerDatas2: [],
+        lowerDatas3: [],
+      param: {
+        timest: '',
+        eparchyCode: '',
+        areaCode: '',
+        gridId: '',
+        mLevel: '1',     
+      },
+
+      bottomList: [
+       {
+          name: '5G新入网(占5G发展)',
+          url: '/bigscreen/5GNew/5GDevelop',
+         
+        },
+        {
+          name: '5G新入网(占移网发展)',
+          url: '/bigscreen/5GNew/ywDevelop',
+           
+        },
+        {
+          name: '融合发展',
+          url: '/bigscreen/5GNew/rongheDevelop',
+          active: true
+        },
+        {
+          name: '单宽转融',
+          url: '/Financial/singleWidth',
+
+        },
+        {
+          name: '单移转融',
+          url: '/Financial/singleShift',
+          active: false
+        },
+        
+        {
+          name: '金融发展',
+          url: '/bigscreen/5GNew/jinrongDevelop',
+          
+        },
+      ],
+      tableData: []
+    }
+  },
+  created() {
+    // var mapLevel = 1;
+    //  if (store.get('userInfo').gridId) {
+    //   mapLevel = 4;
+    // } else if (store.get('userInfo').areaCode) {
+    //   mapLevel = 3;
+    // } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+    //   mapLevel = 2;
+    // } else {
+    //   mapLevel = 1;
+    // };
+
+    // this.param = {
+    //     "timest": this.searchDate,
+    //     "eparchyCode":  store.get('userInfo').eparchyCode || '0000',
+    //     "areaCode": store.get('userInfo').areaCode || '',
+    //     "gridId": store.get('userInfo').gridId || '',
+    //     "mLevel": mapLevel,  // 1省， 2 地市， 3区县， 4 营服
+    // };
+
+    this.param = {
+        "timest": '',
+        "eparchyCode": '0000',
+        "areaCode": '',
+        "gridId": '',
+        "mLevel": '1',  // 1省， 2 地市， 3区县， 4 营服
+    };
+  },
+  mounted() {
+     if (store.get('userInfo').isAddMask == '1') {
+      this.$watermark(store.get('userInfo').serialNumber);
+    } else {
+      this.$watermark("");
+    }
+  },
+  methods: {
+    backRoute () {
+      if (this.pageLeve == 2) {
+        this.pageLeve = 1
+        this.bankTitle = '全省';
+        this.param.mLevel = '1'
+        this.param.eparchyCode = '0000'
+        this.currCityName = '全省'
+        this.currTitleCityName = '全省'
+      } else if (this.pageLeve == 3) {
+        this.currTitleCityName = this.currCityName
+        this.pageLeve = 2
+        this.bankTitle = '全省';
+        this.param.mLevel = '2'
+        this.param.areaCode = ''
+      }
+      this.queryService()
+      this.query7Days()
+    },
+    queryService () {
+      var params = this.param;
+      this.week500Num = '';
+      this.week500Zb = ''
+      this.tableData = []
+      this.lowerDatas1 = []
+      this.lowerDatas2 = []
+      this.lowerDatas3 = []
+      mixdetail(params).then(data => {
+   
+        if (data.rspCode == '0000') {
+          
+          var datal = data.result.data || [];
+          datal.forEach((item) => {
+            item.init_areaName = item.eparchyName || item.areaName || item.gridName;
+            item.init_areaCode = item.eparchyCode || item.areaCode  || item.gridCode;
+
+          })
+          this.tableData = datal;
+          
+          
+          this.week500Num = datal.length && datal[0].curWeek500M ? datal[0].curWeek500M  : '';
+          this.week500Zb = datal.length && datal[0].newZb500M ? datal[0].newZb500M : '';
+          
+          this.lowerDatas1 = datal.filter((item) => {
+            return item._newZb500M_status == 2;
+          })
+           this.lowerDatas2 = datal.filter((item) => {
+            return item._weekAchive1000M_status == 2;
+          })
+           this.lowerDatas3 = datal.filter((item) => {
+            return item._xsAchive1000M_status == 2;
+          })
+
+        } else {
+          this.$message.error(data.rspMsg)
+        }
+      })
+    },
+    query7Days () {
+        var params = this.param;
+        this.averageVal  = ""
+       value_day7_develop(params).then(data => {
+         var datal = data.result.data.length > 0? data.result.data[0] : {};
+         var day2Lentth = datal.list2.length;
+         if (datal.list2 && day2Lentth){
+           this.averageVal = datal.list2[0].day.substring(4, 8) + '-' + datal.list2[datal.list2.length-1].day .substring(4, 8)+ '日均'
+         }
+         
+         var xAxis = datal.list1.map((item) => {
+           return item.day
+         })
+         var barData = datal.list1.map((item) => {
+           return item.value
+         })
+         var lineData = datal.list2.map((item) => {
+           return item.value
+         })
+          var params = {
+             domId: 'barlineChart',
+             xAxis: xAxis,
+             lineData:lineData,
+             barData: barData
+           }
+           chartInit.echartRh7DaysInit(params)
+       })
+    },
+
+    getDate(date) {
+      this.param.timest = date
+      this.queryService()
+      this.query7Days()
+    },
+
+    //监听顺序方法
+    tableSortChange(column) {
+      const self = this
+      let index = 0
+      let tmpList = []
+      this.allData = this.tableData[0]
+      let string = column.prop
+      this.tableData.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+      if (column.order === 'descending') {
+        this.sortA(tmpList, column.prop)
+      } else {
+        this.sortB(tmpList, column.prop)
+      }
+
+      this.tableData.unshift(this.allData)
+    },
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            var temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      this.tableData = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            var temp = arr[j]
+            arr[j] = arr[j + 1]
+            arr[j + 1] = temp
+          }
+        }
+      }
+      this.tableData = arr
+    },
+    clickTable(row) {
+       var userLevel =  this.$store.state.userLevel;
+       var dillFlag = false
+      if (this.pageLeve == 1) {
+          if (userLevel == '1') {
+            dillFlag = true
+          } else if (userLevel == '2' || userLevel == '3') {
+            if (row.init_areaCode == store.get('userInfo').eparchyCode) {
+              dillFlag = true
+            }
+          };
+          if (dillFlag) {
+            this.pageLeve = 2;
+            this.currCityName = row.init_areaName
+            this.currTitleCityName = row.init_areaName
+            this.bankTitle = '全省';
+            this.param.mLevel = '2'
+            this.param.eparchyCode = row.init_areaCode;
+            this.queryService()
+            this.query7Days()
+          } else {
+            this.$notify({
+                title: '提示',
+                message: '您当前账号无权限访问！',
+                type: 'warning'
+            });
+          }
+      } else if (this.pageLeve == 2) {
+          if (userLevel == '1' || userLevel == '2') {
+            dillFlag = true;
+          } else if (userLevel == '3') {
+            if (row.init_areaCode == store.get('userInfo').areaCode) {
+              dillFlag = true;
+            }
+          };
+          if (dillFlag) {
+            this.pageLeve = 3;
+            this.currTitleCityName = row.init_areaName
+            this.bankTitle = this.currCityName
+            this.param.mLevel = '3'
+            this.param.areaCode = row.init_areaCode
+            this.queryService()
+            this.query7Days()
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '您当前账号无权限访问！',
+              type: 'warning'
+            });
+          }
+      }
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+/deep/ .bottom div {
+  padding: 0 30px !important;
+  flex: none!important;
+}
+/deep/ .bottom {
+  width: 92%!important;
+  left: 4%!important;
+  bottom: 10px!important;
+}
+.lt_img {
+  display: flex;
+  margin: 15px 0 0 0;
+  
+  .city {
+    display: flex;
+    margin-top: 20px;
+    .city_name {
+      font-size: 16px;
+      width: auto;
+      min-width: 120px;
+      padding: 0 10px;
+      height: 40px;
+      line-height: 40px;
+      margin-left: 10px;
+      background: url('~@/assets/images/lowpm.png') no-repeat;
+      background-size: 100% 100%;
+       color:#ed3d3d;
+    }
+  }
+}
+.myltimg {
+  padding-left: 20px;
+}
+
+ .topleftrow:not(:last-child) {
+   display: flex;
+   margin-bottom: 20px;
+ }
+  .flex1 {
+    flex: 1;
+  }
+  .tlrowitem {
+    text-align: center;
+    .numfont {
+      font-size: 22px;
+      margin-right: 8px;
+    }
+    .norfont {
+      font-size: 18px;
+    }
+  }
+  .tlrowitem .row-stitle{
+    font-size: 18px;
+    text-align: left;
+    position: relative;
+    z-index: 99;
+    
+  }
+  .numfont {
+    font-family: DigifaceWide;
+    color: #fff;
+  }
+  .norfont {
+    font-family:YouSheBiaoTiHei;
+    color: #02f6ff;
+  }
+
+.content {
+  background: url('~@/assets/images/bigScreen/bg-left-1.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right-1.png') right no-repeat;
+  background-size: auto 100%;
+  margin-top: -20px !important;
+  position: relative;
+}
+/deep/ .el-table thead.is-group th {
+    background: transparent;
+}
+/deep/ .el-table {
+  background: none;
+  font-size: 18px;
+  font-family: Microsoft YaHei;
+  font-weight: 400;
+}
+/deep/.el-table th {
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') 50% 15px no-repeat;
+  text-align: center;
+  color: #02f6ff !important;
+  font-size: 12px;
+}
+ /deep/ .el-table thead.is-group th {
+   position: relative;
+   font-size: 13px;
+ }
+ /deep/ .el-table thead.is-group th::after{
+    content: '';
+    width: 80%;
+    height: 10px;
+    display: block;
+    background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat;
+    background-size: 100% 120%;
+    background-position: center;
+    position: absolute;
+    bottom: 0;
+ }
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-family: DigifaceWide;
+}
+/deep/.el-table td:first-child {
+  font-family: Microsoft YaHei;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: #02f6ff;
+}
+
+/deep/.el-table .descending .sort-caret.descending {
+  border-top-color: #02f6ff;
+}
+
+/deep/.el-dialog {
+  width: 66%;
+  background: transparent;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  /*background-repeat:no-repeat ;*/
+  /*background-size: cover;*/
+  min-height: 550px;
+}
+/deep/.el-icon-close:before {
+  content: none !important;
+}
+/deep/.el-dialog__headerbtn .el-dialog__close {
+  width: 35px;
+  height: 35px;
+  background-image: url('~@/assets/images/bigScreen/close.png');
+  background-repeat: no-repeat;
+  margin: 14px 30px;
+}
+/deep/.el-dialog__title {
+  color: #02f6ff;
+  font-size: 24px;
+  width: 555px;
+  font-size: 24px;
+  font-family: PangMenZhengDao-3;
+  font-weight: 400;
+  background-image: url('~@/assets/images/bigScreen/fullService/biaoti.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  margin-left: 30px;
+  display: block;
+}
+/deep/ .el-table--border th {
+    border-bottom: 1px solid transparent;
+}
+ /deep/.el-table--border th, .el-table--border td {
+  border-right: 1px solid transparent;
+}
+ /deep/.el-table--small th,   /deep/ .el-table--small td {
+  padding: 7px 0;
+}
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: image-set(url('~@/assets/images/bigScreen/bigbg.jpg') 1x);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.left {
+  width: 32%;
+ height: calc(100% - 120px);
+  position: relative;
+  margin-right: 1%;
+  display: flex;
+  flex-direction: column;
+  .right-title {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    background-image: image-set(
+      url('~@/assets/images/bigScreen/fullService/title.png') 1x,
+      url('~@/assets/images/bigScreen/fullService/title@2x.png') 2x
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color: #02f6ff;
+  }
+  .left-bottom {
+    flex: 1;
+  }
+  .leftbgimg {
+    position: absolute;
+    left: 0px;
+    top: 30px;
+    height: 80%;
+  }
+  .lrightbgimg {
+   position: absolute;
+    right: 0px;
+    top: 30px;
+     height: 80%;
+  }
+
+  .left-top {
+    display: flex;
+    width: 100%;
+    position: relative;
+    padding: 20px 30px;
+    flex-direction: column;
+    // background: url('~@/assets/images/bigScreen/fullService/img_zuokuang.png') left no-repeat;
+    // background-size: 100% 100%;
+    .lt_title {
+      //   width: 20%;
+      height: 100%;
+      text-align: center;
+      margin: 50px 3% 0 5%;
+      .lt_name {
+        font-size: 22px;
+        font-family: MFBanHei;
+        color: #02f6ff;
+      }
+      .lt_num {
+        font-family: DigifaceWide;
+        color: #fff;
+        font-size: 26px;
+        margin: 30px 0 0 10px;
+        span {
+          font-size: 20px;
+          font-family: MFBanHei;
+          margin-left: 10px;
+        }
+      }
+      .lt_img {
+        display: flex;
+        margin: 5% 0 0 0;
+        .city {
+          display: flex;
+          margin-top: 20px;
+          .city_name {
+            font-size: 16px;
+            width: 120px;
+            height: 48px;
+            line-height: 48px;
+            background: url('~@/assets/images/lowpm.png') no-repeat;
+            background-size: 100% 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.right {
+  flex: 1;
+  height: calc(100% - 120px);
+  margin-top: 20px;
+  
+  .date {
+    position: absolute;
+    top: 20px;
+    right: 80px;
+    font-size: 16px;
+    font-family: DigifaceWide;
+    color: #fff;
+    span {
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+    }
+  }
+
+  .el-table {
+    height: calc(100% -60px);
+    overflow: auto;
+    border: none;
+  }
+}
+.tp_ttitle {
+  font-size: 22px;
+}
+.tp_stitle {
+  font-size: 16px;
+}
+.chartBox {
+  width: 100%;
+  flex: 1;
+}
+.left-bottombox {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.arvdemo {
+  position: absolute;
+  bottom: -20px;
+  left: 30%;
+  color: #8465df;
+}
+.backbtn {
+  position: absolute;
+  top: -20px;
+  left: 240px;
+  font-size: 20px;
+  color: #02f6ff;
+  cursor: pointer;
+  font-weight: bolder;
+  z-index: 999;
+}
+.el-table--group::after, .el-table--border::after, .el-table::before {
+    content: '';
+    position: absolute;
+    background-color: transparent !important;
+    z-index: 1;
+}
+</style>

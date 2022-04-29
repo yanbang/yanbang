@@ -1,0 +1,544 @@
+<!-- 资源小区大屏 -->
+<template>
+  <div class="bodyfont container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <div class="headerbox">
+      <!-- 页头 -->
+      <Header>
+        <template v-slot:smallTitle>
+          <div class="header-smallTitle">资源</div>
+        </template>
+      </Header>
+    </div>
+    <div class="bodybox">
+      <div class="bodyleft bwwith" v-show = "!zystatePageShow">
+        <div class="subtitle">
+          <div class="titlefont stitle">
+            <span>业务统计</span>
+            <span class="subdtile pointer bcolor"  @click="dialogVisibleFn('dialogVisible1')">详情></span>
+          </div>
+        </div>
+        <leftzyleve ref="leftzyleveRef" :mapLevel="mapLevel" :queryParams = "queryParams"  @openD2dpage = "openD2dpage"></leftzyleve>
+        <!-- <leftzystate ref="leftzystate"  :mapLevel="mapLevel" v-if="mapLevel == 6"></leftzystate> -->
+      </div>
+
+      <div class="bodycenter" style="margin-bottom: 20px;">
+        <!-- 中间部分 -->
+        <div class = "centertitle">
+          <span style="margin-right: 30px">{{gisTitle}}发展量</span>
+          <span><img src="@/assets/images/bigScreen/fullService/biaoti.png" style="position: relative; top: -2px;" alt="" srcset=""></span>
+        </div>
+        <iframe ref="gisiframe" id="gisiframe" :src="iframeSrc" frameborder="0" style="width: 100%; height: 100%"></iframe>
+      </div>
+      <div class="bodyright bwwith">
+        <div class="subtitle">
+          <div class="titlefont stitle">小区资源</div>
+        </div>
+        <rightzyleve ref="rightzyleve" :mapLevel="mapLevel" :queryParams = "queryParams"  @dialogDetailFn="dialogDetail" v-show="!zystatePageShow"></rightzyleve>
+        <rightzystate ref="rightzystate" :mapLevel="mapLevel" :queryParams = "queryParams" v-if="zystatePageShow"></rightzystate>
+
+      </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <el-dialog class="bsdialog" title="业务统计" :visible.sync="dialogVisible1" :modal-append-to-body='false' width="80%">
+      <div v-loading = "xqtloading" class="loadingbox">
+        <ywtjdetailTable :tabledata="ywtjtableData"></ywtjdetailTable>
+      </div>
+    </el-dialog>
+
+    <el-dialog class="bsdialog" title="小区资源详情" :visible.sync="dialogVisible2" :modal-append-to-body='false' width="80%">
+      <div v-loading = "xqtloading" class="loadingbox">
+         <div class="dialogBtn">
+            <div class="dialogBtn-left">
+                <div v-for="(item, index) in tagtabitems" :key="item.label" :class="['dialogBtn-item',{ 'dialogBtnOn': diatagActive == item.id, 'dialogBtnOn1': diatagActive == item.id && index == 0}]"  @click="tagtabActive(item)"> {{ item.label }}</div>
+            </div>
+        </div>
+        <xqzydetailTable :tagactive = "diatagActive" :tabledata="zyYwtjDetailTable"></xqzydetailTable>
+      </div>
+    </el-dialog>
+
+    <el-drawer :visible.sync="drawerShow" :with-header="false" size="100%" :modal-append-to-body='false' style="height: 100%; width: 100%">
+        <div style="width: 100%; height: 100%; background: #021334" >
+          <iframe  v-if = "drawerShow" frameborder="0" style="width: 100%; height: 100%" :src = "d2siframsrc" ></iframe>
+        </div>
+    </el-drawer>
+
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import store from 'store'
+import ywtjdetailTable from './components/ywtjdetailTable'
+import xqzydetailTable from './components/xqzydetailTable'
+import leftzyleve from './components/leftzyleve'
+import rightzyleve from './components/rightzyleve'
+import leftzystate from './components/leftzystate'
+import rightzystate from './components/rightzystate'
+import { mapState } from 'vuex'
+import resourceApi from '@/api/resource'
+var Qs = require('@/utils/qs.js')
+export default {
+  data() {
+    return {
+      drawerShow: false,
+      gisTitle:  store.get('userInfo').dataAreaName || '各地市',
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      ywtjColumn: [
+        { title: '地区', filed: 'f1' },
+        { title: '日均发展', filed: 'f2' },
+        { title: '日均发展目标', filed: 'f3' },
+        { title: '日均完成率', filed: 'f4', sortable: true, pre: true },
+        { title: '季度发展', filed: 'f5' },
+        { title: '季度任务目标', filed: 'f6' },
+        { title: '地区', filed: 'f7' },
+        { title: '季度完成率', filed: 'f8', sortable: true, pre: true }
+      ],
+      ywtjtableData: [],
+      dialogVisible1: false,
+      dialogVisible2: false,
+      tagtabitems: [
+        { label: '总览', id: '1' },
+        { label: '高流失小区TOP100', id: '2' },
+        { label: '高增长小区TOP100', id: '3' },
+        { label: '低实占增长TOP100', id: '4' },
+        { label: '低实占下降TOP100', id: '5' }
+      ],
+      iframeSrc: '',
+      diatagActive: 1,
+      zyYwtjDetailTable: [],
+      gisQueryParams: {},
+      zyxqdType: '',
+      xqtloading: false,
+      d2siframsrc: '',
+    }
+  },
+  components: {
+    Header,
+    leftzyleve,
+    rightzyleve,
+    leftzystate,
+    ywtjdetailTable,
+    xqzydetailTable,
+    rightzystate
+  },
+  created() {
+
+  },
+  mounted() {
+    if (store.get('userInfo').isAddMask == '1') {
+      this.$watermark(store.get('userInfo').serialNumber);
+    } else {
+      this.$watermark("");
+    }
+    var self = this;
+
+    var initArea_id = ''
+
+    if (store.get('userInfo').gridId) {
+      this.mapLevel = 4;
+      initArea_id  = store.get('userInfo').gridId
+    } else if (store.get('userInfo').areaCode) {
+      this.mapLevel = 3;
+       initArea_id  = store.get('userInfo').areaCode
+    } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+      this.mapLevel = 2;
+       initArea_id  = store.get('userInfo').eparchyCode
+    } else {
+      this.mapLevel = 1;
+      initArea_id  = '0000'
+    };
+    this.initGisMap(initArea_id)
+
+    // 初始化查询条件
+    this.queryParams = {
+        "timest": this.searchDate,
+        "eparchyCode":  store.get('userInfo').eparchyCode || '0000',
+        "areaCode": store.get('userInfo').areaCode || '',
+        "gridId": store.get('userInfo').gridId || '',
+        "flag": "1",
+        "chnlKindId": "",
+        "mLevel": this.mapLevel,  // 1省， 2 地市， 3区县， 4 营服
+        "villageIdTot": "",
+    };
+    self.serviceInitParams('init');
+    // 注册地图事件
+    window.addEventListener('message',self.gismapListener, true)
+
+  },
+  watch: {},
+  computed: {
+    ...mapState({
+       searchDate: state => state.resource.searchDate,
+    }),
+    zystatePageShow () {
+      return this.mapLevel >= 5 ? true : false;
+    }
+  },
+  methods: {
+    gismapListener (e) {
+      var self = this;
+      if (e.data.message == 'levelSwitch') {
+         self.mapLevel = e.data.level
+         self.areaCode = e.data.area_id;
+         self.gisMapData = e.data;
+         self.gisTitle = e.data.label;
+         self.gisQueryParams = Object.assign({},  self.gisQueryParams, e.data)
+         self.gisQueryParams.area_name = '';
+         console.log('message', e.data)
+         self.serviceInitParams()
+      } else if (e.data.message == 'iframeClose') {
+         self.drawerShow = false;
+      }
+    },
+    // 初始化地图
+    initGisMap (initArea_id) {
+      // 初始化地图参数
+    this.gisQueryParams =  {
+         level: this.mapLevel,
+          sceneid: 2,
+          gis_sceneid: 2,
+          area_id: initArea_id,
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no:  store.get('staffId'),
+          timest:  this.$store.state.resource.searchDate
+      };
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.iframeSrc = `http://134.32.115.253:18080/sdresview?${Qs.stringify(gisQueryParams)}`;
+    },
+    openD2dpage (params) {
+      params.title = this.gisTitle
+      params.mapLevel = this.mapLevel
+      this.d2siframsrc =  '/#/BtoB/index?' + Qs.stringify(params);
+      this.drawerShow = true;
+      // this.$route.push({'name': 'BtoBIndex', query: params})
+    },
+    serviceInitParams (type) {
+      var params = this.queryParams;
+      params.mLevel = this.mapLevel;
+      // params.timest = '20210226';
+      if (type && type == 'init') {
+        return;
+      }
+      if (this.mapLevel == 1) {
+        params.eparchyCode = store.get('userInfo').eparchyCode || '0000';
+        params.areaCode = ''
+        params.gridId = ''
+      } else if (this.mapLevel == 2) {
+         params.eparchyCode = this.gisMapData.area_id
+         params.areaCode = ''
+         params.gridId = ''
+         params.villageIdTot = ""
+      } else if (this.mapLevel == 3) {
+         params.areaCode = this.gisMapData.area_id
+         params.gridId = ''
+          params.villageIdTot = ""
+      } else if (this.mapLevel == 4) {
+         params.gridId = this.gisMapData.area_id
+         params.villageIdTot = ""
+      } else if (this.mapLevel == 5) {
+         params.villageIdTot = this.gisMapData.area_id
+      }
+    },
+    service_zyYwtjDetail () {
+      this.xqtloading = true
+      var params = this.queryParams;
+      var ywtjType = this.$refs.leftzyleveRef.getywtjType();
+      this.ywtjtableData = []
+      params.actionType = ywtjType;
+      resourceApi.zyYwtjDetail(params).then(data => {
+         this.xqtloading = false
+        if (data.rspCode = '0000') {
+           data.result.listRes.forEach(item => {
+              item.myInitName = '';
+              if (item.gridId && item.gridId != '00' ) {
+                item.myInitName = item.gridName;
+              } else if (item.areaCode && item.areaCode != '00' ) {
+                item.myInitName = item.areaName;
+              }  else if (item.eparchyCode && item.eparchyCode != '00' ) {
+                item.myInitName = item.eparchyName;
+              }
+            })
+            this.ywtjtableData = data.result.listRes;
+
+
+          this.ywtjtableData.forEach(row => {
+            for (let key in row) {
+              if (Number(row[key])) {
+                row[key] = Number(row[key])
+              }
+            }
+         })
+
+        }
+      }).catch(err => {
+         this.xqtloading = false
+      })
+    },
+    dialogVisibleFn (type) {
+      if (type == 'dialogVisible1') {
+        this.dialogVisible1 = true;
+        this.service_zyYwtjDetail()
+      }
+    },
+    getDate (date, type) {
+      this.$store.commit('resource/set_searchDate', date);
+      this.queryParams.timest = date;
+      this.gisQueryParams.timest = date
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams));
+      gisQueryParams.message = "changeTime";
+
+      if (!type && type != 'init'){
+        this.$refs['gisiframe'].contentWindow.postMessage(gisQueryParams, '*')
+      }
+
+
+    },
+    tagtabActive(item) {
+      this.diatagActive = item.id;
+      if (item.id != 1) {
+        this.zyXqzyTop100(item.id-1)
+      } else {
+
+        this.zyXqzyDetail(this.zyxqdType)
+      }
+    },
+    zyXqzyTop100 (type) {
+     //orderTag: 1:高流失小区top100 2:高增长小区top100  3:低实战增长100 4:低实战下降100
+      this.xqtloading = true
+      var params = JSON.parse(JSON.stringify(this.queryParams));
+      params.orderTag = type;
+      this.zyYwtjDetailTable = []
+      resourceApi.zyXqzyTop100(params).then(data => {
+        this.xqtloading = false
+         if (data.rspCode = '0000') {
+          this.zyYwtjDetailTable = data.result.data
+          this.zyYwtjDetailTable.forEach(row => {
+            for (let key in row) {
+              if (Number(row[key])) {
+                row[key] = Number(row[key])
+              }
+            }
+         })
+
+        }
+      }).catch(err => {
+        this.xqtloading = false
+        this.$message.error('服务错误！')
+      })
+    },
+    dialogDetail(type) {
+      this.dialogVisible2 = true;
+      if (type == 'zslp' || type == 'alxq') {
+        type = '30';
+      }
+      this.diatagActive = 1;
+      this.zyXqzyDetail(type)
+    },
+    // 资源小区详情
+    zyXqzyDetail (type) {
+       this.xqtloading = true
+       var params = JSON.parse(JSON.stringify(this.queryParams));
+       params.actionType = type;
+       this.zyxqdType = type;
+       this.zyYwtjDetailTable = []
+       resourceApi.zyXqzyDetail(params).then(data => {
+        this.xqtloading = false
+        if (data.rspCode = '0000') {
+           data.result.data.forEach(item => {
+            item.myInitName = '';
+            if (item.gridId && item.gridId != '00' ) {
+              item.myInitName = item.gridName;
+            } else if (item.areaCode && item.areaCode != '00' ) {
+              item.myInitName = item.areaName;
+            }  else if (item.eparchyCode && item.eparchyCode != '00' ) {
+              item.myInitName = item.eparchyName;
+            }
+          })
+          this.zyYwtjDetailTable = data.result.data
+
+          this.zyYwtjDetailTable.forEach(row => {
+            for (let key in row) {
+              if (Number(row[key])) {
+                row[key] = Number(row[key])
+              }
+            }
+         })
+
+        }
+      }).catch(err => {
+        this.xqtloading = false
+      })
+    }
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message',this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('./css/comme.scss');
+.stitle {
+  line-height: 50px;
+  text-align: left;
+  font-size: 20px;
+  margin-left: 36px;
+  color: #02f6ff;
+}
+.tabsbox {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 16px;
+}
+.tabs-item {
+  position: relative;
+  width: 48%;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+}
+.tab_borderleft {
+  contain: '';
+  height: 22px;
+  width: 15px;
+  position: absolute;
+  border: 1px solid #4f98f7;
+  left: 0;
+  top: 0;
+  border-right: none;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-top: 5px;
+}
+.headerbox {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  top: 0;
+}
+.bodybox {
+  flex: 1;
+  background: url('~@/assets/images/bigScreen/resource/bborder.png') left no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 999;
+}
+.bodyleft {
+  min-width: 420px;
+  width: 28%;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+}
+.bodycenter {
+  flex: 1;
+  background: url('~@/assets/images/bigScreen/fullService/mapBg.png') no-repeat;
+  background-size: 100% 98%;
+  padding: 100px 20px 30px 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+.bodyright {
+  min-width: 420px;
+  width: 28%;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.subtitle {
+  height: 50px;
+  background: url('~@/assets/images/bigScreen/sborder.png') no-repeat;
+  background-size: 100% 100%;
+  // background: ;
+}
+.tagtabs {
+  margin-bottom: 15px;
+}
+.tagtabs .el-tag {
+  line-height: 24px;
+  height: 26px;
+  font-size: 16px;
+  background-color: transparent;
+  border-color: #a3d3ff;
+  color: #acceef;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.el-tag.selected {
+  background: #3c73c5;
+  color: #fff;
+}
+.centertitle {
+  font-size: 26px;
+  position: absolute;
+  top: 50px;
+  height: 30px;
+  line-height: 34px;
+  color: aqua;
+}
+   .dialogBtn{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        // padding: 10px 0;
+        .dialogBtn-left, .dialogBtn-right{
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .dialogBtn-left{
+            justify-content: flex-start;
+        }
+        .dialogBtn-right{
+            justify-content: flex-end;
+        }
+        .dialogBtn-item{
+            width: 200px;
+            height: 34px;
+            text-align: center;
+            font-size: 16px;
+            font-family: Microsoft YaHei;
+            color: #00FFFF;
+            margin-left: -10px;
+            line-height: 34px;
+            cursor: pointer;
+            text-align: center;
+            background: url("~@/assets/images/bigScreen/fullService/Rectangle 657 copy 2.png") no-repeat;
+            background-size: 100% 100%;
+        }
+        .dialogBtn-item:first-child{
+            width: 140px;
+            padding-left: 13px;
+            text-align: center;
+            background: url("~@/assets/images/bigScreen/fullService/Rectangle 657 copy 3.png") no-repeat;
+        }
+        .dialogBtnOn1{
+            color: #fff;
+            background: url("~@/assets/images/bigScreen/fullService/Rectangle 657.png") no-repeat !important;
+        }
+        .dialogBtnOn{
+            color: #fff;
+            background: url("~@/assets/images/bigScreen/fullService/Rectangle 657 copy 5.png") no-repeat;
+            background-size: 100% 100% !important;
+        }
+    }
+   /deep/ .loadingbox .el-loading-mask {
+        background: rgba($color: #000000, $alpha: 0.1);
+    }
+</style>

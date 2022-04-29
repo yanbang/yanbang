@@ -1,0 +1,130 @@
+import request from '@/utils/request'
+
+const api = {
+
+    chnl: '/chnl/hallMiddleList',  //渠道营业厅
+    chnl5g: '/chnl/hall5GList', //渠道营业厅5G发展列表
+    chnlDetal: '/chnlDetail/hall/detail',
+    chnlDetal2: '/chnlDetail/hall/capacity',
+    chnlHallTrend: '/chnlDetail/hall/trend',
+    chnl_store_cnfx: '/general/serviceIntf/chnl_store_cnfx', //渠道门店产能
+    chnl_store_mon_trend: '/general/serviceIntf/chnl_store_mon_trend',
+    chl_5gdevelop_more: '/general/serviceIntf/chl_5gdevelop_more', //渠道门店总览-5G发展-更多-产品详情
+    chnl_store_zl_loss_movein: '/general/serviceIntf/chnl_store_zl_loss_movein',//渠道门店总览-移网质态发展-流失+携入
+    chnl_store_zl_sw_low: '/general/serviceIntf/chnl_store_zl_sw_low'
+}
+
+/**
+ * getChanelData func
+ * parameter: {
+ *     username: '',
+ *     password: '',
+ *     remember_me: true,
+ *     captcha: '12345'
+ * }
+ * @param parameter
+ * @returns {*}
+ */
+export function getChanelData(parameter) {
+    return request({
+        url: api.chnl,
+        method: 'post',
+        data: parameter
+    })
+}
+
+/**
+ * getChanel5gData func
+ * parameter:{
+  "timest": "20210221",
+  "eparchyCode": "1",
+  "areaCode": "1",
+  "gridId": "1",
+  "flag": "1"
+}
+ * @param parameter
+ * @returns {*}
+ */
+export function getChanel5gData(parameter) {
+    return request({
+        url: api.chnl5g,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function getChanelDetal(parameter) {
+    return request({
+        url: api.chnlDetal,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function getChanelDetal2(parameter) {
+    return request({
+        url: api.chnlDetal2,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function getChanelHallTrend(parameter) {
+    return request({
+        url: api.chnlHallTrend,
+        method: 'post',
+        data: parameter
+    })
+}
+
+// 渠道门店详情
+export function getChanelMD_detail(url, parameter) {
+    return request({
+        url: `/general/serviceIntf/${url}`,
+        method: 'post',
+        data: parameter
+    })
+}
+export function chnl_store_cnfx(parameter) {
+    return request({
+        url: api.chnl_store_cnfx,
+        method: 'post',
+        data: parameter
+    })
+}
+
+// 月去数据
+
+export function chnl_store_mon_trend(parameter) {
+    return request({
+        url: api.chnl_store_mon_trend,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function chl_5gdevelop_more(parameter) {
+    return request({
+        url: api.chl_5gdevelop_more,
+        method: 'post',
+        data: parameter
+    })
+}
+
+
+export function chnl_store_zl_loss_movein(parameter) {
+    return request({
+        url: api.chnl_store_zl_loss_movein,
+        method: 'post',
+        data: parameter
+    })
+}
+
+export function chnl_store_zl_sw_low(parameter) {
+    return request({
+        url: api.chnl_store_zl_sw_low,
+        method: 'post',
+        data: parameter
+    })
+}
+

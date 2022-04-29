@@ -1,0 +1,164 @@
+<template>
+  <div>
+    <div class='titles'>
+      <div class='titlesName'>{{title}}</div>
+    </div>
+
+    <el-table :data="ywfzlArr" :cell-style="{padding: '0'}" style="width: 100%">
+      <el-table-column property="dayNewName" width="150">
+      </el-table-column>
+      <el-table-column prop="dayNew" label="当日发展量">
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.dayNew }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="monNew" label="月累发展量">
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.monNew}}</span>
+        </template>
+      </el-table-column>
+    </el-table>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'classificationTable',
+  props: ['ywfzlArr'],
+  data() {
+    return {
+      //   finishCity: [{
+      //     title: '宽带',
+      //   }, {
+      //     title: '移网',
+      //   }, {
+      //     title: '公众创新产品',
+      //   }, {
+      //     title: '政企创新产品',
+      //   }, {
+      //     title: '物流卡套餐',
+      //   }, {
+      //     title: 'CPE套餐',
+      //   }],
+      title: '业务发展量'
+    }
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.titles {
+  height: 3.5rem;
+  background-image: url('../../assets/images/bigScreen/fullService/title.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.titlesName {
+  font-size: 22px;
+  margin-left: 30px;
+  font-family: 'MFBanHei';
+  color: #02f6ff;
+  line-height: 3.5rem;
+}
+/deep/ .el-table--border th {
+  border-bottom: none;
+}
+/deep/ .el-table--group,
+.el-table--border {
+  border: none;
+  border-right: none !important;
+}
+/deep/ .el-table--border th,
+.el-table--border td {
+  border-right: none !important;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th {
+  background: none !important;
+  background: url('../../assets/images/bigScreen/fullService/597bcdc505fa3.png') 50% 18px !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 12px !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  border-right: 0.5px solid #0a3d75 !important;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/ .el-table .cell {
+  color: #02f6ff !important;
+  font-size: 14px !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-dialog {
+  width: 66%;
+  background: transparent;
+  background-image: url('../../assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  /*background-repeat:no-repeat ;*/
+  /*background-size: cover;*/
+  min-height: 550px;
+}
+/deep/.el-icon-close:before {
+  content: none !important;
+}
+/deep/.el-dialog__headerbtn .el-dialog__close {
+  width: 35px;
+  height: 35px;
+  background-image: url('../../assets/images/bigScreen/close.png');
+  background-repeat: no-repeat;
+  margin: 14px 30px;
+}
+/deep/.el-dialog__title {
+  color: #02f6ff;
+  font-size: 24px;
+  width: 555px;
+  font-size: 24px;
+  font-family: PangMenZhengDao-3;
+  font-weight: 400;
+  background-image: url('../../assets/images/bigScreen/fullService/biaoti.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  margin-left: 30px;
+  display: block;
+}
+.titleSpan1 {
+  color: #fdfeff;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: 'DigifaceWide';
+  src: url('../../assets/fonts/digifaw.ttf');
+  display: block;
+}
+/deep/.el-dialog__title {
+  position: relative;
+  top: 18px;
+}
+</style>

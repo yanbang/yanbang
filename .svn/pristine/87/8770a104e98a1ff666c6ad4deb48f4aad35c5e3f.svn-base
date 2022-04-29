@@ -1,0 +1,291 @@
+<!--  -->
+<template>
+  <div class="p-relative">
+    <div class="echarts-title">
+      {{ mapDatas.selectName }}
+    </div>
+    <div id="echarts_map" style="height: 570px;"></div>
+    <div class="cityTitle text-right">
+      <span v-show="mapLevel != 1" @click="returnMap" class="returnmap" style="margin-left: 15px;"
+        ><span class="fa  fa-arrow-left"></span> 返回上一级</span
+      >
+    </div>
+  </div>
+</template>
+
+<script>
+var iframhost = ''
+
+var zhejiangmap = require('@/assets/echarts/EchartsMapjson/zhejiang.json') // 山西地图
+var cityMap = require('@/assets/echarts/gismap/china-main-city/china-main-city-map.js')
+import { mapState } from 'vuex'
+import echarts from 'echarts'
+var self = null
+export default {
+  props: ['height'],
+  data() {
+    var self = this
+    return {
+      mapDatas: {
+        provinceName: '浙江省',
+        cityName: '',
+        areaName: '',
+        level: '1',
+        selectName: '浙江省'
+      },
+      $echarts: '',
+      cityTitle: '浙江省',
+      mapLevel: 1,
+      mapChart: '',
+      echartsMapconfig: {
+        title: {
+          text: ' ',
+          subtext: ' ',
+          left: 'center',
+          show: false
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter(params) {
+            var res = params.name + '<br/>'
+            var myseries = self.echartsMapconfig.series
+            for (var i = 0; i < myseries.length; i++) {
+              for (var j = 0; j < myseries[i].data.length; j++) {
+                if (myseries[i].data[j].name == params.name) {
+                  res += myseries[i].name + ' : ' + myseries[i].data[j].value + '</br>'
+                }
+              }
+            }
+            return res
+          }
+        },
+        grid: {
+          left: '1%'
+        },
+        legend: {
+          show: true,
+          orient: 'vertical',
+          left: 'left',
+          data: ['宽带工单', '故障工单'],
+          textStyle: {
+            //图例文字的样式
+            color: '#00edef',
+            fontSize: 12
+          },
+          selected: {
+            宽带工单: true,
+            故障工单: false
+          }
+        },
+        visualMap: {
+          min: 10,
+          max: 10000,
+          left: 'left',
+          top: 'bottom',
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true,
+          inRange: {
+            color: ['#0385fe', '#ffffff']
+          },
+
+          textStyle: {
+            color: '#31b1fe'
+          }
+        },
+
+        series: [
+          {
+            name: '宽带工单',
+            type: 'map',
+            mapType: '浙江省',
+            roam: true, //是否开启鼠标缩放和地图拖动。默认不开启。如果只想要开启缩放或者拖动，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+            layoutCenter: ['10%', '10%'],
+            scaleLimit: {
+              min: 0.8,
+              max: 1.5
+            },
+            selectedMode: 'single',
+            //selectedMode: 'multiple',
+            label: {
+              normal: {
+                show: true
+              },
+              emphasis: {
+                show: true,
+                areacolor: '#000'
+              }
+            },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                color: '#000'
+              }
+            },
+            data: []
+          },
+
+          {
+            name: '故障工单',
+            type: 'map',
+            mapType: '浙江省',
+            roam: true, //是否开启鼠标缩放和地图拖动。默认不开启。如果只想要开启缩放或者拖动，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+            layoutCenter: ['10%', '10%'],
+            scaleLimit: {
+              min: 0.8,
+              max: 1.5
+            },
+            selectedMode: 'single',
+            label: {
+              normal: {
+                show: true
+              },
+              emphasis: {
+                show: true,
+                areacolor: '#000'
+              }
+            },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                color: '#000'
+              }
+            },
+            data: []
+          }
+        ]
+      },
+
+      mapName: ''
+    }
+  },
+  components: {},
+  mounted() {
+    self = this
+    this.$echarts = echarts
+    this.$echarts.registerMap('浙江省', zhejiangmap)
+
+    this.mapChart = this.$echarts.init(document.getElementById('echarts_map'), 'macarons')
+    this.mapName = '浙江省'
+    var mapChart = this.mapChart
+    mapChart.setOption(this.echartsMapconfig)
+    mapChart.on('click', function(params) {
+      // //debugger
+      if ((params.componentType = '"series"' && self.mapLevel == 1)) {
+        var cityCode = cityMap.default[params.name]
+        $.get(`/static/echarts/gismap/china-main-city/${cityCode}.json`).then(res => {
+          self.$echarts.registerMap(params.name, res)
+          self.echartsMapconfig.series[0].map = params.name
+          self.echartsMapconfig.series[0].layoutCenter = ['10%', '10%']
+          self.echartsMapconfig.series[0].data = []
+          mapChart.clear()
+          mapChart.setOption(self.echartsMapconfig)
+          self.cityTitle = params.name
+          self.mapLevel += 1
+          let mapDatas = {
+            provinceName: '浙江省',
+            cityName: params.name,
+            areaName: '',
+            level: self.mapLevel,
+            selectName: params.name
+          }
+          self.mapDatas = mapDatas
+          // self.$store.dispatch('changeCity', mapDatas)
+        })
+      } else {
+        let mapDatas = {
+          provinceName: '浙江省',
+          cityName: self.mapDatas.cityName,
+          areaName: params.name,
+          level: 3,
+          selectName: params.name
+        }
+        self.mapDatas = mapDatas
+        // self.$store.dispatch('changeCity', mapDatas)
+      }
+    })
+  },
+  watch: {
+    mapDatas: {
+      handler(data) {
+        this.$emit('changemap', data)
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed: {},
+  methods: {
+    Array_max(arr) {
+      return Math.max.apply(Math, arr)
+    },
+    renderEcahrtmap(data) {
+      var mapChart = this.mapChart
+      var valsarr = data.arrlist.map(item => {
+        return item.value
+      })
+      var maxnum = this.Array_max(valsarr) + 10
+      this.echartsMapconfig.visualMap.max = maxnum
+      this.echartsMapconfig.series[0].data = data.arrlist
+      this.echartsMapconfig.series[1].data = data.arrlist2
+
+      mapChart.clear()
+      mapChart.setOption(this.echartsMapconfig)
+    },
+    returnMap() {
+      // //debugger
+      var mapChart = this.mapChart
+      this.echartsMapconfig.series[0].map = '浙江省'
+      this.echartsMapconfig.series[0].layoutCenter = ['10%', '10%']
+      this.cityTitle = '浙江省'
+      this.mapLevel = 1
+      // this.echartsMapconfig.series[0].data = proviceDatas;
+      mapChart.clear()
+      mapChart.setOption(this.echartsMapconfig)
+      let mapDatas = {
+        provinceName: '浙江省',
+        cityName: '',
+        areaName: '',
+        level: 1,
+        selectName: '浙江省'
+      }
+      // //debugger
+      self.mapDatas = mapDatas
+      // this.$store.dispatch('changeCity', mapDatas)
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.echarts-title {
+  position: absolute;
+  color: #328be6;
+  font-size: 16px;
+  z-index: 10;
+  width: 80px;
+  text-align: center;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #328be6;
+  left: 210px;
+  top: 36px;
+}
+.cityTitle {
+  position: absolute;
+  top: 550px;
+  right: 20px;
+  line-height: 28px;
+  color: #888888;
+  font-size: 14px;
+}
+.returnmap {
+  cursor: pointer;
+}
+</style>

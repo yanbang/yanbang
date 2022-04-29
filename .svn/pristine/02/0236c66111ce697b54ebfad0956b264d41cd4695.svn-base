@@ -1,0 +1,249 @@
+<template>
+  <div class="header">
+    <div class="header-bg"></div>
+    <div class="back" @click="backToIndex()">
+      <div class="back-arrow" />
+      <div class="back-font" />
+    </div>
+    <div class="title">
+      <div class="bigTitle">山东联通数字可视化指挥舱</div>
+      <slot class="smallTitle" name="smallTitle" />
+    </div>
+    <div class="right">
+      <div>
+        <el-date-picker
+          v-model="date"
+          type="date"
+          placeholder="选择日期"
+          @change="changeDate"
+          :picker-options="pickerOptions0"
+        >
+        </el-date-picker>
+      </div>
+
+      <div class="line tl"></div>
+      <div class="line tr"></div>
+      <div class="line bl"></div>
+      <div class="line br"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { queryEparchy } from '@/api/bigscreen.js'
+
+export default {
+  props: {
+    show: Boolean,
+    isiframepage: Boolean
+  },
+  data() {
+    return {
+      date: '',
+      childValue: '',
+      pickerOptions0: {
+        disabledDate(time) {
+          return time.getTime() > Date.now() - 8.64e7
+        }
+      }
+    }
+  },
+  created() {
+    if (this.$route.query && this.$route.query.timest) {
+      var qtime =
+        this.$route.query.timest.substring(0, 4) +
+        '-' +
+        this.$route.query.timest.substring(4, 6) +
+        '-' +
+        this.$route.query.timest.substring(6, 8)
+      this.date = qtime
+    } else {
+      if (window.sessionStorage.getItem('selectTime')) {
+        let y = window.sessionStorage.getItem('selectTime').substring(0, 4)
+        let m = window.sessionStorage.getItem('selectTime').substring(4, 6)
+        let d = window.sessionStorage.getItem('selectTime').substring(6)
+        this.date = y + '-' + m + '-' + d
+      } else {
+        let aData = new Date()
+        aData.setDate(aData.getDate() - 2)
+        let y = aData.getFullYear()
+        let m = aData.getMonth() + 1
+        let d = aData.getDate()
+        this.date = y + '-' + m + '-' + d
+        let selectTime = y + this.addZero(m) + this.addZero(d)
+        window.sessionStorage.setItem('selectTime', selectTime)
+      }
+    }
+  },
+  mounted() {
+    // window.sessionStorage.setItem('selectTime',  this.date)
+    // this.$store.commit('resource/set_searchDate',  this.date);
+    if (!this.isiframepage) {
+      this.$parent.getDate(window.sessionStorage.getItem('selectTime'), 'init')
+    }
+  },
+  methods: {
+    addZero(s) {
+      return s < 10 ? '0' + s : s
+    },
+    // 返回引导页
+    backToIndex() {
+      if (this.isiframepage) {
+        var obj = { message: 'iframeClose' }
+        window.parent.postMessage(obj, '*')
+      } else {
+        this.$router.push({ path: '/bigscreen/index' })
+      }
+    },
+    changeDate(val) {
+      let d = new Date(val)
+      let year = d.getFullYear()
+      let Mos = d.getMonth() + 1
+      let Dates = d.getDate()
+      let youWant = year + '' + this.addZero(Mos) + '' + this.addZero(Dates)
+      // this.$emit('getChildValue',youWant.split('-').join(''))
+      //alert(youWant.split('-').join(''))
+      // //debugger
+      // var a = youWant.split("-").join("");
+      window.sessionStorage.setItem('selectTime', youWant)
+      this.$store.commit('resource/set_searchDate', youWant)
+      this.$parent.getDate(youWant)
+    },
+    addZero(s) {
+      return s < 10 ? '0' + s : s
+    }
+  },
+  watch: {}
+}
+</script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+/deep/ .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  margin-top: -10px;
+}
+.header {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  font-size: 16px;
+  .header-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 7.5rem;
+    z-index: 100;
+    background-image: url('~@/assets/images/bigScreen/header-bg.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  .back {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    top: 1.25rem;
+    left: 12%;
+    cursor: pointer;
+    z-index: 101;
+    .back-arrow {
+      margin-right: 0.6875rem;
+      width: 4.125rem;
+      height: 1.625rem;
+      background-image: url('~@/assets/images/bigScreen/header-back-arrow.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .back-font {
+      width: 2.5rem;
+      height: 0.84375rem;
+      background-image: url('~@/assets/images/bigScreen/header-back-font.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+  .title {
+    z-index: 99;
+    text-align: center;
+    margin-left: 0.9375rem;
+  }
+  .bigTitle {
+    font-size: 3rem;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    text-shadow: 2px 2px 9px #01153b;
+  }
+  .right {
+    width: 9.875rem;
+    height: 2rem;
+    line-height: 2rem;
+    background: rgba(0, 17, 64, 0.8);
+    font-size: 0.9375rem;
+    font-family: DigifaceWide;
+    font-weight: 400;
+    color: #ffffff;
+    position: absolute;
+    right: 1.5625rem;
+    top: 0.875rem;
+    text-align: center;
+    z-index: 101;
+    /deep/.el-input__inner {
+      background: none !important;
+      color: #ffffff;
+      border: none !important;
+    }
+    .line {
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      background: #00ffff;
+    }
+    .line::before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 2px;
+      height: 7px;
+      background: #00ffff;
+    }
+    .tl {
+      left: 0;
+      top: 0;
+    }
+    .tl::before {
+      left: 0;
+      top: 0;
+    }
+    .tr {
+      right: 0;
+      top: 0;
+    }
+    .tr::before {
+      top: 0;
+      right: 0;
+    }
+    .bl {
+      left: 0;
+      bottom: 0;
+    }
+    .bl::before {
+      left: 0;
+      bottom: 0;
+    }
+    .br {
+      right: 0;
+      bottom: 0;
+    }
+    .br::before {
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  /deep/.el-icon-date:before {
+    content: none !important;
+  }
+}
+</style>

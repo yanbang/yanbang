@@ -1,0 +1,78 @@
+import request from '@/utils/request'
+
+const api = {
+    serviceSyYzy: '/ZhySyCon/serviceSyYzy',
+    serviceSyGxjz: '/ZhySyCon/serviceSyGxjz',
+    serviceSyFwyj: '/ZhySyCon/serviceSyFwyj',
+    serviceSyZyxx: '/ZhySyCon/serviceSyZyxx',
+    serviceSyYsxx: '/ZhySyCon/serviceSyYsxx',
+    serviceSySgx: '/ZhySyCon/serviceSySgx',
+    serviceSyGlkh: '/ZhySyCon/serviceSyGlkh',
+    serviceSyZblb: '/ZhySyCon/serviceSyZblb', // 指标详情
+}
+
+var serviceApi = {
+
+
+    serviceSyZblb(parameter) {
+        return request({
+            url: api.serviceSyZblb,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceSyGlkh(parameter) {
+        return request({
+            url: api.serviceSyGlkh,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceSyYzy(parameter) {
+        return request({
+            url: api.serviceSyYzy,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+    serviceSyGxjz(parameter) {
+        return request({
+            url: api.serviceSyGxjz,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+    serviceSyFwyj(parameter) {
+        return request({
+            url: api.serviceSyFwyj,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceSyZyxx(parameter) {
+        return request({
+            url: api.serviceSyZyxx,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceSyYsxx(parameter) {
+        return request({
+            url: api.serviceSyYsxx,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceSySgx(parameter) {
+        return request({
+            url: api.serviceSySgx,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+}
+
+export default serviceApi

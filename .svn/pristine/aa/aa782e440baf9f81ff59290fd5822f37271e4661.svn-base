@@ -1,0 +1,185 @@
+<template>
+    <div class="borderbox">
+      <div class="user">
+        <div class="one">
+          {{fiveG[0].percentage}}%
+          <div class="up"></div>
+        </div>
+        <div class="two">{{fiveG[0].count}}个</div>
+        <div class="tip">{{fiveG[0].title}}</div>
+      </div>
+      <div class="traffic1">
+        <div class="one">
+          {{fiveG[1].percentage}}%
+          <div class="up"></div>
+        </div>
+        <div class="two"> {{fiveG[1].count}}个</div>
+        <div class="tip">{{fiveG[1].title}}</div>
+      </div>
+      <div class="traffic2">
+        <div class="one">
+          {{fiveG[2].percentage}}%
+          <div class="up"></div>
+        </div>
+        <div class="two">{{fiveG[2].count}}个</div>
+        <div class="tip">{{fiveG[2].title}}</div>
+      </div>
+    </div>
+ 
+</template>
+
+<script>
+export default {
+  name: "Vue2EchartsMasterPiedemo",
+
+  data() {
+    return {};
+  },
+  props:["fiveG"],
+
+  mounted() {
+   
+  },
+
+  methods: {
+    
+  },
+};
+</script>
+
+<style lang="less" scoped>
+.borderbox {
+  width: 350px;
+  //   background-color: red;
+  height: 300px;
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+
+  .user {
+    position: relative;
+    top: 140px;
+    left: 20px;
+    width: 60px;
+    height: 40px;
+    background: url("../../assets/img/用户数.png") no-repeat;
+    background-size: 100% 100%;
+    .one {
+      font-size: 20px;
+      font-weight: 700;
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      color: #35fffa;
+      .up {
+        position: absolute;
+        top: -5px;
+        left: 50px;
+        width: 30px;
+        height: 30px;
+        background: url("../../assets/img/用户数-箭头.png") no-repeat;
+        background-size: 100% 100%;
+      }
+      
+    }
+    .two {
+      position: absolute;
+      top: -9px;
+      left: 20px;
+      color: #35fffa;
+    }
+    .tip{
+        width: 120px;
+        height: 30px;
+        font-size: 14px;
+        position: absolute;
+        top:50px;
+        left: -17px;
+        color: #fff;
+    }
+  }
+  .traffic1 {
+    position: relative;
+    top: 140px;
+    left: 20px;
+    width: 60px;
+    height: 40px;
+    background: url("../../assets/img/话务量.png") no-repeat;
+    background-size: 100% 100%;
+    .one {
+      font-size: 20px;
+      font-weight: 700;
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      color: #d68732;
+      .up {
+        position: absolute;
+        top: -5px;
+        left: 60px;
+        width: 30px;
+        height: 30px;
+        background: url("../../assets/img/话务量-箭头.png") no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+    .two {
+      width: 60px;
+      position: absolute;
+      top: -9px;
+      left: 10px;
+      color: #d68732;
+    }
+     .tip{
+        width: 120px;
+        height: 30px;
+        font-size: 14px;
+        position: absolute;
+        top:50px;
+        left: -5px;
+        color: #fff;
+    }
+  }
+  .traffic2 {
+    position: relative;
+    top: 140px;
+    left: 20px;
+    width: 60px;
+    height: 40px;
+    background: url("../../assets/img/流量.png") no-repeat;
+    background-size: 100% 100%;
+    .one {
+      font-size: 20px;
+      font-weight: 700;
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      color: #67ef6e;
+      .up {
+        position: absolute;
+        top: -5px;
+        left: 50px;
+        width: 30px;
+        height: 30px;
+        background: url("../../assets/img/流量-箭头.png") no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+    .two {
+      position: absolute;
+      top: -9px;
+      left: 20px;
+      color: #67ef6e;
+    }
+     .tip{
+        width: 120px;
+        height: 30px;
+        font-size: 14px;
+        position: absolute;
+        top:50px;
+        left:5px;
+        color: #fff;
+    }
+  }
+}
+</style>

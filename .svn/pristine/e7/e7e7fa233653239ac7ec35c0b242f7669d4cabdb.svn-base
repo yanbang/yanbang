@@ -1,0 +1,924 @@
+<template>
+  <div class="wrap">
+    <!-- 头部 -->
+    <div class="head"></div>
+
+    <!-- 主体部分 -->
+    <div class="tbody">
+      <!-- 左侧部分 -->
+      <div class="left-part">
+        <!-- 左侧部分第一块 -->
+        <div class="left-section section1">
+          <!-- 左侧部分第一块标题 -->
+          <div class="l-s-title title1">
+            <span>商务楼宇现状</span>
+          </div>
+          <!-- 左侧部分第一块主体 -->
+          <div class="l-s-body1">
+            <div class="left-top-control">
+              <Pie-chart class="pie-chart"></Pie-chart>
+            </div>
+            <div class="pie-info">
+              <p>楼宇数量</p>
+              <p>1,048 A</p>
+            </div>
+            <div class="left-top-control">
+              <div class="box01">
+                <div>总覆盖数:</div>
+                <div>9133</div>
+              </div>
+              <div class="box01">
+                <div>A类覆盖数:</div>
+                <div>2256</div>
+              </div>
+              <div class="box01">
+                <div>B类覆盖数:</div>
+                <div>4332</div>
+              </div>
+              <div class="box01">
+                <div>C/D类覆盖数:</div>
+                <div>2545</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 左侧部分第二块 -->
+        <div class="left-section section2">
+          <!-- 左侧部分第二块标题 -->
+          <div class="l-s-title title2">
+            <span>楼宇规划建设</span>
+          </div>
+          <div class="l-s-body2">
+            <div class="body2-title">
+              <p>本月新开楼宇数量: <span>888</span></p>
+            </div>
+            <div class="chart1-info">
+              <div>21年规划覆盖楼宇</div>
+              <div>1197</div>
+            </div>
+            <div class="chart2-info">
+              <p>资源录入数/录入率</p>
+              <p>888</p>
+            </div>
+            <div class="chart1-info-prop">
+              <div class="prop-control">
+                <p>已建楼宇数</p>
+                <p>1172</p>
+              </div>
+              <div class="prop-control">
+                <p>在建楼宇数</p>
+                <p>25</p>
+              </div>
+              <div class="prop-control">
+                <p>未完成</p>
+                <p>888</p>
+              </div>
+            </div>
+            <div>
+              <Pro-Chart class="pro-chart"></Pro-Chart>
+            </div>
+            <div>
+              <Gress-Chart class="gress-chart"></Gress-Chart>
+            </div>
+          </div>
+        </div>
+        <!-- 左侧部分第三块 -->
+        <div class="left-section section3">
+          <!-- 左侧部分第三块标题 -->
+          <div class="l-s-title title3">
+            <span>楼宇稽核</span>
+          </div>
+          <div class="l-s-body3">
+            <div class="body3-control">
+              <div><p>全部楼宇</p></div>
+              <div>
+                <p>9382</p>
+                <p>经纬度坐标合格率</p>
+              </div>
+              <div>
+                <p>8389</p>
+                <p>楼宇资源覆盖准确率</p>
+              </div>
+            </div>
+            <div class="body3-control control2">
+              <div><p>商务楼宇</p></div>
+              <div>
+                <p>6572</p>
+                <p>经纬度坐标合格率</p>
+              </div>
+              <div>
+                <p>6047</p>
+                <p>楼宇资源覆盖准确率</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 中间部分 -->
+      <div class="middle-part">
+        <!-- 中间第一块 -->
+        <div class="mid1">
+          <div>政企交付</div>
+          <div>网络能力</div>
+          <div>楼宇场景</div>
+          <div>政企运营</div>
+          <div>重点客户</div>
+        </div>
+        <div class="m-s-body1">
+          <div class="traffic">
+            <img src="../assets/lyImages/red.png" alt="" />
+            <img src="../assets/lyImages/green.png" alt="" />
+            <img src="../assets/lyImages/yellow.png" alt="" />
+          </div>
+          <div class="map-info">
+            <div class="map-info-control">3日通楼宇数/楼宇总数</div>
+            <div class="map-info-control">有产楼宇数/新增订单数</div>
+          </div>
+          <div class="map-info-bottom">
+            <div class="info-control">3日通楼宇数</div>
+            <div>|</div>
+            <div class="info-control">楼宇总数</div>
+          </div>
+          <div class="map">
+               <img src="../assets/lyImages/map.png" alt="" />
+          </div>
+        </div>
+        <!-- 中间第二块 -->
+        <div class="m-s-body2">
+          <Bar-Chart></Bar-Chart>
+        </div>
+      </div>
+      <!-- 右侧部分 -->
+      <div class="right-part">
+        <!-- 右侧第一块 -->
+        <div class="right-section section01">
+          <div class="l-s-title title4">
+            <span>楼宇运营</span>
+            <div class="time">
+              <div>月</div>
+              <div>日</div>
+            </div>
+          </div>
+          <div class="r-s-body1">
+            <div class="topInfo">效能Top榜</div>
+            <div class="body1-content">
+              <div class="content-control">
+                <p>8888幢</p>
+                <p>楼宇总数</p>
+                <img src="../assets/lyImages/yylogo1.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>8260幢</p>
+                <p>有产能楼宇数</p>
+                <img src="../assets/lyImages/yylogo2.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>90%</p>
+                <p>有产能楼宇占比</p>
+                <div class="logo3">
+                  <img src="../assets/lyImages/yylogo3.png" alt="" />
+                </div>
+              </div>
+              <div class="content-control">
+                <p>700幢</p>
+                <p>新覆盖楼宇数</p>
+                <img src="../assets/lyImages/yylogo1.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>660幢</p>
+                <p>楼宇数</p>
+                <img src="../assets/lyImages/yylogo2.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>94%</p>
+                <p>有产能楼宇占比</p>
+                <div class="logo3">
+                  <img src="../assets/lyImages/yylogo3.png" alt="" />
+                </div>
+              </div>
+              <div class="content-control">
+                <p>560幢</p>
+                <p>3日通楼宇数</p>
+                <img src="../assets/lyImages/yylogo1.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>560幢</p>
+                <p>有产能楼宇数</p>
+                <img src="../assets/lyImages/yylogo2.png" alt="" />
+              </div>
+              <div class="content-control">
+                <p>99%</p>
+                <p>有产能楼宇占比</p>
+                <div class="logo3">
+                  <img src="../assets/lyImages/yylogo3.png" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 右侧第二块 -->
+        <div class="right-section section02">
+          <div class="l-s-title title5">
+            <span>楼宇订单</span>
+          </div>
+          <div class="r-s-body2">
+            <div class="topInfo">订单Top榜</div>
+            <div class="body2-content">
+              <div class="content-control2">
+                <p>60</p>
+                <p>订单总数</p>
+                <img src="../assets/lyImages/dd1.png" alt="" />
+              </div>
+              <div class="content-control2">
+                <p>15</p>
+                <p>固话订单数</p>
+                <img src="../assets/lyImages/dd2.png" alt="" />
+              </div>
+              <div class="content-control2">
+                <p>15</p>
+                <p>宽带订单数</p>
+                <img src="../assets/lyImages/dd2.png" alt="" />
+              </div>
+              <div class="content-control2">
+                <p>35</p>
+                <p>电路订单数</p>
+                <img src="../assets/lyImages/dd2.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 右侧第三块 -->
+        <div class="right-section section03">
+          <div class="l-s-title title6">
+            <span>楼宇故障</span>
+          </div>
+          <div class="r-s-body3">
+            <div class="body3-info">
+              <div class="info3-control">故障次数:<span>78</span></div>
+              <div class="info3-control">已处理故障数:<span>75</span></div>
+            </div>
+            <div class="body3-content">
+              <div class="content-control3">
+                <p>18</p>
+                <p>累计发生故障楼宇数</p>
+                <img src="../assets/lyImages/gz.png" alt="" />
+              </div>
+              <div class="content-control3">
+                <p>1</p>
+                <p>未处理故障楼宇数</p>
+                <img src="../assets/lyImages/gz.png" alt="" />
+              </div>
+              <div class="content-control3">
+                <p>0.2%</p>
+                <p>当前故障楼宇占比</p>
+                <img src="../assets/lyImages/gz.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import PieChart from "../components/Notice.vue";
+import BarChart from "../components/btEchart.vue";
+import ProChart from "../components/proChart";
+import GressChart from "../components/gressChart";
+
+export default {
+  components: {
+    PieChart,
+    BarChart,
+    ProChart,
+    GressChart,
+  },
+};
+</script>
+
+<style scoped>
+.wrap {
+  width: 100%;
+  height: 1080px;
+  background: url(../assets/lyImages/background.png) no-repeat;
+  background-size: 100% 100%;
+}
+.head {
+  width: 100%;
+  height: 61px;
+  background-image: url("../assets/lyImages/head.png");
+  background-repeat: no-repeat;
+}
+.tbody {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+/* 左侧部分 */
+.left-part {
+  width: 24%;
+  height: 1000px;
+  margin-left: 2%;
+  margin-top:1.3%;
+}
+
+.left-part .section1 {
+  width: 100%;
+  height: 277px;
+
+  margin: 20px auto;
+}
+.left-part .section2 {
+  width: 100%;
+  height: 356px;
+
+  margin: 20px auto;
+}
+.left-part .section3 {
+  width: 100%;
+  height: 263px;
+  /* background-color: #ccc; */
+  margin: 20px auto;
+}
+.l-s-title {
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  margin: 0;
+  color: cyan;
+}
+.title1 {
+  background: url("../assets/lyImages/lefthd1.png") no-repeat;
+  background-size: 100% 100%;
+}
+.title2 {
+  background: url("../assets/lyImages/lefthd2.png") no-repeat;
+  background-size: 100% 100%;
+}
+.title3 {
+  background: url("../assets/lyImages/lefthd3.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.left-section,
+.l-s-title span {
+  margin-left: 4%;
+}
+.l-s-body1 {
+  width: 100%;
+  height: 221px;
+  margin: auto;
+  margin-top: 15px;
+  background: url("../assets/lyImages/left1bg.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+.box01 {
+  margin: 8px auto;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+.box01 div:nth-child(1) {
+  width: 140px;
+  font-size: 18px;
+}
+.box01:nth-child(1) {
+  color: #fc9a1d;
+}
+.box01:nth-child(2),
+.box01:nth-child(3),
+.box01:nth-child(4) {
+  color: cyan;
+}
+.box01:nth-child(1) div:nth-child(2) {
+  font-weight: bold;
+}
+.box01 div:nth-child(2) {
+  font-size: 22px;
+}
+.l-s-body2 {
+  width: 100%;
+  height: 302px;
+  margin: auto;
+  margin-top: 15px;
+  background: url("../assets/lyImages/left2bg.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.body2-title {
+  display: inline-block;
+  width: 216px;
+  height: 31px;
+  margin-top: 20px;
+  margin-left: 15px;
+  text-align: center;
+  background: url("../assets/lyImages/jsbg.png") no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  line-height: 31px;
+}
+.body2-title p {
+  margin: 0;
+}
+.body2-title span {
+  font-size: 20px;
+  font-weight: bold;
+  color: #f7e308;
+}
+.l-s-body3 {
+  width: 100%;
+  height: 208px;
+  margin: auto;
+  margin-top: 15px;
+  background: url("../assets/lyImages/left3bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.body3-control {
+  width: 100%;
+  height: 105px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.body3-control p {
+  margin: 0;
+}
+.body3-control div:nth-child(1) {
+  width: 89px;
+  height: 59px;
+  margin-right: 20px;
+  background: url("../assets/lyImages/jhbg1.png") no-repeat;
+  background-size: 100% 100%;
+  font-size: 20px;
+  color: #c7ba4b;
+}
+.body3-control div:nth-child(1) p {
+  width: 50%;
+  margin: 2px auto;
+}
+.body3-control div:nth-child(2) {
+  width: 142px;
+  height: 59px;
+  background: url("../assets/lyImages/jhbg2.png") no-repeat;
+  background-size: 100% 100%;
+  font-size: 14px;
+  color: #239a84;
+  text-align: center;
+}
+.body3-control div:nth-child(2) p:nth-child(1) {
+  font-size: 18px;
+  margin-top: 5px;
+}
+.body3-control div:nth-child(3) {
+  width: 160px;
+  height: 59px;
+  background: url("../assets/lyImages/jhbg3.png") no-repeat;
+  background-size: 100% 100%;
+  font-size: 14px;
+  color: #fcdb00;
+  text-align: center;
+}
+.body3-control div:nth-child(3) p:nth-child(1) {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+/* 中间部分 */
+.middle-part {
+  width: 44%;
+  height: 1000px;
+  margin-top: 0.5%;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+.m-s-body1 {
+  width: 100%;
+  height: 654px;
+  background: url("../assets/lyImages/middle1bg.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.m-s-body2 {
+  width: 100%;
+  height: 263px;
+  margin-top: 10px;
+  background: url("../assets/lyImages/middle2bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.map-info {
+  width: 224px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 55px;
+  left: 25px;
+}
+.map-info-control:nth-child(1) {
+  width: 100%;
+  height: 25px;
+  background: url("../assets/lyImages/mapbg1.png") no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  color: cyan;
+}
+.map-info-control:nth-child(2) {
+  width: 100%;
+  height: 25px;
+  background: url("../assets/lyImages/mapbg2.png") no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  color: #acacac;
+}
+.map-info-bottom {
+  width: 180px;
+  height: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  color: cyan;
+}
+.traffic {
+  width: 140px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  top: 55px;
+  right: 60px;
+}
+
+/* 右侧部分 */
+.right-part {
+  width: 24%;
+  height: 1000px;
+  /* margin-right:2%; */
+  margin-top:1.3%;
+}
+.right-part .section01 {
+  width: 100%;
+  height: 390px;
+  margin: 20px auto;
+}
+.right-part .section02 {
+  width: 100%;
+  height: 222px;
+  margin: 20px auto;
+}
+.right-part .section03 {
+  width: 100%;
+  height: 285px;
+  margin: 20px auto;
+}
+.title4 {
+  background: url("../assets/lyImages/righthd1.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.title5 {
+  background: url("../assets/lyImages/righthd2.png") no-repeat;
+  background-size: 100% 100%;
+}
+.title6 {
+  background: url("../assets/lyImages/righthd3.png") no-repeat;
+  background-size: 100% 100%;
+}
+.r-s-body1 {
+  width: 100%;
+  height: 330px;
+  margin-top: 15px;
+  background: url("../assets/lyImages/right1bg.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.r-s-body2 {
+  width: 100%;
+  height: 167px;
+  margin-top: 15px;
+  background: url("../assets/lyImages/right2bg.png") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+.r-s-body3 {
+  width: 100%;
+  height: 230px;
+  margin-top: 15px;
+  background: url("../assets/lyImages/right3bg.png") no-repeat;
+  background-size: 100% 100%;
+}
+.time {
+  width: 200px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+.time div:nth-child(1) {
+  width: 84px;
+  height: 29px;
+  background: url("../assets/lyImages/monthbg.png") no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+}
+.time div:nth-child(2) {
+  width: 84px;
+  height: 29px;
+  background: url("../assets/lyImages/daybg.png") no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+}
+.topInfo {
+  color: #7e935e;
+  font-size: 18px;
+  padding: 4px 6px;
+  position: absolute;
+  right: 90px;
+  border-bottom: 2px solid cyan;
+  margin-bottom: 20px;
+}
+.body1-content {
+  width: 100%;
+  height: 280px;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.content-control {
+  width: 30%;
+}
+.content-control p {
+  margin: 0;
+}
+.content-control p:nth-child(1) {
+  font-size: 18px;
+  font-weight: bold;
+}
+.content-control p:nth-child(2) {
+  font-size: 14px;
+}
+.logo3 {
+  height: 42px;
+}
+.logo3 img {
+  margin-top: 15px;
+}
+.content-control:nth-child(1),
+.content-control:nth-child(4),
+.content-control:nth-child(7) p {
+  color: #fcdb00;
+}
+.content-control:nth-child(2),
+.content-control:nth-child(5),
+.content-control:nth-child(8) p {
+  color: #1c7b62;
+}
+.content-control:nth-child(3),
+.content-control:nth-child(6),
+.content-control:nth-child(9) p {
+  color: #c7ba4b;
+}
+.body2-content {
+  width: 100%;
+  height: 120px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.content-control2 {
+  width: 24%;
+}
+.content-control2 p {
+  margin: 0;
+}
+.content-control2 p:nth-child(1) {
+  color: #62f2ff;
+  font-size: 22px;
+  font-weight: bold;
+}
+.content-control2 p:nth-child(2) {
+  color: #b4eef9;
+  font-size: 18px;
+}
+.body3-content {
+  width: 100%;
+  height: 130px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+}
+.content-control3 p {
+  margin: 0;
+  color: #fcdb00;
+}
+.content-control3 p:nth-child(1) {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+.body3-info {
+  width: 100%;
+  height: 40px;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+  color: cyan;
+}
+.body3-info span {
+  font-size: 22px;
+  color: #f59936;
+  font-weight: bold;
+  margin-left: 6px;
+}
+.body3-info div:nth-child(1) {
+  width: 160px;
+  height: 40px;
+  background: url("../assets/lyImages/gzbg1.png") no-repeat;
+  background-size: 100% 100%;
+  line-height: 40px;
+}
+.body3-info div:nth-child(2) {
+  width: 160px;
+  height: 40px;
+  background: url("../assets/lyImages/gzbg2.png") no-repeat;
+  background-size: 100% 100%;
+  line-height: 40px;
+}
+.chart1-info {
+  width: 100%;
+  height: 25px;
+  position: absolute;
+  top: 80px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  line-height: 25px;
+}
+.chart1-info div:nth-child(1) {
+  color: #b4eef9;
+}
+.chart1-info div:nth-child(2) {
+  color: #eedd07;
+  font-weight: bold;
+  font-size: 22px;
+}
+.pro-chart {
+  position: absolute;
+  top: 90px;
+}
+.gress-chart {
+  position: absolute;
+  top: 180px;
+}
+.chart1-info-prop {
+  width: 80%;
+  height: 61px;
+  position: absolute;
+  top: 130px;
+  left: 60px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* justify-content: space-around; */
+  align-items: center;
+  text-align: center;
+}
+.chart1-info-prop p {
+  margin: 0;
+  color: #b4eef9;
+}
+.prop-control p:nth-child(1) {
+  font-size: 17px;
+}
+.prop-control p:nth-child(2) {
+  font-size: 22px;
+  font-weight: bold;
+}
+.prop-control:nth-child(1) {
+  width: 159px;
+  background: url("../assets/lyImages/chartbg1.png") no-repeat;
+  background-size: 100% 100%;
+}
+.prop-control:nth-child(2) {
+  width: 129px;
+  background: url("../assets/lyImages/chartbg2.png") no-repeat;
+  background-size: 100% 100%;
+}
+.prop-control:nth-child(3) {
+  width: 107px;
+  background: url("../assets/lyImages/chartbg3.png") no-repeat;
+  background-size: 100% 100%;
+}
+.chart2-info {
+  width: 150px;
+  height: 61px;
+  position: absolute;
+  top: 230px;
+  left: 60px;
+  background: url("../assets/lyImages/chartbg4.png") no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+}
+.chart2-info p {
+  margin: 0;
+  color: #b4eef9;
+}
+.chart2-info p:nth-child(1) {
+  font-size: 17px;
+}
+.chart2-info p:nth-child(2) {
+  font-size: 22px;
+  font-weight: bold;
+}
+.pie-info {
+  width: 73px;
+  height: 38px;
+  background: url("../assets/lyImages/piebg.png") no-repeat;
+  background-size: 100% 100%;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+  left: 140px;
+  top: 140px;
+}
+.pie-info p {
+  margin: 0;
+}
+.mid1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  height: 44px;
+  margin: auto;
+  background: url("../assets/lyImages/titbg.png") no-repeat;
+  background-size: 100% 100%;
+  line-height: 44px;
+  text-align: center;
+  font-size: 30px;
+  color: cyan;
+}
+.mid1 div {
+  height: 44px;
+}
+.mid1 div:nth-child(1),
+.mid1 div:nth-child(5) {
+  font-size: 16px;
+  font-family: "PangMenZhengDao";
+  color: rgba(0, 255, 255, 0.302);
+}
+.mid1 div:nth-child(2),
+.mid1 div:nth-child(4) {
+  font-size: 20px;
+  font-family: "PangMenZhengDao";
+  color: rgba(0, 255, 255, 0.4);
+}
+.mid1 div:nth-child(3) {
+  font-size: 24px;
+  font-family: "PangMenZhengDao";
+  color: rgb(0, 255, 255);
+}
+.map{
+    position:absolute;
+    left:170px;
+    top:60px;
+}
+</style>

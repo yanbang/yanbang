@@ -1,0 +1,1488 @@
+<template>
+    <div>
+        <syscreen>
+            <tzgkheader></tzgkheader>
+            <div class="content" style="width:1920px;height:1080px">
+                <el-row style="width:1920px;height:1080px">
+                    <el-col :span="6" style="height:1080px">
+                        <el-row style="height:300px">
+                            <hengxian class="hengxtu" :text="'人才队伍'"></hengxian>
+                            <div class="zuoyi">
+                                <shuwentu :sz=rcdwzrs :dw='""'></shuwentu>
+                                <shuwentu :sz=rcdwszhrc :dw='""' :wz='"数字化人才"' :srcname="'/kcrc/szhrc.png'"></shuwentu>
+                                <shuwentu :sz='5' :wz='"人工总投入占收比"' :srcname="'/kcrc/ygxn.png'"></shuwentu>
+                            </div>
+                        </el-row>
+                        <el-row style="height:530px">
+                            <hengxian class="zuoerhx" :text="'队伍结构'"></hengxian>
+                            <div class="zuoeryiechart" ref="mgtzuoeryi"></div>
+                            <div class="zuoererechart">
+                                <div class="zuoererzuo">
+                                    <swxwsj></swxwsj>
+                                    <div  class="zererz" ref="zhuztuzererz"></div>
+                                </div>
+                                <div class="zuoereryou">
+                                    <swxwsj :wz='"队伍年龄结构"' :wzer="'队伍平均年龄：'" :sz='"28"' :ys='"rgb(152, 247, 247)"' :szer='"5%↓"'></swxwsj>
+                                    <div  class="zerery" ref="zhuztuzerery"></div>
+                                </div>
+                            </div>
+                        </el-row>
+                        <el-row style="height:250px">
+                            <hengxian class="zuosanhx" :text="'人才梯队'"></hengxian>
+                            <div class="zuosan">
+                                <stwxsw :sz=rctdrsb></stwxsw>
+                                <stwxsw :wz='"C级专家"' :sz=rctdrsc></stwxsw>
+                                <stwxsw :wz='"D级专家"' :sz=rctdrsd></stwxsw>
+                            </div>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="12" style="height:1080px">
+                        <el-row class="zjbj" style="height:1080px">
+                            <div class="zsrpdt">
+                                <p>建设目标：引进年轻优才，打造适应转型和未来变化的学习型队伍，向IT/DT复合型人才转型</p>
+                                <div class="zsrdt" ref="zrsmap"></div>
+                            </div>
+                            <div class="zztsgchart">
+                                <!-- <p class="zztsgchartp"><span>网络线队伍规划-</span>年智网工程师目标</p> -->
+                                <p class="zztsgchartp"><span>网络线队伍规划</span></p>
+                                <div  class="zztsange" ref="zhuztusange"></div>
+                            </div>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="6" style="height:1080px">
+                        <el-row style="height:390px">
+                            <hengxian class="youyihx" :text="'揭榜挂帅'"></hengxian>
+                            <div class="youyibg">
+                                <el-table :data="xmlbresult" :cell-style="cellstyle" :header-cell-style="headerstyle">
+                                    <el-table-column  v-for="item in tableData" :key="item.key" :prop="item.porp" :label="item.label" align="left" :width="item.kuandu">
+                                    </el-table-column>
+                                </el-table>
+                            </div>
+                        </el-row>
+                        <el-row style="height:360px">
+                            <hengxian class="youerhx" :text="'创新成果'"></hengxian>
+                            <div class="youerwt">
+                                <wtww :srcdz='"/kcrc/zl.png"' :sz=zljnrs :szer=zlqnrs></wtww>
+                                <wtww :wz='"软著"' :sz=rzjnrs :szer=rzqnrs :srcdz='"/kcrc/rz.png"'></wtww>
+                                <wtwww :srcdz='"/kcrc/lj.png"' :wz='"竞赛"' :sz=ljyidj :szer=ljerdj :szsan=ljsandj></wtwww>
+                                <wtwww :wz='"创新"' :sz=cxyidj :szer=cxerdj :szsan=cxsandj :srcdz='"/kcrc/cx.png"'></wtwww>
+                            </div>
+                            <div class="youerechart">
+                                <p class="youerp">专利趋势</p>
+                                <div class="zhuztu" ref="youerzhuztu"></div>
+                            </div>
+                        </el-row>
+                        <!-- <el-row style="height:330px;background:red"> -->
+                        <el-row style="height:330px">
+                            <hengxian class="yousanhx" :text="'竞赛风采'"></hengxian>
+                            <div class="yousanps">
+                                <!-- <p class="yousanp">{{lbtwz}}</p> -->
+                                <el-carousel height="180px" indicator-position="outside">
+                                    <!-- <el-carousel-item v-for="item in 4" :key="item"> -->
+                                    <el-carousel-item v-for="item in lbtresult" :key="item.item">
+                                        <p class="yousanp">{{item.name}}</p>
+                                        <img :src="item.base64" style="width:465px;height:180px">
+                                    </el-carousel-item>
+                                    <!-- <el-carousel-item v-for="item in 1" :key="item.id">
+                                        <img :src="lbttp" style="width:465px;height:150px">
+                                    </el-carousel-item> -->
+                                </el-carousel>
+                            </div>
+                        </el-row>
+                    </el-col>
+                </el-row>
+            </div>
+        </syscreen>
+    </div>
+</template>
+ 
+<script>
+    import syscreen from '@/components/resource_visual/syscreen'
+    import tzgkheader from '@/components/resource_visual/tzgkheader'
+    import hengxian from '@/components/resource_visual/hengxian'
+    import shuwentu from '@/components/resource_visual/shuwentu'
+    import stwxsw from '@/components/resource_visual/stwxsw'
+    import wtww from '@/components/resource_visual/wtww'
+    import wtwww from '@/components/resource_visual/wtwww'
+    import swxwsj from '@/components/resource_visual/swxwsj'
+
+    import echarts from 'echarts'    //低版本写法
+    import zrsmapdata from '@/assets/js/map/zhejiang.json'
+    import axios from 'axios'
+    export default {
+        data() {
+            return {
+                tableData: [
+                    { label: "序号", porp: "id" ,kuandu:'30'},
+                    { label: "项目名称", porp: "projectName" ,kuandu:'350'},
+                    { label: "状态", porp: "projectState" ,kuandu:'50'},
+                ],
+                chartInstance: null,
+                maprshu:[
+                    { name: '杭州市', value: 9 },
+                    { name: '宁波市', value: 12 },
+                    { name: '温州市', value: 12 },
+                    { name: '嘉兴市', value: 12 },
+                    { name: '湖州市', value: 14 },
+                    { name: '绍兴市', value: 15 },
+                    { name: '金华市', value: 16 },
+                    { name: '衢州市', value: 18 },
+                    { name: '舟山市', value: 18 },
+                    { name: '台州市', value: 19 },
+                    { name: '丽水市', value: 21 },
+                ],
+                mapdtzb:{
+                    // 湖州市分公司: [120.102398,30.867198],
+                    湖州市分公司: [120,30.8],
+                    // 台州市分公司: [121.428599,28.661378],
+                    台州市分公司: [121.4,28.6],
+                    // 嘉兴市分公司: [120.750865,30.762653],
+                    嘉兴市分公司: [120.7,30.5],
+                    // 杭州市分公司: [120.153576,30.287459],
+                    杭州市分公司: [119.3,29.8],
+                    宁波市分公司: [121.549792,29.868388],
+                    // 丽水市分公司: [119.921786,28.451993],
+                    丽水市分公司: [119.5,28.2],
+                    // 金华市分公司: [119.649506,29.089524],
+                    金华市分公司: [119.9,29.1],
+                    // 绍兴市分公司: [120.582112,29.997117],
+                    绍兴市分公司: [120.5,29.6],
+                    // 舟山市分公司: [122.106863,30.016028],
+                    舟山市分公司: [122.2,30.3],
+                    // 衢州市分公司: [118.87263,28.941708],
+                    衢州市分公司: [118.87263,28.8],
+                    温州市分公司: [120.672111,28.000575]
+                },
+                // 合并地图坐标和请求得到的数据最终结果
+                mapdataresult:[],
+                sdttldata:['总人数','智网人才','数字化人才'],
+                zztchartInstance: null,
+                zztxaxisdata:['2018','2019','2020','2021','2022'],
+                // zztyaxisdata:[80,100,130,150,30],
+                zztyaxisdata:[
+                    {
+                        value: 80,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(9,109,225)'
+                        }
+                    },
+                    {
+                        value: 100,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(60,219,245)'
+                        }
+                    },
+                    {
+                        value: 130,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(9,109,225)'
+                        }
+                    },
+                    {
+                        value: 150,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(60,219,245)'
+                        }
+                    },
+                    {
+                        value: 30,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(9,109,225)'
+                        }
+                    },
+                ],
+                zztsgchartInstance: null,
+                zztsgxaxisdata:['2016','2017','2018','2019','2020','2021'],
+                zztsgyaxiszrsdata:[1282,1282,1282,1282,1282,1282],
+                zztsgyaxiszrsxjrsdata:[40,40,40,40,40,40],
+                zztsgyaxiszrsscrsdata:[20,20,20,20,20,20],
+                zerzztInstance: null,
+                // zerzztxaxisd:[16.8,38.5],
+                zerzztxaxisd:[
+                    {
+                        value: 16.8,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(60,219,245)'
+                        }
+                    },
+                    {
+                        value: 38.5,
+                        itemStyle: {//给每个柱子一个颜色
+                            color: 'rgb(9,109,225)'
+                        }
+                    },
+                ],
+                zerzztyaxisd:['研究生及以上','本科及以上'],
+                zeryzztInstance: null,
+                zeryzztxaxisd:['20-29','30-39','40-49','30-39'],
+                zeryzztyaxisd:[14.74,39.31,32.92,13.03],
+                zerymgtInstance: null,
+                mgtdata:[
+                    { value: 600, name: '智网工程师',color: 'rgb(50,118,239)' },
+                    { value: 500, name: '云网工程师',color: 'rgb(40,223,219)' },
+                    { value: 450, name: '创新工程师',color: 'rgb(6,155,125)' },
+                    { value: 550, name: '支撑工程师',color: 'rgb(252,154,29)' },
+                    { value: 350, name: '5G创新专职',color: 'rgb(212,51,154)' },
+                    { value: 400, name: '智家工程师',color: 'rgb(255,90,97)' }
+                ],
+                // 人才梯队总数据
+                rctdresult:null,
+                rctdrsb:null,//人数
+                rctdrsc:null,//人数
+                rctdrsd:null,//人数
+                // 专利和软著总数据
+                zlhrzresult:null,
+                zljnrs:null,//专利今年人数
+                zlqnrs:null,//专利去年人数
+                rzjnrs:null,//软著今年人数
+                rzqnrs:null,//软著去年人数
+
+                // 奖项总数据
+                jxresult:null,
+                ljyidj:null,//劳技一等奖
+                ljerdj:null,//劳技二等奖
+                ljsandj:null,//劳技三等奖
+                cxyidj:null,//创新一等奖
+                cxerdj:null,//创新二等奖
+                cxsandj:null,//创新三等奖
+
+                // 轮播图总数据
+                lbtresult:null,
+
+                // 专利趋势总数据
+                zlqstresult:null,
+                zlqstxaxis:null,//专利趋势x轴
+                zlqstyaxis:null,//专利趋势y轴
+
+                // 年龄结构总数据
+                nljgresult:null,
+                nljgxaxis:null,//年龄结构x轴
+                nljgyaxis:null,//年龄结构y轴
+
+                // 学历结构总数据
+                xljgresult:null,
+                xljgxaxis:null,//学历结构x轴
+                xljgyaxis:null,//学历结构y轴
+
+                // 项目列表总数据
+                xmlbresult:null,
+                xmlbxh:null,//项目列表序号
+                xmlbxmmc:null,//项目列表项目名称
+                xmlbzt:null,//项目列表状态
+
+                // 人才队伍总数据
+                rcdwresult:null,
+                rcdwzrs:null,//人才队伍总人数
+                rcdwszhrc:null,//人才队伍数字化人才
+                // xmlbzt:null,//人才队伍人工总投入占收比
+
+                // 队伍结构总数据
+                dwjgresult:null,
+
+                // 地图总数据
+                dtresult:null,
+                dtzrs:[],//地图 总人数    
+                dtzwrc:[],//地图智网人才
+                dtszhrc:[],//地图数字化人才
+            }
+        },
+        components: {
+            syscreen,tzgkheader,hengxian,shuwentu,stwxsw,wtww,wtwww,swxwsj
+        },
+        mounted () {
+            
+            this.zztinitCharts();
+            this.zztsginitCharts();
+            this.zerzztinit();
+            this.zeryzztinit();
+            this.zerymgtinit();
+            // 获取人才梯队信息
+            this.getrctdData()
+            // 获取专利和软著的数量
+            this.getzlhrzData()
+            // 获取奖项信息
+            this.getjxData()
+            // 获取轮播图片
+            this.getlbtData()
+            // 获取专利趋势
+            this.getzlqsData()
+            // 获取年龄结构信息
+            this.getnljgData()
+            // 获取学历结构信息
+            this.getxljgData()
+            // 获取项目列表
+            this.getxmlbData()
+            // 获取人才队伍
+            this.getrcdwData()
+            // 获取队伍结构
+            this.getdwjgData()
+            // 先获取地图数据
+            this.getdtData()
+            //再执行地图
+            this.initCharts();
+        },
+        methods: {
+            cellstyle() {
+                return{
+                    padding:'6px 0',
+                    // color: 'red',
+                }
+            },
+            headerstyle() {
+                return{
+                    padding:'6px 0',
+                    color: 'rgb(152, 247, 247)',
+                    textAlign:'center'
+                }
+            },
+            initCharts() {
+              this.chartInstance=echarts.init(this.$refs.zrsmap)
+              echarts.registerMap('zrenshu',zrsmapdata)
+                var resmapzrs = [];
+                for (let i = 0; i < this.dtzrs.length; i++) {
+                    let geoCoord = this.mapdtzb[this.dtzrs[i].name];
+                    if (geoCoord) {
+                        resmapzrs.push({
+                            name: this.dtzrs[i].name,
+                            value: geoCoord.concat(this.dtzrs[i].value)
+                        });
+                    }
+                }
+                var resmapzwrc = [];
+                for (let i = 0; i < this.dtzwrc.length; i++) {
+                    let geoCoord = this.mapdtzb[this.dtzwrc[i].name];
+                    if (geoCoord) {
+                    resmapzwrc.push({
+                        name: this.dtzwrc[i].name,
+                        value: geoCoord.concat(this.dtzwrc[i].value)
+                    });
+                    }
+                }
+                let resmapszhrc = [];
+                for (let i = 0; i < this.dtszhrc.length; i++) {
+                    let geoCoord = this.mapdtzb[this.dtszhrc[i].name];
+                    if (geoCoord) {
+                    resmapszhrc.push({
+                        name: this.dtszhrc[i].name,
+                        value: geoCoord.concat(this.dtszhrc[i].value)
+                    });
+                    }
+                }
+                //数字化人才 合并地图坐标和请求回来的数据
+
+                const initOption={
+                    geo:{
+                        type:'map',
+                        map:'zrenshu',
+                        layoutCenter: ['50%', '50%'], //地图位置 代表在最中间
+                        layoutSize: '100%', //地图大小，此处设置为100%
+                        emphasis:{	//鼠标放到每块地图上 地图的颜色
+                            itemStyle:{
+                                color:'#00ffff'
+                            }
+                        },
+                        regions: [      //对不同的区块进行着色
+				            {
+				              name: '杭州市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#ffffff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '宁波市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#d3eaff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '温州市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#d3eaff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '嘉兴市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#d3eaff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '湖州市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#42a4fe'
+				                  }
+				              }
+                            },
+				            {
+				              name: '绍兴市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#0385fe'
+				                  }
+				              }
+                            },
+				            {
+				              name: '金华市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#d3eaff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '衢州市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#62b3fe'
+				                  }
+				              }
+                            },
+				            {
+				              name: '舟山市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#62b3fe'
+				                  }
+				              }
+                            },
+				            {
+				              name: '台州市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#d3eaff'
+				                  }
+				              }
+                            },
+				            {
+				              name: '丽水市', //区块名称
+				              itemStyle: {
+				                  normal: {
+				                      areaColor: '#359dfe'
+				                  }
+				              }
+                            },
+                        ]
+                        
+                    },
+
+                    legend:{
+                        orient: 'vertical',
+				        selectedMode: 'single',
+                         selected: {
+                            '智网人才': false,
+                            '数字化人才': false,
+                        },
+                        data:this.sdttldata,
+                        left:750,
+                        top:0,
+                        icon:'circle',
+                        textStyle:{
+                            color:'#fff',
+                            fontSize:16,
+                        }
+                    },
+                    series: [
+                        {
+                            
+                            name:'总人数',
+                            // geoIndex: 0,
+                            type: 'effectScatter',
+                            coordinateSystem: 'geo',
+                            // data:this.zrssdtdata,
+                            data:resmapzrs,
+                            symbolSize:3,//红点大小 默认 10 
+                            label: {
+                                normal: {
+                                    formatter:function(item){//散点图上面的文字样式
+                                        let a = '总人数';
+                                        // let b = item.value[2]+'人';
+                                        let b = item.value[2];
+                                        let c = '人';
+                                        // 样式在前 同一个样式用一个 {}
+                                        return '{a|'+a+'}'+'{b|'+b+'}'+'{a|'+c+'}';
+                                    }, 
+                                    rich: {
+                                        a: {
+                                            color: '#a7e7ff',
+                                            fontSize:16,
+                                        },
+                                        b: {
+                                            color: '#fff',
+                                            fontSize:16, 
+                                        }
+                                    },   
+                                    position:'top',
+                                    show: true,
+                                    backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                    width:108,//红点上面文字整体宽度
+                                    height:26,//红点上面文字整体高度
+                                    lineHeight:26,//红点上面文字整体垂直居中
+                                    // verticalAlign:'middle',
+                                    align:'center'//红点上面文字整体水平居中
+                                },
+                            },
+                           
+                        },
+                        {
+                            
+                            name:'智网人才',
+                            // geoIndex: 0,
+                            type: 'effectScatter',
+                            coordinateSystem: 'geo',
+                            // data:this.zrssdtdata,
+                            data:resmapzwrc,
+                            symbolSize:3,//红点大小 默认 10 
+                            label: {
+                                normal: {
+                                    formatter:function(item){//散点图上面的文字样式
+                                        let a = '智网人才';
+                                        // let b = item.value[2]+'人';
+                                        let b = item.value[2];
+                                        let c = '人';
+                                        // 样式在前 同一个样式用一个 {}
+                                        return '{a|'+a+'}'+'{b|'+b+'}'+'{a|'+c+'}';
+                                    }, 
+                                    rich: {
+                                        a: {
+                                            color: '#a7e7ff',
+                                            fontSize:16,
+                                        },
+                                        b: {
+                                            color: '#fff',
+                                            fontSize:16, 
+                                        }
+                                    },   
+                                    position:'top',
+                                    show: true,
+                                    backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                    width:108,//红点上面文字整体宽度
+                                    height:26,//红点上面文字整体高度
+                                    lineHeight:26,//红点上面文字整体垂直居中
+                                    // verticalAlign:'middle',
+                                    align:'center'//红点上面文字整体水平居中
+                                },
+                            },
+                           
+                        },
+                        {
+                            name:'数字化人才',
+                            // geoIndex: 0,
+                            type: 'effectScatter',
+                            coordinateSystem: 'geo',
+                            // data:this.zrssdtdata,
+                            data:resmapszhrc,
+                            symbolSize:3,//红点大小 默认 10 
+                            label: {
+                                normal: {
+                                    formatter:function(item){//散点图上面的文字样式
+                                        let a = '数字化人才';
+                                        // let b = item.value[2]+'人';
+                                        let b = item.value[2];
+                                        let c = '人';
+                                        // 样式在前 同一个样式用一个 {}
+                                        return '{a|'+a+'}'+'{b|'+b+'}'+'{a|'+c+'}';
+                                    }, 
+                                    rich: {
+                                        a: {
+                                            color: '#a7e7ff',
+                                            fontSize:16,
+                                        },
+                                        b: {
+                                            color: '#fff',
+                                            fontSize:16, 
+                                        }
+                                    },   
+                                    position:'top',
+                                    show: true,
+                                    backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                    width:108,//红点上面文字整体宽度
+                                    height:26,//红点上面文字整体高度
+                                    lineHeight:26,//红点上面文字整体垂直居中
+                                    // verticalAlign:'middle',
+                                    align:'center'//红点上面文字整体水平居中
+                                },
+                            },
+                           
+                        },
+                    ],
+                }
+                this.chartInstance.setOption(initOption)
+            },
+            zztinitCharts() {
+               this.zztchartInstance=echarts.init(this.$refs.youerzhuztu)
+               this.zztupdateChart()
+            },
+            zztupdateChart() {
+                const zztoption={
+                     tooltip: {
+                        trigger: 'axis',
+                     },
+                    grid:{
+                        left:'0',
+                        top:'20px',
+                        right:'0',
+                        bottom:'0',
+                        containLabel:true,
+                    },
+                    xAxis:{
+                        type:'category',
+                        // data:this.zztxaxisdata,
+                        data:this.zlqstxaxis,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
+
+                    },
+                    yAxis:{
+                        min: 0,//从 0 开始 
+                        max: 12,//180 结束
+                        interval: 4,//中间间隔60 最终显示 0 60 120 等
+                        "splitLine": {
+                            "show": false
+                        },
+                        type:'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    series:[
+                        {
+                            type:'bar',
+                            // data:this.zztyaxisdata,
+                            data:this.zlqstyaxis,
+                            barWidth:25,
+                            itemStyle:{
+                                barBorderRadius:[8,8,0,0],
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                    offset: 0,
+                                    color: "#01EAED"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    color: "#02C4DD"
+                                    },
+                                    {
+                                    offset: 1,
+                                    color: "#029ED9"
+                                    }
+                                ])
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                color:'#fff'
+                            },
+                        }
+                    ],
+                }
+                this.zztchartInstance.setOption(zztoption)
+            },
+            zztsginitCharts() {
+               this.zztsgchartInstance=echarts.init(this.$refs.zhuztusange)
+               this.zztsgupdateChart()
+            },
+            zztsgupdateChart() {
+                const zztsgoption={
+                    tooltip: {
+                        trigger: 'axis',
+                     },
+                    grid:{
+                        left:'0',
+                        top:'20px',
+                        right:'0',
+                        bottom:'0',
+                        containLabel:true
+                    },
+                    legend: {
+                        data: ['总人数', '新进人数', '输出人数'],
+                        left:600,
+                        top:0,
+                        // icon:'circle',
+                        textStyle:{
+                            color:'#fff'
+                        }
+                    },
+                    xAxis:{
+                        type:'category',
+                        data:this.zztsgxaxisdata,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#1da2d4'
+                            }
+                        },
+
+                    },
+                    yAxis:{
+                        "splitLine": {
+                            "show": false
+                        },
+                        type:'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#1da2d4'
+                            }
+                        }
+                    },
+                    series:[
+                        {
+                            name:'总人数',
+                            type:'bar',
+                            data:this.zztsgyaxiszrsdata,
+                            // data:this.mapdataresult,
+                            barWidth:25,
+                            itemStyle:{//设置每个柱子的颜色和圆角
+                                barBorderRadius:[8,8,0,0],
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                    offset: 0,
+                                    // color: "#01EAED"
+                                    color: "rgb(1,102,164)"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    // color: "#02C4DD"
+                                    color: "rgb(1,155,247)"
+                                    },
+                                    {
+                                    offset: 1,
+                                    // color: "#029ED9"
+                                    color: "rgb(1,160,255)"
+                                    }
+                                ])
+                            }
+                        },
+                        {
+                            name:'新进人数',
+                            type:'bar',
+                            data:this.zztsgyaxiszrsxjrsdata,
+                            barWidth:25,
+                            itemStyle:{
+                                barBorderRadius:[8,8,0,0],
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                    offset: 0,
+                                    // color: "#01EAED"
+                                    color: "rgb(41,140,161)"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    // color: "#02C4DD"
+                                    color: "rgb(67,217,242)"
+                                    },
+                                    {
+                                    offset: 1,
+                                    // color: "#029ED9"
+                                    color: "rgb(68,221,246)"
+                                    }
+                                ])
+                            }
+                        },
+                        { 
+                            name:'输出人数',
+                            type:'bar',
+                            data:this.zztsgyaxiszrsscrsdata,
+                            barWidth:25,
+                            itemStyle:{//设置每个柱子的颜色和圆角
+                                barBorderRadius:[8,8,0,0],
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                    offset: 0,
+                                    // color: "#01EAED"
+                                    color: "rgb(136,134,44)"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    // color: "#02C4DD"
+                                    color: "rgb(184,180,47)"
+                                    },
+                                    {
+                                    offset: 1,
+                                    // color: "#029ED9"
+                                    color: "rgb(225,215,49)"
+                                    }
+                                ])
+                            }
+                        },
+                    ],
+                }
+                this.zztsgchartInstance.setOption(zztsgoption)
+            },
+            zerzztinit() {
+               this.zerzztInstance=echarts.init(this.$refs.zhuztuzererz)
+               this.zerzztupdate()
+            },
+            zerzztupdate() {
+                const zerzztoption={
+                    tooltip: {
+                        trigger: 'axis',
+                     },
+                    grid:{
+                        left:'-25',
+                        top:'5',
+                        right:'15',
+                        bottom:'0',
+                        containLabel:true
+                    },
+                    xAxis:{
+                        min: 0,//从 0 开始 
+                        max: 100,//100 结束
+                        interval: 25,//中间间隔25 最终显示 0 25 50 等
+                        "splitLine": {
+                            "show": false
+                        },
+                        type:'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            },
+                            formatter:'{value}%',//带单位
+                        },
+                        
+
+                        axisTick: {
+                            //刻度线消失
+                            show: false
+                        },
+                    },
+                    yAxis:{
+                        type:'category',
+                        axisLine:{
+                            lineStyle:{
+                                color:"#fff",
+                                width:0,//y轴消失
+                            }
+                        },
+                        axisTick: {
+                            //刻度线消失
+                            show: false
+                        },
+                        // data:this.zerzztyaxisd,
+                        data:this.xljgyaxis,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            },
+                            // 实现Y轴数据 显示在柱状图上面
+                            verticalAlign: 'bottom',  
+                            align:'left',
+                            // 调整文字上右下左
+                            padding: [0,-80,6,5],
+                            // 实现Y轴数据 显示在柱状图上面
+                        },
+                    },
+                    series:[
+                        {
+                            type:'bar',
+                            // data:this.zerzztxaxisd,
+                            data:this.xljgxaxis,
+                            barWidth:6,
+                            itemStyle:{
+                                barBorderRadius:[0,8,8,0],
+                                color:new echarts.graphic.LinearGradient(0,0,1,0,[{
+                                    offset: 0,
+                                    color: "#01EAED"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    color: "#02C4DD"
+                                    },
+                                    {
+                                    offset: 1,
+                                    color: "#029ED9"
+                                    }
+                                ])
+                            },
+                            label: {
+                                show: true,
+                                position: 'right',
+                                // position: [0,-20],
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                formatter:'{c}%',//请求回来的数据带单位
+                            },
+                        }
+                    ],
+                }
+                this.zerzztInstance.setOption(zerzztoption)
+            },
+            zeryzztinit() {
+               this.zeryzztInstance=echarts.init(this.$refs.zhuztuzerery)
+               this.zeryzztupdate()
+            },
+            zeryzztupdate() {
+                const zyztoption={
+                    tooltip: {
+                        trigger: 'axis',
+                     },
+                    grid:{
+                        // height:'88%',//控制整个图表的高度
+                        left:'0',
+                        top:'20px',
+                        right:'10',
+                        bottom:'0',
+                        containLabel:true
+                    },
+                    xAxis:{
+                        name: '岁',//坐标轴右侧文字
+                        nameTextStyle: {//坐标轴右侧文字样式
+                            padding: [0, 0, 0, -20]    // 四个数字分别为上右下左与原位置距离
+                        },
+                        type:'category',
+                        
+                        // data:this.zeryzztxaxisd,
+                        data:this.nljgxaxis,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#1ea7da'
+                            },
+                            
+                        },
+
+                    },
+                    yAxis:{
+                        min: 0,//从 0 开始 
+                        max: 100,//100 结束
+                        interval: 25,//中间间隔25 最终显示 0 25 50 等
+                        "splitLine": {
+                            "show": false
+                        },
+                        type:'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            },
+                            formatter:'{value}%',//带单位
+                        }
+                    },
+                    series:[
+                        {
+                            type:'bar',
+                            // data:this.zeryzztyaxisd,
+                            data:this.nljgyaxis,
+                            barWidth:25,
+                            itemStyle:{
+                                barBorderRadius:[8,8,0,0],
+                                color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                    offset: 0,
+                                    color: "#01EAED"
+                                    },
+                                    {
+                                    offset: 0.5,
+                                    color: "#02C4DD"
+                                    },
+                                    {
+                                    offset: 1,
+                                    color: "#029ED9"
+                                    }
+                                ])
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                color:'#fff'
+                            },
+                        }
+                    ],
+                }
+                this.zeryzztInstance.setOption(zyztoption)
+            },
+            zerymgtinit() {
+               this.zerymgtInstance=echarts.init(this.$refs.mgtzuoeryi)
+               this.zerymgtupdate()
+            },
+            zerymgtupdate() {
+                const zymgtoption={
+                    tooltip: {
+                        position: [250, 70],
+                        trigger: 'item',
+                        // formatter: "{b} <br/>人数{c}<br/>认证率{d}%<br/>",
+                        formatter:(params)=>{//像css 那样更改样式
+                            // 鼠标放上去 才会打印 
+                            console.log('para',params)
+                            // return '<div style="text-align:center;width:160px;height:150px;color:#fff;font-size:18px;background:gray">'+params.data.name+'<br/><p style="margin:0;margin-top:20px;color:rgb(112,187,245);font-size:18px">人数&nbsp&nbsp<span style="color:#fff;font-size:18px">'+params.data.value+'</span>人</p><br/><p style="margin:0;margin-top:-10px;color:rgb(112,187,245);font-size:18px">认证率<span style="color:#fff;font-size:18px">'+params.data.renzlv+'</span>%</p><br/><p style="margin:0;margin-top:-10px;color:rgb(112,187,245);font-size:18px">占比&nbsp&nbsp<span style="color:#fff;font-size:18px">'+params.data.zhanbi+'</span>%</p></div>'
+
+                            // 给提示框加背景 必须使用 反单引 和 require
+                            return `<div style="text-align:center;width:180px;height:150px;color:#fff;font-size:18px;background:url(${require("@/assets/zj/navigation/kcrc/mgtyc.png")}) no-repeat center center"><p style="height:23px;line-height:23px;margin:0;background:#154a92">`+params.data.name+`</p><br/><p style="margin:0;margin-top:0px;color:rgb(112,187,245);font-size:18px">人数&nbsp&nbsp<span style="color:#fff;font-size:18px">`+params.data.renshu+`</span>人</p><br/><p style="margin:0;margin-top:-10px;color:rgb(112,187,245);font-size:18px">认证率<span style="color:#fff;font-size:18px">`+params.data.renzlv+`</span>%</p><br/><p style="margin:0;margin-top:-10px;color:rgb(112,187,245);font-size:18px">占比&nbsp&nbsp<span style="color:#fff;font-size:18px">`+params.data.zhanbi+`</span>%</p></div>`
+                        },
+                        backgroundColor:'transparent'//给提示框加背景，先让背景色变透明
+                    },
+                    legend: {
+                        top: 'top',
+                        textStyle: {
+                            color: '#fff'
+                        },
+                    },
+                    series: [
+                        {
+                            // name: 'mgt',
+                            type: 'pie',
+                          color:["#5b68cc","#82d267","#f9c942","#f75764","#6ac1e1","#29a96c","#f77c48","#a354b9"],
+
+                          radius: [20, 80],//控制饼图中间圆圈大小的
+                            center: ['100', '150'],
+                            // roseType: 'area',
+                            itemStyle: {
+                                borderRadius: 4
+                            },
+                            // data: this.mgtdata,
+                            data: this.dwjgresult,
+                            label: {
+                                show: false
+                            },
+                            emphasis: {//鼠标放上去，触手出现
+                                label: {
+                                show: true
+                                }
+                            },
+                        }
+                    ]
+                }
+                this.zerymgtInstance.setOption(zymgtoption)
+                //页面加载完 默认出现提示框  
+                this.zerymgtInstance.dispatchAction({
+                    type: 'showTip',//提示框出现
+                    seriesIndex: 0,//哪一个 series
+                    dataIndex: 0,//哪一个 data
+                });
+                //页面加载完 默认出现触手  
+                this.zerymgtInstance.dispatchAction({
+                    type: 'highlight',//触手出现
+                    seriesIndex: 0,//哪一个 series
+                    dataIndex: 0,//哪一个 data
+                });
+                var jztzpie=this.zerymgtInstance//此行 必有  否则 下面函数里面拿不到
+                this.zerymgtInstance.on('mouseover', function(e) {//鼠标放上去事件
+                    //当检测到鼠标悬停事件，默认的提示框消失
+                    jztzpie.dispatchAction({
+                        type: 'hideTip',
+                        seriesIndex: 0,
+                        dataIndex: 0,
+                    });
+                    //当检测到鼠标悬停事件，默认的触手消失
+                    jztzpie.dispatchAction({
+                        type: 'downplay',
+                        seriesIndex: 0,
+                        dataIndex: 0,
+                    });
+                }) 
+                //检测鼠标移出整个图表后显示之前默认的那块  因为mouseout 对showTip没有生效，所以改成了globalout
+                this.zerymgtInstance.on('globalout', function(e) {
+                    //当检测到鼠标移出后，默认的提示框出现
+                    jztzpie.dispatchAction({
+                        type: 'showTip',
+                        seriesIndex: 0,
+                        dataIndex: 0,
+                    });
+                    //当检测到鼠标移出后，默认的触手出现
+                    jztzpie.dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: 0,
+                        dataIndex: 0,
+                    });
+                });
+            },
+            // 获取人才梯队信息
+            async getrctdData() {
+                const {data:axrctdb}=await axios.get('/api/personnel/getTalentEchelon')
+                this.rctdresult=axrctdb.rows
+                // console.log('人才梯队',this.rctdresult)
+                const rctdrs=this.rctdresult.map((item)=>{
+                    return item.num
+                })
+                this.rctdrsb=rctdrs[0]
+                this.rctdrsc=rctdrs[1]
+                this.rctdrsd=rctdrs[2]
+                // console.log('人才梯队人数',this.rctdrs)
+            },
+            // 获取专利和软著的数量
+            async getzlhrzData() {
+                const {data:axzlhrz}=await axios.get('/api/personnel/getPatentAndSoftNum')
+                this.zlhrzresult=axzlhrz.rows
+                // console.log('专利和软著',this.zlhrzresult)
+                const jnsl=this.zlhrzresult.map((item)=>{
+                    return item.tNum
+                })
+                const qnsl=this.zlhrzresult.map((item)=>{
+                    return item.lNum
+                })
+                this.zljnrs=jnsl[0]
+                this.zlqnrs=qnsl[0]
+                this.rzjnrs=jnsl[1]
+                this.rzqnrs=qnsl[1]
+                
+            },
+            // 获取奖项信息
+            async getjxData() {
+                const {data:axjx}=await axios.get('/api/personnel/getInnovateNum')
+                this.jxresult=axjx.rows
+                // console.log('奖项信息',this.jxresult)
+                const ydjsl=this.jxresult.map((item)=>{
+                    return item.firstPrizeNum
+                })
+                const edjsl=this.jxresult.map((item)=>{
+                    return item.secondPrizeNum
+                })
+                const sdjsl=this.jxresult.map((item)=>{
+                    return item.thirdPrizeNum
+                })
+                this.ljyidj=ydjsl[0]
+                this.ljerdj=edjsl[0]
+                this.ljsandj=sdjsl[0]
+                this.cxyidj=ydjsl[1]
+                this.cxerdj=edjsl[1]
+                this.cxsandj=sdjsl[1]
+                
+            },
+            // 获取轮播图片
+            async getlbtData() {
+                const {data:axlbt}=await axios.get('/api/personnel/getPictureList')
+                console.log('轮播',axlbt)
+                this.lbtresult=axlbt.rows
+            },
+            // 获取专利趋势
+            async getzlqsData() {
+                const {data:axzlqs}=await axios.get('/api/personnel/getPatentTrends')
+                this.zlqstresult=axzlqs.rows
+                console.log('专利趋势',this.zlqstresult)
+                
+                const zlqstnian=this.zlqstresult.map((item)=>{
+                    return item.year
+                })
+                const zlqstshuzi=this.zlqstresult.map((item)=>{
+                    return item.num
+                })
+                this.zlqstxaxis=zlqstnian
+                this.zlqstyaxis=zlqstshuzi
+                this.zztupdateChart()
+            },
+            // 获取年龄结构信息
+            async getnljgData() {
+                const {data:axnljg}=await axios.get('/api/personnel/getAgeInfo')
+                this.nljgresult=axnljg.rows
+                // console.log('年龄结构',this.nljgresult)
+                
+                const nljgsuishu=this.nljgresult.map((item)=>{
+                    return item.name
+                })
+                const nljgbfb=this.nljgresult.map((item)=>{
+                    return item.proportion
+                })
+                this.nljgxaxis=nljgsuishu
+                this.nljgyaxis=nljgbfb
+                this.zeryzztupdate()
+            },
+            // 获取学历结构信息
+            async getxljgData() {
+                const {data:axxljg}=await axios.get('/api/personnel/getEducationInfo')
+                this.xljgresult=axxljg.rows
+                
+                const xljgbfb=this.xljgresult.map((item)=>{
+                    return item.proportion
+                })
+                const xljgwz=this.xljgresult.map((item)=>{
+                    return item.name
+                })
+                this.xljgxaxis=xljgbfb
+                this.xljgyaxis=xljgwz
+                this.zerzztupdate()
+            },
+            // 获取项目列表
+            async getxmlbData() {
+                const {data:axxmlb}=await axios.get('/api/personnel/getProjectList')
+                this.xmlbresult=axxmlb.rows
+                
+                const xmlbdyil=this.xmlbresult.map((item)=>{
+                    return item.id
+                })
+                const xmlbderl=this.xmlbresult.map((item)=>{
+                    return item.projectName
+                })
+                const xmlbdsanl=this.xmlbresult.map((item)=>{
+                    return item.projectState
+                })
+                this.xmlbxh=xmlbdyil
+                this.xmlbxmmc=xmlbderl
+                this.xmlbzt=xmlbdsanl
+            },
+            // 获取人才队伍
+            async getrcdwData() {
+                const {data:axrcdw}=await axios.get('/api/personnel/getTalentTeam')
+                this.rcdwresult=axrcdw.data
+                // console.log('人才队伍',axrcdw)
+                this.rcdwzrs=this.rcdwresult.total
+                this.rcdwszhrc=this.rcdwresult.patentTrends
+                
+            },
+            // 获取队伍结构
+            async getdwjgData() {
+                const {data:axdwjg}=await axios.get('/api/personnel/getTeamConstruct')
+                console.log('队伍结构',axdwjg)
+                this.dwjgresult=axdwjg.rows.map(item=>{
+                    return {
+                        // value:item.num,
+                        value:item.shanXingNum,
+                        renshu:item.num,
+                        // value:item.proportion,
+                        // value:item.acthenticRate,
+                        name:item.name,
+                        zhanbi:item.proportion,
+                        // zhanbi:item.num,
+                        renzlv:item.acthenticRate,
+                    }
+                })
+                console.log('队伍结构拼接',this.dwjgresult)
+                this.zerymgtupdate()
+                
+            },
+            // 获取地图数据
+            async getdtData() {
+                const {data:axdt}=await axios.get('/api/personnel/getMapArea')
+                this.dtresult=axdt.rows
+                const dtname=this.dtresult.map((item)=>{
+                    return item.name
+                })
+                const dtdyil=this.dtresult.map((item)=>{
+                    return item.total
+                })
+                const dtdyilpjsz=dtname.map((item,index)=>{
+                    return {//总人数
+                        name: item,
+                        value:dtdyil[index]  
+                    }
+                })
+                const dtderl=this.dtresult.map((item)=>{
+                    return item.num2
+                })
+                const dtderlpjsz=dtname.map((item,index)=>{
+                    return {// 智网人才
+                        name: item,
+                        value:dtderl[index]  
+                    }
+                })
+
+                const dtdsanl=this.dtresult.map((item)=>{
+                    return item.num
+                })
+                const dtdsanlpjsz=dtname.map((item,index)=>{
+                    return {//数字化人才
+                        name: item,
+                        value:dtdsanl[index]  
+                    }
+                })
+
+                this.dtzrs=dtdyilpjsz
+                this.dtzwrc=dtderlpjsz
+                this.dtszhrc=dtdsanlpjsz
+                // console.log('拼接22',this.dtzrs)
+                this.initCharts()//必须执行
+            },
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    p{
+        margin: 0;
+    }
+    .content{
+        background: url('~@/assets/zj/bg_zj1.png') no-repeat 100% 100%;
+        z-index: -1;
+    }
+    .hengxtu,.youyihx{
+        margin-top: 125px;
+    }
+    .zuoyi{
+        display: flex;
+        justify-content: space-around;
+    }
+    .zuosan{
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+    .youerwt{
+        width: 465px;
+        height: 180px;
+        margin-left: 10px;
+        display: flex;
+        justify-content: space-around;
+    }
+    .youerechart{
+        width: 465px;
+        height: 210px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    .youerechart>.youerp{
+        width: 265px;
+        height: 24px;
+        color:#fff;
+        font-size: 18px;
+        background: rgb(12, 59, 119);
+    }
+    .youerechart>.zhuztu{
+        width: 465px;
+        // height: 185px;
+        height: 100px;
+        // background: red;
+    }
+    .yousanps{
+        width: 465px;
+        height: 205px;
+        margin-left: 10px;
+    }
+    .yousanp{
+        color: rgb(152, 247, 247);
+        font-size: 14px;
+        margin: 5px 0 5px 0;
+    }
+//   .el-carousel__item:nth-child(2n) {
+//     background: url('~@/assets/zj/navigation/kcrc/lbt.png') no-repeat;
+//     background-size: 100% 100%;
+//   }
+//   .el-carousel__item:nth-child(2n+1) {
+//      background-color: orange;
+//   }
+    .youyibg{
+        width: 460px;
+        height: 220px;
+        margin-left: 10px;
+        color: rgb(152, 247, 247);   
+        // background: red;
+      overflow: hidden;
+    }
+    /deep/ .el-table__body{
+        border-collapse: separate;
+        border-spacing:0 2px;
+    }
+    /deep/ .el-table tr {
+     background-color: transparent !important;
+    }
+    // 修改element-ui的table 在鼠标悬停hover时的高亮颜色
+    /deep/ .el-table tbody tr:hover>td { 
+        background-color:gray!important
+    }
+  /deep/ .el-table th {
+    background-color: transparent !important;
+    border-bottom: 1px solid #5078fc;
+    color: #fefefe;
+  }
+  /deep/ .el-table,
+  .el-table__expanded-cell {
+    background-color: transparent;
+  }
+  /deep/ .el-table--enable-row-transition .el-table__body td,
+  /deep/.el-table .cell {
+    background-color: transparent;
+    color: rgba(255,255,255,0.7);
+    border: none;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  /deep/.el-table th>.cell {
+    color:rgba(254,254,254,1);
+    font-weight: 700;
+  }
+  .el-table::before {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0px;
+  }
+    .zjbj{
+        margin-top: 180px;
+        margin-left: 30px;
+        background: url('~@/assets/zj/navigation/kcrc/zhongbj.png') no-repeat;
+        background-size: 900px 800px;
+    }
+  .zsrpdt{
+    width: 880px;
+    height: 540px;
+    margin: 10px;
+  }
+  .zsrpdt>p{
+    margin: 0;
+    width: 880px;
+    background: rgb(0, 30, 58);
+    color: rgb(152, 247, 247);  
+    text-align: center;
+    font-size: 18px;
+    line-height: 18px;
+  }
+  .zsrdt{
+    width: 880px;
+    height: 480px;
+    margin-top: 40px;
+  }
+  .zztsgchart{
+    width: 600px;
+    height: 200px;
+    margin: 10px;
+    margin-top: 40px;
+  }
+  .zztsgchart>.zztsgchartp{
+        width: 280px;
+        height: 24px;
+        color:#fff;
+        font-size: 18px;
+    }
+    .zztsgchartp>span{
+        color: rgb(152, 247, 247);  
+    }
+    .zztsgchart>.zztsange{
+        width: 880px;
+        height: 170px;
+    }
+    .zuoeryiechart{
+    width: 466px;
+    height: 270px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+    .zuoererechart{
+    width: 466px;
+    height: 195px;
+    margin-left: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+    .zuoererzuo{
+    width: 230px;
+    height: 190px;
+    // background: red;
+  }
+    .zuoereryou{
+    width: 230px;
+    height: 190px;
+  }
+  .zuoererzuo>.zererz{
+        width: 230px;
+        height: 140px;
+        // background: green;
+    }
+  .zuoereryou>.zerery{
+        width: 230px;
+        height: 140px;
+        // background: red;
+    }
+</style>

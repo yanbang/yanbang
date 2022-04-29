@@ -1,0 +1,243 @@
+<template>
+  <div class="bg">
+    <div style="display: block;height: 10px"></div>
+    <div style="margin-top: 10px;margin-left: 20px">
+      <span class="chartTitle" style="float: left;margin-top: -2px">待装（需建设工单）进展监控</span>
+      <img src="../../../assets/images/bigScreen/fullService/Rectangle@2x.png"
+           style="height: 14px;width: 60px;margin-left: 10px;float: left;">
+      <div class="button_bg" @click="selectButAction('1')">
+        <span :class="[selectBtn === 'zhuangji'?'selectButTitle':'noselectButTitle' ]">装机</span>
+      </div>
+      <div class="button_bg"  @click="selectButAction('0')">
+        <span :class="[selectBtn !== 'zhuangji'?'selectButTitle':'noselectButTitle' ]">移机</span>
+      </div>
+    </div>
+    <div @click.stop="isShowUnDealDialog=true">
+      <el-row :gutter="20" style="margin-top: 0px;float: left">
+        <el-col :span="8">
+          <el-row :gutter="1" style="margin-top: 30px">
+            <el-col :span="12">
+              <div style="text-align: center">
+                <img src="../../../assets/images/bigScreen/fullService/jifang.png" class="titleImage">
+                <span class="chartTitle topcentTitle5">需建设待装工单总量</span>
+                <div style="display: block">
+                  <span class="titleSpan2">当前在建待装：</span><span class="titleSpan1">{{argsData.jsbpgIntcount}}</span>
+                </div>
+                <div style="display: block">
+                  <span class="titleSpan2">本月新进待装：</span><span class="titleSpan1">{{argsData.mjsbdzIntcount}}</span>
+                </div>
+                <span class="titleSpan2">年度解决率：</span><span class="titleSpan1">{{argsData.yjsPercent}}%</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div style="text-align: center">
+                <img src="../../../assets/images/bigScreen/fullService/jifang.png" class="titleImage">
+                <span class="chartTitle topcentTitle5">本月累计待装出库</span>
+                <div style="display: block">
+                  <span class="titleSpan2">建设成功-数量：</span><span class="titleSpan1">{{argsData.mjsbokIntcount}}</span>
+                </div>
+                <div style="display: block">
+                  <span class="titleSpan2">建设成功-平均历时天数：</span><span class="titleSpan1">{{argsData.mjsbokDays}}</span>
+                </div>
+                <span class="titleSpan2">建设失败：</span><span class="titleSpan1">{{argsData.mjsbfailIntcount}}</span>
+              </div>
+            </el-col>
+
+          </el-row>
+        </el-col>
+        <el-col :span="16">
+          <div style="text-align: center">
+            <img src="../../../assets/images/bigScreen/fullService/dakuohao.png" class="titleImage2">
+            <span class="chartTitle bigTitle">需建设工单所处环节工单量</span>
+            <el-row :gutter="20">
+              <el-col :span="8">
+                <div>
+                  <div style="display: block">
+                    <span class="titleSpan2">一访工单：</span><span class="titleSpan1">{{argsData.fstvisitIntcount}}</span>
+                  </div>
+                  <span class="titleSpan2">二访工单：</span><span class="titleSpan1">{{argsData.sndvisitIntcount}}</span>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div>
+                  <div style="display: block">
+                    <span class="titleSpan2">建设评估中工单量：</span><span class="titleSpan1">{{argsData.jsbpgIntcount}}</span>
+                  </div>
+                  <span class="titleSpan2">建设评估超时2天工单量：</span><span class="titleSpan1">{{argsData.dotjsbpgIntcount}}</span>
+                </div>
+              </el-col>
+<!--              <el-col :span="5">-->
+<!--                <div>-->
+<!--                  <div style="display: block">-->
+<!--                    <span class="titleSpan2">当前用途</span><span class="titleSpan1">78829</span>-->
+<!--                  </div>-->
+<!--                  <span class="titleSpan2">当前用途</span><span class="titleSpan1">78829</span>-->
+<!--                </div>-->
+<!--              </el-col>-->
+<!--              <el-col :span="5">-->
+<!--                <div>-->
+<!--                  <div style="display: block">-->
+<!--                    <span class="titleSpan2">实施中工单量：</span><span class="titleSpan1">{{argsData.jsbjsIntcount}}</span>-->
+<!--                  </div>-->
+<!--                  <span class="titleSpan2">实施超3天未竣工：</span><span class="titleSpan1">{{argsData.bckIntcount}}</span>-->
+<!--                </div>-->
+<!--              </el-col>-->
+              <el-col :span="8">
+                <div>
+                  <div style="display: block">
+                    <span class="titleSpan2">用户补偿：</span><span class="titleSpan1">{{argsData.bckIntcount}}</span>
+                  </div>
+                </div>
+              </el-col>
+
+            </el-row>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+<!--    <un-deal-dailog v-if="isShowUnDealDialog" @changeShow3="closeDialog"></un-deal-dailog>-->
+  </div>
+</template>
+
+<script>
+import UnDealDailog from '@/views/BToB/components/unDealDailog'
+export default {
+  name: 'centerData',
+  components: { UnDealDailog },
+  props:{
+    argsData:Object
+  },
+  data(){
+    return{
+      isShowUnDealDialog:false,
+      selectBtn:'zhuangji'
+    }
+  },
+  mounted() {
+
+  },
+  methods:{
+    closeDialog(){
+      this.isShowUnDealDialog = false
+    },
+    selectButAction(type){
+      if (type==='1'){
+        this.selectBtn = 'zhuangji'
+      }else {
+        this.selectBtn = ''
+      }
+      this.$emit("getbndealdatad",type)
+    }
+  }
+
+}
+</script>
+
+<style scoped>
+.titleSpan1{
+  color: #FDFEFF;
+  font-size: 16px;
+  font-family: 'DigifaceWide';
+  src: url('../../../assets/fonts/digifaw.ttf');
+
+}
+
+.titleSpan2{
+  color: #02F6FF;
+  font-size: 16px;
+
+}
+.chartTitle{
+  margin-top: 10px;
+  margin-left: 10px;
+  font-family: 'MFBanHei';
+  font-size: 16px;
+  color: #02F6FF;
+}
+.bg{
+  background-image: url("../../../assets/images/bigScreen/fullService/btob_big_bg@2x.png");
+  background-size: 100% 100%;
+}
+
+.titleImage{
+  width: 80%;
+  display: block;
+  margin-left: 30px;
+}
+
+.titleImage2{
+  width: 94%;
+  display: block;
+  margin-left: 30px;
+  margin-top: 23px;
+}
+
+.topcentTitle{
+  margin-left: -3%;
+  margin-top: -24px;
+  font-size: 16px;
+  position: absolute;
+
+}
+.topcentTitle2{
+  margin-left: -22px;
+  font-size: 16px;
+  margin-top: -26px;
+  position: absolute;
+
+}
+
+.topcentTitle3{
+  margin-left: -31px;
+  font-size: 16px;
+  margin-top: -28px;
+  position: absolute;
+
+}
+.topcentTitle4{
+  margin-left: -7px;
+  margin-top: -26px;
+  font-size: 16px;
+  position: absolute;
+
+}
+.topcentTitle5{
+  margin-left: -72px;
+  margin-top: -28px;
+  font-size: 16px;
+  position: absolute;
+
+}
+.topcentTitle6{
+  margin-left: -4%;
+  margin-top: -27px;
+  font-size: 16px;
+  position: absolute;
+
+}
+
+.button_bg{
+  background-image: url("../../../assets/images/bigScreen/fullService/selectBtn.png");
+  background-size: 100% 100%;
+  width: 84px;
+  height: 54px;
+  text-align: center;
+  float: left;
+  margin-top: -8px;
+  margin-left: 6px;
+  padding-top: 4px;
+}
+.bigTitle{
+  margin-left: -203px;
+  margin-top: -29px;
+  position: absolute;
+}
+.selectButTitle{
+  font-weight: bold;
+  color: #FFFFFF;
+}
+.noselectButTitle{
+
+  color: #92D7FB;
+}
+</style>

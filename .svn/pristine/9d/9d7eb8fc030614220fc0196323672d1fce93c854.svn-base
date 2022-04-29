@@ -1,0 +1,159 @@
+<!-- 仪盘表 -->
+<template>
+  <div :id="domid" class="echartbox"></div>
+</template>
+
+<script>
+
+import echarts from 'echarts'
+export default {
+  props: ['pvalue', 'domid', 'title'],
+  data() {
+    return {
+      myChart: null,
+      option: {
+        title: {
+          text: '',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            rich: {
+              a: {
+                fontSize: 16,
+                color: '#ffffff'
+              },
+
+              c: {
+                fontSize: 14,
+                color: '#ddd'
+              },
+              name: {
+                fontSize: 14,
+                color: '#02F6FF',
+                fontWeight: '600',
+                padding: [10, 0]
+              }
+            }
+          }
+        },
+
+        series: [
+          {
+            type: 'pie',
+            radius: ['90%', '75%'],
+            silent: true,
+            clockwise: true,
+            startAngle: 90,
+            z: 0,
+            zlevel: 0,
+            label: {
+              normal: {
+                position: 'center'
+              }
+            },
+            data: [
+              {
+                value: 0,
+                name: '',
+                itemStyle: {
+                  normal: {
+                    color: {
+                      // 完成的圆环的颜色
+                      colorStops: [
+                        {
+                          offset: 0,
+                          color: '#4FADFD' // 0% 处的颜色
+                        },
+                        {
+                          offset: 1,
+                          color: '#28E8FA' // 100% 处的颜色
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                value: 100,
+                name: '',
+                label: {
+                  normal: {
+                    show: false
+                  }
+                },
+                itemStyle: {
+                  normal: {
+                    color: '#173164'
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  components: {},
+  mounted() {
+    var self = this
+    this.$nextTick(() => {
+      var title = self.title || ''
+      if (title) {
+        this.option.title.text = '{a|' + (this.pvalue || 0) + '}{c|%}\n{name|' + title + '}'
+      } else {
+        this.option.title.text = '{a|' + (this.pvalue || 0) + '}{c|%}'
+      }
+      if (Number(this.pvalue)) {
+        this.option.series[0].data[0].value = this.pvalue
+        this.option.series[0].data[1].value = 100 - this.pvalue
+      } else {
+         this.option.series[0].data[0].value = 0
+         this.option.series[0].data[1].value = 100
+      }
+      self.myChart = echarts.init(document.getElementById(self.domid))
+      self.myChart.setOption(self.option, true)
+      self.myChart.resize()
+    })
+  },
+  watch: {
+    pvalue(val) {
+      this.initEcharts()
+    }
+  },
+  computed: {},
+  methods: {
+    initEcharts() {
+      var title = this.title || ''
+      if (title) {
+        this.option.title.text = '{a|' + (this.pvalue || 0) + '}{c|%}\n{name|' + title + '}'
+      } else {
+        this.option.title.text = '{a|' + (this.pvalue || 0) + '}{c|%}'
+      }
+      
+      if (Number(this.pvalue)) {
+        this.option.series[0].data[0].value = this.pvalue
+        this.option.series[0].data[1].value = 100 - this.pvalue
+      } else {
+         this.option.series[0].data[0].value = 0
+         this.option.series[0].data[1].value = 100
+      }
+      
+      this.myChart.setOption(this.option, true)
+      this.$nextTick(() => {
+         this.myChart.resize()
+      })
+     
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+.echartbox {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  min-width: 140px;
+}
+
+</style>

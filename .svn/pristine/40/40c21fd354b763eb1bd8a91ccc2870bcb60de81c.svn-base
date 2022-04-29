@@ -1,0 +1,170 @@
+<template>
+  <div class="plan">
+    <!-- echarts图表区 -->
+    <div id="app">
+      <div style="width: 400px; height: 400px" class="rader" ref="radar"></div>
+    </div>
+    <!-- echarts图标区 -->
+    <div class="borderbox">
+      <div class="left">
+        <div>01 市区</div>
+        <div>17.19%</div>
+        <div>02 地铁</div>
+        <div>0.23%</div>
+        <div>03 高铁</div>
+        <div>0.47%</div>
+      </div>
+      <div class="right">
+        <div>04 农村</div>
+        <div>42.72%</div>
+        <div>05 乡镇</div>
+        <div>17.13%</div>
+        <div>06 县城</div>
+        <div>22.26%</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+export default {
+  name: 'HelloPlanning',
+
+  data() {
+    return {}
+  },
+
+  mounted() {
+    var myChart = echarts.init(this.$refs.radar)
+    myChart.setOption({
+      tooltip: {},
+
+      radar: {
+        radius: '25%', //大小
+        nameGap: 1, // 图中工艺等字距离图的距离
+        center: ['50%', '50%'], // 图的位置
+        name: {
+          textStyle: {
+            color: 'rgba(101, 213, 255, 1)',
+            fontSize: 12,
+          },
+          formatter: function (name) {
+            return name
+          },
+        },
+        indicator: [
+          { name: '地区', max: '100' },
+          { name: '高铁', max: '100' },
+          { name: '农村', max: '100' },
+          { name: '乡', max: '100' },
+          { name: '县', max: '100' },
+          { name: '市区', max: '100' },
+        ],
+        axisLine: {
+          lineStyle: {
+            color: 'rgba(153, 209, 246, 0.2)',
+          },
+        },
+        splitArea: {
+          show: false,
+          areaStyle: {
+            color: 'rgba(255,0,0,0)', // 图表背景的颜色
+          },
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            width: 1,
+            color: 'rgba(153, 209, 246, 0.2)', // 设置网格的颜色
+          },
+        },
+      },
+
+      series: [
+        {
+          name: '报警类型分析',
+          type: 'radar',
+          symbol: 'angle',
+          itemStyle: {
+            normal: {
+              areaStyle: { type: 'default' },
+            },
+          },
+          data: [
+            {
+              symbol: 'circle',
+              symbolSize: 5,
+              value: [70, 42, 63, 84, 75, 34],
+              areaStyle: { color: 'rgba(64, 205, 241, 0.2)' },
+              itemStyle: {
+                normal: {
+                  borderWidth: 1,
+                  color: 'RGBA(0, 34, 66, 1)',
+                  borderColor: 'rgba(146, 225, 255, 1)',
+                },
+              },
+              lineStyle: {
+                color: 'rgba(146, 225, 255, 1)',
+                width: 1,
+              },
+            },
+          ],
+        },
+      ],
+    })
+  },
+
+  methods: {},
+}
+</script>
+
+<style lang="less" scoped>
+.plan {
+  position: relative;
+  .rader {
+    position: relative;
+    top: -50px;
+    left: 90px;
+  }
+  .borderbox {
+    display: flex;
+    position: absolute;
+    top: 80px;
+    left: 20px;
+    .left {
+      :nth-child(2n + 1) {
+        font-size: 14px;
+        font-weight: 400;
+        color: #1ea0c2;
+      }
+      :nth-child(2n) {
+        margin-top: 5px;
+        font-size: 16px;
+        color: #fff;
+      }
+    }
+    .right {
+      margin-left: 40px;
+      :nth-child(2n + 1) {
+        font-size: 14px;
+        font-weight: 400;
+        color: #1ea0c2;
+      }
+      :nth-child(2n) {
+        margin-top: 5px;
+        font-size: 16px;
+        color: #fff;
+      }
+    }
+  }
+  .title {
+    position: absolute;
+    top: -3px;
+    left: 40px;
+    color: #00b8b9;
+    font-weight: 600;
+    font-size: 16px;
+  }
+}
+</style>

@@ -1,0 +1,4906 @@
+<!--宽带-规划建设 -->
+<template>
+  <div class="contentbox">
+    <Header title="浙江联通网络智慧中台" subtitle="-宽带"></Header>
+    <div class="topmenudiv">
+      <a class="topmenuac" @click="goToPage('/kd_ghjs')">规划建设</a>
+      <a class="topmenu" @click="goToPage('/kd_kdjf')">宽带交付</a>
+      <a class="topmenu" @click="goToPage('/kd_kdyy')">宽带运营</a>
+      <a class="topmenu" @click="goToPage('/kd_wyxt')">网业协同</a>
+    </div>
+    <div class="contentbody">
+      <!-- 左 -->
+      <div class="leftbox flex colflex">
+        <!-- 左1 -->
+        <div class="box-item flex colflex ">
+          <div class="item-title titlefont clearfix">
+            <span>建设指导</span>
+          </div>
+
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}"
+              @click="rowttabsClick('1')">计划进展</span>
+            <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}"
+              @click="rowttabsClick('2')">投资建设</span>
+          </div>
+
+          <div class="flex1" v-show="rowttabStatus == 1" @click="moretable1 = true ">
+            <div style="color: #82e0ff;width: 100%; height:2vh;"><label>本年度计划覆盖数（已启动）</label>
+              <span style="color: #ffffff; margin-left: 18.75rem;">{{dagedata.planFgXqNum}}</span>
+            </div>
+            <div class="chartbox" ref="zuo1echart1" style="height:8vh; width: 100%;"></div>
+            <div class="chartbox" ref="zuo1echart2" style="height:8vh; width: 100%;"></div>
+            <div class="chartbox" ref="zuo1echart3" style="height:8vh; width: 100%; "></div>
+
+          </div>
+          <div class="flex1 flex" v-show="rowttabStatus == 2">
+
+            <div class="chartbox" ref="zuo1echart4" style="height:26vh; width: 13vw; "></div>
+            <div class="chartbox" ref="zuo1echart5" style="height:26vh; width: 13vw; "></div>
+
+          </div>
+        </div>
+        <!-- 左2 -->
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span @click="isShow2_1=!isShow2_1" style="cursor: pointer;">精准建设</span>
+          </div>
+          <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': rowttabStatus2 == '1'}"
+              @click="rowttabsClick2('1')">效益提升</span>
+            <span class="rowttabs-item" :class="{'active': rowttabStatus2 == '2'}"
+              @click="rowttabsClick2('2')">精准建设</span>
+          </div>
+          <div class="flex1" style="margin: 10px 0px;" v-show="rowttabStatus2 == 1">
+
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.portNum}}</div>
+                  <div class="lgwfont">端口数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di1.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.portLyRate}}%</div>
+                  <div class="lgwfont">端口利用率</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di2.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.portLyRateHb}}pp <img src="@/assets/zj/bg_zj3_di4.png" alt=""
+                      srcset="" height="30px" /> </div>
+                  <div class="lgwfont">环比</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di3.png" alt="" srcset="" />
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.newAddPortNum}}</div>
+                  <div class="lgwfont">新增端口数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di1.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.newAddPortLyRate}}%</div>
+                  <div class="lgwfont">新增端口利用率</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di2.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata2.newAddPortLyRateHb}}pp <img src="@/assets/zj/bg_zj3_di4.png" alt=""
+                      srcset="" height="30px" /> </div>
+                  <div class="lgwfont">环比</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di3.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <div class="flex1" style="margin: 10px 0px;" v-show="rowttabStatus2 == 2">
+
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">12566</div>
+                  <div class="lgwfont">高潜力小区数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di1.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">998</div>
+                  <div class="lgwfont">转化数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di2.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">75%</div>
+                  <div class="lgwfont">转化率</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di2.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">5pp <img src="@/assets/zj/bg_zj3_di4.png" alt="" srcset="" height="30px" /> </div>
+                  <div class="lgwfont">环比</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di3.png" alt="" srcset="" />
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span @click="isShow2_1=!isShow2_1" style="cursor: pointer;">千兆能力</span>
+            <!-- <span v-show="mapLevel != 1" style="margin-left: 10px">(全省)</span> -->
+          </div>
+
+          <div class="flex1" style="margin: 10px 0px;">
+
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzPortNum}}</div>
+                  <div class="lgwfont">千兆端口数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzXzPortNum}}</div>
+                  <div class="lgwfont">千兆新增端口数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzPortHb}}pp <img src="@/assets/zj/bg_zj3_di4.png" alt="" srcset=""
+                      height="30px" /> </div>
+                  <div class="lgwfont">提升</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex">
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzJdNum}}</div>
+                  <div class="lgwfont">千兆局点数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzXzJdNum}}</div>
+                  <div class="lgwfont">新增千兆局点数</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex1">
+                <div class="lgwbox">
+                  <div class="lgwnum">{{dagedata3.qzJdHb}}pp <img src="@/assets/zj/bg_zj3_di4.png" alt="" srcset=""
+                      height="30px" /> </div>
+                  <div class="lgwfont">提升</div>
+                  <div class="lgwimg">
+                    <img src="@/assets/zj/bg_zj3_di5.png" alt="" srcset="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <!-- 中 -->
+      <div class="centerbox flex colflex">
+        <div class="yujingimg" @click="xiangqing0=true">
+          <a> 建设预警</a>
+        </div>
+
+        <div class="zjmap">
+          <zjmap @changemap="changeMapFn" ref="zjmapDom" height="叫爸爸"></zjmap>
+        </div>
+
+        <div class="mapxia">
+
+          <div class="mapxia1" ref="mapxia1" v-if="isShow2_1"></div>
+          <div class="mapxia2" ref="mapxia2"></div>
+        </div>
+
+
+
+      </div>
+      <!-- 右 -->
+      <div class="rightbox flex colflex">
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>宽带用户数</span>
+            <!-- <span v-show="mapLevel > 2" style="margin-left: 10px">(市级)</span> -->
+          </div>
+
+          <div class="flex1 flex" style="margin:3vh 0">
+
+            <div class="flex1">
+              <div class="lgwbox2">
+                <div class="lgwnum2">{{dagedata6.dayAddKdUser}}</div>
+                <div class="lgwfont2">今日新增</div>
+              </div>
+            </div>
+
+            <div class="flex1">
+              <div class="lgwbox3">
+                <div class="lgwfont3">宽带用户数</div>
+                <div class="lgwnum3">{{dagedata4.broadUsersAll}}</div>
+                <div class="lgwnum3_2">{{dagedata4.kdXzUserNum}}</div>
+                <div class="lgwfont3_2">新增数</div>
+              </div>
+            </div>
+            <div class="flex1">
+              <div class="lgwbox3">
+                <div class="lgwfont3">千兆用户数</div>
+                <div class="lgwnum3">{{dagedata4.speedOver1000mUsers}}</div>
+                <div class="lgwnum3_2">{{dagedata4.kdXzQzNum}}</div>
+                <div class="lgwfont3_2">新增数</div>
+              </div>
+            </div>
+            <div class="flex1">
+              <div class="lgwbox3">
+                <div class="lgwfont3">融合用户数</div>
+                <div class="lgwnum3">{{dagedata4.rhBroadUsers}}</div>
+                <div class="lgwnum3_2">{{dagedata4.kdXzRhNum}}</div>
+                <div class="lgwfont3_2">新增数</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-item flex colflex">
+          <div class="item-title titlefont">
+            <span>小区覆盖</span>
+          </div>
+          <div class="flex1" style="margin: 2vh 0;">
+            <div class="flex">
+              <div class="lgwbox4" @click="moretable5_1 = true ">
+                <div class="flex">
+                  <div class="lgwimg4">
+                    <img src="@/assets/zj/bg_zj3_di9.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.xqAllNum}}</div>
+                    <div class="lgwfont4">小区总数</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.xqAllNumY}}</div>
+                    <div class="lgwfont4">本年新建</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.xqAllNumM}}</div>
+                    <div class="lgwfont4">本月新建</div>
+                  </div>
+                </div>
+              </div>
+              <div class="lgwbox4" @click="moretable5_2 = true ">
+                <div class="flex">
+                  <div class="lgwimg4">
+                    <img src="@/assets/zj/bg_zj3_di9.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qzXqNum}}</div>
+                    <div class="lgwfont4">10GPON小区</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qzXqNumY}}</div>
+                    <div class="lgwfont4">本年新建</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qzXqNumM}}</div>
+                    <div class="lgwfont4">本月新建</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex">
+              <div class="lgwbox4" @click="moretable5_3 = true ">
+                <div class="flex">
+                  <div class="lgwimg4">
+                    <img src="@/assets/zj/bg_zj3_di10.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.syXqNum}}</div>
+                    <div class="lgwfont4">双优小区数</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.syXqNumY}}</div>
+                    <div class="lgwfont4">本年新建</div>
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.syXqNumM}}</div>
+                    <div class="lgwfont4">本月新建</div>
+                  </div>
+                </div>
+              </div>
+              <div class="lgwbox4">
+                <div class="flex">
+                  <div class="lgwimg4" @click="moretable5_4 = true ">
+                    <img src="@/assets/zj/bg_zj3_di11.png" alt="" srcset="" />
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qfgXqNum}}</div>
+                    <div class="lgwfont4">全覆盖小区数</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qfgXqNumY}}</div>
+                    <div class="lgwfont4">本年新建</div>
+                  </div>
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.qfgXqNumM}}</div>
+                    <div class="lgwfont4">本月新建</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex">
+
+              <div class="lgwbox4" @click="moretable5_5 = false ">
+
+                <div class="flex" style="margin-bottom: 20px;">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.dszXqNum}}</div>
+                    <div class="lgwfont4">低实占小区数</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.dszXqZb}}%</div>
+                    <div class="lgwfont4">占比</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.dszXqNumY}}</div>
+                    <div class="lgwfont4">新增低实占小区</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.dszXqYZb}}%</div>
+                    <div class="lgwfont4">占比</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lgwbox4" @click="moretable5_6 = false ">
+                <div class="flex" style="margin-bottom: 20px;">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.wplXqNum}}</div>
+                    <div class="lgwfont4">未破零小区数</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.wplXqZb}}%</div>
+                    <div class="lgwfont4">占比</div>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.wplXqNumY}}</div>
+                    <div class="lgwfont4">新建未破零</div>
+                  </div>
+
+                  <div class="lgwnumfont">
+                    <div class="lgwnum4">{{dagedata5.wplXqYZb}}%</div>
+                    <div class="lgwfont4">占比</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- 中间预警弹框0 -->
+    <el-dialog :visible.sync="xiangqing0" width="75%" :modal-append-to-body="false">
+      <el-dialog width="55%" title="" :visible.sync="zidingyi" :modal-append-to-body="false">
+        <div style="margin: 30px 30px 0px 30px; height: 430px;">
+
+          <el-form ref="form2" label-width="80px">
+            <el-form-item label="指标名称">
+              <el-input size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="指标值">
+              <el-input size="small" type="textarea"></el-input>
+            </el-form-item>
+
+
+            <el-form-item>
+              <el-button type="primary" @click="zidingyi = false" size="small">提交</el-button>
+              <el-button @click="zidingyi = false" type="primary" size="small">取消</el-button>
+            </el-form-item>
+          </el-form>
+
+
+        </div>
+      </el-dialog>
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">建设预警</div>
+          <a style="color: #a1d1ff; margin-right:500px;" @click="zidingyi= true">自定义预警指标</a>
+
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs == '1'}"
+              @click="dialogtabsClick('1')">建设进度慢</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs == '2'}"
+              @click="dialogtabsClick('2')">新建0产能小区率高</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs == '3'}"
+              @click="dialogtabsClick('3')">项目完结率低</span>
+          </div>
+          <div class="flex1" v-show="dialogtabs == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform0_1()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData0_1">
+              <el-table-column v-for="(col, index) in tcolums0_1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div class="flex1" v-show="dialogtabs == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform0_2()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData0_2">
+              <el-table-column v-for="(col, index) in tcolums0_2" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div class="flex1" v-show="dialogtabs == 3">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform0_3()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData0_3">
+              <el-table-column v-for="(col, index) in tcolums0_3" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 左1弹框 -->
+    <el-dialog :visible.sync="moretable1" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">计划进展详情</div>
+        </div>
+        <div class="dialogTableBg ">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '1'}"
+              @click="dialogtabs2Click('1')">计划覆盖小区数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '2'}"
+              @click="dialogtabs2Click('2')">新覆盖小区数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '3'}"
+              @click="dialogtabs2Click('3')">在建小区数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '4'}"
+              @click="dialogtabs2Click('4')">未完成小区数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '5'}"
+              @click="dialogtabs2Click('5')">资源录入小区数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs2 == '6'}"
+              @click="dialogtabs2Click('6')">交付市场小区数</span>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 1">
+
+            <el-form  :inline="true">
+              <el-form-item label="地市">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform1()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData1">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_1">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 2">
+            
+            <el-form  :inline="true">
+              <el-form-item label="地市">                
+                <MyCity v-model="provAndCity" />                
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>                      
+              <el-form-item>
+                <el-button type="primary" @click="cxform2()" size="mini">查询</el-button>
+              </el-form-item>           
+            </el-form>
+            <el-table :data="tableData1_2">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_2">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 3">
+            <el-form  :inline="true">
+              <el-form-item label="地市">                
+                <MyCity v-model="provAndCity" />                
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>                      
+              <el-form-item>
+                <el-button type="primary" @click="cxform3()" size="mini">查询</el-button>
+              </el-form-item>           
+            </el-form>
+            <el-table :data="tableData1_3">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_3">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 4">
+            <el-form  :inline="true">
+              <el-form-item label="地市">                
+                <MyCity v-model="provAndCity" />                
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>                      
+              <el-form-item>
+                <el-button type="primary" @click="cxform4()" size="mini">查询</el-button>
+              </el-form-item>           
+            </el-form>
+            <el-table :data="tableData1_4">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_4">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 5">
+            <el-form  :inline="true">
+              <el-form-item label="地市">                
+                <MyCity v-model="provAndCity" />                
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>                      
+              <el-form-item>
+                <el-button type="primary" @click="cxform5()" size="mini">查询</el-button>
+              </el-form-item>           
+            </el-form>
+            <el-table :data="tableData1_5">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_5">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs2 == 6">
+            <el-form  :inline="true">
+              <el-form-item label="地市">                
+                <MyCity v-model="provAndCity" />                
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>                      
+              <el-form-item>
+                <el-button type="primary" @click="cxform6()" size="mini">查询</el-button>
+              </el-form-item>           
+            </el-form>
+            <el-table :data="tableData1_6">
+              <el-table-column v-for="(col, index) in tcolums1" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total1_6">
+            </el-pagination>
+          </div>
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-1弹框 -->
+    <el-dialog :visible.sync="moretable5_1" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs3 == '1'}"
+              @click="dialogtabs3Click('1')">小区总数详情</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs3 == '2'}"
+              @click="dialogtabs3Click('2')">本年小区总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs3 == '3'}"
+              @click="dialogtabs3Click('3')">本月小区总数</span>
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs3 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_1()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_1">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs3 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_2()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_2">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total2">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs3 == 3">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_3()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_3">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total3">
+            </el-pagination>
+          </div>
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-2弹框 -->
+    <el-dialog :visible.sync="moretable5_2" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs4 == '1'}"
+              @click="dialogtabs4Click('1')">千兆总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs4 == '2'}"
+              @click="dialogtabs4Click('2')">本年千兆总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs4 == '3'}"
+              @click="dialogtabs4Click('3')">本月千兆总数</span>
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs4 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_4()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+
+            <el-table :data="tableData5_4">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total4">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs4 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_5()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_5">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total5">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs4 == 3">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_6()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_6">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total6">
+            </el-pagination>
+          </div>
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-3弹框 -->
+    <el-dialog :visible.sync="moretable5_3" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs5 == '1'}"
+              @click="dialogtabs5Click('1')">双优小区总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs5 == '2'}"
+              @click="dialogtabs5Click('2')">本年双优双优小区</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs5 == '3'}"
+              @click="dialogtabs5Click('3')">本月双优小区</span>
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs5 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_7()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+
+            <el-table :data="tableData5_7">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total7">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs5 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_8()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_8">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total8">
+            </el-pagination>
+          </div>
+          <div class="flex1" v-show="dialogtabs5 == 3">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_9()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_9">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total9">
+            </el-pagination>
+          </div>
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-4弹框 -->
+    <el-dialog :visible.sync="moretable5_4" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs6 == '1'}"
+              @click="dialogtabs6Click('1')">全覆盖总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs6 == '2'}"
+              @click="dialogtabs6Click('2')">本年全覆盖小区</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs6 == '3'}"
+              @click="dialogtabs6Click('3')">本月全覆盖小区</span>
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs6 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_10()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+
+            <el-table :data="tableData5_10">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total10">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs6 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_11()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_11">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total11">
+            </el-pagination>
+          </div>
+          <div class="flex1 flex" v-show="dialogtabs6 == 3">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_12()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_12">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total12">
+            </el-pagination>
+          </div>
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-5弹框 -->
+    <el-dialog :visible.sync="moretable5_5" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs7 == '1'}"
+              @click="dialogtabs7Click('1')">低实总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs7 == '2'}"
+              @click="dialogtabs7Click('2')">本年双优双优小区</span>
+
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs7 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_13()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+
+            <el-table :data="tableData5_13">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total13">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs7 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_14()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_14">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total14">
+            </el-pagination>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 右5-6弹框 -->
+    <el-dialog :visible.sync="moretable5_6" width="75%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="rowttabs" style="top:30px; right: 100px;">
+            <span class="rowttabs-item" :class="{'active': dialogtabs8 == '1'}"
+              @click="dialogtabs8Click('1')">未破零总数</span>
+            <span class="rowttabs-item" :class="{'active': dialogtabs8 == '2'}"
+              @click="dialogtabs8Click('2')">新增未破零</span>
+
+
+          </div>
+
+          <div class="flex1" v-show="dialogtabs8 == 1">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_15()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+
+            <el-table :data="tableData5_15">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total15">
+            </el-pagination>
+
+          </div>
+          <div class="flex1" v-show="dialogtabs8 == 2">
+            <el-form  :inline="true">
+              <el-form-item label="开始时间">               
+                <MyCity v-model="provAndCity" />               
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="startTime" type="datetime" 
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" size="mini" v-model="endTime" type="datetime"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="cxform5_16()" size="mini">查询</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table :data="tableData5_16">
+              <el-table-column v-for="(col, index) in tcolums5" :key="index" :prop="col.filed" :label="col.title"
+                :width="col.width || ''" :sortable="col.sortable || false" show-overflow-tooltip>
+              </el-table-column>
+
+            </el-table>
+            <el-pagination @current-change="handleCurrentChange" layout="total, prev, pager, next" :total="total16">
+            </el-pagination>
+          </div>
+
+
+
+
+        </div>
+      </div>
+    </el-dialog>
+
+
+  </div>
+</template>
+
+<script>
+  import Header from '@/components/resource_visual/header3'
+  import Footer from '@/components/resource_visual/footer'
+  
+  import vueSeamlessScroll from 'vue-seamless-scroll'
+  import axios from 'axios'
+
+  import echarts from 'echarts'
+
+  import zjmap from './sxmap.vue'
+
+  import MyCity from '@/components/citys.vue'
+
+  var self = null
+
+  function getRandom(start = .6, end = 1) {
+    let num = Math.random() * (end - start) + start;
+    return num
+  }
+
+  export default {
+    data() {
+      return {
+
+        provAndCity: {
+           province: '',          // 城市
+           city: ''
+        },
+        value: '',
+        value1: '',
+        cityName: '',
+        areaName: '',
+        startTime: '',
+        endTime: '',
+
+
+
+
+        smapdata: {},
+
+        cbOrderNum: {},
+        ddhdata: {},
+        total: {},
+        total2: {},
+        total3: {},
+        total4: {},
+        total5: {},
+        total6: {},
+        total7: {},
+        total8: {},
+        total9: {},
+        total10: {},
+        total11: {},
+        total12: {},
+        total13: {},
+        total14: {},
+        total15: {},
+        total16: {},
+        total1_1: {},
+        total1_2: {},
+        total1_3: {},
+        total1_4: {},
+        total1_5: {},
+        total1_6: {},
+
+        page: 1,
+
+        moretable5_1: false,
+        moretable5_2: false,
+        moretable5_3: false,
+        moretable5_4: false,
+        moretable5_5: false,
+        moretable5_6: false,
+
+        moretable1: false,
+
+        tableData1: [],
+        tableData1_2: [],
+        tableData1_3: [],
+        tableData1_4: [],
+        tableData1_5: [],
+        tableData1_6: [],
+        tableData5_1: [],
+        tableData5_2: [],
+        tableData5_3: [],
+        tableData5_4: [],
+        tableData5_5: [],
+        tableData5_6: [],
+        tableData5_7: [],
+        tableData5_8: [],
+        tableData5_9: [],
+        tableData5_10: [],
+        tableData5_11: [],
+        tableData5_12: [],
+        tableData5_13: [],
+        tableData5_14: [],
+        tableData5_15: [],
+        tableData5_16: [],
+
+        xiangqing0: false,
+        tableData0_1: [],
+        tableData0_2: [],
+        tableData0_3: [],
+        tcolums0_1: [{
+            title: '地市',
+            filed: 'district_name'
+          },
+          {
+            title: '进度慢的工单数',
+            filed: 'gj_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '工单数',
+            filed: 'gd_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '进度慢比例',
+            filed: 'jd_rate',
+            width: 'auto',
+            sortable: true
+          },
+        ],
+        tcolums0_2: [{
+            title: '地市',
+            filed: 'district_name'
+          },
+          {
+            title: '零产能小区数',
+            filed: 'lcn_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '小区数',
+            filed: 'z_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '零产能比例',
+            filed: 'lcn_rate',
+            width: 'auto',
+            sortable: true
+          },
+        ],
+        tcolums0_3: [{
+            title: '地市',
+            filed: 'district_name'
+          },
+          {
+            title: '未竣工工单数',
+            filed: 'wjg_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '小区数',
+            filed: 'z_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '未竣工比例',
+            filed: 'wjg_rate',
+            width: 'auto',
+            sortable: true
+          },
+        ],
+
+        tcolums5: [{
+            title: '地级市',
+            filed: 'cityName',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '区',
+            filed: 'areaName',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '小区名称',
+            filed: 'dzName',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '≥1000M用户数',
+            filed: 'speedOver1000mUsers',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: 'FTTH宽带用户数',
+            filed: 'broadUsersFtth',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '分光器端口利用率',
+            filed: 'FgqPortUsageRate',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '分光器端口利用率2',
+            filed: 'allPortNum',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '融合用户数',
+            filed: 'broadUsersFtth',
+            width: 'auto',
+            sortable: true
+          },
+
+        ],
+        tcolums1: [{
+            title: '地市',
+            filed: 'city_name'
+          },
+          {
+            title: '区县',
+            filed: 'area_name',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '需求提出人',
+            filed: 'require_propose_user',
+            width: '100',
+            sortable: true
+          },
+          {
+            title: '需求提出时间',
+            filed: 'require_propose_data',
+            width: '150',
+            sortable: true
+          },
+          {
+            title: '项目名称',
+            filed: 'project_name',
+            width: '300',
+            sortable: true
+          },
+          {
+            title: '工单编码',
+            filed: 'order_num',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '工单名称',
+            filed: 'order_name',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '项目编码',
+            filed: 'project_num',
+            width: 'auto',
+            sortable: true
+          },
+
+          {
+            title: '当前所处环节',
+            filed: 'current_work',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '建设性质',
+            filed: 'scene_type',
+            width: 'auto',
+            sortable: true
+          },
+
+
+          {
+            title: '需求估算投资',
+            filed: 'estimate_invest',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '设计批复时间',
+            filed: 'sj_pf_time',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '设计批复金额',
+            filed: 'sj_pf_invest',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '工程施工结束时间',
+            filed: 'sg_end_time',
+            width: 'auto',
+            sortable: true
+          },
+          {
+            title: '能力交付时间',
+            filed: 'deliver_time',
+            width: 'auto',
+            sortable: true
+          },
+
+        ],
+
+
+
+        dagedata: {},
+        dagedata2: {},
+        dagedata3: {},
+        dagedata4: {},
+        dagedata5: {},
+        dagedata6: {},
+        rowttabStatus100: '1',
+        isShow2_1: true,
+        rowttabStatus: '1',
+        rowttabStatus2: '1',
+        dialogtabs: '1',
+        dialogtabs2: '1',
+        dialogtabs3: '1',
+        dialogtabs4: '1',
+        dialogtabs5: '1',
+        dialogtabs6: '1',
+        dialogtabs7: '1',
+        dialogtabs8: '1',
+
+        cityName: '全省',
+        hoverCityName: '',
+        xiangqing1: false,
+        zidingyi: false,
+        historyData: [],
+        
+        isDialogShow: false,
+      }
+    },
+    components: {
+      Header,
+      Footer,
+      vueSeamlessScroll,
+      zjmap,
+      MyCity
+    },
+    created() {
+      self = this
+
+
+    },
+    mounted() {
+    
+      this.mapxia1echarts()
+      this.mapxia2echarts()
+
+    },
+    watch: {
+
+      // cityName(val) {
+      //   this.getZJMapData();
+      // }
+
+    },
+    computed: {
+
+    },
+
+    methods: {
+
+      
+      
+      initService() {
+        window.setTimeout(() => {
+          this.getZJMapData()
+          this.getzuo1echart1Data()
+          this.getzuo1echart2Data()
+          this.getzuo1echart3Data()
+          this.getzuo1echart4Data()
+          this.getzuo1echart5Data()
+          this.getdagedata2()
+          this.getdagedata3()
+          this.getdagedata4()
+          this.getdagedata5()
+          this.getdagedata6()
+          this.moretableData1()
+          this.moretableData1_2()
+          this.moretableData1_3()
+          this.moretableData1_4()
+          this.moretableData1_5()
+          this.moretableData1_6()
+
+          this.moretableData5_1()
+          this.moretableData5_2()
+          this.moretableData5_3()
+          this.moretableData5_4()
+          this.moretableData5_5()
+          this.moretableData5_6()
+          this.moretableData5_7()
+          this.moretableData5_8()
+          this.moretableData5_9()
+          this.moretableData5_10()
+          this.moretableData5_11()
+          this.moretableData5_12()
+          this.moretableData5_13()
+          this.moretableData5_14()
+          this.moretableData5_15()
+          this.moretableData5_16()
+
+          this.moretableData0_1()
+          this.moretableData0_2()
+          this.moretableData0_3()
+
+
+
+
+
+        }, 500)
+
+      },
+      changeMapFn(data) {
+        this.smapdata = data;
+        this.initService()
+
+      },
+      goToPage(url) {
+        if (!url) return
+        this.$router.push(url)
+      },
+      rowttabsClick(type) {
+        this.rowttabStatus = type
+      },
+      rowttabsClick2(type) {
+        this.rowttabStatus2 = type
+      },
+      rowttabsClick3(type) {
+        this.rowttabStatus3 = type
+      },
+      rowttabsClick4(type) {
+        this.rowttabStatus4 = type
+      },
+      dialogtabsClick(type) {
+        this.dialogtabs = type
+      },
+      dialogtabs2Click(type) {
+        this.dialogtabs2 = type
+      },
+      rowttabsClick3(type) {
+        this.rowttabStatus3 = type
+      },
+      dialogtabs3Click(type) {
+        this.dialogtabs3 = type
+      },
+      rowttabsClick4(type) {
+        this.rowttabStatus4 = type
+      },
+      dialogtabs4Click(type) {
+        this.dialogtabs4 = type
+      },
+      rowttabsClick5(type) {
+        this.rowttabStatus5 = type
+      },
+      dialogtabs5Click(type) {
+        this.dialogtabs5 = type
+      },
+      rowttabsClick6(type) {
+        this.rowttabStatus6 = type
+      },
+      dialogtabs6Click(type) {
+        this.dialogtabs6 = type
+      },
+      rowttabsClick7(type) {
+        this.rowttabStatus7 = type
+      },
+      dialogtabs7Click(type) {
+        this.dialogtabs7 = type
+      },
+      rowttabsClick8(type) {
+        this.rowttabStatus8 = type
+      },
+      dialogtabs8Click(type) {
+        this.dialogtabs8 = type
+      },
+
+
+
+
+      getdagedata2() {
+
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/ghjsCon/getGhjsJzjsXyts', params)
+          .then(function(response) {
+            let result = response.data
+
+            that.dagedata2 = result
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+      },
+      getdagedata3() {
+
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/ghjsCon/getGhjsQznlData', params)
+          .then(function(response) {
+            let result = response.data
+
+            that.dagedata3 = result
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+      },
+      getdagedata4() {
+
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/ghjsCon/getGhjsKdyhsData', params)
+          .then(function(response) {
+            let result = response.data
+
+            that.dagedata4 = result
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+      },
+
+      getdagedata5() {
+
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/ghjsCon/getGhjsXqfgData', params)
+          .then(function(response) {
+            let result = response.data
+
+            that.dagedata5 = result
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+      },
+
+      getdagedata6() {
+
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/ghjsCon/getGhjsKdyhsJrxzData', params)
+          .then(function(response) {
+            let result = response.data
+
+            that.dagedata6 = result
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+      },
+
+      getZJMapData() {
+
+
+
+        let that = this
+        that.provAndCity = {
+          province: this.smapdata.cityName, 
+          city: this.smapdata.areaName
+        }
+         
+        if (this.smapdata.level == '3') {
+         return  
+        }
+        let changerucan = {
+          "cityName": this.smapdata.cityName
+          
+        }
+        
+        axios.post('/api/ghjsCon/getGhjsMapData', changerucan)
+          .then(function(response) {
+
+
+
+            var dalist = response.data
+
+
+
+
+
+            let arrlist = []
+            let arrlist2 = []
+            let arrlist3 = []
+            var kdyhs = []
+            var qzyhs = []
+            var bnxjs = []
+
+            dalist.forEach((item) => {
+              kdyhs = {
+                name: item.area_name,
+                value: item.broad_users_all
+
+              };
+              arrlist.push(kdyhs);
+              qzyhs = {
+                name: item.area_name,
+                value: item.speed_over_1000m_users
+
+              };
+              arrlist2.push(qzyhs);
+              bnxjs = {
+                name: item.area_name,
+                value: item.xj_xq_num
+
+              };
+              arrlist3.push(bnxjs);
+
+            });
+
+            // console.log(arrlist)
+            // console.log(arrlist2)
+            // console.log(arrlist3)
+            var datac = {
+              arrlist: arrlist,
+              arrlist2: arrlist2,
+              arrlist3: arrlist3,
+            };
+
+            self.$refs['zjmapDom'].renderEcahrtmap(datac)
+
+            return;
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+      },
+
+
+
+      mapxia1echarts() {
+        let that = this
+        axios.post('/api/ghjsCon/getGhjsJszdZxtData', {
+            "gjBs": "2"
+          })
+          .then(function(response) {
+
+            //console.log(response)
+
+            var arr = response.data
+            //console.log(arr);
+            var res = arr.reduce((res, v) => {
+              Object.keys(v).forEach(key => {
+                const value = v[key];
+                if (res[key]) res[key].push(value);
+                else res[key] = [value];
+              })
+              return res;
+            }, {});
+
+            // console.log(res);   
+
+
+            const option = {
+              legend: {
+
+                data: ['计划覆盖小区数', '新建覆盖小区数', '完成率'],
+                textStyle: {
+                  fontSize: '20px',
+                  fontFamily: 'MicrosoftYaHeiUI',
+                  color: '#FFFFFF',
+                },
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              xAxis: [
+
+                {
+                  type: 'category',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: true,
+                    rotate: 0,
+                    interval: 0,
+                    textStyle: {
+                      padding: [14, 0, 0, 0],
+                      fontSize: 12,
+                      color: "rgba(255,255,255,0.5)"
+                    }
+                  },
+
+                  data: res.city_name,
+                  axisPointer: {
+                    type: 'shadow'
+                  }
+                }
+              ],
+              yAxis: [{
+                  type: 'value',
+                  name: ' ',
+                  nameTextStyle: {
+                    color: 'rgba(255,255,255,0.5)',
+                  },
+                  splitLine: {
+                    show: false,
+                  },
+                  axisLine: {
+                    show: false,
+                  },
+                  axisTick: {
+                    show: false,
+                  },
+
+                  splitArea: {
+                    show: false,
+                  },
+
+                  axisLabel: {
+                    formatter: '{value} ',
+                    textStyle: {
+                      color: "rgba(255,255,255,0.5)"
+                    }
+                  }
+                },
+
+                {
+                  type: 'value',
+                  name: '环比',
+                  nameTextStyle: {
+                    color: 'rgba(255,255,255,0.5)',
+                  },
+
+                  splitLine: {
+                    show: false,
+                  },
+                  axisLine: {
+                    show: false,
+                  },
+                  axisTick: {
+                    show: false,
+                  },
+
+                  splitArea: {
+                    show: false,
+                  },
+                  axisLabel: {
+                    formatter: '{value} %',
+                    color: 'rgba(255,255,255,0.5)',
+                  },
+
+                }
+              ],
+              series: [{
+                  name: '计划覆盖小区数',
+                  type: 'bar',
+                  barWidth: 10,
+                  barGap: '50%',
+
+
+                  itemStyle: {
+                    normal: {
+                      //barBorderRadius: 5,
+                      //渐变色
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color: "#01EAED"
+                        },
+                        {
+                          offset: 0.5,
+                          color: "#02C4DD"
+                        },
+                        {
+                          offset: 1,
+                          color: "#029ED9"
+                        }
+                      ])
+                    }
+                  },
+                  label: {
+                    normal: {
+                      show: true,
+                      position: "top",
+                      textStyle: {
+                        color: "#01EAED",
+                        fontSize: 14
+                      }
+                    }
+                  },
+                  data: res.plan_fg_num,
+                },
+                {
+                  name: '新建覆盖小区数',
+                  type: 'bar',
+                  barWidth: 10,
+                  barGap: '50%',
+
+                  itemStyle: {
+                    normal: {
+                      //barBorderRadius: 5,
+                      //渐变色
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color: "#2fff96"
+                        },
+                        {
+                          offset: 0.5,
+                          color: "#02e170"
+                        },
+                        {
+                          offset: 1,
+                          color: "#01ae56"
+                        }
+                      ])
+                    }
+                  },
+                  label: {
+                    normal: {
+                      show: true,
+                      position: "top",
+                      textStyle: {
+                        color: "#2fff96",
+                        fontSize: 14
+                      }
+                    }
+                  },
+                  data: res.xfg_xq_num,
+                },
+                {
+                  name: '完成率',
+                  type: 'line',
+                  yAxisIndex: 1,
+                  itemStyle: {
+                    normal: {
+                      color: 'rgba(255, 196, 53, 1)',
+                      barBorderRadius: 0,
+                    },
+                  },
+                  data: res.wc_rate,
+                },
+              ]
+
+            }
+            const dom = that.$refs.mapxia1
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      mapxia2echarts() {
+
+        const option = {
+          legend: {
+            show: false,
+            data: ['转化数', '环比'],
+
+          },
+          title: {
+            left: 'center',
+            text: '高潜力小区转化趋势图',
+            textStyle: {
+              fontSize: 20,
+              fontWeight: 'bold',
+              fontFamily: 'MicrosoftYaHeiUI',
+              color: '#02eefe',
+              align: 'center'
+            },
+          },
+          xAxis: [
+
+            {
+              type: 'category',
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                show: false
+              },
+              axisLabel: {
+                show: true,
+                rotate: 0,
+                interval: 0,
+                textStyle: {
+                  padding: [14, 0, 0, 0],
+                  fontSize: 12,
+                  color: "rgba(255,255,255,0.5)"
+                }
+              },
+              data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月'],
+              // data: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州', '台州', '丽水', '舟山'],
+              axisPointer: {
+                type: 'shadow'
+              }
+            }
+          ],
+          yAxis: [{
+              type: 'value',
+              name: '转化数',
+              nameTextStyle: {
+                color: 'rgba(255,255,255,0.5)',
+              },
+              splitLine: {
+                show: false,
+              },
+              axisLine: {
+                show: false,
+              },
+              axisTick: {
+                show: false,
+              },
+
+              splitArea: {
+                show: false,
+              },
+
+              axisLabel: {
+                formatter: '{value} ',
+                textStyle: {
+                  color: "rgba(255,255,255,0.5)"
+                }
+              }
+            },
+            {
+              type: 'value',
+              name: '环比',
+              nameTextStyle: {
+                color: 'rgba(255,255,255,0.5)',
+              },
+
+              splitLine: {
+                show: false,
+              },
+              axisLine: {
+                show: false,
+              },
+              axisTick: {
+                show: false,
+              },
+
+              splitArea: {
+                show: false,
+              },
+
+              axisLabel: {
+                formatter: '{value} %',
+                color: 'rgba(255,255,255,0.5)',
+              },
+
+            }
+          ],
+          series: [{
+              name: '转化数',
+              type: "pictorialBar",
+              barCategoryGap: "60%",
+              symbol: "path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z",
+              itemStyle: {
+                normal: {
+                  //barBorderRadius: 5,
+                  //渐变色
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                      offset: 0,
+                      color: "#01EAED"
+                    },
+                    {
+                      offset: 0.5,
+                      color: "#02C4DD"
+                    },
+                    {
+                      offset: 1,
+                      color: "#029ED9"
+                    }
+                  ])
+                }
+              },
+              label: {
+                normal: {
+                  show: true,
+                  position: "top",
+                  textStyle: {
+                    color: "#fff",
+                    fontSize: 20
+                  }
+                }
+              },
+              data: [
+                2189, 1350, 1232, 1223, 1310, 935, 934, 930, 489, 280, 178
+              ]
+            },
+            {
+              name: '环比',
+              type: 'line',
+              yAxisIndex: 1,
+              itemStyle: {
+                normal: {
+                  color: 'rgba(255, 196, 53, 1)',
+                  barBorderRadius: 0,
+                },
+              },
+              data: [
+                80, 75, 70, 65, 80, 68, 78, 68, 48, 88, 76
+              ]
+            },
+          ]
+
+        }
+        const dom = this.$refs.mapxia2
+        const echart = echarts.init(dom)
+        echart.setOption(option)
+        window.addEventListener('resize', () => {
+          echart.resize()
+        })
+      },
+      getzuo1echart1Data() {
+        let that = this;
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+
+        axios.post('/api/construceCon/constructGuideModePlan', params)
+          .then(function(response) {
+
+            let result = response.data
+
+            that.dagedata = result
+            const option = {
+
+              xAxis: {
+                type: 'value',
+                data: ['新覆盖小区数', '在建小区数', '未完成数'],
+                show: false,
+              },
+              yAxis: {
+                type: 'category',
+                show: false,
+                data: ['本年度计划覆盖数']
+              },
+              grid: {
+                top: 0,
+                right: 0,
+                left: 0,
+              },
+              series: [{
+                  name: '新覆盖小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.fgXqNum],
+                  barWidth: 20,
+                  itemStyle: {
+                    color: '#00e571',
+
+                  },
+                  label: {
+                    show: true,
+                    formatter: '{value| {c} } \n {hr|} \n {name| {a} }',
+                    align: 'left',
+                    position: [0, 20],
+                    rich: {
+                      value: {
+                        color: '#ffffff',
+                        fontSize: 18,
+                        fontWeight: 500,
+                        lineHeight:24,
+                        padding: [0, 8],
+                      },
+                      hr: {
+                        borderColor: '#ffffff',
+                        width: '33%',
+                        borderWidth: 1,
+                        height: 1
+                      },
+                      name: {
+                        color: '#35B0FF',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        lineHeight: 20,
+                      },
+                    },
+                  },
+                },
+                {
+                  name: '在建小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.zjXqNum],
+                  itemStyle: {
+                    color: '#0bb1ff',
+
+                  },
+                  label: {
+                    show: true,
+                    formatter: '{value| {c} } \n {hr|} \n {name| {a} }',
+                    align: 'left',
+                    position: ['20%', 20],
+                    rich: {
+                      value: {
+                        color: '#ffffff',
+                        fontSize: 18,
+                        fontWeight: 500,
+                        lineHeight: 24,
+                        padding: [0, 8],
+                      },
+                      hr: {
+                        borderColor: '#ffffff',
+                        width: '60%',
+                        borderWidth: 1,
+                        height: 1
+                      },
+                      name: {
+                        color: '#35B0FF',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        lineHeight: 20,
+                      },
+                    },
+                  },
+                },
+                {
+                  name: '未完成数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.wwcXqNum],
+                  itemStyle: {
+                    color: '#004773',
+
+                  },
+                  label: {
+                    show: true,
+                    formatter: '{value| {c} } \n  {hr|} \n {name| {a} }',
+                    align: 'left',
+                    position: ['10%', 20],
+                    rich: {
+                      value: {
+                        color: '#ffffff',
+                        fontSize: 18,
+                        fontWeight: 500,
+                        lineHeight: 24,
+                        padding: [0, 8],
+                      },
+                      hr: {
+                        borderColor: '#ffffff',
+                        width: '30%',
+                        borderWidth: 1,
+                        height: 1
+                      },
+                      name: {
+                        color: '#35B0FF',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        lineHeight: 20,
+                      },
+                    },
+                  },
+                },
+
+
+              ],
+
+
+            }
+            const dom = that.$refs.zuo1echart1
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      getzuo1echart2Data() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+
+        axios.post('/api/construceCon/constructGuideModePlan', params)
+          .then(function(response) {
+
+            let result = response.data
+
+
+
+            const option = {
+              xAxis: {
+                type: 'value',
+                data: ['资源录入小区数', '资源未录入小区数'],
+                show: false,
+              },
+              yAxis: {
+                type: 'category',
+                show: false,
+                data: ['本年度计划覆盖数']
+              },
+              grid: {
+                top: 0,
+                right: 0,
+                left: 0,
+              },
+              series: [{
+                  name: '资源录入小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.zylrXqNum],
+                  barWidth: 20,
+                  itemStyle: {
+                    color: '#30dcfb',
+
+                  },
+                  label: {
+                    show: true,
+                    formatter: '{value| {c} } \n  {hr|} \n {name| {a} }',
+                    align: 'left',
+                    position: [0, 20],
+                    rich: {
+                      value: {
+                        color: '#ffffff',
+                        fontSize: 18,
+                        fontWeight: 500,
+                        lineHeight: 24,
+                        padding: [0, 8],
+                      },
+                      hr: {
+                        borderColor: '#ffffff',
+                        width: '30%',
+                        borderWidth: 1,
+                        height: 1
+                      },
+                      name: {
+                        color: '#35B0FF',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        lineHeight: 20,
+                      },
+                    },
+                  },
+                },
+                {
+                  name: '资源未录入小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.planFgXqNum - result.zylrXqNum],
+                  barWidth: 20,
+                  itemStyle: {
+                    color: '#004773',
+
+                  },
+                  label: {},
+                },
+
+
+
+
+              ],
+
+
+            }
+
+            const dom = that.$refs.zuo1echart2
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      getzuo1echart3Data() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/construceCon/constructGuideModePlan', params)
+          .then(function(response) {
+            let result = response.data
+            //that.duankoushu = result
+            const option = {
+              xAxis: {
+                type: 'value',
+                data: ['交付市场小区数', '资源未录入小区数'],
+                show: false,
+              },
+              yAxis: {
+                type: 'category',
+                show: false,
+                data: ['本年度计划覆盖数']
+              },
+              grid: {
+                top: 0,
+                right: 0,
+                left: 0,
+              },
+              series: [{
+                  name: '交付市场小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.jfXqNum],
+                  barWidth: 20,
+                  itemStyle: {
+                    color: '#30dcfb',
+
+                  },
+                  label: {
+                    show: true,
+                    formatter: '{value| {c} } \n   {hr|} \n {name| {a} }',
+                    align: 'left',
+                    
+                    position: [0, 20],
+                    rich: {
+                      value: {
+                        color: '#ffffff',
+                        fontSize: 18,
+                        fontWeight: 500,
+                        lineHeight: 24,
+                        padding: [0, 8],
+                      },
+                      hr: {
+                        borderColor: '#ffffff',
+                        width: '30%',
+                        borderWidth: 1,
+                        height: 1
+                      },
+                      name: {
+                        color: '#35B0FF',
+                        fontSize: 14,
+                        fontWeight: 400,
+                        lineHeight: 20,
+                      },
+                    },
+                  },
+                },
+                {
+                  name: '资源未录入小区数',
+                  type: 'bar',
+                  stack: 'total',
+                  data: [result.planFgXqNum - result.jfXqNum],
+                  barWidth: 20,
+                  itemStyle: {
+                    color: '#004773',
+
+                  },
+                  label: {},
+                },
+
+
+
+
+              ],
+
+
+            }
+
+            const dom = that.$refs.zuo1echart3
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      getzuo1echart4Data() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/construceCon/constructGuideModeInvest', params)
+          .then(function(response) {
+
+            let result = response.data
+
+
+            let sdatas = [] //数据
+            let xdatas = [] //x轴
+
+
+            for (let t1 of result.tzList) {
+              // {}
+              for (let t2 in t1) { //{}
+                xdatas.push(Number(t2)) //key
+                sdatas.push(Number(t1[t2]))
+                break;
+              }
+            }
+
+
+
+
+
+            const option = {
+              legend: {
+                show: false,
+                data: [],
+
+              },
+              tooltip: {
+                trigger: 'axis'
+              },
+              title: {
+                left: 'left',
+                text: '投资金额（万）',
+                textStyle: {
+                  fontSize: 14,
+                  fontWeight: ' ',
+                  fontFamily: 'MicrosoftYaHeiUI',
+                  color: '#a9a9a9',
+                  align: 'center'
+                },
+              },
+              xAxis: [
+
+                {
+                  type: 'category',
+                  axisTick: {
+                    show: false
+                  },
+                  axisLine: {
+                    show: false
+                  },
+                  axisLabel: {
+                    show: true,
+                    rotate: 0,
+                    interval: 0,
+                    textStyle: {
+                      padding: [14, 0, 0, 0],
+                      fontSize: 12,
+                      color: "rgba(255,255,255,0.5)"
+                    }
+                  },
+                  data: ['2020', '2021', '2022'],
+                  //data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月'],
+                  // data: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州', '台州', '丽水', '舟山'],
+                  axisPointer: {
+                    type: 'shadow'
+                  }
+                }
+              ],
+              yAxis: [{
+                  type: 'value',
+                  name: '',
+                  nameTextStyle: {
+                    show: false,
+                    color: 'rgba(255,255,255,0.5)',
+                  },
+                  splitLine: {
+                    show: false,
+                  },
+                  axisLine: {
+                    show: false,
+                  },
+                  axisTick: {
+                    show: false,
+                  },
+
+                  splitArea: {
+                    show: false,
+                  },
+
+                  axisLabel: {
+                    show: false,
+                    formatter: '{value} ',
+                    textStyle: {
+                      color: "rgba(255,255,255,0.5)"
+                    }
+                  }
+                },
+
+              ],
+              series: [{
+                  name: 'MB/s',
+                  type: "pictorialBar",
+                  barCategoryGap: "60%",
+                  symbol: "path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z",
+                  itemStyle: {
+                    normal: {
+                      //barBorderRadius: 5,
+                      //渐变色
+                      color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color: "#a9a9a9"
+                        },
+                        {
+                          offset: 0.5,
+                          color: "#d17310"
+                        },
+                        {
+                          offset: 1,
+                          color: "#c08300"
+                        }
+                      ])
+                    }
+                  },
+                  label: {
+                    normal: {
+                      show: true,
+                      position: "top",
+                      textStyle: {
+                        color: "#fff",
+                        fontSize: 20
+                      }
+                    }
+                  },
+                  data: sdatas.reverse()
+
+                },
+
+              ]
+
+            }
+            const dom = that.$refs.zuo1echart4
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      getzuo1echart5Data() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "areaName": this.smapdata.areaName,
+        }
+        axios.post('/api/construceCon/constructGuideModeInvest', params)
+          .then(function(response) {
+
+            let result = response.data
+
+
+            var fontColor = "#fff";
+            let noramlSize = 16;
+            var datas = {
+              value: result.sjTz,
+              company: "%",
+              ringColor: [{
+                offset: 0,
+                color: '#009ffa' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: '#009ffa' // 100% 处的颜色
+              }]
+            }
+            const option = {
+
+              title: {
+
+                text: datas.value + '万',
+                subtext: '批复项目金额',
+                x: 'center',
+                y: 'center',
+                textStyle: {
+                  fontWeight: 'bold',
+                  color: '#fdfeff',
+                  fontSize: 18
+                },
+                subtextStyle: {
+                  fontSize: 12,
+                  color: '#c9c9c9'
+                },
+              },
+              legend: {
+                show: true,
+                left: 'center',
+                data: ['项目完结率', '批复率'],
+                textStyle: {
+                  fontSize: '20px',
+                  fontFamily: 'MicrosoftYaHeiUI',
+                  color: '#FFFFFF',
+                },
+              },
+              // legend: {
+              //     show: true,
+              //     data: []
+              // },
+              color: ['#00385d', '#29aa82', '#00463f'],
+              tooltip: {
+                trigger: 'item',
+                padding: [10, 10, 10, 10],
+                formatter: "{d}% ",
+
+              },
+              series: [{
+                  name: '项目完结率',
+                  type: 'pie',
+                  clockWise: true,
+                  radius: ['40%', '45%'],
+                  itemStyle: {
+                    normal: {
+                      label: {
+                        show: false
+                      },
+                      labelLine: {
+                        show: false
+                      }
+                    }
+                  },
+
+                  hoverAnimation: true,
+
+                  data: [{
+                    value: result.ysTz,
+                    name: '',
+                    itemStyle: {
+                      normal: {
+                        color: { // 完成的圆环的颜色
+                          colorStops: datas.ringColor
+                        },
+                        label: {
+                          show: false
+                        },
+                        labelLine: {
+                          show: false
+                        }
+                      }
+                    }
+                  }, {
+                    name: '',
+                    value: result.sjTz - result.ysTz
+                  }]
+                },
+                {
+                  name: '批复率',
+                  type: 'pie',
+                  radius: ['50%', '58%'],
+                  center: ['50%', '50%'],
+                  label: {
+                    show: false,
+                    fontSize: 13,
+                    color: '#333',
+
+                  },
+                  labelLine: {
+                    show: false,
+                    // length: 6,
+                    // length2: 15
+                  },
+                  data: [{
+                    name: "批复",
+                    value: result.sjTz
+                  }, {
+                    name: "未批复",
+                    value: result.xqTz
+                  }]
+                },
+                // {
+                //     type: 'pie',
+                //     radius: ['36%', '43%'],
+                //     center: ['50%', '50%'],
+                //     silent: true,
+                //     data: [{
+                //         name: '',
+                //         value: 1,
+                //     }]
+                // }
+              ]
+
+            }
+            const dom = that.$refs.zuo1echart5
+            const echart = echarts.init(dom)
+            echart.setOption(option)
+            window.addEventListener('resize', () => {
+              echart.resize()
+            })
+
+
+
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+
+
+
+
+      },
+
+      handleCurrentChange(val) {
+      
+        this.page = val
+        
+        this.moretableData1()
+        this.moretableData1_2()
+        this.moretableData1_3()
+        this.moretableData1_4()
+        this.moretableData1_5()
+        this.moretableData1_6()
+        
+        this.moretableData5_1()
+        this.moretableData5_2()
+        this.moretableData5_3()
+        this.moretableData5_4()
+        this.moretableData5_5()
+        this.moretableData5_6()
+        this.moretableData5_7()
+        this.moretableData5_8()
+        this.moretableData5_9()
+        this.moretableData5_10()
+        this.moretableData5_11()
+        this.moretableData5_12()
+        this.moretableData5_13()
+        this.moretableData5_14()
+        this.moretableData5_15()
+        this.moretableData5_16()
+        
+
+      },
+
+      cxform1() {
+        this.moretableData1()
+      },
+      cxform2() {
+        this.moretableData1_2()
+      },
+      cxform3() {
+        this.moretableData1_3()
+      },
+      cxform4() {
+        this.moretableData1_4()
+      },
+      cxform5() {
+        this.moretableData1_5()
+      },
+      cxform6() {
+        this.moretableData1_6()
+      },
+      moretableData1() {
+        let that = this
+        that.tableData1 = []
+        
+        
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "1",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_1 = datal2.total
+            
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1 = datal3
+            that.total1_1 = total1_1
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData1_2() {
+        let that = this
+        that.tableData1_2 = []
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "2",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_2 = datal2.total
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1_2 = datal3
+            that.total1_2 = total1_2
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      moretableData1_3() {
+        let that = this
+        that.tableData1_3 = []
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "3",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_3 = datal2.total
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1_3 = datal3
+            that.total1_3 = total1_3
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      moretableData1_4() {
+        let that = this
+        that.tableData1_4 = []
+
+        var params = {
+         "cityName": that.provAndCity.province || this.smapdata.cityName,
+         "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "4",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_4 = datal2.total
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1_4 = datal3
+            that.total1_4 = total1_4
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      moretableData1_5() {
+        let that = this
+        that.tableData1_5 = []
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "5",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_5 = datal2.total
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1_5 = datal3
+            that.total1_5 = total1_5
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      moretableData1_6() {
+
+        let that = this
+
+        that.tableData1_6 = []
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "limit": "10",
+          "xzBs": "6",
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        axios.post('/api/construceCon/selectKdghOrderInfoList', params)
+          .then(function(response) {
+            var datal = response.data
+            var datal2 = datal.data
+            var total1_6 = datal2.total
+            var datal3 = datal2.rows
+            if (!datal) {
+              return
+            }
+            datal3.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData1_6 = datal3
+            that.total1_6 = total1_6
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+      
+      cxform5_1() {
+        this.moretableData5_1()
+      },
+      cxform5_2() {
+        this.moretableData5_2()
+      },
+      cxform5_3() {
+        this.moretableData5_3()
+      },
+      cxform5_4() {
+        this.moretableData5_4()
+      },
+      cxform5_5() {
+        this.moretableData5_5()
+      },
+      cxform5_6() {
+        this.moretableData5_6()
+      },
+      cxform5_7() {
+        this.moretableData5_7()
+      },
+      cxform5_8() {
+        this.moretableData5_8()
+      },
+      cxform5_9() {
+        this.moretableData5_9()
+      },
+      cxform5_10() {
+        this.moretableData5_10()
+      },
+      cxform5_11() {
+        this.moretableData5_11()
+      },
+      cxform5_12() {
+        this.moretableData5_12()
+      },
+      cxform5_13() {
+        this.moretableData5_13()
+      },
+      cxform5_14() {
+        this.moretableData5_14()
+      },
+      cxform5_15() {
+        this.moretableData5_15()
+      },
+      cxform5_16() {
+        this.moretableData5_16()
+      },
+      moretableData5_1() {
+
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 1,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+
+        that.tableData5_1 = []
+
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+
+
+
+            var datal = response.data
+
+
+            var total = datal.total
+
+
+            var datal2 = datal.data
+
+
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+
+            that.tableData5_1 = datal2
+
+            that.total = total
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_2() {
+
+        let that = this
+
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 2,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+
+        that.tableData5_2 = []
+
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+
+
+
+            var datal = response.data
+
+
+            var total2 = datal.total
+
+            var datal2 = datal.data
+
+
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+
+            that.tableData5_2 = datal2
+
+            that.total2 = total2
+
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+       },
+      moretableData5_3() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 3,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_3 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+            var total3 = datal.total
+           
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_3 = datal2
+            that.total3 = total3
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_4() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 4,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_4 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+            var total4 = datal.total
+          
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_4 = datal2
+            that.total4 = total4
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_5() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 5,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_5 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total5 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_5 = datal2
+            that.total5 = total5
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_6() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 6,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_6 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total6 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_6 = datal2
+            that.total6 = total6
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_7() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 7,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_7 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total7 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_7 = datal2
+            that.total7 = total7
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_8() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 8,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_8 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total8 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_8 = datal2
+            that.total8 = total8
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_9() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 9,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_9 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total9 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_9 = datal2
+            that.total9 = total9
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_10() {
+        let that = this
+
+        var params = {
+         "cityName": that.provAndCity.province || this.smapdata.cityName,
+         "areaName": that.provAndCity.city || this.smapdata.areaName,
+         "page": this.page,
+         "size": 10,
+         "type": 10,
+         "startTime": that.startTime + '',
+         "endTime": that.endTime + '',
+        }
+        that.tableData5_10 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total10 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_10 = datal2
+            that.total10 = total10
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_11() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 11,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_11 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total11 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_11 = datal2
+            that.total11 = total11
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_12() {
+        let that = this
+
+        var params = {
+         "cityName": that.provAndCity.province || this.smapdata.cityName,
+         "areaName": that.provAndCity.city || this.smapdata.areaName,
+         "page": this.page,
+         "size": 10,
+         "type": 12,
+         "startTime": that.startTime + '',
+         "endTime": that.endTime + '',
+        }
+        that.tableData5_12 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total12 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_12 = datal2
+            that.total12 = total12
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_13() {
+        let that = this
+
+        var params = {
+         "cityName": that.provAndCity.province || this.smapdata.cityName,
+         "areaName": that.provAndCity.city || this.smapdata.areaName,
+         "page": this.page,
+         "size": 10,
+         "type": 13,
+         "startTime": that.startTime + '',
+         "endTime": that.endTime + '',
+        }
+        that.tableData5_13 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total13 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_13 = datal2
+            that.total13 = total13
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_14() {
+        let that = this
+
+        var params = {
+         "cityName": that.provAndCity.province || this.smapdata.cityName,
+         "areaName": that.provAndCity.city || this.smapdata.areaName,
+         "page": this.page,
+         "size": 10,
+         "type": 14,
+         "startTime": that.startTime + '',
+         "endTime": that.endTime + '',
+        }
+        that.tableData5_14 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total14 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_14 = datal2
+            that.total14 = total14
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_15() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 15,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_15 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total15 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_15 = datal2
+            that.total15 = total15
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData5_16() {
+        let that = this
+
+        var params = {
+          "cityName": that.provAndCity.province || this.smapdata.cityName,
+          "areaName": that.provAndCity.city || this.smapdata.areaName,
+          "page": this.page,
+          "size": 10,
+          "type": 16,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData5_16 = []
+        axios.post('/api/ghjsCon/getGhjsXqfgDataList', params)
+          .then(function(response) {
+            var datal = response.data
+
+            var total16 = datal.total
+            var datal2 = datal.data
+            if (!datal) {
+              return
+            }
+            datal2.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData5_16 = datal2
+            that.total16 = total16
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      cxform0_1() {
+        this.moretableData0_1()
+      },
+      cxform0_2() {
+        this.moretableData0_2()
+      },
+      cxform0_3() {
+        this.moretableData0_3()
+      },
+      moretableData0_1() {
+        let that = this
+        
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData0_1 = []
+        axios.post('/api/ghjsCon/getGhjsGjRedData', params)
+          .then(function(response) {
+            var datal = response.data
+            if (!datal) {
+              return
+            }
+            datal.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData0_1 = datal
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData0_2() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData0_2 = []
+        axios.post('/api/ghjsCon/getGhjsGjYellowData', params)
+          .then(function(response) {
+            var datal = response.data
+            if (!datal) {
+              return
+            }
+            datal.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData0_2 = datal
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+      moretableData0_3() {
+        let that = this
+        var params = {
+          "cityName": this.smapdata.cityName,
+          "startTime": that.startTime + '',
+          "endTime": that.endTime + '',
+        }
+        that.tableData0_3 = []
+        axios.post('/api/ghjsCon/getGhjsGjGreenData', params)
+          .then(function(response) {
+            var datal = response.data
+            if (!datal) {
+              return
+            }
+            datal.forEach(item => {
+              Object.keys(item).forEach(key => {
+                Number(item[key]) ? (item[key] = Number(item[key])) : item[key]
+              })
+            })
+            that.tableData0_3 = datal
+
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      },
+
+
+      ///////////////////////////////////////////////////////////////////
+    },
+
+
+
+
+    destroyed() {
+      // 在组件生命周期结束的时候销毁。
+      window.removeEventListener('message', this.gismapListener, true)
+    }
+  }
+</script>
+
+<style lang="scss" scoped>
+  @import url('../comtable.scss');
+
+  .topmenudiv {
+    z-index: 999;
+    width: 800px;
+    height: 40px;
+    position: absolute;
+    left: 50%;
+    top: 70px;
+    margin-left: -400px;
+    text-align: center;
+
+    .topmenu {
+      cursor: pointer;
+      font-size: 22px;
+      font-family: MFBanHei;
+      line-height: 40px;
+      color: #1ec7fe;
+      margin: 0px 10px 0px 10px;
+    }
+
+    .topmenuac {
+      font-size: 22px;
+      font-family: MFBanHei;
+      font-weight: 100;
+      height: 40px;
+      line-height: 40px;
+      color: #00ffff;
+      margin: 0px 10px 0px 10px;
+    }
+  }
+
+  .contentbody {
+    height: calc(100vh - 100px);
+    // background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    //   url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    // background-size: auto 100%;
+    margin: -10px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+
+  /deep/ .el-dialog {
+    -webkit-transform: none;
+    transform: none;
+    left: 0;
+    position: relative;
+    z-index: 20000;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    background-image: url('~@/assets/images/bigScreen/kuang.png');
+    background-size: 100% 100%;
+    background-color: rgba(220, 38, 38, 0);
+  }
+
+  /deep/ .el-dialog__body {
+    padding: 0px 20px;
+  }
+
+  /deep/ .el-dialog__headerbtn {
+    z-index: 9999;
+  }
+
+  /deep/ .el-dialog__headerbtn .el-dialog__close {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 2px 20px 0 0;
+    border: 2px solid #193987;
+    border-radius: 5px;
+    background: #1e1e88;
+  }
+
+  /deep/ .el-table {
+    background: none !important;
+    font-size: 14px !important;
+  }
+
+  /deep/.dialogTableBg .el-table th {
+    background: none !important;
+    background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+    background-position: center 16px !important;
+    background-size: contain !important;
+    text-align: center !important;
+    color: #02f6ff !important;
+    font-size: 15px !important;
+  }
+
+  /deep/ .el-table tr {
+    background: none !important;
+  }
+
+  /deep/.el-table td {
+    background: none !important;
+    border: none !important;
+    text-align: center !important;
+    color: #ffffff;
+    padding: 6px 0;
+  }
+
+  /deep/.el-table td.is-left {
+    text-align: left !important;
+  }
+
+  /deep/ .el-table th.is-leaf,
+  .el-table td {
+    border: none !important;
+    color: #ffffff;
+  }
+
+  /deep/.el-table::before {
+    height: 0 !important;
+  }
+
+  /deep/.el-table th>.cell {
+    display: contents !important;
+  }
+
+  /deep/.el-table .cell {
+    padding: 0 6px;
+    max-height: 45px;
+    overflow-y: hidden;
+  }
+
+  /deep/ .dialogTableBg .el-table tr:nth-child(even) {
+    background: rgba(4, 54, 108, 0.4) !important;
+  }
+
+  .dialogCon {
+    padding: 0 40px;
+
+    .dialogTitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 30px;
+      border-bottom: 1px dashed #404e77;
+      padding: 5px 0;
+
+      .left {
+        display: inline-block;
+        padding-right: 110px;
+        font-size: 20px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+
+      .title-right {
+        color: #218cc8;
+        font-size: 12px;
+        font-family: Microsoft YaHei;
+
+        div {
+          width: 38px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          display: inline-block;
+          cursor: pointer;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+
+        .active {
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+        }
+      }
+    }
+  }
+
+  /deep/ .el-select .el-input__inner {
+    height: 28px;
+    // width: 100px;
+    background: transparent;
+    color: #1fe3ef;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-color: #3bc8d9;
+  }
+
+  /deep/ .bottom-tab {
+    width: 60%;
+  }
+
+  /deep/ .bottom-tab .bottom-item {
+    padding: 4px 30px !important;
+  }
+
+
+
+  .leftbox,
+  .rightbox {
+    width: 520px;
+    height: calc(100vh - 80px);
+    box-sizing: border-box;
+    padding: 15px;
+    padding-bottom: 30px;
+  }
+
+  .rightbox {
+    width: 520px;
+  }
+
+  .centerbox {
+    height: 98%;
+    flex: 1;
+    background: url('~@/assets/zj/bg_zj3_dt2.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 32px 20px 10px 20px;
+    position: relative;
+  }
+
+  .item-title {
+    font-size: 18px;
+    color: aqua;
+    background: url('~@/assets/zj/bg_zj3_bt.png') no-repeat;
+    background-size: 100% 100%;
+    line-height: 26px;
+    height: 40px;
+    padding-left: 20px;
+    margin-bottom: 5px;
+    font-weight: bolder;
+    vertical-align: top;
+  }
+
+  .chartbox {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gdjkitem {
+    height: 68px;
+    width: 72px;
+    margin: 0 auto;
+    background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+    background-size: 100% 100%;
+    line-height: 68px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bolder;
+  }
+
+  .gdjkitembox {
+    text-align: center;
+    position: relative;
+    margin-top: 12px;
+
+    &:not(:last-child)::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: -8px;
+      top: 26px;
+    }
+  }
+
+  .mtheader {
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+  }
+
+  .mtbody {
+    height: 100%;
+    margin: 6px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mtbody .scrollitem {
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 5px;
+  }
+
+  .mtbody .scrollitem:nth-child(odd) {
+    background: rgba(4, 54, 108, 0.7);
+  }
+
+  .centTab {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 30px;
+    text-align: center;
+
+    .centtabitem {
+      display: inline-block;
+      height: 56px;
+      width: 120px;
+      line-height: 66px;
+      text-align: center;
+      font-size: 18px;
+      cursor: pointer;
+      color: rgb(2, 252, 252);
+      background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+      background-size: 100% 120%;
+      margin-right: -15px;
+      opacity: 0.5;
+    }
+
+    .centtabitem.active {
+      opacity: 1;
+      font-weight: bold;
+    }
+  }
+
+  .box-item {
+    position: relative;
+  }
+
+  .toptabs {
+    position: absolute;
+    top: 60px;
+    width: 100vw;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+
+    .toptabs-item {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid #5b7bc9;
+      margin-left: 10px;
+      color: #698bdf;
+      cursor: pointer;
+    }
+
+    .toptabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+      box-shadow: 0px 0px 8px rgba(62, 255, 253, 0.5) inset
+    }
+  }
+
+  .rowttabs {
+    height: 38px;
+    line-height: 38px;
+    position: absolute;
+    top: 2px;
+    right: 0;
+
+    .rowttabs-item {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid #5b7bc9;
+      margin-left: 10px;
+      color: #698bdf;
+      cursor: pointer;
+    }
+
+    .rowttabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+      box-shadow: 0px 0px 8px rgba(62, 255, 253, 0.5) inset
+    }
+  }
+
+  .rowttabs.rowttabs2 {
+    top: 0px;
+    position: relative;
+    text-align: center;
+
+    .rowttabs-item {
+      padding: 4px 10px;
+      color: #ddd;
+    }
+
+    .rowttabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+
+    }
+  }
+
+  .piebox {
+    text-align: center;
+    height: 130px;
+    position: relative;
+
+    .chartbox {
+      height: 100%;
+    }
+
+    .pieinfo {
+      width: 100%;
+      position: absolute;
+      bottom: -10px;
+      text-align: center;
+      font-size: 16px;
+    }
+  }
+
+  .pieboxbbs {
+    .pieinfo {
+      bottom: 5px !important;
+    }
+  }
+
+  /deep/ .el-loading-mask {
+    background-color: rgba(6, 26, 58, 0.7);
+    z-index: 9999999;
+  }
+
+  /deep/.el-table__fixed {
+    background: #010d2d !important;
+  }
+
+  /deep/.el-table__fixed::before,
+  /deep/ .el-table__fixed-right::before {
+    background: transparent !important;
+  }
+
+  @keyframes turn {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    25% {
+      -webkit-transform: rotate(90deg);
+    }
+
+    50% {
+      -webkit-transform: rotate(180deg);
+    }
+
+    75% {
+      -webkit-transform: rotate(270deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  .tjbtn {
+    position: absolute;
+    right: 60px;
+    top: 40px;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 10px rgb(56, 148, 235);
+    cursor: pointer;
+    animation: turn 8s linear infinite;
+    z-index: 99;
+
+    img {
+      width: 44px;
+      z-index: 99;
+    }
+  }
+
+  .tjtitle {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, #1a92d4, transparent);
+    line-height: 34px;
+    padding-left: 15px;
+    border-radius: 20px 0 0 20px;
+    width: 60%;
+  }
+
+  .tjitem {
+    // padding: 10px;
+    color: #fff;
+    font-size: 20px;
+
+    p {
+      line-height: 48px;
+      margin-bottom: 0;
+    }
+  }
+
+  .lgwbox {
+    text-align: center;
+
+    .lgwnum {
+      font-size: 20px;
+      color: #f7e713;
+    }
+
+    .lgwimg {
+      margin: -20px auto 0px auto;
+
+      img {
+        width: 100px;
+      }
+    }
+
+    .lgwfont {
+      font-size: 16px;
+    }
+  }
+
+  .waterCharbox {
+    height: 100px;
+  }
+
+  .waterCharbox2 {
+    line-height: 30px;
+    font-size: 18px;
+    padding-top: 15px;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  .lineinfo {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+  }
+
+  .charrow {
+    text-align: center;
+
+    .waterinfo {
+      margin-top: 15px;
+      font-size: 16px;
+      margin-bottom: 5px;
+      color: #f5f5f5;
+    }
+  }
+
+
+  .initselect.el-select-dropdown {
+    background: rgb(9, 55, 112) !important;
+  }
+
+  .initselect .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #07234d;
+  }
+
+  .initselect .el-select-dropdown__item {
+    color: #fff;
+  }
+
+  .initselect .el-select-dropdown__item.selected {
+    color: aqua;
+  }
+
+  .initselect.el-select-dropdown {
+    border: solid 1px #93b1f7;
+  }
+
+  .initselect .popper__arrow::after {
+    border-bottom-color: #093770 !important;
+  }
+
+  .sutabtitle {
+    background: rgba(25, 89, 162, 0.3);
+    height: 38px;
+    border-radius: 10px;
+    line-height: 38px;
+  }
+
+  .sutabtitle .flex1 {
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.4;
+    color: aqua;
+    background: url('~@/assets/images/bigScreen/ligtdian.png') no-repeat;
+    background-position: center -38px;
+  }
+
+  .sutabtitle .flex1.active {
+    opacity: 1;
+    font-weight: bolder;
+  }
+
+  .zdmore {
+    float: right;
+    font-size: 16px;
+    cursor: pointer;
+    color: #57b4f1;
+    margin-right: 0px;
+    text-decoration: underline;
+    position: relative;
+    z-index: 999;
+    top: 2px;
+  }
+
+  .zjmap {
+
+    width: 100%;
+    height: 70%;
+  }
+
+  .mapxia {
+    width: 100%;
+    height: 27%;
+    margin-top: 3%;
+    overflow: hidden;
+  }
+
+  .yujingimg {
+    width: 198px;
+    height: 95px;
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    z-index: 100;
+    background: url('~@/assets/zj/bg_zj4_ls5.png') no-repeat top center;
+    background-size: 100% 100%;
+
+    a {
+      float: left;
+      color: #00FFFF;
+      font-weight: bold;
+      padding: 8px 0px 0px 70px;
+
+    }
+  }
+
+  .mapxia1 {
+    width: 100%;
+    height: 100%;
+    float: left;
+  }
+
+  .mapxia2 {
+    width: 100%;
+    height: 100%;
+    float: left;
+  }
+
+  .lgwbox2 {
+    padding-top: 20px;
+    text-align: center;
+    height: 100%;
+
+    .lgwnum2 {
+      height: 100px;
+      line-height: 120px;
+      font-size: 2.25rem;
+      margin-top: 20px;
+      background: url('~@/assets/zj/bg_zj3_di6.png') no-repeat center center;
+    }
+
+    .lgwfont2 {
+      font-size: 1.25rem;
+    }
+  }
+
+  .lgwbox3 {
+    text-align: center;
+    background: url('~@/assets/zj/bg_zj3_di7.png') no-repeat center 40px;
+    height: 100%;
+
+    .lgwnum3 {
+      height: 120px;
+      line-height: 120px;
+      font-size: 1.2rem;
+    }
+
+    .lgwfont3 {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #82e0ff;
+    }
+
+    .lgwnum3_2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .lgwbox4 {
+    text-align: center;
+    border-radius: 3px;
+    border: 1px solid rgba(37, 100, 204, 0.6);
+    box-shadow: 0px 0px 21px rgba(19, 67, 205, 0.5) inset;
+    padding: 10px;
+    margin: 1%;
+    width: 48%;
+
+    .lgwimg4 {
+      width: 44%;
+      margin: 2%;
+    }
+
+    .lgwnumfont {
+      width: 54%;
+      text-align: left;
+    }
+
+    .lgwnum4 {
+      width: 48%;
+      margin-left: 2%;
+      font-size: 1.2rem;
+    }
+
+    .lgwfont4 {
+      font-size: 1rem;
+      color: #82e0ff;
+    }
+  }
+</style>
+<style>
+  .el-table {
+    margin-bottom: 1.875rem;
+  }
+
+  .el-pagination {
+    background: none;
+    position: absolute;
+    bottom: 1.2rem;
+    left: 35%;
+    color: aliceblue;
+
+  }
+
+  .el-pagination__total {
+    color: aqua;
+  }
+
+  .el-pagination .btn-prev,
+  .el-pagination .btn-next,
+  .el-pager .number,
+  .el-pagination button:disabled,
+  .el-pager li {
+    background-color: rgba(2, 32, 82, 0.8);
+  }
+
+  .el-form-item {
+    margin: 5px 0px;
+  }
+  .el-input--mini .el-input__inner {
+      height: 28px;
+      line-height: 28px;
+      background: transparent;
+      border: 1px solid #3bc8d9;
+  }
+  .el-form-item__label {
+      color: #02effa;
+  }
+  .el-picker-panel { 
+      height: 300px !important;     
+  }
+</style>

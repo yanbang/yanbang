@@ -1,0 +1,184 @@
+<template>
+  <div>
+    <div style="display: block; height: 10px"></div>
+    <div style="margin-top: 10px; margin-left: 20px; width: 100%">
+      <span class="chartTitle" v-if="title === '5G发展' || title === '移网发展' || title === '宽带发展'" style="font-size: 24px">{{ title }}</span>
+      <img src="../../../assets/images/bigScreen/fullService/Rectangle@2x.png" style="height: 14px; width: 60px; margin-left: 10px" />
+      <span v-if="title === '5G发展'" style="float: right; margin-right: 50px" @click="fiveGDialogShow">更多<img width="9px" height="13px" style="margin-left: 10px" src="~@/assets/images/bigScreen/resource/dleft.png" /></span>
+    </div>
+
+    <div style="clear: both"></div>
+    <el-row :gutter="20" style="margin-top: 10px">
+      <el-col :span="8" style="text-align: center" class="progeressC">
+        <!--        <div :id="'myChart1'+title" class="chartSize"></div>-->
+        <el-progress type="circle" :percentage="parseInt(formData.dayNewPctPct)||0" :width="80" :color="formData.dayNewPctPct >= 100 ? '#E3B90C' : '#25F1EA'"></el-progress>
+        <div style="display: block; text-align: center">
+          <span style="display: block" class="titleSpan1">当日完成率</span>
+          <span class="titleSpan2">当日发展</span><span class="titleSpan3">{{formData.dayNew || '-' }}</span><span class="titleSpan2">户</span>
+        </div>
+      </el-col>
+      <el-col :span="8" style="text-align: center">
+        <!--        <div :id="'myChart2'+title" class="chartSize"></div>-->
+        <el-progress type="circle" :percentage="parseInt(formData.monNewPctPct)||0" :width="80" :color="formData.monNewPctPct >= 100 ? '#E3B90C' : '#25F1EA'"></el-progress>
+        <div style="display: block; text-align: center">
+          <span style="display: block" class="titleSpan1">月完成率</span>
+          <div style="display: block">
+            <span class="titleSpan2">月累发展</span><span class="titleSpan3">{{ formData.monNew || '-' }}</span><span class="titleSpan2">户</span>
+          </div>
+          <span class="titleSpan4">环比</span><span class="titleSpan4" style="color: #ffff33">{{ formData.monHbPctPct|| '-' }}%</span><span class="titleSpan4" style="margin-left: 10px">同比</span><span class="titleSpan4" style="color: #66ff00">{{ formData.monTbPctPct || '-'}}%</span>
+        </div>
+      </el-col>
+      <el-col :span="8" style="text-align: center">
+        <!--        <div :id="'myChart3'+title" class="chartSize"></div>-->
+        <el-progress type="circle" :percentage="parseInt(formData.qtNewPctPct)||0" :width="80" :color="formData.qtNewPctPct >= 100 ? '#E3B90C' : '#25F1EA'"></el-progress>
+        <div style="display: block; text-align: center">
+          <span style="display: block" class="titleSpan1">季度完成率</span>
+          <div style="display: block">
+            <span class="titleSpan2">年累发展</span><span class="titleSpan3">{{ formData.yearNew || '-'}}</span><span class="titleSpan2">户</span>
+          </div>
+          <span class="titleSpan4">环比</span><span class="titleSpan4" style="color: #ffff33">{{ formData.yearHbPctPct || '-'}}%</span><span class="titleSpan4" style="margin-left: 10px">同比</span><span class="titleSpan4" style="color: #66ff00">{{ formData.yearTbPctPct || '-' }}%</span>
+        </div>
+      </el-col>
+    </el-row>
+
+  </div>
+</template>
+
+<script>
+
+import echarts from 'echarts'
+export default {
+  name: 'charts',
+  props: {
+    argsData: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+    },
+    title: {
+      type: String,
+      default: function () {
+        return ''
+      },
+    },
+    form: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+    },
+  },
+  components: {
+
+  },
+  data() {
+    return {
+
+      //日
+      dateData: {},
+      //月
+      mouthData: {},
+      //季度
+      quarterData: {},
+      progressColor: '#fff000',
+      formData: {
+        dayNewPctPct: 0,
+        dayNew: 0,
+        monNewPctPct: 0,
+        monNew: 0,
+        monTbPctPct: 0,
+        monHbPctPct: 0,
+        qtNewPctPct: 0,
+        yearNew: 0,
+      },
+    }
+  },
+  watch: {
+    form(val) {
+      if (val) {
+        this.formData = this.form
+        if (this.title === '智家业务发展') {
+        }
+      } else {
+        this.formData = {
+          dayNewPctPct: '0',
+          dayNew: '0',
+          monNewPctPct: '0',
+          monNew: '0',
+          monTbPctPct: '0',
+          monHbPctPct: '0',
+          qtNewPctPct: '0',
+          yearNew: '0',
+        }
+      }
+    },
+  },
+  created() { },
+  mounted() { },
+  methods: {
+    fiveGDialogShow() {
+      this.$emit('moreFn')
+    }
+  },
+}
+</script>
+
+<style scoped lang="scss">
+.chartBack {
+  background-image: url('../../../assets/images/bigScreen/fullService/center-top@2x.png');
+  background-size: 100% 100%;
+}
+.chartTitle {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-family: 'MFBanHei';
+  font-size: 18px;
+  color: #02f6ff;
+}
+.chartSize {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: auto;
+}
+
+.spanSize {
+  width: 100px;
+}
+
+.titleSpan1 {
+  color: #feffff;
+  font-size: 15px;
+}
+
+.titleSpan2 {
+  color: #02f6ff;
+  font-size: 12px;
+}
+
+.titleSpan3 {
+  color: #02f6ff;
+  font-size: 12px;
+  font-family: 'DigifaceWide';
+  src: url('../../../assets/fonts/digifaw.ttf');
+}
+.titleSpan4 {
+  color: #02f6ff;
+  font-size: 9px;
+  font-family: 'MicrosoftYaHei';
+}
+
+/deep/ .el-progress-circle__track {
+  stroke: #1d2088;
+}
+
+/deep/ .el-progress__text {
+  color: #ffffff;
+  font-size: 18px;
+}
+
+/deep/ .v-modal {
+  z-index: -2 !important;
+}
+</style>

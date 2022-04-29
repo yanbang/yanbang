@@ -1,0 +1,1276 @@
+<template>
+
+  <div class="container">
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">渠道</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 左边 -->
+        <div class="left">
+          <div class="left_top" @click="clickMode('1')" :class="{'backgroundImage2': selectMode === '1'}">
+            <!-- <div class="centerTop"> -->
+            <div class="centerTop-title">
+              <div class="titleLeft">5G发展</div>
+            </div>
+            <div class="more" @click="showDialog(1)">
+              更多 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+            </div>
+            <!-- </div> -->
+            <div class="right_center">
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in left_top" :key="index">
+                  <div class="waterPoloChart" :id="`pieChart${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                  <div class="itemText1" v-if="i.hb" style="margin-left:-15px">
+                    环比<span class="margin green">{{i.hb}}%</span>
+                    同比<span class="yellow">{{i.tb}}%</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="centerBottom_bot" @click="clickMode('2')" :class="{'backgroundImage4': selectMode === '2'}">
+            <div class="centerTop-title">
+              <div class="titleLeft">双融发展</div>
+            </div>
+            <div class="right_center">
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">移宽融合</div>
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in left_bottom_chart" :key="index">
+                  <div class="waterPoloChart" :id="`pieBottomChart${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                  <div class="itemText1" v-if="i.hb">
+                    环比<span class="margin green">{{i.hb}}%</span>
+                    同比<span class="yellow">{{i.tb}}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="right_center">
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">移移融合</div>
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in left_bottom_chart1" :key="index">
+                  <div class="waterPoloChart" :id="`pieBottomCharts${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                  <div class="itemText1" v-if="i.hb">
+                    环比<span class="margin green">{{i.hb}}%</span>
+                    同比<span class="yellow">{{i.tb}}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="right_center">
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">金融融合</div>
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in left_bottom_chart2" :key="index">
+                  <div class="waterPoloChart" :id="`pieBottomChartss${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                  <div class="itemText1" v-if="i.hb">
+                    环比<span class="margin green">{{i.hb}}%</span>
+                    同比<span class="yellow">{{i.tb}}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="center_top">
+            <div class="left_top" @click="clickMode('3')" :class="{'backgroundImage3': selectMode === '3'}">
+              <!-- <div class="centerTop"> -->
+              <div class="centerTop-title">
+                <div class="titleLeft">移网发展</div>
+              </div>
+              <div class="right_center">
+                <div class="left-waterPoloChart">
+                  <div class="left-item" v-for="(i,index) in center_List" :key="index">
+                    <div class="waterPoloChart" :id="`pie_center_Chart${index}`"></div>
+                    <div class="itemName">{{i.name}}</div>
+                    <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                    <div class="itemText1" v-if="i.hb">
+                      环比<span class="margin green">{{i.hb}}%</span>
+                      同比<span class="yellow">{{i.tb}}%</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="left_top" style="margin-left:20px" @click="clickMode('4')" :class="{'backgroundImage3': selectMode === '4'}">
+              <!-- <div class="centerTop"> -->
+              <div class="centerTop-title">
+                <div class="titleLeft">宽带发展</div>
+              </div>
+              <div class="right_center">
+                <div class="left-waterPoloChart">
+                  <div class="left-item" v-for="(i,index) in center_right_List" :key="index">
+                    <div class="waterPoloChart" :id="`pie_center_right_Chart${index}`"></div>
+                    <div class="itemName">{{i.name}}</div>
+                    <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                    <div class="itemText1" v-if="i.hb">
+                      环比<span class="margin green">{{i.hb}}%</span>
+                      同比<span class="yellow">{{i.tb}}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="centerBottom">
+            <div class="centerTop-title">
+              <div class="titleLeft">{{mapData.label}}发展量</div>
+              <div class="titleRight">
+                <span class="margin" v-if="this.mapData.level < 4" @click="showDialog(2)">
+                  详细数据 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+              </div>
+            </div>
+            <div class="map">
+              <iframe ref="iframe" :src="iframeSrc" frameborder="0" style="width: 100%; height: 100%"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <div class="centerBottom_bot" style="margin-top:0" @click="clickMode('5')" :class="{'backgroundImage4': selectMode === '5'}">
+            <div class="centerTop-title">
+              <div class="titleLeft" style="background:none">移网发展质态
+              </div>
+              <div class="titleRight">移网新发展平均在网时长
+                <span class="num">24</span>
+                <span class="yellow">个月</span>
+              </div>
+            </div>
+            <div class="right_center">
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">流失</div>
+              <div class="more" @click="ywztDialogShow = true">
+                更多 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+              </div>
+              <div class="dialogTableBg1">
+                <el-table ref="singleTable" :data="tableData" highlight-current-row style="width: 90%;margin-left:5%" :header-cell-style="{textAlign: 'center'}" :cell-style="{ textAlign: 'center' }">
+                  <el-table-column property="title" width="80">
+                  </el-table-column>
+                  <el-table-column property="date" label="当日流失">
+                  </el-table-column>
+                  <el-table-column property="mon" label="月累流失">
+                  </el-table-column>
+                  <el-table-column property="year" label="年累流失">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">携入</div>
+              <div class="dialogTableBg1">
+                <el-table ref="singleTable" :data="tableData2" highlight-current-row style="width: 90%;margin-left:5%" :header-cell-style="{textAlign: 'center'}" :cell-style="{ textAlign: 'center' }">
+                  <el-table-column property="date" label="当日流入">
+                  </el-table-column>
+                  <el-table-column property="mon" label="月累流入">
+                  </el-table-column>
+                  <el-table-column property="year" label="年累流入">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <hr style="width:90%;border:1px solid #10529A">
+              <div class="title">移网三无极低</div>
+              <div class="title-right">
+                <div :class="{'active': ywsw == 'curMon'}" @click="ywsw='curMon' , chnl_zl_sw_low()">月累</div>
+                <div :class="{'active': ywsw == 'curYear'}" @click="ywsw='curYear' , chnl_zl_sw_low()">年累</div>
+              </div>
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in rightBottomPieList" :key="index">
+                  <div class="rightBottomPieChart" :id="`rightBottomPieChart${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum">{{i.num}}<span>万户</span></div>
+                  <div class="itemNum"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="left_top" style="margin-top:20px" @click="clickMode('6')" :class="{'backgroundImage2': selectMode === '6'}">
+            <div class="centerTop-title">
+              <div class="titleLeft" style="background:none">渠道门店规模</div>
+            </div>
+            <div class="title-right">
+              <div :class="{'active': qdmd == 'curDay'}" @click="qdmd = 'curDay'">周</div>
+              <div :class="{'active': qdmd == 'curMon'}" @click="qdmd ='curMon'">月累</div>
+              <div :class="{'active': qdmd == 'curYear'}" @click="qdmd = 'curYear'">年累</div>
+            </div>
+            <div class="right_center">
+              <hr style="width:90%;border:1px solid #10529A;margin-top:-18px">
+              <div class="title">门店总量:{{0}}<span class="hb"> 环比<span class="green">-2.12%</span></span></div>
+              <div class="left-waterPoloChart">
+                <div class="left-item" v-for="(i,index) in waterPoloList" :key="index">
+                  <div class="waterPoloChart" :id="`waterPoloChart${index}`"></div>
+                  <div class="itemName">{{i.name}}</div>
+                  <div class="itemNum"><span>{{i.bot_name}}</span>&nbsp;{{i.num}} &nbsp;<span>户</span></div>
+                  <div class="itemText1" v-if="i.hb" style="margin-left:-15px">
+                    环比<span class="margin green">-2.12%</span>
+                    同比<span class="yellow">+2.23%</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </FlexBox>
+    <!-- 左上角产品 -->
+    <five-g-dialog :biztype="BIZ_TYPE" :tabId="tabId" :params="params" v-if="fiveGDialogShow" @closeFiveGDialog="coloseDialog"></five-g-dialog>
+    <!-- 中间详细数据 -->
+    <el-dialog :visible.sync="dialogVisible" width="88%">
+      <template slot="title">
+        <div style="margin-top: 10px; margin-left: 20px; width: 100%">
+          <span class="chartTitle2">渠道卖场-{{title}}产品详情</span>
+          <img src="../../../assets/images/bigScreen/fullService/Rectangle@2x.png" style="height: 14px; width: 86px; margin-left: 10px; margin-top: -3px" />
+        </div>
+      </template>
+      <business-hall-detail v-if="dialogVisible" :selectmode="selectMode" :tabId='tabId' :params="params" :detailsn="detail_sn" :kpicode="detailCN_KPI_CODE"></business-hall-detail>
+    </el-dialog>
+    <!-- 右上角更多 -->
+    <ywfzt-dialog :biztype="BIZ_TYPE1" :params="params" :tabId='tabId' v-if="ywztDialogShow" @closeDialog="coloseDialog2"></ywfzt-dialog>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import pieChart from '@/config/bigscreen/fullService-pieChart.js'
+import waterPoloChart from '@/config/bigscreen/fullService-waterPoloChart.js'
+import rightBottomPieChart from '@/config/bigscreen/fullService-rightBottomPieChart.js'
+import fiveGDialog from '../../channelShop/components/fiveGDialog';
+import businessHallDetail from '@/views/channelShop/components/businessHallDetail'
+import { getChanelData, chnl_store_zl_loss_movein, chnl_store_zl_sw_low } from '@/api/chanel.js'
+import ywfztDialog from '../../channelShop/components/ywfztDialog';
+import store from 'store'
+export default {
+  components: {
+    Header,
+    FlexBox,
+    fiveGDialog,
+    businessHallDetail,
+    ywfztDialog
+  },
+  name: 'index',
+  data() {
+    return {
+      left_top: [
+      ],
+      center_List: [],
+      center_right_List: [],
+      bottom_title: ['移宽融合', '移移融合', '金融融合',],
+      left_bottom_chart: [],
+      left_bottom_chart1: [],
+      left_bottom_chart2: [],
+      waterPoloList: [{
+        name: '移宽融合',
+        bot_name: '当日发展',
+        num: 200,
+        value: 11,
+        hb: false
+      }, {
+        name: '移移融合主副卡',
+        bot_name: '月累发展',
+        num: 200,
+        value: 30,
+        hb: true
+      }, {
+        name: '金融融合',
+        bot_name: '年累发展',
+        num: 20,
+        value: 40,
+        hb: true
+      }],
+      rightBottomPieList: [],
+      tableData: [],
+      tableData2: [],
+      bottomList: [{
+        name: '营业厅',
+        url: '/channel/businessHall/index',
+
+      },
+      {
+        name: '渠道门店',
+        url: '/channelShop/index',
+      }, {
+        name: '卖场',
+        url: '/channel/sale/index',
+        active: true
+
+      }, {
+        name: '轻触点',
+        url: '/channel/touchPoint/index',
+
+      }, {
+        name: '小微商户',
+        url: '/SmallBusinesses/index',
+
+      },
+      {
+        name: '农村',
+        url: '/rural/index',
+
+      },],
+      isDialog1: false,
+      isDialog2: false,
+      //   mc5G: 'curDay',
+      qdmd: 'curDay',
+      ywsw: 'curMon',
+      //map地址
+      iframeSrc: '',
+      timest: '',
+      mapData: {},
+      userInfo: {},
+      params: {},
+      selectMode: '1',
+      gisQueryParams: {},
+      BIZ_TYPE: '2', //1 移网   2 5G    3宽带
+      BIZ_TYPE1: '1',
+      fiveGDialogShow: false,
+      dialogVisible: false,
+      ywztDialogShow: false,
+      tabId: '01',
+      detailCN_KPI_CODE: 'CHNL_IC5G0001',
+      title: '12'
+    }
+  },
+  async created() {
+  },
+  async mounted() {
+    //获取时间
+    this.timest = window.sessionStorage.getItem('selectTime')
+    var initArea_id = ''
+    if (store.get('userInfo').gridId) {
+      this.mapData.level = 4;
+      initArea_id = store.get('userInfo').gridId
+    } else if (store.get('userInfo').areaCode) {
+      this.mapData.level = 3;
+      initArea_id = store.get('userInfo').areaCode
+    } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+      this.mapData.level = 2;
+      initArea_id = store.get('userInfo').eparchyCode
+    } else {
+      this.mapData.level = 1;
+      initArea_id = '0000'
+    };
+    this.mapData.area_id = initArea_id;
+    //初始查询参数
+    this.initParam()
+    //初始化地图
+    this.initGisMap(initArea_id)
+    window.addEventListener('message', this.mapInit, true)
+  },
+  methods: {
+    //获取时间
+    async getDate(date) {
+      this.timest = date
+      this.params.timest = date
+      this.$nextTick(() => {
+        this.init()
+      })
+      this.gisQueryParams.timest = date
+      this.gisQueryParams.message = "changeTime";
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.$refs['iframe'].contentWindow.postMessage(gisQueryParams, '*')
+      this.$forceUpdate()
+    },
+    //初始化地图参数
+    mapInit(e) {
+      let that = this
+      if (e.data.message == 'levelSwitch') {
+        that.mapData = e.data;
+        that.gisQueryParams = Object.assign({}, that.gisQueryParams, e.data)
+        that.params.timest = that.timest
+      }
+    },
+    //初始化地图
+    initGisMap(initArea_id) {
+      let level = this.mapData.level
+      let timest = this.timest
+      let se_type = this.params.se_type
+      let type = this.params.type
+      // 初始化地图参数
+      this.gisQueryParams = {
+        level: level,
+        se_type: se_type,
+        sceneid: '3',
+        gis_sceneid: '5',
+        area_id: initArea_id,
+        poi_city_id: '',
+        login_no: store.get('staffId'),
+        timest: timest
+      };
+      this.iframeSrc = `http://134.32.115.253:18080/sdresview/?type=${type}&se_type=${se_type}&level=${level}&sceneid=3&gis_sceneid=6&area_id=${initArea_id}&poi_city_id=370100&timest=${timest}`
+      console.log(this.iframeSrc)
+    },
+    initParam() {
+      console.log(this.mapData)
+      this.userInfo = store.get('userInfo');
+      Object.assign(this.mapData, { label: store.get('userInfo').dataAreaName || '各地市' })
+      if (store.get('userInfo').gridId) {
+        this.mapData.level = 4;
+      } else if (store.get('userInfo').areaCode) {
+        this.mapData.level = 3;
+      } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+        this.mapData.level = 2;
+      } else {
+        this.mapData.level = 1;
+      };
+      console.log(this.mapData)
+      // 默认参数
+      this.params = {
+        timest: this.timest,
+        eparchyCode: this.userInfo.eparchyCode || '',
+        areaCode: this.userInfo.areaCode || '',
+        gridId: this.userInfo.gridId || '',
+        mLevel: this.mapData.level,
+        flag: '1',
+        chnlKindId: '',
+        chnlKindTypeCode: '03'
+      }
+      this.changgeParams('1')
+    },
+    //初始化参数
+    async init() {
+
+      this.chnl_zl_loss_movein()
+      this.chnl_zl_sw_low()
+      let arr5G = await this.getchanelDataMethods('1') // 5G发展
+      let arrYw = await this.getchanelDataMethods('2') // 移网发展
+      let arrKd = await this.getchanelDataMethods('3') // 宽带发展
+      let arrYk = await this.getchanelDataMethods('5') // 移宽融合
+      let arrYy = await this.getchanelDataMethods('6') // 移移融合
+      let arrJr = await this.getchanelDataMethods('7') // 金融融合
+      this.left_top = [{
+        name: '当日完成率',
+        bot_name: '当日发展',
+        num: arr5G.dayNew ? arr5G.dayNew : '-',
+        value: arr5G.dayNewPctPct ? arr5G.dayNewPctPct : '-',
+        hb: ''
+      }, {
+        name: '月完成率',
+        bot_name: '月累发展',
+        num: arr5G.monNew ? arr5G.monNew : '-',
+        value: arr5G.monNewPctPct ? arr5G.monNewPctPct : '-',
+        hb: arr5G.monHb ? arr5G.monHb : '-',
+        tb: arr5G.monTb ? arr5G.monrTb : '-',
+      }, {
+        name: '季度完成率',
+        bot_name: '年累发展',
+        num: arr5G.yearNew ? arr5G.yearNew : '-',
+        value: arr5G.qtNewPctPct ? arr5G.qtNewPctPct : '-',
+        hb: arr5G.yearHb ? arr5G.yearHb : '-',
+        tb: arr5G.yearTb ? arr5G.yearTb : '-',
+      }]
+      this.left_bottom_chart = [
+        {
+          name: '当日完成率',
+          bot_name: '当日发展',
+          num: arrYk.dayNew ? arrYk.dayNew : '-',
+          value: arrYk.dayNewPctPct ? arrYk.dayNewPctPct : '-',
+          hb: ''
+        }, {
+          name: '月完成率',
+          bot_name: '月累发展',
+          num: arrYk.monNew ? arrYk.monNew : '-',
+          value: arrYk.monNewPctPct ? arrYk.monNewPctPct : '-',
+          hb: arrYk.monHb ? arrYk.monHb : '-',
+          tb: arrYk.monTb ? arrYk.monrTb : '-',
+        }, {
+          name: '季度完成率',
+          bot_name: '年累发展',
+          num: arrYk.yearNew ? arrYk.yearNew : '-',
+          value: arrYk.qtNewPctPct ? arrYk.qtNewPctPct : '-',
+          hb: arrYk.yearHb ? arrYk.yearHb : '-',
+          tb: arrYk.yearTb ? arrYk.yearTb : '-',
+        }
+      ]
+      this.left_bottom_chart1 = [{
+        name: '当日完成率',
+        bot_name: '当日发展',
+        num: arrYy.dayNew ? arrYy.dayNew : '-',
+        value: arrYy.dayNewPctPct ? arrYy.dayNewPctPct : '-',
+        hb: ''
+      }, {
+        name: '月完成率',
+        bot_name: '月累发展',
+        num: arrYy.monNew ? arrYy.monNew : '-',
+        value: arrYy.monNewPctPct ? arrYy.monNewPctPct : '-',
+        hb: arrYy.monHb ? arrYy.monHb : '-',
+        tb: arrYy.monTb ? arrYy.monrTb : '-',
+      }, {
+        name: '季度完成率',
+        bot_name: '年累发展',
+        num: arrYy.yearNew ? arrYy.yearNew : '-',
+        value: arrYy.qtNewPctPct ? arrYy.qtNewPctPct : '-',
+        hb: arrYy.yearHb ? arrYy.yearHb : '-',
+        tb: arrYy.yearTb ? arrYy.yearTb : '-',
+      }]
+      this.left_bottom_chart2 = [{
+        name: '当日完成率',
+        bot_name: '当日发展',
+        num: arrJr.dayNew ? arrJr.dayNew : '-',
+        value: arrJr.dayNewPctPct ? arrJr.dayNewPctPct : '-',
+        hb: ''
+      }, {
+        name: '月完成率',
+        bot_name: '月累发展',
+        num: arrJr.monNew ? arrJr.monNew : '-',
+        value: arrJr.monNewPctPct ? arrJr.monNewPctPct : '-',
+        hb: arrJr.monHb ? arrJr.monHb : '-',
+        tb: arrJr.monTb ? arrJr.monrTb : '-',
+      }, {
+        name: '季度完成率',
+        bot_name: '年累发展',
+        num: arrJr.yearNew ? arrJr.yearNew : '-',
+        value: arrJr.qtNewPctPct ? arrJr.qtNewPctPct : '-',
+        hb: arrJr.yearHb ? arrJr.yearHb : '-',
+        tb: arrJr.yearTb ? arrJr.yearTb : '-',
+      }],
+        this.center_List = [{
+          name: '当日完成率',
+          bot_name: '当日发展',
+          num: arrYw.dayNew ? arrYw.dayNew : '-',
+          value: arrYw.dayNewPctPct ? arrYw.dayNewPctPct : '-',
+          hb: ''
+        }, {
+          name: '月完成率',
+          bot_name: '月累发展',
+          num: arrYw.monNew ? arrYw.monNew : '-',
+          value: arrYw.monNewPctPct ? arrYw.monNewPctPct : '-',
+          hb: arrYw.monHb ? arrYw.monHb : '-',
+          tb: arrYw.monTb ? arrYw.monrTb : '-',
+        }, {
+          name: '季度完成率',
+          bot_name: '年累发展',
+          num: arrYw.yearNew ? arrYw.yearNew : '-',
+          value: arrYw.qtNewPctPct ? arrYw.qtNewPctPct : '-',
+          hb: arrYw.yearHb ? arrYw.yearHb : '-',
+          tb: arrYw.yearTb ? arrYw.yearTb : '-',
+        }],
+        this.center_right_List = [{
+          name: '当日完成率',
+          bot_name: '当日发展',
+          num: arrKd.dayNew ? arrKd.dayNew : '-',
+          value: arrKd.dayNewPctPct ? arrKd.dayNewPctPct : '-',
+          hb: ''
+        }, {
+          name: '月完成率',
+          bot_name: '月累发展',
+          num: arrKd.monNew ? arrKd.monNew : '-',
+          value: arrKd.monNewPctPct ? arrKd.monNewPctPct : '-',
+          hb: arrKd.monHb ? arrKd.monHb : '-',
+          tb: arrKd.monTb ? arrKd.monrTb : '-',
+        }, {
+          name: '季度完成率',
+          bot_name: '年累发展',
+          num: arrKd.yearNew ? arrKd.yearNew : '-',
+          value: arrKd.qtNewPctPct ? arrKd.qtNewPctPct : '-',
+          hb: arrKd.yearHb ? arrKd.yearHb : '-',
+          tb: arrKd.yearTb ? arrKd.yearTb : '-',
+        }],
+
+        setTimeout(() => {
+          this.left_top.map((i, index) => {
+            this.pieChart(index, i, 'pieChart');
+          });
+          this.left_bottom_chart.map((i, index) => {
+            this.pieChart(index, i, 'pieBottomChart');
+          });
+          this.left_bottom_chart1.map((i, index) => {
+            this.pieChart(index, i, 'pieBottomCharts');
+          });
+          this.left_bottom_chart2.map((i, index) => {
+            this.pieChart(index, i, 'pieBottomChartss');
+          });
+          this.center_List.map((i, index) => {
+            this.pieChart(index, i, 'pie_center_Chart');
+          });
+          this.center_right_List.map((i, index) => {
+            this.pieChart(index, i, 'pie_center_right_Chart');
+          });
+        }, 0);
+      setTimeout(() => {
+        this.waterPoloList.map((i, index) => {
+          this.waterPoloChart(index, i);
+        });
+      }, 0);
+    },
+    //获取数据
+    async getchanelDataMethods(type) {
+      this.params.CHNL_KIND_TYPE_CODE = '01'
+      this.params.flag = type
+      try {
+        let res = await getChanelData(this.params)
+        return res?.result?.tblList[0]
+      } catch (e) {
+        // this.requestFailed(err);
+        return {}
+      }
+    },
+    // 总览-移网质态发展-流失+携入
+    chnl_zl_loss_movein() {
+      this.params.CHNL_KIND_TYPE_CODE = '01'
+      chnl_store_zl_loss_movein(this.params).then(data => {
+        if (data.result) {
+          let ls = data.result ? data.result.data[0] : ''
+          this.tableData = [{
+            title: '新发展',
+            date: ls.dayLoss ? ls.dayLoss : '-',
+            mon: ls.monLoss ? ls.monLoss : '-',
+            year: ls.yearLoss ? ls.yearLoss : '-'
+          }],
+            this.tableData2 = [{
+              title: '',
+              date: ls.dayMovein ? ls.dayMovein : '-',
+              mon: ls.monMovein ? ls.monMovein : '-',
+              year: ls.yearMovein ? ls.yearMovein : '-'
+            }]
+        }
+      })
+    },
+    chnl_zl_sw_low() {
+      this.params.CHNL_KIND_TYPE_CODE = '01'
+      chnl_store_zl_sw_low(this.params).then(data => {
+        if (data.result) {
+          let item = ''
+          this.ywsw == 'curMon' ? item = 'mon' : item = 'year'
+          let rb = data.result ? data.result.data[0] : ''
+          this.rightBottomPieList = [{
+            name: '三无用户',
+            num: rb[`${item}Sw`] ? rb[`${item}Sw`] : '-',
+            value: rb[`${item}SwRate`] ? rb[`${item}SwRate`] : '-',
+          }, {
+            name: '极低用户',
+            num: rb[`${item}Low`] ? rb[`${item}Low`] : '-',
+            value: rb[`${item}LowRate`] ? rb[`${item}LowRate`] : '-',
+          }]
+          setTimeout(() => {
+            this.rightBottomPieList.map((i, index) => {
+              this.rightBottomPieChart(index, i);
+            });
+          }, 0);
+          console.log('right', data.result.data)
+        }
+      })
+    },
+    pieChart(index, val, item) {
+      let data = {
+        id: item + index,
+        value: val.value
+      }
+      pieChart.initChart(data)
+    },
+    waterPoloChart(index, val) {
+      let data = {
+        id: 'waterPoloChart' + index,
+        value: val.value,
+      }
+      waterPoloChart.initChart(data)
+    },
+    rightBottomPieChart(index, val) {
+      let data = {
+        id: 'rightBottomPieChart' + index,
+        value: val.value,
+      }
+      rightBottomPieChart.initChart(data)
+    },
+
+    //点击相关模块
+    clickMode(type) {
+      this.changgeParams(type)
+      let eparchyCode = this.userInfo.eparchyCode
+      let areaCode = this.userInfo.areaCode
+      let gridId = this.userInfo.gridId
+      let map = {
+        eparchyCode: this.userInfo.eparchyCode,
+        areaCode: this.userInfo.areaCode,
+        gridId: this.userInfo.gridId,
+        timest: this.timest,
+        se_type: this.params.se_type,
+        type: this.params.type,
+        level: this.mapData.level,
+        area_id: eparchyCode || areaCode || gridId,
+        sceneid: '3',
+        gis_sceneid: '6',
+        poi_city_id: '370100',
+        changeType: ''
+      }
+      map.message = "changeType";
+
+      window.frames[0].postMessage(map, "*");
+      this.$forceUpdate()
+    },
+    changgeParams(type) {
+      this.selectMode = type
+      this.params.type = "06";
+      if (type === '1') {
+        this.params.se_type = "XUK0003";
+        this.detail_sn = 'chnl_store_5g_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_IC5G0001'
+      } else if (type === '2') {
+        this.params.se_type = "XUK0001";
+        this.detail_sn = 'chnl_store_yw_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_ICMOBILE0001'
+      } else if (type === '3') {
+        this.params.se_type = "XUK0002";
+        this.detail_sn = 'chnl_store_kd_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_ICBAND0001'
+      } else if (type === '5') {
+        this.params.se_type = "XUK0004";
+        this.detail_sn = 'chnl_store_yk_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_ICMOBILE0048'
+      } else if (type === '6') {
+        this.params.se_type = "XUK0005";
+        this.detail_sn = 'chnl_store_yy_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_ICMOBILE0049'
+      } else if (type === '7') {
+        this.params.se_type = "XUK0006";
+        this.detail_sn = 'chnl_store_jr_dev_detail'
+        this.detailCN_KPI_CODE = 'CHNL_ICMOBILE0050'
+      }
+      this.params.message = "changeType";
+    },
+    openfiveGDialogShow() {
+
+      this.fiveGDialogShow = true;
+    },
+    coloseDialog() {
+      this.fiveGDialogShow = false
+    },
+    coloseDialog2() {
+      this.ywztDialogShow = false
+    },
+    //弹窗
+    showDialog(val) {
+      if (val == 1) {
+        this.fiveGDialogShow = true
+      }
+      if (val == 2) {
+        this.dialogVisible = true
+      }
+      if (val == 3) {
+        this.isDialog3 = true
+      }
+      if (val == 4) {
+        this.isDialog1 = true
+      }
+    },
+
+    //获取数据
+
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.mapInit, true)
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.chartTitle2 {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-family: 'MFBanHei';
+  color: #02f6ff;
+  font-size: 24px;
+}
+/deep/.dialogTableBgPro .el-table th {
+  background-color: #023e5d !important;
+  text-align: left !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBgPro .el-table tr {
+  background-color: #01274a !important;
+  color: #fff !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBgPro .el-table td {
+  padding: 12px 0;
+  padding-left: 15px;
+  border: rgba(0, 160, 233, 0.42) solid 1px !important;
+  border-top: none !important;
+  text-align: left !important;
+  border-left: none !important;
+}
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background: #01153b;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  .left {
+    width: 21%;
+  }
+  .centerBottom_bot {
+    width: 100%;
+    height: 680px;
+    margin-top: 20px;
+    background-image: url('~@/assets/images/bigScreen/fullService/chanel_bus_left_title_bg@2x.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    .centerTop-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 0 0 30px;
+      .titleLeft {
+        width: auto;
+        font-size: 22px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        margin: -15px 0 0 0;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+      .titleRight {
+        font-size: 12px;
+        font-family: Microsoft YaHei;
+        color: #02f6ff;
+        margin: -20px 60px 0 -100px;
+        .num {
+          font-size: 16px;
+          color: #ffff33;
+          font-family: DigifaceWide;
+        }
+      }
+    }
+    .right_center {
+      width: 100%;
+      margin: 20px 0 0 5px;
+      .title-right {
+        margin: -20px 0 20px 80%;
+        color: #218cc8;
+        div {
+          width: 38px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          display: inline-block;
+          cursor: pointer;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+        .active {
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+        }
+      }
+      .title {
+        width: auto;
+        font-size: 18px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        margin: 3px 0 0 30px;
+      }
+      .more {
+        margin: -20px 0 0 80%;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #a5e8fe;
+        cursor: pointer;
+      }
+      .left-waterPoloChart {
+        width: 100%;
+        text-align: center;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        justify-content: center;
+        align-items: center;
+        .left-item {
+          color: #02f6ff;
+          height: 100%;
+        }
+        .waterPoloChart {
+          width: 120px;
+          height: 90px;
+          margin: 0 auto;
+        }
+        .itemName {
+          color: #fff;
+          font-size: 14px;
+        }
+        .itemNum {
+          font-family: DigifaceWide;
+          font-size: 12px;
+          span {
+            font-size: 12px;
+          }
+        }
+        .itemText1 {
+          font-size: 10px;
+          color: #02f6ff;
+          width: 150px;
+          //margin: 0 auto;
+          margin-left: -15px;
+          transform: scale(0.8);
+          .margin {
+            margin-right: 0px;
+          }
+        }
+      }
+    }
+    .margin {
+      margin-right: 20px;
+    }
+  }
+  .left_top {
+    width: 100%;
+    height: 240px;
+    background-image: url('~@/assets/images/bigScreen/fullService/chanel_business_bg.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    .title-right {
+      margin: -27px 0 0px 68%;
+      color: #218cc8;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+    .centerTop-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      //   padding: 30px 30px 0 20px;
+      .titleLeft {
+        width: auto;
+        font-size: 22px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+    }
+    .more {
+      margin: -25px 0 0 80%;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #a5e8fe;
+      cursor: pointer;
+    }
+    .right_center {
+      width: 100%;
+      margin: 20px 0 0 5px;
+      .title {
+        width: auto;
+        font-size: 16px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        margin: 0 0 0 30px;
+        .hb {
+          font-family: Microsoft YaHei;
+          color: #02f6ff;
+          font-size: 12px;
+          margin-left: 15px;
+        }
+      }
+      .left-waterPoloChart {
+        width: 100%;
+        text-align: center;
+        display: grid;
+        grid-template-columns: repeat(3, 33.3%);
+        justify-content: center;
+        align-items: center;
+        .left-item {
+          color: #02f6ff;
+          height: 100%;
+        }
+        .waterPoloChart {
+          width: 120px;
+          height: 90px;
+          margin: 0 auto;
+          //width: 84px;
+          //height: 84px;
+          //margin: 0 0 5px 20px;
+        }
+        .itemName {
+          color: #fff;
+          font-size: 14px;
+        }
+        .itemNum {
+          font-family: DigifaceWide;
+          font-size: 12px;
+          span {
+            font-size: 12px;
+          }
+        }
+        .itemText1 {
+          font-size: 10px;
+          color: #02f6ff;
+          width: 160px;
+          transform: scale(0.8);
+          .margin {
+            margin-right: 0px;
+          }
+        }
+      }
+    }
+    .margin {
+      margin-right: 20px;
+    }
+  }
+  .green {
+    color: #66ff00 !important;
+  }
+  .yellow {
+    color: #ffff33;
+  }
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    .center_top {
+      display: flex;
+      margin-top: 20px;
+    }
+  }
+  .right {
+    width: 23%;
+    .rightBottomPieChart {
+      width: 200px;
+      height: 150px;
+      margin: 0 auto;
+    }
+  }
+  /deep/ .bottom {
+    width: 40% !important;
+    left: 30% !important;
+  }
+  .backgroundImage2 {
+    background-image: url('../../../assets/images/bigScreen/fullService/chanle_select_bg.png');
+    background-size: 100% 100%;
+  }
+  .backgroundImage3 {
+    background-image: url('../../../assets/images/bigScreen/fullService/chanle_select_bg.png');
+    background-size: 100% 100%;
+  }
+  .backgroundImage4 {
+    background-image: url('../../../assets/images/bigScreen/fullService/chnlBgSelec.png');
+    background-size: 100% 100%;
+  }
+  .dialogTableBg1 {
+    margin: 15px 0 20px 0;
+  }
+  /deep/ .dialogTableBg1 .el-table th {
+    background-color: #023e5d !important;
+    color: #fff !important;
+    font-size: 12px !important;
+  }
+  /deep/ .dialogTableBg1 .el-table tr {
+    background-color: #01274a !important;
+    color: #fff;
+    font-size: 12px !important;
+  }
+  /deep/ .dialogTableBg1 .el-table td {
+    border: none !important;
+    color: #ffffff;
+    border-right: 0.5px solid #0a3d75 !important;
+    border-bottom: 0px !important;
+    font-family: DigifaceWide;
+  }
+  /deep/ .dialogTableBg1 .el-table th.is-leaf,
+  .el-table td {
+    border-bottom: 0px #dfe6ec !important;
+  }
+  /deep/ .dialogTableBg1 .el-table--group,
+  .el-table--border {
+    border: none !important;
+  }
+  /deep/ .dialogTableBg1 .el-table::before {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0px;
+  }
+}
+.map_bg {
+  background-image: url('../../../assets/images/bigScreen/fullService/map_bg.png');
+  background-size: 100% 100%;
+  padding: 10px 30px 30px;
+  height: 69%;
+  margin-top: 10px;
+  //height: 917.5px;
+}
+.map {
+  padding: 10px 30px 30px;
+  height: 90%;
+}
+.centerTop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 0 40px;
+  .titleLeft {
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .titleRight {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #a5e8fe;
+    cursor: pointer;
+  }
+}
+.centerBottom {
+  width: 100%;
+  height: 625px;
+  margin-top: 20px;
+  background-image: url('~@/assets/images/bigScreen/fullService/mapBg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .centerTop-title {
+    padding-top: 30px;
+  }
+  .margin {
+    margin-right: 20px;
+  }
+  .map {
+    padding: 10px 30px 30px;
+    height: 90%;
+  }
+}
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+  height: 780px;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 10px 30px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+
+/deep/.dialogTableBgPro .el-table td:nth-child(2) {
+  border-right: none !important;
+}
+/deep/.dialogTableBgPro .el-table td:nth-child(3) {
+  border-right: none !important;
+}
+/deep/.dialogTableBgPro .el-table tr:last-child td {
+  border-bottom: none !important;
+}
+/deep/ .dialogTableBgPro .tableNullBg tr {
+  background: none !important;
+}
+/deep/.dialogTableBgPro .el-table .el-table__expanded-cell {
+  padding: 0 !important;
+}
+/deep/ .dialogTableBgPro .tableNullBg td {
+  padding: 12px 0;
+  padding-left: 15px;
+}
+/deep/ .dialogTableBgPro .tableNullBg td:first-child {
+  padding-left: 45px;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    margin-top: 15px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+</style>

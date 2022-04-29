@@ -1,0 +1,464 @@
+<template>
+  <div class="main">
+    <div class="Logout" @click="LogoutFn">Exit</div>
+    <div class="smallIcon right"></div>
+    <div class="smallIcon left"></div>
+    <div class="top">
+      <div class="top-bg1"></div>
+      <!-- <div class="top-title">
+       <img src="~@/assets/images/bigScreen/index/title.png" />
+     </div> -->
+      <div class="top-bg2"></div>
+      <div class="top-btn">
+        <div class="item" v-for="i in list" :key="i.id" @click="openPage(i.path)" @mousemove="clickBtn(i.id)" @mouseout="hide" :style="{'margin-right': i.id == 3 ? '50px' : '0'}" :class="[i.class, {'active': index === i.id}]">
+          <div v-if="i.class == 'up'" class="icon divclass2">
+            <img v-if="index !== i.id" src="~@/assets/images/bigScreen/index/Rectangle 1 copy.png" />
+            <img v-else src="~@/assets/images/bigScreen/index/Rectangle 1.png" />
+            <div v-if="index === i.id && i.id !== 6 && i.id !== 5&& i.id !== 4" :style="{'margin-left':230*(index-1)+'px'}" :class="{'overClass': i.id ===2,'overClass1': i.id !==2}">
+              <div v-for="(item,ind) in nameList[index]" :key="ind" :class="{'nameClass': i.id ===2,'nameClass1': i.id !==2}" style="float: left">
+                <!-- <div v-if="index === i.id && i.id !== 6 && i.id !== 5" :style="{'margin-left':230*(index-1)+'px'}" class="overClass1">
+              <div v-for="(item,ind) in nameList[index]" :key="ind" class="nameClass1" style="float: left"> -->
+
+                <img :src="item.src" alt="" @click.stop="pushPath(item)" style="width:193px;height:135px">
+                <!--                <span @click.stop="pushPath(item)">{{item.name}}</span>-->
+              </div>
+            </div>
+          </div>
+          <div class="divclass2">{{i.name}}</div>
+          <div v-if="i.class == 'down'" class="icon divclass2">
+            <img v-if="index !== i.id" src="~@/assets/images/bigScreen/index/Rectangle 1 copy.png" />
+            <img v-else src="~@/assets/images/bigScreen/index/Rectangle 1.png" />
+            <div v-if="index === i.id && i.id ===2 " :style="{'margin-left':230*(index-1)+'px'}" :class="{'overClass': i.id ===2,'overClass1': i.id !==2}">
+              <div v-for="(item,ind) in nameList[index]" :key="ind" :class="{'nameClass': i.id ===2,'nameClass1': i.id !==2}" style="float: left">
+                <img :src="item.src" alt="" @click.stop="pushPath(item)" style="width:193px;height:135px">
+              </div>
+            </div>
+            <!--            <div v-if="index ===2 && i.id===2" class="overClass">-->
+            <!--              <div v-for="item in nameList[2]" class="nameClass" style="float: left">-->
+            <!--                <span>{{item.name}}</span>-->
+            <!--              </div>-->
+            <!--            </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom" v-if="show">
+      <div class="chartItem" v-for="(i, index) in chartList" :key="index">
+        <div class="chart" :id="`chart${index}`"></div>
+        <div>{{i.title}}</div>
+        <div>{{i.subTitle}}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import pieChart from '@/config/bigscreen/fullService-rightPieChart.js'
+import { logout } from '@/api/login.js'
+import { mapActions } from 'vuex'
+import store from 'store'
+export default {
+  name: 'Index',
+  data() {
+    return {
+      nameList: [
+        [
+          { name: '移网', path: '/bigscreen/fullService', src: require('../../assets/images/bigScreen/fullService/indextitleBg.png') },
+          { name: '5G', path: '/bigscreen/5Gdevelop/5G', src: require('../../assets/images/bigScreen/fullService/index5G.png') },
+          { name: '宽带', path: '/bigscreen/broadbandPage', src: require('../../assets/images/bigScreen/fullService/indexKuandai.png') },
+          { name: '2I', path: '/bigscreen/5Gdevelop/2I', src: require('../../assets/images/bigScreen/fullService/index2i2.png') }
+        ],
+        [
+          { name: '移网', path: '/bigscreen/fullService', src: require('../../assets/images/bigScreen/fullService/index_yiwang3.png') },
+          { name: '5G', path: '/bigscreen/5Gdevelop/5G', src: require('../../assets/images/bigScreen/fullService/index_5g3.png') },
+          { name: '宽带', path: '/bigscreen/broadbandPage', src: require('../../assets/images/bigScreen/fullService/index_kuangdai3.png') },
+          { name: '2I', path: '/bigscreen/5Gdevelop/2I', src: require('../../assets/images/bigScreen/fullService/index_2i2.png') }
+        ],
+        [
+          { name: '营业厅', path: '/channel/businessHall/index', src: require('../../assets/images/bigScreen/fullService/ting.png') },
+          { name: '门店', path: '/channelShop/index', src: require('../../assets/images/bigScreen/fullService/dian.png') },
+          { name: '卖场', path: '/channel/sale/index', src: require('../../assets/images/bigScreen/fullService/chang.png') },
+          { name: '轻触点', path: '/channel/touchPoint/index', src: require('../../assets/images/bigScreen/fullService/point.png') },
+          { name: '小微商户', path: '/SmallBusinesses/index', src: require('../../assets/images/bigScreen/fullService/xiaowei.png') },
+          { name: '农村', path: '/rural/index', src: require('../../assets/images/bigScreen/fullService/nc.png') }
+        ],
+        [
+          { name: '量', path: '/Evaluate/MoveNet', src: require('../../assets/images/bigScreen/fullService/index_liang4.png') },
+          { name: '质', path: '/mass/index', src: require('../../assets/images/bigScreen/fullService/index_zhi4.png') },
+          { name: '构', path: '/bigscreen/5GNew/5GDevelop', src: require('../../assets/images/bigScreen/fullService/index_gou4.png') },
+          { name: '效', path: '/bigscreen/mobileNetwork', src: require('../../assets/images/bigScreen/fullService/index_xiao4.png') }
+        ],
+        [
+          { name: '量', path: '' },
+          { name: '质', path: '' },
+          { name: '构', path: '' },
+          { name: '效', path: '' }
+        ],
+        [
+          { name: '移网', path: '' },
+          { name: '5G', path: '' },
+          { name: '宽带', path: '' },
+          { name: '2I', path: '' }
+        ]
+      ],
+      list: [
+        {
+          id: 1,
+          name: '业务',
+          class: 'up',
+          path: '/bigscreen/fullService'
+          // path: '/bigscreen/5Gdevelop/2I'
+        },
+        {
+          id: 2,
+          name: '渠道',
+          class: 'down',
+          path: '/channel/businessHall/index'
+        },
+        {
+          id: 3,
+          name: '评价',
+          class: 'up',
+          path: '/Evaluate/MoveNet'
+        },
+        {
+          id: 4,
+          name: '资源',
+          class: 'up',
+          path: '/bigscreen/resource_level4'
+          // path: '/bigscreen/index'
+        },
+        {
+          id: 5,
+          name: '质量',
+          class: 'down',
+          path: '/quality/index'
+        },
+        {
+          id: 6,
+          name: '策略',
+          class: 'up',
+          path: '/tactics/index'
+        }
+      ],
+      index: 0,
+      // index: 1,
+      show: false,
+      chartList: [{
+        title: '移网发展',
+        subTitle: '日完成率',
+        value: 32.13
+      }, {
+        title: '移网发展',
+        subTitle: '月累完成率',
+        value: 76
+      }, {
+        title: '移网发展',
+        subTitle: '年累完成率',
+        value: 55.13
+      }, {
+        title: '5G发展',
+        subTitle: '日完成率',
+        value: 32.13
+      }, {
+        title: '5G发展',
+        subTitle: '月累完成率',
+        value: 32.13
+      }, {
+        title: '5G发展',
+        subTitle: '年累完成率',
+        value: 32.13
+      }, {
+        title: '宽带发展',
+        subTitle: '日完成率',
+        value: 32.13
+      }, {
+        title: '宽带发展',
+        subTitle: '月累完成率',
+        value: 32.13
+      }, {
+        title: '宽带发展',
+        subTitle: '年累完成率',
+        value: 32.13
+      }, {
+        title: '2I发展',
+        subTitle: '日完成率',
+        value: 32.13
+      }, {
+        title: '2I发展',
+        subTitle: '月累完成率',
+        value: 32.13
+      }, {
+        title: '2I发展',
+        subTitle: '年累完成率',
+        value: 32.13
+      }],
+      userInfo: {}
+    }
+  },
+  mounted() {
+    this.userInfo = store.get('userInfo');
+  },
+  methods: {
+    ...mapActions(['Login', 'Logout']),
+    clickBtn(index) {
+      this.index = index
+      this.show = false
+      //   this.chartList.map((i, index) => {
+      //     this.pieChart(index, i);
+      //   })
+    },
+    pieChart(index, val) {
+      let data = {
+        id: 'chart' + index,
+        value: val.value
+      }
+      pieChart.initChart(data)
+    },
+    pushPath(item) {
+      // alert(JSON.stringify(item))
+      this.$router.push({ path: item.path })
+    },
+    hide() {
+      // this.show = false
+      // this.index = 0
+    },
+    //  打开页面
+    openPage(path) {
+      // alert (path)
+      // if (path === '/Evaluate/fifth-generation') {
+      // } else {
+      this.$router.push({ path: path })
+      // }
+    },
+    LogoutFn() {
+      this.Logout().then(() => {
+        window.setTimeout(() => {
+          
+          this.$router.push({ path: '/user/login' })
+        })
+      })
+    },
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.overClass {
+  background: url('~@/assets/images/bigScreen/fullService/indexBg.png') no-repeat !important;
+  background-size: 100% 100% !important;
+  position: absolute;
+  height: 200px;
+  width: 1140px;
+  top: 191px;
+  left: -66px;
+  line-height: 100px;
+  padding-left: 163px;
+  padding-top: 50px;
+}
+.overClass1 {
+  background: url('~@/assets/images/bigScreen/fullService/indexBg.png') no-repeat !important;
+  background-size: 100% 100% !important;
+  position: absolute;
+  height: 200px;
+  width: 1140px;
+  top: 191px;
+  left: -66px;
+  line-height: 100px;
+  padding-left: 93px;
+  padding-top: 50px;
+}
+.nameClass {
+  height: 130px;
+  width: 130px;
+  border-radius: 100px;
+  margin-left: 5px;
+  margin-top: 3px;
+  //   border: 2px #ffffff solid;
+  //background-image: url('../../assets/images/bigScreen/fullService/indextitleBg.png') !important;
+  //background-size: 100% 100% !important;
+}
+.nameClass1 {
+  height: 130px;
+  width: 130px;
+  border-radius: 100px;
+  margin-left: 78px;
+  margin-top: 3px;
+}
+
+.Logout {
+  padding: 0px 10px;
+  border: 1px solid #4e7ad8;
+  border-radius: 5px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  //   background: -webkit-linear-gradient(bottom, #c8f5ff, #6ebee7);
+  //   background: -moz-linear-gradient(bottom, #c8f5ff, #6ebee7);
+  //   background: -o-linear-gradient(bottom, #c8f5ff, #6ebee7);
+  //   background: -ms-linear-gradient(bottom, #c8f5ff, #6ebee7);
+  //   background: linear-gradient(bottom, #c8f5ff, #6ebee7);
+  //   background: linear-gradient(to bottom, #c8f5ff, #6ebee7);
+  //   filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#c8f5ff',endColorStr='#6ebee7',gradientType='1');
+  //   -webkit-background-clip: text;
+  color: #6ebee7;
+  cursor: pointer;
+  z-index: 999;
+}
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: url('~@/assets/images/bigScreen/index/suoyinbg.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+  font-size: 16px;
+  .smallIcon {
+    width: 5.6875rem;
+    height: 11.75rem;
+    background-image: url('~@/assets/images/bigScreen/index/icon.png');
+    background-repeat: no-repeat;
+    position: absolute;
+  }
+  .right {
+    top: 20%;
+    right: 5%;
+  }
+  .left {
+    top: 30%;
+    left: 5%;
+  }
+}
+.top {
+  width: 100%;
+  height: calc(100% - 20.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .top-bg1 {
+    position: absolute;
+    width: 23.375rem;
+    height: 20.0625rem;
+    margin-left: -11.59375rem;
+    left: 50%;
+    top: -1%;
+    background-image: url('~@/assets/images/bigScreen/index/bg-top.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+  .top-title {
+    text-align: center;
+    img {
+      max-width: 82.8125rem;
+    }
+  }
+  .top-bg2 {
+    position: absolute;
+    width: 68.3125rem;
+    height: 20.0625rem;
+    margin-left: -34.15625rem;
+    left: 50%;
+    bottom: 0;
+    // background-image: image-set(
+    //     url("~@/assets/images/bigScreen/index/bg-title.png") 1x,
+    //     url("~@/assets/images/bigScreen/index/bg-title@2x.png") 2x
+    // );
+    // background-repeat: no-repeat;
+    // background-size: 100% 100%;
+  }
+  .top-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 600px;
+    // align-items: center;
+    position: relative;
+    // bottom: 0;
+  }
+  .item {
+    width: 14.3125rem;
+    height: 12.4375rem;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-family: MFBanHei;
+    font-size: 3.125rem;
+    text-align: center;
+    padding: 3.125rem 0;
+    cursor: pointer;
+    .divclass2 {
+      //   background: -webkit-linear-gradient(bottom, #c8f5ff, #6ebee7);
+      //   background: -moz-linear-gradient(bottom, #c8f5ff, #6ebee7);
+      //   background: -o-linear-gradient(bottom, #c8f5ff, #6ebee7);
+      //   background: -ms-linear-gradient(bottom, #c8f5ff, #6ebee7);
+      //   background: linear-gradient(bottom, #c8f5ff, #6ebee7);
+      //   background: linear-gradient(to bottom, #c8f5ff, #6ebee7);
+      //   filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr='#c8f5ff',endColorStr='#6ebee7',gradientType='1');
+      //   -webkit-background-clip: text;
+      color: #6ebee7;
+      width: 100%;
+      line-height: 3.125rem;
+    }
+  }
+  .up {
+    background-image: url('~@/assets/images/bigScreen/index/bg-up.png');
+  }
+  .down1 {
+    background-image: url('~@/assets/images/bigScreen/index/bg-down.png');
+  }
+  .down {
+    background-image: url('~@/assets/images/bigScreen/index/bg-down.png');
+  }
+  .active {
+    .divclass2 {
+      background: linear-gradient(bottom, #fff5c5, #fedf75);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+  //   .active::after {
+  //     content: '';
+  //     position: absolute;
+  //     bottom: -2.1875rem;
+  //     left: 50%;
+  //     margin-left: -0.9375rem;
+  //     width: 0;
+  //     height: 0;
+  //     border-left: 0.9375rem solid transparent;
+  //     border-right: 0.9375rem solid transparent;
+  //     border-bottom: 1.875rem solid #2ae1e7;
+  //   }
+}
+.bottom {
+  margin: 0 2.5rem;
+  height: 17.375rem;
+  margin-top: 2.5rem;
+  background-image: url('~@/assets/images/bigScreen/index/border.png');
+  background-repeat: no-repeat;
+  background-position: 0 -2.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3.125rem;
+  .chartItem {
+    flex: 1;
+    height: 100%;
+    text-align: center;
+    font-size: 1.125rem;
+    font-family: Microsoft YaHei;
+    color: #fefefe;
+    .chart {
+      width: 5.25rem;
+      height: 5.25rem;
+      margin: 0 auto;
+      margin-bottom: 0.625rem;
+    }
+  }
+}
+</style>

@@ -1,0 +1,571 @@
+<!--  -->
+<template>
+   <div class="contentbox">
+       <Header title="山东联通网络智慧眼-网" subtitle="监控"></Header>
+        <div class="videoslectbox" style="color: #fff" v-show="videoDhAllDatas.length  >  0">
+          <el-form :inline="true"  class="demo-formF-inline">
+              <el-form-item label="自定义宫格布局">
+              </el-form-item>
+              <el-form-item label="列:">
+                <el-input-number v-model="videoGG_col" :min="2" :max="5" label="列" controls-position="right" size="mini" ></el-input-number>
+              </el-form-item>
+              <el-form-item label="行:"  style="margin-left: 5px">
+                <el-input-number v-model="videoGG_row" :min="1" :max="5" label="行" controls-position="right" size="mini" ></el-input-number>
+              </el-form-item>
+              <el-form-item style="margin-left: 10px">
+                <el-button type="primary" size="small" round @click = "changeVideoGG">确定</el-button>
+              </el-form-item>
+            </el-form>
+        </div>
+       <div class="contentbody"  >
+            <div style="width: 100%; height: 100%">
+              <el-carousel  class="carouselwarp" height = "100%" trigger="click"  :autoplay = "autoplay" >
+                  <el-carousel-item v-for="(carousel,  pindex) in videoDhlist" :key =  "pindex">
+                    <div class="monitorbox clearfix" >
+                        <div class="videoitem pull-left" v-for="video in carousel" :key="video.id" :style="video.style">
+                           <div class="video_title ">{{video.name}}</div>
+                           <div class = "videobox" :id = "video.id" @dblclick="jtvideoDetalFn(video)"></div> 
+                        </div>
+                    </div>
+                  </el-carousel-item>
+              </el-carousel>
+            </div> 
+       </div>  
+        <el-dialog :visible.sync="isDialogShow_jtjk" width="95%" :modal-append-to-body="false" class="videoDialog">
+            <div class="dialogCon">
+                <div class="dialogTitle">
+                <div class="left">{{videoModtitle}}</div>
+                </div>
+                <div class="dialogTableBg" style="min-height: 800px;">
+                    <div style="width; 100%; height: 800px" id="jtvideo_detail">
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+        <Footer :tabdata="tabdata" class="initfoot"></Footer>
+   </div>
+</template>
+
+<script>
+var self = null
+var gloading = null
+var webPlayer = null
+import Header from '@/components/resource_visual/header2';
+import Footer from '@/components/resource_visual/footer';
+import serviceapi from '@/api/monitor'
+import _ from 'lodash'
+export default {
+  data () {
+    return {
+         videoForm: '1',
+         tabdata: [
+          { title: '动环', active: false, href: '/unicomwisdomeyes/movering' },
+          { title: '大华监控', active: false, href: '/unicomwisdomeyes/monitor' },
+          { title: '沃家神眼', active: true, href: '/unicomwisdomeyes/monitor_jt' },
+        ],
+        videoModtitle: '',
+        autoplay: false,
+        videoJtlist1: [],
+        videoJtlist2: [],
+        videoJtlist3: [],
+        isDialogShow_jtjk:  false,
+        videoDhAllDatas: [],
+        videoDhlist: [],
+        videoGG_col: 4,
+        videoGG_row: 3,
+       
+    };
+  },
+
+  components: {
+       Header,
+        Footer
+  },
+  watch: {
+    isDialogShow_jtjk (val) {
+        this.destroyDetalpaly()
+    }
+  },
+
+  computed: {
+    chunkNum  ()  {
+      return Number(this.videoGG_col * this.videoGG_row)
+    },
+
+   },
+  created () {
+    self = this
+  },
+  mounted () {
+    // 动态加载js
+      gloading = this.$loading({
+            lock: true,
+            customClass: 'myloading',
+            text: '视频拉取中，请稍等...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.6)'
+      });
+    
+      this.serviceVedio()
+  },
+
+  methods: {
+    videoitemStyle () {
+      var col =  this.videoGG_col;
+      var row  =   this.videoGG_row;
+      var contentbodyWith  = document.body.clientWidth - 220;
+      var contentbodyheight = document.body.clientHeight - 220;
+      let itemwidth = contentbodyWith / col;
+      let itemheight = contentbodyheight / row;
+      return {
+        width: itemwidth + 'px',
+        height: itemheight + 'px',
+      }
+    },
+    changeVideoGG ()  {
+          var loading = this.$loading({
+                lock: true,
+                customClass: 'myloading',
+                text: '初始化视频中，请稍等...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.6)'
+          });
+          window.setTimeout(() => {
+            loading.close()
+          }, 3000)
+          this.initRenderDom()
+    },
+    // 集团 神眼 api
+    serviceVedio () {
+      var isSupported = WebPlayer.isSupported();
+      if (!isSupported) {
+        alert('您的浏览器不支持监控视频，请使用最新版chrome浏览器！')
+        return;
+      };
+      serviceapi.serviceVedio({}).then(res => {
+           gloading.close()
+           if (res.rspCode == '0000') {
+             var urlList = res.result.urlList || [];
+             urlList =  urlList.filter(item => {
+               return item.cameraName.indexOf('山东') > -1
+             })
+           
+             var videoData = []
+            urlList.forEach((item, index) => {
+              let  videoItem =  {
+                  id: 'h5video_jt' + (index + 1),
+                  name: item.cameraName,
+                  url: item.url,
+                  isplay: true,
+                  myPlayer: null,
+                  domVideo: null,
+                  style: self.videoitemStyle()
+              };
+              videoData.push(videoItem)
+            });
+            self.videoDhAllDatas  =  _.cloneDeep(videoData);
+            self.initRenderDom()
+           };
+      })
+    },
+    initRenderDom () {
+       this.destroyJtwebPlayer()
+       var  chunkNum   = self.chunkNum;
+        self.videoDhlist = []
+        self.videoDhlist =  _.chunk(self.videoDhAllDatas, chunkNum);
+        this.$nextTick(() => {
+          window.setTimeout(() => {
+            self.videoDhlist.forEach(row => {
+              row.forEach(item => {
+                  item.style  =  self.videoitemStyle()
+                  self.webPlayerRender(item)
+              })
+            });
+          }, 1000)
+        });
+    },
+    jtvideoDetalFn  (item) {
+         this.isDialogShow_jtjk  = true;
+         this.videoModtitle = item.name;
+         this.$nextTick(() => {
+            webPlayer = new WebPlayer({      
+                    playerContainer: '#jtvideo_detail',
+                    hasBaseUI: true,
+                    isSDKMode: false,
+                    playUrl: item.url
+                });
+             //初始化成功 WebPlayer.WebPlayerEvents.PLAYER_INIT //初始化失败 WebPlayer.WebPlayerEvents.PLAYER_INIT_ERROR
+            webPlayer.on(WebPlayer.WebPlayerEvents.PLAYER_INIT,()=>{
+                webPlayer.play();
+            });
+            webPlayer.on(WebPlayer.WebPlayerEvents.PLAYER_INIT_ERROR,()=>{
+                console.warn('视频加载错误！')
+            })
+         })
+        
+       
+
+    },
+ 
+
+    webPlayerRender (item) {
+     item.myPlayer = new WebPlayer({      
+          playerContainer: '#' + item.id,
+          hasBaseUI: true,
+          isSDKMode: false,
+          playUrl: item.url
+      });
+      //初始化成功 WebPlayer.WebPlayerEvents.PLAYER_INIT //初始化失败 WebPlayer.WebPlayerEvents.PLAYER_INIT_ERROR
+      item.myPlayer.on(WebPlayer.WebPlayerEvents.PLAYER_INIT,()=>{
+        item.myPlayer.play();
+      });
+      item.myPlayer.on(WebPlayer.WebPlayerEvents.PLAYER_INIT_ERROR,()=>{
+        console.warn('视频加载错误！')
+      })
+    },
+    destroyJtwebPlayer () {
+      this.videoDhlist.forEach(row => {
+        row.forEach(item => {
+          if (item.myPlayer) {
+            item.myPlayer.stop()
+          item.myPlayer.destroy();
+          }
+        })
+      });  
+   },
+   destroyDetalpaly () {
+       if (webPlayer) {
+            webPlayer.stop()
+            webPlayer.destroy();
+            webPlayer = null;
+        }
+   }
+    
+  },
+  //离开当前页面后执行
+  destroyed: function () {
+    this.destroyJtwebPlayer()
+    this.destroyDetalpaly()
+  },
+}
+
+</script>
+<style lang='scss' scoped>
+  .contentbody {
+    width: 100%;
+    height: calc(100vh - 120px);
+    margin-top: 0px;
+    padding-bottom: 80px;
+    box-sizing: border-box;
+    display: flex;
+  }
+
+  /deep/.carouselwarp  {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: hidden;
+    min-height: 880px;
+  }
+  /deep/.carouselwarp .el-carousel__container {
+     width: 100%;
+    height:100%;
+    box-sizing: border-box;
+  }
+  /deep/.el-carousel__arrow {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 48px;
+    background-color: rgba(12,60,116, 0.8);
+  }
+  /deep/.el-carousel__arrow:hover {
+      background-color: rgba(66, 130, 204, 0.8);
+  }
+  /deep/.el-carousel__indicators--horizontal {
+    bottom: -10px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+
+     /deep/.carouselwarp  .el-carousel__arrow--left {
+    cursor: pointer;
+    background: url('~@/views/unicomwisdomeyes/home/img/bg_sd21-2.png');
+    height: 48px;
+    width: 48px;
+    left: -2px;
+  }
+
+    /deep/.carouselwarp .el-carousel__arrow--right {
+    cursor: pointer;
+    background: url('~@/views/unicomwisdomeyes/home/img/bg_sd21.png');
+    height: 48px;
+    width: 48px;
+    right: -2px;
+  }
+
+    /deep/.carouselwarp .el-carousel__arrow i {
+    color: transparent;
+  }
+  .flexrow {
+    border: 1px solid rgb(77, 128, 196);
+  }
+  .monitorbox {
+    width: 100%;
+    height: 100%;
+    padding: 10px 100px;
+    box-sizing: border-box;
+  }
+  .monitorbox .videoitem {
+    padding: 0 5px;
+    width: 25%;
+    height:285px;
+    box-sizing: border-box;
+    float: left;
+    border: 1px solid rgb(77, 128, 196);
+    margin-left: -1px;
+    margin-top: -1px;
+    position: relative;
+  }
+  .videobox {
+    width: 100%;
+    height: 100%;
+  }
+
+  /deep/ .el-select .el-input__inner {
+    height: 34px;
+    background: transparent;
+    color: #1fe3ef;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-color: #3bc8d9;
+  }
+   /deep/.el-form-item__label {
+    color: aqua;
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  
+ .videoslectbox {
+   position: absolute;
+   top: 70px;
+   left: 50px;
+   z-index: 2000;
+ }
+ /deep/ .videoslectbox .el-input-number--mini {
+   width: 80px;
+}
+ /deep/ .videoslectbox .el-input-number__decrease {
+      background: #081a49;
+    color: aqua;
+}
+ /deep/ .videoslectbox .el-input-number__decrease {
+      background: #081a49;
+    color: aqua;
+}
+ /deep/ .videoslectbox .el-input-number__increase {
+      background: #081a49;
+    color: aqua;
+}
+ /deep/ .videoslectbox .el-input__inner  {
+   background: #081a49;
+   color: #fff;
+   font-size: 15px;
+ }
+ .videoslectbox {
+   position: absolute;
+   top: 80px;
+   left: 40px;
+ }
+ .video_title {
+   width: 100%;
+   height: 34px;
+   line-height: 30px;
+    white-space:nowrap;/* 规定文本是否折行 */  
+    overflow: hidden;/* 规定超出内容宽度的元素隐藏 */
+    text-overflow: ellipsis;
+    background: rgba(20, 23, 31, 0.6);
+    padding: 0 5px;
+    position: absolute;
+    top: 0;
+    z-index: 999;
+    left: 0;
+ }
+ .errormark {
+  position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: rgba(5,20,74, 0.6);
+    width: 100%;
+    height: calc(100% - 30px);
+    font-size: 20px;
+    padding-top: 60px;
+    z-index: 99;
+    .icon {
+      font-size: 40px;
+      color: #e16a16bf;
+      margin-bottom: 15px;
+    }
+}
+.dialogCon {
+  padding: 0 40px;
+
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 20px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+  
+
+  /deep/ .el-dialog {
+    -webkit-transform: none;
+    transform: none;
+    left: 0;
+    position: relative;
+    z-index: 20000;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    background-image: url('~@/assets/images/bigScreen/kuang.png');
+    background-size: 100% 100%;
+    background-color: rgba(220, 38, 38, 0);
+  }
+
+  /deep/ .el-dialog__body {
+    padding: 0px 20px;
+  }
+
+  /deep/ .el-dialog__headerbtn {
+    z-index: 9999;
+  }
+
+  /deep/ .el-dialog__headerbtn .el-dialog__close {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 2px 20px 0 0;
+    border: 2px solid #193987;
+    border-radius: 5px;
+    background: #1e1e88;
+  }
+
+  /deep/ .el-table {
+    background: none !important;
+    font-size: 14px !important;
+  }
+
+  /deep/.dialogTableBg .el-table th {
+    background: none !important;
+    background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+    background-position: center 16px !important;
+    background-size: contain !important;
+    text-align: center !important;
+    color: #02f6ff !important;
+    font-size: 15px !important;
+  }
+
+  /deep/ .el-table tr {
+    background: none !important;
+  }
+
+  /deep/.el-table td {
+    background: none !important;
+    border: none !important;
+    text-align: center !important;
+    color: #ffffff;
+    padding: 6px 0;
+  }
+
+  /deep/.el-table td.is-left {
+    text-align: left !important;
+  }
+
+  /deep/ .el-table th.is-leaf,
+  .el-table td {
+    border: none !important;
+    color: #ffffff;
+  }
+
+  /deep/.el-table::before {
+    height: 0 !important;
+  }
+
+  /deep/.el-table th>.cell {
+    display: contents !important;
+  }
+
+  /deep/.el-table .cell {
+    padding: 0 6px;
+    max-height: 45px;
+    overflow-y: hidden;
+  }
+
+  /deep/ .dialogTableBg .el-table tr:nth-child(even) {
+    background: rgba(4, 54, 108, 0.4) !important;
+  }
+  /deep/.videoDialog .el-dialog {
+      margin-top: 100px !important;
+  }
+</style>
+
+<style lang="css">
+.initselect.el-select-dropdown {
+    background: rgb(9,55,112) !important;
+  }
+
+.initselect .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #07234d;
+}
+.initselect .el-select-dropdown__item {
+  color: #fff;
+}
+.initselect .el-select-dropdown__item.selected {
+  color: aqua;
+}
+.initselect.el-select-dropdown {
+  border: solid 1px #93b1f7;
+}
+.initselect .popper__arrow::after {
+  border-bottom-color: #093770 !important;
+}
+
+</style>

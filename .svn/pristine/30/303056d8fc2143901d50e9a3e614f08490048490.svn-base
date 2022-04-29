@@ -1,0 +1,1554 @@
+<!--应急通信 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-业" subtitle = "业务分析" explaincode = "ye_ywfx"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+            <span>业务大类</span>
+            <span class="zdmore pull-right"  @click="wldcDetailFn('业务大类', '1')"> <span class="el-icon-more"></span></span>
+          </div>
+           <!-- <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}" @click="rowttabsClick('1')">全省</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}" @click="rowttabsClick('2')">地市</span>
+           </div> -->
+          <div class="flex1">
+               <div class="chartbox" id="ywdlchart"></div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+            <span>上下行流量</span>
+            <span class="unit">(TB)</span>
+            <span class="zdmore pull-right"  @click="wldcDetailFn('上下行流量', '2')">
+              <span class="el-icon-more"></span>
+            </span>
+          </div>
+            <div  class = "flex1 flex">
+              <div class="flex1 text-center yxtopitem">
+                <div class = "numfont">{{sxhllData.sxll | formatVal}} </div>
+                <div><img src="@/assets/images/images_zy/WechatIMG3.png" alt="" srcset=""></div>
+                <div class = "titlefont"> 上行流量(TB)</div>
+               </div>
+
+               <div class="flex1 text-center yxtopitem">
+                
+                <div class = "numfont">{{sxhllData.xxll | formatVal}}</div>
+                <div><img src="@/assets/images/images_zy/WechatIMG3.png" alt="" srcset=""></div>
+                <div class = "titlefont"> 下行流量(TB)</div>
+               </div>
+           </div>
+        </div>
+         <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+            <span>视频流量</span>
+            <span class="unit">(TB)</span>
+            <span class="zdmore pull-right"  @click="wldcDetailFn('视频流量', '3')"> <span class="el-icon-more"></span></span>
+          </div>
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_sp == '1'}" @click="rowttabsClick_sp('1')">全省</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_sp == '2'}" @click="rowttabsClick_sp('2')">地市</span>
+           </div> 
+          
+       
+          <div class="flex1 flex">
+                 <div class="chartbox" id="chart_sp"></div>
+          </div>
+        </div>
+      </div>
+      <div class="centerbox flex colflex">
+        <div class="cbottom-box">
+          <div class="tjbtn" @click="isDialogShow3 = true"><img src="../zhyeys.png" alt="" srcset="" /></div>
+          <div class="gistitle">
+            <span class="titlefont">{{ gisTitle }}</span>
+          </div>
+  
+          <iframe
+            ref="gisiframe"
+            id="gisiframe"
+            :src="iframeSrc"
+            style="width: 100%; height: 100%"
+            frameborder="0"
+          ></iframe>
+        </div>
+      </div>
+       <div class="leftbox flex colflex">
+        
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+            <span>短视频使用流量</span>
+             <span class="unit">(TB)</span>
+            <span class="zdmore pull-right"  @click="wldcDetailFn('短视频使用流量', '4')"> <span class="el-icon-more"></span></span>
+          </div>
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_dsp == '1'}" @click="rowttabsClick_dsp('1')">全省</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_dsp == '2'}" @click="rowttabsClick_dsp('2')">地市</span>
+           </div> 
+          
+       
+          <div class="flex1 flex">
+                 <div class="chartbox" id="chart_dsp"></div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+             <span>各网页流量使用情况</span>
+             <span class="unit">(TB)</span>
+            <span class="zdmore pull-right" @click="wldcDetailFn('各网页流量使用情况', '5')" >
+              <span class="el-icon-more"></span>
+            </span>
+          </div>
+            <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_wy == '1'}" @click="rowttabsClick_wy('1')">全省</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_wy == '2'}" @click="rowttabsClick_wy('2')">地市</span>
+           </div> 
+          
+       
+          <div class="flex1 flex">
+                 <div class="chartbox" id="chart_wy"></div>
+          </div>
+        </div>
+         <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+             <span>游戏使用流量情况</span>
+             <span class="unit">(小时)</span>
+            <span class="zdmore pull-right"  @click="wldcDetailFn('游戏使用流量情况', '6')" > <span class="el-icon-more"></span></span>
+          </div>
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_yx == '1'}" @click="rowttabsClick_yx('1')">全省</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus_yx == '2'}" @click="rowttabsClick_yx('2')">地市</span>
+           </div> 
+          
+       
+          <div class="flex1 flex">
+                 <div class="chartbox" id="chart_yx"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <el-dialog :visible.sync="isDialogShow3" width="50%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">健康度-智慧眼</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+          <div class="eyesmodelbox">
+            
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialogShow" width="80%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{detaliTitle}}详情
+              <!-- (<span>单位：{{detailUnit}}</span>) -->
+          </div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+            <el-table :data="healthGwTable" v-if = "isDialogShow" v-loading = "tableloading" size = "mini" height="650px" >
+              <el-table-column v-for="(col, index) in tableCol" :key="index" :prop="col.filed" :label="col.title" align="center" :sortable="col.sortable">
+                <template slot-scope="scope">
+                  <span v-if="col.unit">{{scope.row[col.filed] | formatVal}}<span>{{col.unit}}</span></span>
+                  <span v-else >{{scope.row[col.filed] | formatVal}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+
+
+    
+     <!-- <Footer :tabdata="tabdata" class="initfoot"></Footer> -->
+  </div>
+</template>
+
+<script>
+
+var self = null
+import Header from '@/components/resource_visual/header2'
+import Footer from '@/components/resource_visual/footer'
+import store from 'store'
+import { mapState } from 'vuex'
+var _ = require('@/utils/lodash.js')
+
+import initChart from '../wisdomeyes/initechart'
+import serviceApi from '@/api/ye_wldcapi'
+var Qs = require('@/utils/qs.js')
+export default {
+  data() {
+    return {
+      gisTitle: '山东省',
+      khactiveName: '1',
+      khactiveName2: '1',
+      ywkbDialogShow: false,
+      isDialogShow: false,
+      isDialogShow2: false,
+      isDialogShow3: false,
+      ywkhisDialogShow: false,
+      stsDialogShow: false,
+      rowttabStatus: '1',
+      bzhd_checkList: ['00', '01', '02'],
+      cityCode: '370000',
+      iframeSrc: '',
+      tabstatus: '0201',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tabdata: [
+       
+      ],
+      detaliTitle: '',
+      healthGwdata: {},
+      healthGwTable: [],
+      tableCol: [],
+      healthYwTable: [],
+      control:[],
+      ywkhTable: [],
+      stsTable: [],
+      jkdhxData: {},
+      isDialogShow_gjgx: false,
+      isDialogShow_gjgx2: false,
+      gjgxDetailTable: [],
+      isDialogShow_aqsc: false,
+      aqscxDetailTable: [],
+      ywdlpieData: [],
+      sxhllData: {},
+      rowttabStatus_sp: '1',
+      tableloading: false,
+      detailUnit: '',
+      rowttabStatus_dsp: '1',
+      rowttabStatus_yx: '1',
+      rowttabStatus_wy: '1',
+    }
+  },
+  components: {
+    Header,
+    Footer
+  },
+  created() {
+    self = this
+  },
+  mounted() {
+
+      var self = this;
+      var initArea_id = '370000'
+      this.mapLevel = 1;
+      // 分权分域
+      if (store.get('userInfo')) {
+        var userInfo =  store.get('userInfo')
+        var mapLevel = userInfo.levelAreaLevel;
+        if (mapLevel == '1') {
+          // 省级用户
+          this.control = ['370000']
+        } else if (mapLevel >= '2') {
+          this.control = ['370000', userInfo.levelAreaCode]
+        }
+     };
+    this.cityCode = initArea_id
+    this.initGisMap(initArea_id)
+    // 注册地图事件
+    this.initgisTitle = this.gisTitle + ''
+    window.addEventListener('message', self.gismapListener, true)
+    this.initService()
+  },
+  watch: {},
+  computed: {
+    ...mapState({
+      searchDate: state => state.resource.searchDate
+    })
+  },
+  methods: {
+    initService() {
+    //  this.initywdlChart()
+
+     this.serviceWldcYwdl()
+     this.serviceWldcSxx()
+     this.serviceWldcSpll()
+     this.serviceDsp()
+
+    this.serviceWldc_wy()
+     this.serviceWldc_yx()
+    },
+    wldcDetailFn (title, type) {
+      this.detaliTitle = title;
+      this.healthGwTable = []
+      if (type == '1') {
+        this.detailUnit = '%'
+        this.tableCol = [
+          {filed: 'name', title: '地市'},
+          {filed: 'spyw', title: '视频业务', sortable: true, unit: '%'},
+          {filed: 'ymll', title: '页面浏览', sortable: true,  unit: '%'},
+          {filed: 'jstx', title: '即时通讯', sortable: true,  unit: '%'},
+          {filed: 'wjcs', title: '文件传输', sortable: true,  unit: '%'},
+          {filed: 'yxlyw', title: '游戏类业务', sortable: true,  unit: '%'},
+          {filed: 'qt', title: '其他', sortable: true,  unit: '%'},
+        ]
+
+         this.serviceWldcYwdlXq('serviceWldcYwdlXq')
+      } else if (type == '2') {
+        this.detailUnit = 'TB'
+        this.tableCol = [
+          {filed: 'name', title: '地市'},
+          {filed: 'sxll', title: '上行流量(TB)', sortable: true},
+          {filed: 'xxll', title: '下行流量(TB)', sortable: true},
+        ]
+
+         this.serviceWldcYwdlXq('serviceWldcSxxXq')
+      } else if (type == '3') {
+          this.detailUnit = 'TB'
+         this.serviceWldcYwdlXq('serviceWldcSpllXq', 'array')
+      } else if (type == '4') {
+          this.detailUnit = 'TB'
+
+         this.serviceWldcYwdlXq('serviceWldcDspllXq', 'array')
+      } else if (type == '5') {
+          this.detailUnit = 'TB'
+
+         this.serviceWldcYwdlXq('serviceWldcWyllXq', 'array')
+      } else if (type == '6') {
+          this.detailUnit = '小时'
+         this.serviceWldcYwdlXq('serviceWldcYxllXq', 'array', type)
+      }
+      this.isDialogShow = true
+  
+    },
+    serviceWldcYwdlXq  (service,sort, type ) {
+       var params = {
+        cityCode: this.cityCode
+      }
+      this.tableloading = true
+      serviceApi[service] (params).then((res) => {
+         this.tableloading = false
+        if (res.rspCode == '0000') {
+          
+          var datal = res.result.data || [];
+           datal = this.initSortTabledata(datal);
+           if (sort) {
+              var grouparr = [] 
+              var datagrop = _.groupBy(datal, function (item) {
+               return item.app
+             });
+             
+             Object.keys(datagrop).forEach(gkey => {
+               var sitem = {
+                 title: gkey + '(' + this.detailUnit + ')',
+                 filed: 'filed'  + gkey,
+                 sortable: true,
+                 array: datagrop[gkey][0].array,
+               }
+               grouparr.push(sitem)
+             })
+             grouparr = this.orderDataFn(grouparr, 'array', 'asc')
+             grouparr.unshift({filed: 'name', title: '地市'})
+             this.tableCol = grouparr;
+
+             var grouptables = []
+              var grouptable =  _.groupBy(datal, function (item) {
+                return item.code
+             });
+             
+             Object.keys(grouptable).forEach(tkey => {
+               
+               var sitem = {
+                 code: tkey,
+                 name: grouptable[tkey][0].name,
+                 order_coder: grouptable[tkey][0].order_coder
+               }
+               grouptable[tkey].forEach(item => {
+                 if (type && type == '6') {
+                    sitem['filed' + item.app] = item.timel; 
+                 } else {
+                    sitem['filed' + item.app] = item.flow; 
+                 }
+                 
+               })
+               grouptables.push(sitem)
+             })
+             
+              this.healthGwTable = this.orderDataFn(grouptables, 'order_coder', 'asc')
+           } else {
+             if (datal[0].order_coder) {
+               this.healthGwTable = this.orderDataFn(datal, 'order_coder', 'asc')
+             }　else {
+               this.healthGwTable = datal;
+             }
+             
+            
+           }
+
+          
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+    serviceWldcSxx  () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.serviceWldcSxx(params).then((res) => {
+        
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.sxhllData = datal
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+    serviceWldcYwdl () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.serviceWldcYwdl(params).then((res) => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.ywdlpieData = datal
+          this.initywdlChart()
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+    rowttabsClick(type) {
+      this.rowttabStatus = type
+      this.initywdlChart()
+    },
+
+     rowttabsClick_sp(type) {
+      this.rowttabStatus_sp = type;
+      this.serviceWldcSpll()
+    
+    },
+
+     rowttabsClick_dsp(type) {
+      this.rowttabStatus_dsp = type;
+      this.serviceDsp()
+    
+    },
+    rowttabsClick_wy(type) {
+      this.rowttabStatus_wy = type;
+      this.serviceWldc_wy()
+    
+    },
+
+      rowttabsClick_yx(type) {
+      this.rowttabStatus_yx = type;
+      this.serviceWldc_yx()
+    
+    },
+
+    serviceWldc_wy  () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      var servicename = 'serviceWldcWyll'
+      if ( this.rowttabStatus_wy == '2') {
+         servicename = 'serviceWldcWyllPm'
+      }
+      serviceApi[servicename] (params).then((res) => {
+        if (res.rspCode == '0000') {
+           var datal = res.result.data || []
+           this.initywdlChart_wy(datal)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+      serviceWldc_yx () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      var servicename = 'serviceWldcYxll'
+      if ( this.rowttabStatus_yx == '2') {
+         servicename = 'serviceWldcYxllPm'
+      }
+      serviceApi[servicename] (params).then((res) => {
+        if (res.rspCode == '0000') {
+           var datal = res.result.data || []
+           this.initywdlChart_yx(datal)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+    serviceDsp  () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      var servicename = 'serviceWldcDspll'
+      if ( this.rowttabStatus_dsp == '2') {
+         servicename = 'serviceWldcDspllPm'
+      }
+      serviceApi[servicename] (params).then((res) => {
+        if (res.rspCode == '0000') {
+           var datal = res.result.data || []
+           this.initywdlChart_dsp(datal)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+
+    serviceWldcSpll  () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      var servicename = 'serviceWldcSpll'
+      if ( this.rowttabStatus_sp == '2') {
+         servicename = 'serviceWldcSpllpm'
+      }
+      serviceApi[servicename] (params).then((res) => {
+        if (res.rspCode == '0000') {
+           var datal = res.result.data || []
+           this.initywdlChart_sp(datal)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+    initywdlChart_dsp  (datal) {
+         function qxData (key) {
+              return self.ywdlpieData.map(item => {
+                return item[key] || 0
+              })
+         };
+         if (this.rowttabStatus_dsp == '1') {
+            datal = this.orderDataFn(datal, 'array', 'asc')
+             var chartparams2 = {
+                domId: 'chart_dsp',
+                xData: datal.map(item => {
+                  return item.app
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: '0',
+                barData: datal.map(item => {
+                return  Number(item.flow) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        } else if (this.rowttabStatus_dsp == '2') {
+           datal = this.orderDataFn(datal, 'array', 'asc')
+           var chartparams2 = {
+                domId: 'chart_dsp',
+                zoomVal: 100,
+                xData: datal.map(item => {
+                  return item.name
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: '40',
+                barData: datal.map(item => {
+                return  Number(item.flowhj) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        }
+    },
+    initywdlChart_sp (datal) {
+         function qxData (key) {
+              return self.ywdlpieData.map(item => {
+                return item[key] || 0
+              })
+         };
+         if (this.rowttabStatus_sp == '1') {
+            datal = this.orderDataFn(datal, 'array', 'asc')
+             var chartparams2 = {
+                domId: 'chart_sp',
+                xData: datal.map(item => {
+                  return item.app
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: datal.length > 8? '30' : '0',
+                barData: datal.map(item => {
+                return  Number(item.flow) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        } else if (this.rowttabStatus_sp == '2') {
+           datal = this.orderDataFn(datal, 'array', 'asc')
+           var chartparams2 = {
+                domId: 'chart_sp',
+                zoomVal: 100,
+                xData: datal.map(item => {
+                  return item.name
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: '40',
+                barData: datal.map(item => {
+                return  Number(item.flowhj) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        }
+    },
+
+    initywdlChart_wy (datal) {
+         function qxData (key) {
+              return self.ywdlpieData.map(item => {
+                return item[key] || 0
+              })
+         };
+         if (this.rowttabStatus_wy == '1') {
+            datal = this.orderDataFn(datal, 'array', 'asc')
+             var chartparams2 = {
+                domId: 'chart_wy',
+                xData: datal.map(item => {
+                  return item.app
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: '0',
+                barData: datal.map(item => {
+                return  Number(item.flow) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        } else if (this.rowttabStatus_wy == '2') {
+           datal = this.orderDataFn(datal, 'array', 'asc')
+           var chartparams2 = {
+                domId: 'chart_wy',
+                zoomVal: 100,
+                xData: datal.map(item => {
+                  return item.name
+                }),
+                noshow: true,
+                uni: '(TB)',
+                rotate: '40',
+                barData: datal.map(item => {
+                return  Number(item.flowhj) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        }
+    },
+
+    initywdlChart_yx (datal) {
+         function qxData (key) {
+              return self.ywdlpieData.map(item => {
+                return item[key] || 0
+              })
+         };
+         if (this.rowttabStatus_yx == '1') {
+            datal = this.orderDataFn(datal, 'array', 'asc')
+             var chartparams2 = {
+                domId: 'chart_yx',
+                xData: datal.map(item => {
+                  return item.app
+                }),
+                noshow: true,
+                uni: '(小时)',
+                rotate: '0',
+                barData: datal.map(item => {
+                return  Number(item.timel) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        } else if (this.rowttabStatus_yx == '2') {
+           datal = this.orderDataFn(datal, 'timelhj')
+           var chartparams2 = {
+                domId: 'chart_yx',
+                zoomVal: 100,
+                xData: datal.map(item => {
+                  return item.name
+                }),
+                noshow: true,
+                uni: '(小时)',
+                rotate: '40',
+                barData: datal.map(item => {
+                return  Number(item.timelhj) || 0
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        }
+    },
+
+
+    initywdlChart () {
+        
+        if (this.rowttabStatus == '1') {
+            function qxData (key) {
+              return self.ywdlpieData.map(item => {
+                return item[key] || 0
+              })
+            };
+            let chartparams = {
+                domId: 'ywdlchart',
+                yname: "单位(%)",
+                xAxis: this.ywdlpieData.map(item => {
+                  return item.timest
+                }),
+
+                datas: [
+                    {
+                        name: '视屏业务',
+                        data:  qxData('spyw'),
+                        type: 'line',
+                    },
+                    {
+                        name: '页面浏览',
+                        data:  qxData('ymll'),
+                        type: 'line',
+                    },
+                    {
+                        name: '即时通信',
+                        data:  qxData('jstx'),
+                        type: 'line',
+                    },
+                    {
+                        name: '文件传输',
+                        data:qxData('wjcs'),
+                        type: 'line',
+                    },
+                    {
+                        name: '游戏业务',
+                        data: qxData('yxlyw'),
+                        type: 'line',
+                    },
+                    {
+                        name: '其他',
+                        data: qxData('qt'),
+                        type: 'line',
+                    },
+                ]
+            }
+            initChart.initEchart_mline(chartparams)
+        } else if (this.rowttabStatus == '2') {
+
+            var chartparams2 = {
+                zoomVal: 100,
+                domId: 'ywdlchart',
+                xData: mdata.map(item => {
+                return item.name
+                }),
+                noshow: true,
+                uni: '',
+                barData: mdata.map(item => {
+                return item.total_outbrand_cn
+                })
+            }
+            initChart.initEchart_barLine(chartparams2)
+        }
+    },
+    initChart () {
+
+    },
+
+     orderDataFn (datas, key, type = 'desc') {
+        return  _.orderBy(datas, function (item) {
+            return Number(item[key])  || 0;
+        }, [type]);
+    },
+    initSortTabledata (datas) {
+      var datal= _.cloneDeep(datas);
+       datal.forEach(item => {
+        Object.keys(item).forEach(key => {
+            Number(item[key]) || Number(item[key]) === 0 ? item[key] =  Number(item[key]) : item[key];
+        })
+      });
+    
+      return datal
+    }, 
+
+    gismapListener(e) {
+      var self = this
+      if (e.data.message == 'levelSwitch') {
+        self.gisTitle = e.data.area_name || this.initgisTitle
+        self.mapLevel = e.data.level
+        self.areaCode = e.data.area_id
+        self.gisMapData = e.data
+        self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+        self.gisQueryParams.area_name = ''
+        console.log('message', e.data)
+        self.cityCode = e.data.area_id || '370000'
+        this.initService()
+      }  else if (e.data.message == 'changeCity') {
+        return
+         self.gisTitle = e.data.area_name || '山东省'
+         self.mapLevel = e.data.level
+         self.areaCode = e.data.area_id;
+         self.gisMapData = e.data;
+         self.gisQueryParams = Object.assign({},  self.gisQueryParams, e.data)
+         self.gisQueryParams.area_name = '';
+         self.cityCode = e.data.area_id;
+         this.initService()
+      }
+    },
+    initGisMap(initArea_id) {
+      // 初始化地图参数
+      this.gisQueryParams = {
+        control: this.control.join(','),
+        level: this.mapLevel,
+        sceneid: '011',
+        gis_sceneid: '011',
+        area_id: initArea_id || '370000',
+        poi_city_id: '',
+        system_type: 'C40',
+        login_no: store.get('staffId') || '',
+        timest: this.$store.state.resource.searchDate
+      }
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.iframeSrc = window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`
+    },
+
+  },
+  updated() {
+    
+  },
+  destroyed() {
+    // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('../comtable.scss');
+/deep/ .bottom-tab .bottom-item {
+  padding: 4px 15px;
+}
+/deep/.initfoot2.bottom-tab {
+  top: 140px;
+  min-width: 400px;
+  width: 400px;
+}
+/deep/.initfoot2.bottom-tab .bottom-item {
+ padding: 2px 30px;
+}
+.zanbox {
+  text-align: center;
+  padding-top: 40px;
+  .zannum {
+    font-size: 30px;
+    line-height: 60px;
+    color: rgb(241, 229, 114);
+  }
+  .zanimg {
+    width: 45px;
+  }
+  .zanfont {
+    font-size: 22px;
+    margin-top: 20px;
+    letter-spacing: 4px;
+  }
+}
+.contentbody {
+  height: 100%;
+  background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+  background-size: auto 100%;
+  margin: -30px 15px 10px 15px;
+  position: relative;
+  display: flex;
+}
+.leftbox,
+.rightbox {
+  width: 500px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  padding-bottom: 30px;
+}
+.centerbox {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+   background: url('~@/assets/images/images_zy/centerborder.png') no-repeat ;
+  background-size: 100% 100%;
+  margin-top: 10px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 50px 20px 20px 20px;
+  margin-bottom: 60px;
+  position: relative;
+}
+.cbottom-box {
+  flex: 1;
+  margin-top: 10px;
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 80px;
+  position: relative;
+}
+
+//  .item-title {
+//    font-size: 22px;
+//    color: aqua;
+//    background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat ;
+//    background-size: 100% 100%;
+//    line-height: 38px;
+//     padding-left: 58px;
+//     position: relative;
+//  }
+
+.item-title {
+  font-size: 18px;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 46px;
+  padding-left: 36px;
+  margin-bottom: 5px;
+  font-weight: bolder;
+}
+.chartbox {
+  width: 100%;
+  height: 100%;
+}
+
+.gdjkitem {
+  height: 68px;
+  width: 72px;
+  margin: 0 auto;
+  background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.gdjkitembox {
+  text-align: center;
+  position: relative;
+  margin-top: 12px;
+  &:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -8px;
+    top: 26px;
+  }
+}
+
+.mtheader {
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  color: #51d1ee;
+  border-bottom: 1px solid #308497;
+}
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4, 54, 108, 0.7);
+}
+.centTab {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  top: 30px;
+  text-align: center;
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 140px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+    background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+  }
+  .centtabitem.active {
+    opacity: 1;
+  }
+}
+.tunit {
+  font-size: 16px;
+}
+
+.cardetailbox {
+  display: flex;
+  padding: 15px 0;
+  .imgbox {
+    margin-right: 30px;
+    width: 380px;
+    img {
+      width: 380px;
+      height: 250px;
+    }
+  }
+  .fontbox {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+/deep/.el-table tbody tr.rowclassname_00 td {
+  color: rgb(243, 198, 101) !important;
+}
+/deep/.el-table tbody tr.rowclassname_01 td {
+  color: rgb(92, 235, 74) !important;
+}
+/deep/.el-table tbody tr.rowclassname_02 td {
+  color: rgb(86, 212, 243) !important;
+}
+
+.checkgroupbox {
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+.checkgroupbox .el-checkbox {
+  margin-right: 15px;
+  .el-checkbox__label {
+    margin-left: 6px;
+  }
+}
+/deep/ .checkstate01 .el-checkbox__label {
+  color: rgb(92, 235, 74) !important;
+}
+/deep/ .checkstate00 .el-checkbox__label {
+  color: rgb(243, 198, 101) !important;
+}
+/deep/ .checkstate02 .el-checkbox__label {
+  color: rgb(86, 212, 243) !important;
+}
+
+/deep/ #bzhdTable tbody tr {
+  cursor: pointer !important;
+}
+
+.box-item {
+  position: relative;
+}
+.rowttabs {
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  top: 2px;
+  right: 60px;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+    color: #45d8e2;
+  }
+}
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+.hddetali {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  overflow: auto;
+  height: 320px;
+  h3 {
+    color: #fff;
+  }
+}
+.swiperClass {
+  width: 80%;
+  height: 280px;
+  margin: 0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19daec;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+
+.gistitle {
+  position: absolute;
+  left: 20px;
+  top: 0px;
+  font-size: 24px;
+  color: aqua;
+}
+.anpiebox {
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 150px;
+  height: 150px;
+  margin-top: 16px;
+}
+.piefont {
+  font-size: 15px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.rightTable {
+  width: 100%;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #02f6ff;
+  .tHead,
+  .tBody {
+    display: flex;
+    .wid19 {
+      width: 18% !important;
+      text-align: left;
+    }
+  }
+  .tHead {
+    line-height: 38px;
+    div {
+      width: 27%;
+      text-align: center;
+      background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center 12px;
+      font-weight: bolder;
+    }
+    .wid19 {
+      background-image: none;
+    }
+  }
+  .tBody {
+    .td {
+      width: 27%;
+      text-align: center;
+      div {
+        // padding: 10px 0;
+        line-height: 40px;
+        border-bottom: 1px dashed #134192;
+      }
+    }
+    .bg {
+      background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+      background-repeat: no-repeat;
+      background-position: center left;
+      background-size: 1px 100%;
+      div {
+        font-size: 15px;
+        font-family: DigifaceWide;
+        color: #ffffff;
+      }
+    }
+  }
+}
+.piefont2 {
+  position: relative;
+  top: -10px;
+  text-align: center;
+  font-size: 15px;
+  .sudubox {
+    font-size: 22px;
+    color: rgb(240, 161, 15);
+  }
+}
+.bitembox {
+  margin: 0 auto;
+  text-align: center;
+  .bimg {
+    margin: 10px 0;
+    width: 68px;
+    height: 60px;
+  }
+  .numfont {
+    font-size: 22px;
+    color: aqua;
+  }
+  .infofont {
+    font-size: 16px;
+  }
+}
+/deep/.border-box-content {
+  padding: 15px 10px;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+.rowtitem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .sub_rowtitem {
+    display: flex;
+    margin-bottom: 10px;
+    .inconbox {
+      margin-right: 40px;
+      width: 42px;
+      height: 42px;
+      background: #031962;
+      text-align: center;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(53, 98, 233, 0.8);
+      margin-bottom: 10px;
+      position: relative;
+      top: 5px;
+      img {
+        width: 40px;
+      }
+    }
+    .flex1 {
+      text-align: center;
+    }
+    .numfont {
+      color: rgb(241, 169, 13);
+      font-size: 20px;
+    }
+    .titlefont {
+      font-size: 16px;
+    }
+  }
+}
+.rowtitem1 {
+  flex: 1.2;
+}
+.rtitembox {
+  position: relative;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  .waterfont {
+    height: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  }
+}
+.zdmore {
+  float: right;
+  font-size: 18px;
+  cursor: pointer;
+  color: #42aaf0;
+  margin-right: 10px;
+  text-decoration: underline;
+  position: relative;
+  z-index: 999;
+}
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.tjbtn {
+  position: absolute;
+  right: 30px;
+  top: 0px;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 10px rgb(56, 148, 235);
+  cursor: pointer;
+  animation: turn 8s linear infinite;
+  z-index: 99;
+  img {
+    width: 44px;
+    z-index: 99;
+  }
+}
+
+
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 18px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 18px !important;
+}
+
+/deep/.dialogTableBg .el-table tr {
+  background: none !important;
+}
+
+/deep/.dialogTableBg .el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-size: 16px  !important;
+}
+/deep/ .inittable2.el-table td {
+  padding: 5px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+
+/deep/.el-table td:first-child {
+  background: none !important;
+}
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+.tbdetalpenl {
+  position: absolute;
+  top: -20px;
+  width: 600px;
+  left: 180px;
+  text-align: center;
+  .kbdetalitem {
+    display: inline-block;
+    height: 64px;
+    line-height: 60px;
+    width: 150px;
+    line-height: 78px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+     opacity: 0.5;
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+.linkbox {
+  .flex1 {
+    margin: 0 30px;
+    padding: 30px 15px;
+    text-align: center;
+    cursor: pointer;
+  
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+  }
+  .flex1:hover {
+    box-shadow: 0px 0px 10px #77f1f7, 0px 0px 30px #0b5d94 inset;
+
+  }
+}
+/deep/.el-table__footer-wrapper {
+  border-top: 1px dashed #1d569c;
+}
+/deep/.el-table__footer-wrapper .cell {
+  font-size: 16px;
+    color: #a1ecfd;
+}
+/deep/.inittabs .el-tabs__item {
+  font-size: 16px;
+   color: #5680cf;
+}
+/deep/.inittabs .el-tabs__item.is-active {
+  color: #25eae1;
+}
+
+/deep/.inittabs.el-tabs--card > .el-tabs__header {
+    border-bottom: 1px solid #6088d0;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+   border-bottom: 1px solid #6088d0;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__nav {
+ border: 1px solid #6088d0;
+ border-bottom: none;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__item {
+  border-left: 1px solid #6088d0;
+}
+/deep/.el-dialog {
+  margin-top: 10vh !important;
+}
+.totlalinfo {
+  border: 1px solid #0d7695;
+  border-radius: 20px;
+  padding: 4px 15px;
+  box-shadow: 0 -2px 10px #19b1ca;
+  position: absolute;
+  width: 400px;
+  top: 40px;
+  font-size: 20px;
+  left: 50%;
+  margin-left: -200px;
+  .flex1 {
+    text-align: center;
+    color: #69f7f7;
+   
+    cursor: pointer;
+  }
+}
+
+/deep/ .el-loading-mask {
+  background-color: rgba(6,26,58, 0.7);
+}
+ /deep/ .grouptable.el-table tbody td {
+   border-right: 1px dashed rgb(45, 61, 94) !important
+ }
+ /deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.el-table__fixed{
+  background: #00133e !important;
+}
+
+/deep/.el-table__fixed::before, /deep/ .el-table__fixed-right::before  {
+   background: transparent !important;
+}
+/deep/ .el-table th.is-leaf{
+  font-size: 15px !important;
+}
+/deep/ .dialogTableBg .custom_table.el-table tbody tr td {
+  font-size: 15px !important;
+  padding: 6px 0  !important;
+}
+
+
+  /deep/.dialogTableBg .el-table  .light-row td {
+     background: #0d9c38a8 !important;
+  }
+  .yxtopitem {
+  padding: 15px;
+  .titlefont {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #fff;
+  }
+  .numfont {
+    font-size: 26px;
+    color: #f6c864;
+    line-height: 40px;
+  }
+  img{
+    margin-top: -10px;
+  }
+}
+</style>

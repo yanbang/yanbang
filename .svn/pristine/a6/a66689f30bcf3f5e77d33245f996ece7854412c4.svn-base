@@ -1,0 +1,456 @@
+<template>
+  <div :id="id" style="width: 580px; height: 560px"></div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+import '@/assets/map/gaode.js'
+export default {
+  data() {
+    return {
+      id: 'echarts_' + new Date().getTime() + Math.floor(Math.random() * 1000),
+      myChart: null,
+      parentJson: null,
+      targetData: [
+        {
+          name: '湖州市',
+          cityCode: '330500',
+          value: '460'
+        },
+
+        {
+          name: '杭州市',
+          cityCode: '330100',
+          value: '1372'
+        },
+        {
+          name: '嘉兴市',
+          cityCode: '330400',
+          value: '851'
+        },
+        {
+          name: '金华市',
+          cityCode: '330700',
+          value: '720'
+        },
+        {
+          name: '丽水市',
+          cityCode: '331100',
+          value: '1139'
+        },
+        {
+          name: '宁波市',
+          cityCode: '330200',
+          value: '772'
+        },
+        {
+          name: '衢州市',
+          cityCode: '330800',
+          value: '8143'
+        },
+        {
+          name: '绍兴市',
+          cityCode: '330600',
+          value: '723'
+        },
+        {
+          name: '台州市',
+          cityCode: '331000',
+          value: '705'
+        },
+        {
+          name: '温州市',
+          cityCode: '330300',
+          value: '448'
+        },
+        {
+          name: '舟山市',
+          cityCode: '330900',
+          value: '1194'
+        }
+      ]
+    }
+  },
+  props: ['mapData'],
+  watch: {
+    mapData() {
+      this.myChart.clear()
+
+      if (this.mapData == 1) {
+        this.targetData = [
+          {
+            name: '湖州市',
+            cityCode: '330500',
+            value: '460'
+          },
+
+          {
+            name: '杭州市',
+            cityCode: '330100',
+            value: '1372'
+          },
+          {
+            name: '嘉兴市',
+            cityCode: '330400',
+            value: '851'
+          },
+          {
+            name: '金华市',
+            cityCode: '330700',
+            value: '720'
+          },
+          {
+            name: '丽水市',
+            cityCode: '331100',
+            value: '1139'
+          },
+          {
+            name: '宁波市',
+            cityCode: '330200',
+            value: '772'
+          },
+          {
+            name: '衢州市',
+            cityCode: '330800',
+            value: '8143'
+          },
+          {
+            name: '绍兴市',
+            cityCode: '330600',
+            value: '723'
+          },
+          {
+            name: '台州市',
+            cityCode: '331000',
+            value: '705'
+          },
+          {
+            name: '温州市',
+            cityCode: '330300',
+            value: '448'
+          },
+          {
+            name: '舟山市',
+            cityCode: '330900',
+            value: '1194'
+          }
+        ]
+      } else if (this.mapData == 2) {
+        this.targetData = [
+          {
+            name: '湖州市',
+            cityCode: '330500',
+            value: '4160'
+          },
+
+          {
+            name: '杭州市',
+            cityCode: '330100',
+            value: '132'
+          },
+          {
+            name: '嘉兴市',
+            cityCode: '330400',
+            value: '851'
+          },
+          {
+            name: '金华市',
+            cityCode: '330700',
+            value: '720'
+          },
+          {
+            name: '丽水市',
+            cityCode: '331100',
+            value: '12139'
+          },
+          {
+            name: '宁波市',
+            cityCode: '330200',
+            value: '7712'
+          },
+          {
+            name: '衢州市',
+            cityCode: '330800',
+            value: '8143'
+          },
+          {
+            name: '绍兴市',
+            cityCode: '330600',
+            value: '73'
+          },
+          {
+            name: '台州市',
+            cityCode: '331000',
+            value: '7058'
+          },
+          {
+            name: '温州市',
+            cityCode: '330300',
+            value: '1448'
+          },
+          {
+            name: '舟山市',
+            cityCode: '330900',
+            value: '1294'
+          }
+        ]
+      } else {
+        this.targetData = [
+          {
+            name: '湖州市',
+            cityCode: '330500',
+            value: '4600'
+          },
+
+          {
+            name: '杭州市',
+            cityCode: '330100',
+            value: '2372'
+          },
+          {
+            name: '嘉兴市',
+            cityCode: '330400',
+            value: '851'
+          },
+          {
+            name: '金华市',
+            cityCode: '330700',
+            value: '720'
+          },
+          {
+            name: '丽水市',
+            cityCode: '331100',
+            value: '119'
+          },
+          {
+            name: '宁波市',
+            cityCode: '330200',
+            value: '772'
+          },
+          {
+            name: '衢州市',
+            cityCode: '330800',
+            value: '81430'
+          },
+          {
+            name: '绍兴市',
+            cityCode: '330600',
+            value: '723'
+          },
+          {
+            name: '台州市',
+            cityCode: '331000',
+            value: '705'
+          },
+          {
+            name: '温州市',
+            cityCode: '330300',
+            value: '448'
+          },
+          {
+            name: '舟山市',
+            cityCode: '330900',
+            value: '11940'
+          }
+        ]
+      }
+
+      console.log(this.targetData)
+      this.initMap()
+    }
+  },
+  mounted() {
+    this.initMap()
+  },
+  methods: {
+    initMap() {
+      this.myChart = echarts.init(document.getElementById(this.id))
+      this.myChart.showLoading({
+        text: 'loading',
+        color: '#c23531',
+        textColor: '#FFFFFF',
+        maskColor: 'rgba(255, 255, 255, 0)'
+        // 字体大小。从 `v4.8.0` 开始支持。
+        // fontSize: 20
+      })
+      var parentInfo = [
+        {
+          cityName: '浙江省',
+          level: 'city',
+          code: 330000
+        }
+      ]
+      this.getGeoJson(330000)
+      var timeFn = null
+
+      //echarts点击事件
+      this.myChart.on('click', params => {
+        clearTimeout(timeFn)
+        timeFn = setTimeout(() => {
+          // 无下级地图数据时不下钻
+          if (!params.value) {
+            //   alert("暂无数据");
+            return
+          }
+          //如果当前是最后一级，那就直接return
+          if (parentInfo[parentInfo.length - 1].code == params.data.cityCode) {
+            return
+          }
+          let data = params.data
+          parentInfo.push({
+            cityName: data.name,
+            level: data.level,
+            code: data.cityCode
+          })
+          //改变地图数据
+          this.getGeoJson(data.cityCode)
+        }, 250)
+      })
+
+      // 绑定双击事件，返回上级地图
+      this.myChart.on('dblclick', params => {
+        clearTimeout(timeFn)
+        if (parentInfo.length < 1) {
+          return
+        }
+        if (parentInfo.length === 1) {
+          this.getGeoJson(parentInfo[parentInfo.length - 1].code)
+          return
+        }
+        parentInfo.pop()
+        this.getGeoJson(parentInfo[parentInfo.length - 1].code)
+      })
+    },
+    initEcharts(mapData, mapJson) {
+      let valArr = []
+      mapData.map(function(i) {
+        valArr.push(i.value)
+      })
+      // 计算数据最大与最小值用于数据映射组件
+      let max = Math.max.apply(null, valArr)
+      let min = Math.min.apply(null, valArr)
+      //注册
+      echarts.registerMap('Map', mapJson)
+      this.myChart.hideLoading()
+      //这里加true是为了让地图重新绘制，不然如果你有筛选的时候地图会飞出去
+      this.myChart.setOption(
+        {
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}\n{c}'
+          },
+          visualMap: {
+            type: 'piecewise',
+            min: min,
+            max: max,
+            splitNumber: 5,
+            left: 35,
+            bottom: 50,
+            itemWidth: 21,
+            itemHeight: 8,
+            showLabel: false,
+            orient: 'horizontal',
+            text: ['高', '低'],
+            itemGap: 2,
+            textStyle: {
+              color: '#fff'
+            },
+            inRange: '',
+            color: [
+              'rgba(7, 83, 114,0.8)',
+              'rgba(24, 100, 141,0.9)',
+              'rgba(33, 122, 168,0.8)',
+              'rgba(28, 138, 187,0.7)',
+              'rgba(34, 156, 199,0.8)'
+            ],
+            show: false
+          },
+
+          series: [
+            {
+              name: '地图',
+              type: 'map',
+              map: 'Map',
+              roam: true, //是否可缩放
+              zoom: 1, //缩放比例
+              aspectScale: 0.9, //长宽比0.75
+              data: mapData,
+              itemStyle: {
+                normal: {
+                  show: true,
+                  areaColor: '#2E98CA',
+                  borderColor: 'rgb(185, 220, 227)',
+                  borderWidth: '1'
+                }
+              },
+              label: {
+                normal: {
+                  show: true,
+                  position: 'inside', //文本标签显示的位置
+                  textStyle: {
+                    color: '#fff', //文本颜色
+                    fontSize: 12
+                  },
+                  formatter: '{b}\n{c}' //文本上显示的值  data:[{name: "地名", value: 数据}],  {b}表示label信息,{c}代表value
+                },
+                emphasis: {
+                  //对应的鼠标悬浮效果
+                  show: true,
+                  textStyle: {
+                    color: '#000'
+                  }
+                }
+              }
+            }
+          ]
+        },
+        true
+      )
+      // 单击下钻
+    },
+    getGeoJson(adcode) {
+      AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
+        var districtExplorer = new DistrictExplorer()
+        districtExplorer.loadAreaNode(adcode, (error, areaNode) => {
+          if (error) {
+            console.error(error)
+            return
+          }
+          let Json = areaNode.getSubFeatures()
+          if (Json.length > 0) {
+            this.parentJson = Json
+          } else if (Json.length === 0) {
+            Json = this.parentJson.filter(item => {
+              if (item.properties.adcode == adcode) {
+                return item
+              }
+            })
+            if (Json.length === 0) return
+          }
+          this.proceData(Json)
+        })
+      })
+    },
+    //处理数据
+    proceData(Json) {
+      let mapData = this.targetData
+      Json.map(item => {
+        mapData.forEach(ele => {
+          if (item.properties.adcode == ele.cityCode) {
+            ele.level = item.properties.level
+          }
+        })
+      })
+      let mapJson = {}
+      //geoJson必须这种格式
+      mapJson.features = Json
+
+      //去渲染echarts
+      this.initEcharts(mapData, mapJson)
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped></style>

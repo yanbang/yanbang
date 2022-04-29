@@ -1,0 +1,35 @@
+import request from '@/utils/request'
+const api = {
+    serviceFuTss: 'ZhyFuCon/serviceFuTss', // 满意度
+    serviceFuGhZldf: '/ZhyFuCon/serviceFuGhZldf', //2固话网络质量得分
+    serviceFuWlZldf: '/ZhyFuCon/serviceFuWlZldf' // 3宽带网络质量得分
+}
+
+var serviceApi = {
+    serviceFuTss(parameter) {
+        return request({
+            url: api.serviceFuTss,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceFuGhZldf(parameter) {
+        return request({
+            url: api.serviceFuGhZldf,
+            method: 'post',
+            data: parameter
+        })
+    },
+    serviceFuWlZldf(parameter) {
+        return request({
+            url: api.serviceFuWlZldf,
+            method: 'post',
+            data: parameter
+        })
+    },
+
+
+
+}
+
+export default serviceApi

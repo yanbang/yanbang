@@ -1,0 +1,1942 @@
+<!--业务云 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-网" subtitle="动环"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+        <div class="box-item flex colflex " >
+          <div class="item-title titlefont">
+            <span>局站机房规模</span>
+            <span class="zdmore pull-right " @click="comdetailFn('局站机房规模详情', '1')">
+                <span class="el-icon-more"></span>
+            </span>
+          </div>
+
+          <div class="flex1">
+              <div  class = "flex1 flex rowicbox" >
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{jzjfData.hexin_juzhan_nums | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/小区2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">核心局站</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{jzjfData.huiju_juzhan_nums | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/小区2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">汇聚局站</div>
+                        </div>
+                   </div>
+                   <!-- <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{jzjfData.vip_juzhan_nums | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/小区2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">区县母局站</div>
+                        </div>
+                   </div> -->
+             </div> 
+          </div>
+        </div>
+        <div class="box-item flex colflex flex1" >
+          <div class="item-title titlefont">
+            <span>运行监控</span>
+            <!-- <span class="zdmore pull-right ">
+                <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+          <div class="flex1">
+             <div  class = "flex1 flex rowicbox" >
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">
+                              {{yxjkData.beidian_length | formatVal}}   
+                                     
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/电池.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">备电时长<span class="unit">(min)</span> </div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.youji_use_rate | formatVal}}<span class="unit">%</span></div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/油机.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">油机负荷率
+                                 <!-- <span class="unit">(%)</span> -->
+                            </div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.jif_kongtiao_rate | formatVal}}<span class="unit"></span></div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/空调.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">空调供冷配置比 
+                            </div>
+                        </div>
+                   </div>
+             </div>
+         
+            <div  class = "flex1 flex rowicbox" >
+                  <div class="flex1" >
+                       <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.waishidian_rate | formatVal}}<span class="unit">%</span> </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/市电.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">市电可靠度</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.jian_kong_rate | formatVal}}<span class="unit">%</span> </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/监控.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">监控完好率</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.dianyuan_usef_rate | formatVal}}<span class="unit">%</span></div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/电源.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">电源负荷率</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum"> {{yxjkData.waishidian_use_rate | formatVal}}<span class="unit">%</span></div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/市电.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">外市电利用率</div>
+                        </div>
+                   </div>
+            </div>
+          </div>
+        </div>
+       <div class="box-item flex colflex " >
+          <div class="item-title titlefont">
+            <span>故障自愈能力</span>
+            <!-- <span class="zdmore pull-right " >
+                <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+
+           <div class="flex1">
+              <div  class = "flex1 flex rowicbox" >
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{gzzyData.youji_nums_zidong | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/加油机.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">自动油机</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                             <div class="lgwnum">{{gzzyData.youji_nums_fzidong | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/油机.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">非自动油机</div>
+                        </div>
+                   </div>
+             </div> 
+          </div>
+        </div>
+           <div class="box-item flex colflex flex1" >
+          <div class="item-title titlefont">
+            <span>动力基础设施</span>
+            <!-- <span class="zdmore pull-right " >
+                <span class="el-icon-more"></span>
+            </span> -->
+          </div>
+
+         <div class="flex1">
+           <div class="chartbox" id="chart_line1" ></div>
+             <!-- <el-table
+                 class="custom_table custom_table2"
+                  :data="leftTable1"
+                  style="width: 100%" size="mini">
+                  
+                  <el-table-column prop="f1" label="市电引入线路" width="110px">
+                  </el-table-column>
+                  <el-table-column prop="f1" label="高压系统" >
+                  </el-table-column>
+                 <el-table-column prop="f1" label="变压器" >
+                  </el-table-column>
+                  <el-table-column prop="f1" label="低压系统" >
+                  </el-table-column>
+                  <el-table-column prop="f1" label="开关电源系统" width="110px">
+                  </el-table-column>
+             </el-table>
+              <el-table
+                 class="custom_table custom_table2"
+                  :data="leftTable1"
+                  style="width: 100%" size="mini">
+                  <el-table-column prop="f1" label="交流配电">
+                  </el-table-column>
+                  <el-table-column prop="f1" label="UPS系统" >
+                  </el-table-column>
+                  <el-table-column prop="f1" label="蓄电池组">
+                  </el-table-column>
+                 
+                  <el-table-column prop="f1" label="机房空调" >
+                  </el-table-column>
+                  <el-table-column prop="f1" label="发电机" >
+                  </el-table-column>
+                   <el-table-column prop="f1" label="监控"  width="60px">
+                  </el-table-column>
+           </el-table> -->
+          </div>
+        </div>
+        
+
+   
+      </div>
+      
+      <div class="centerbox flex colflex">
+           <div class="gistitle">
+              <span class="titlefont">{{gisTitle}}</span>
+          </div>
+        <div class="tjbtn" @click="isDialogShow_ZHY = true"><img src="../zhyeys.png" alt="" srcset="" /></div>
+        <div class="linksm alink" @click="isDialogShow_SM = true">
+          <span class="icon el-icon-question"></span>
+          <span class="fontsm">评估说明</span>
+        </div>
+        <iframe ref="gisiframe" id="gisiframe" :src="iframeSrc" style="widh: 100%; height: 100%"
+                frameborder="0"></iframe>
+       
+        <!-- <div  class="centerb_box">
+          <dv-border-box-10 style="padding: 10px">
+            <div class="flex row_cb">
+              <div class="flex1">
+                  <div> 
+                    <span class="dpinline rtnum">{{dhsbData.waishidian_nums | formatVal}}  / {{dhsbData.waishidian_zg_nums | formatVal}}<span class="unit">%</span></span>
+                  </div>
+                   <div> 
+                    <span class="dpinline lffont">外市电<span class="unit">(条)</span></span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div><span class="dpinline rtnum">{{dhsbData.gaoya_nums | formatVal}}</span></div>
+                 <div> 
+                    <span class="dpinline lffont">高压系统 <span class="unit">(套)</span></span>
+                    
+                  </div>
+              </div>
+              <div class="flex1">
+                <div> <span class="dpinline rtnum">{{dhsbData.diya_nums | formatVal}}</span></div>
+                 <div> 
+                    <span class="dpinline lffont">低压系统 <span class="unit">(套)</span></span>
+                   
+                  </div>
+              </div>
+              <div class="flex1">
+                <div> <span class="dpinline rtnum">{{dhsbData.bianya_nums | formatVal}} / {{dhsbData.bianya_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">变压器 <span class="unit">(台)</span> </span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div> <span class="dpinline rtnum">{{dhsbData.fadian_nums | formatVal}} / {{dhsbData.fadian_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">发电机 <span class="unit">(台)</span> </span>
+                  </div>
+              </div>
+            </div>
+
+            <div class="flex row_cb">
+              <div class="flex1">
+                  <div> 
+                    <span class="dpinline rtnum">{{dhsbData.jiaoliupeidian_nums | formatVal}}  / {{dhsbData.jiaoliupeidian_yq_nums | formatVal}} <span class="unit">%</span></span>
+                   </div>
+                   <div> 
+                    <span class="dpinline lffont">交流配电<span class="unit">(台)</span></span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div>
+                  <span class="dpinline rtnum">{{dhsbData.zhengliuping_nums | formatVal}}  / {{dhsbData.zhengliuping_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">整流屏 <span class="unit">(架)</span></span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div>
+                  <span class="dpinline rtnum">{{dhsbData.zhiliuping_nums | formatVal}}  / {{dhsbData.zhiliuping_yq_nums | formatVal}}<span class="unit">%</span></span>
+                  </div>
+                 <div> 
+                    <span class="dpinline lffont">直流配电 <span class="unit">(台)</span></span>
+                   
+                  </div>
+              </div>
+              <div class="flex1">
+                <div> 
+                  <span class="dpinline rtnum">{{dhsbData.ups_nums | formatVal}} / {{dhsbData.ups_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">UPS <span class="unit">(台)</span> </span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div> <span class="dpinline rtnum">{{dhsbData.zhkgdy_nums | formatVal}} / {{dhsbData.zhkgdy_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">组合开关电源<span class="unit">(台)</span> </span>
+                  </div>
+              </div>
+            </div>
+
+              <div class="flex row_cb">
+              <div class="flex1">
+                  <div> 
+                    <span class="dpinline rtnum">{{dhsbData.xudianchi_nums | formatVal}} / {{dhsbData.xudianchi_yq_nums | formatVal}}<span class="unit">%</span></span>
+                   </div>
+                   <div> 
+                    <span class="dpinline lffont">蓄电池<span class="unit">(组)</span></span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div>
+                  <span class="dpinline rtnum">{{dhsbData.jf_kongtiao_nums | formatVal}} / {{dhsbData.jf_kongtiao_yq_nums | formatVal}}<span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">机房空调<span class="unit">(台)</span></span>
+                  </div>
+              </div>
+              <div class="flex1">
+                <div>
+                  <span class="dpinline rtnum">{{dhsbData.kongtiao_nums | formatVal}} / {{dhsbData.kongtiao_yq_nums | formatVal}}<span class="unit">%</span></span>
+                  </div>
+                 <div> 
+                    <span class="dpinline lffont">普通空调<span class="unit">(台)</span></span>
+                   
+                  </div>
+              </div>
+
+              <div class="flex1">
+                <div> <span class="dpinline rtnum">{{dhsbData.jiankong_nums | formatVal}} / {{dhsbData.jiankong_yq_nums | formatVal}} <span class="unit">%</span></span></div>
+                 <div> 
+                    <span class="dpinline lffont">动环监控FSU<span class="unit">(台)</span> </span>
+                  </div>
+              </div>
+
+              <div class="flex1">
+                
+              </div>
+            </div>
+          </dv-border-box-10>
+        </div> -->
+      </div>
+      <div class="rightbox flex colflex ">
+         <!-- <div class="box-item flex colflex flex1"  >
+          <div class="item-title titlefont">
+            <span>重点业务</span>
+          </div>
+          <div class="flex1" style="padding-top: 15px">
+             <div  class = "flex1 flex rowicbox" >
+                  <div class="" style="width: 150px">
+                       <div class="lgwbox">
+                            <div class="lgwnum">
+                               {{zdywData.daqu_yunchi_nums | formatVal}}                 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/bras.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">大区云池服务器数</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                              {{zdywData.jiyue_pingtai_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/vksh.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">集约化平台数
+                               
+                            </div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                               {{zdywData.adapt_rate | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/IDC.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">IDC业务 
+                               
+                            </div>
+                        </div>
+                   </div>
+                    <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                               {{zdywData.double_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/ipran.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">双线业务 
+                                 
+                            </div>
+                        </div>
+                   </div>
+             </div>
+         
+            <div  class = "flex1 flex rowicbox" >
+                  <div class=""  style="width: 150px">
+                       <div class="lgwbox">
+                            <div class="lgwnum">
+                               {{zdywData.gw_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/网络.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">宽带用户数</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                               {{zdywData.iptv_user_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/IPTV.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">IPTV用户数</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                                {{zdywData.yidong_station_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/5G小区.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">物理站址数</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">
+                                {{zdywData.actives_nums | formatVal}} 
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/安全.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">重大活动</div>
+                        </div>
+                   </div>
+            </div>
+          </div>
+        </div> -->
+        <div class="box-item flex colflex flex1"  >
+          <div class="item-title titlefont">
+            <span>故障告警</span>
+            <span class="zdmore pull-right " @click="comdetailFn('故障告警详情', '2')">
+                <span class="el-icon-more" ></span>
+            </span>
+          </div>
+          <div class="chartbox" id = "chart_gzgj" style="height: 260px"></div>
+        </div>
+
+        <div class="box-item flex colflex flex1 mslylbox">
+          <div class="item-title titlefont">
+            <span>重大风险监测</span>
+             <span class="zdmore pull-right " @click="zdyhDetail">
+                <span class="el-icon-more"></span>
+            </span>
+          </div>
+
+         <div class="flex1" style="padding-top: 30px">
+              <div  class = "flex1 flex rowicbox rowicbox2" >
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div style="height: 120px">
+                                <div class="lgwnum">{{zdyhData.bug_nums | formatVal}}</div>
+                                <div class="lgwimg">
+                                    <img src="@/assets/images/隐患.png" alt="" srcset="">
+                                </div>
+                            </div>
+                            <div class="lgwfont">隐患总量</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                          <div style="height: 120px">
+                                <div class="lgwnum">{{zdyhData.finish_bug_nums | formatVal}}</div>
+                                <div class="lgwimg">
+                                    <img src="@/assets/images/安全jj.png" alt="" srcset="">
+                                </div>
+                            </div>
+                            <div class="lgwfont">隐患解决量</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="jjlchart" id="jjlchart" style="height: 120px"></div>
+                            <div class="lgwfont">隐患解决率</div>
+                        </div>
+                   </div>
+             </div> 
+          </div>
+        </div>
+       <div class="box-item flex colflex flex1"  >
+          <div class="item-title titlefont">
+            <span>碳节能(PUE/KW/收益)</span>
+          </div>
+          <div class="flex1" style="padding-top: 15px">
+             <div  class = "flex1 flex rowicbox rowicbox3" >
+                  <div class="" style="width: 150px">
+                       <div class="lgwbox">
+                            <div class="lgwimg">
+                                <img src="@/assets/images/云资源.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">云舱技术</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwimg">
+                                <img src="@/assets/images/热管.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">热管技术</div>
+                        </div>
+                   </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwimg">
+                                <img src="@/assets/images/水冷.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">水预冷</div>
+                        </div>
+                   </div>
+
+             </div>
+         
+            <div  class = "flex1 flex rowicbox rowicbox3" >
+                 <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwimg">
+                                <img src="@/assets/images/容量.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">ONEpower</br>电池梯次利旧</div>
+                        </div>
+                   </div>
+                  <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwimg">
+                                <img src="@/assets/images/油机.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">油机复用</div>
+                        </div>
+                   </div>
+                   
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+     <el-dialog :visible.sync="isDialogShow_ZHY" width="50%"  :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">智慧眼详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+       
+        </div>
+      </div>
+    </el-dialog>
+
+     <el-dialog :visible.sync="comisDialogShow" width="60%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{cometitle}}</div>
+          </div>
+          <div class="dialogTableBg" style="min-height: 660px" v-loading = "vloading">
+                <el-table :data="comDataList"  size = "mini" max-height="750px" show-summary >
+                       <el-table-column v-for="(col, index) in comCol" :key="index" 
+                        :prop="col.filed" 
+                        :label="col.title"
+                        :min-width="col.width" 
+                        show-overflow-tooltip
+                        :sortable = "col.sortable">
+                      </el-table-column>
+                </el-table>       
+          </div>
+        </div>
+      </el-dialog>
+
+       <el-dialog :visible.sync="zdyhDialogShow" width="80%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">重大风险详情</div>
+          </div>
+          <div class="dialogTableBg mytabs" >
+              <el-tabs v-model="zdyhactiveName"   type="card">
+                    <el-tab-pane label="重大风险详情列表"  name="1">
+                      <div class="panebox">
+                        <el-table
+                          :data="zdfxtableData"
+                          size = "mini" height="680px"
+                          style="width: 100%">
+                          <el-table-column
+                            prop="name"
+                            label="组织名称"
+                            width="180">
+                          </el-table-column>
+                           <el-table-column
+                            prop="bug_nums"
+                            label="隐患数量" sortable>
+                          </el-table-column>
+                          <el-table-column
+                            prop="finish_bug_nums"
+                            label="已解决隐患数量" sortable>
+                          </el-table-column>
+                          <el-table-column
+                            prop="finish_bug_nums_lv"
+                            label="已解决隐患率" sortable>
+                            <template slot-scope="scope">
+                              <span>{{scope.row.finish_bug_nums_lv}}%</span>
+                             
+                            </template>
+                          </el-table-column>
+
+                          <el-table-column
+             
+                            label="操作"
+                            width="220">
+                            <template slot-scope="scope">
+                              <el-button  style="padding: 2px 10px" @click="handleClickrow(scope.row)" type="text" size="mini">查看清单</el-button>
+                            </template>
+                          </el-table-column>
+                        </el-table>
+                      </div>
+                    </el-tab-pane>
+                    <el-tab-pane v-if= "zdyhactiveName == '2'" :label="zdfxSelectCity + '-重大风险清单'" name="2">
+                      <div class="panebox">
+                         <el-table
+                          :data="zdfxMxtableData"
+                          size = "mini" height="680px"
+                          style="width: 100%" >
+ 
+                            <el-table-column
+                              prop="sub_name"
+                              label="区县" fixed
+                             >
+                            </el-table-column>
+                            <el-table-column
+                              prop="juzhan"
+                              label="局站"
+                              width="200" fixed
+                             >
+                            </el-table-column>
+                            <el-table-column
+                              prop="major"
+                              label="专业"
+                             >
+                            </el-table-column>
+                            <el-table-column
+                              prop="jufang_name"
+                              label="局房名称"
+                               width="200"
+                             >
+                            </el-table-column>
+                              <el-table-column
+                              prop="risk_type"
+                              label="风险类型"
+                               width="150"
+                             >
+                            </el-table-column>
+
+                              <el-table-column
+                              prop="risk_description"
+                              label="风险详细描述" align="left" width="220px"
+                             >
+                            </el-table-column>
+
+                              <el-table-column
+                              prop="plan_mark"
+                              label="整治方案说明" align="left"  width="220px"
+                             >
+                            </el-table-column>
+
+                            <el-table-column
+                              prop="finish_flag"
+                              label="整治是否已完成"
+                                width="150"
+                             >
+                            </el-table-column>
+
+                              <el-table-column
+                              prop="Investment_Implementation"
+                              label="投资落实情况"
+                                width="150"
+                             >
+                            </el-table-column>
+                          
+                            <el-table-column
+                              prop="Investment_amount"
+                              label="已落实投资金额(万元)"   width="150">
+                            </el-table-column>
+
+                            <el-table-column
+                              prop="plan_finish_time"
+                              label="整治完成时间计划"   width="150">
+                            </el-table-column>
+                               <el-table-column
+                              prop="person_in_charge"
+                              label="风险整治责任人"   width="150" >
+                            </el-table-column>
+
+                               <el-table-column
+                              prop="person_in_charge_phone"
+                              label="责任人手机"  width="180" >
+                            </el-table-column>
+                              <el-table-column
+                              prop="bug_nums"
+                              label="隐患数量" >
+                            </el-table-column>
+                              <el-table-column
+                              prop="bug_level"
+                              label="隐患等级" >
+                            </el-table-column>
+                             <el-table-column
+                              prop="finish_plan"
+                              label="计划整治年度"   width="150">
+                            </el-table-column>
+                             <el-table-column
+                              prop="amoubt_need"
+                              label="资金需求（万元）"   width="150">
+                            </el-table-column>
+                             <el-table-column
+                              prop="risk_spot"
+                              label="所属隐患部位"   width="150">
+                            </el-table-column>
+                           
+                        </el-table>
+                      </div>
+                    </el-tab-pane>
+              </el-tabs>
+          </div>
+        </div>
+      </el-dialog>
+    
+
+      <el-dialog :visible.sync="isDialogShow_SM" width="80%"  :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">安全风险评估说明</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+           <div class="sm_content">
+             <p class="row_info">供电安全风险管理是一个系统性、整体性、协同性过程，供电安全风险往往不是孤立存在，而是多个风险交织形成的一个风险综合体,在双碳经济转型、成本压降、人员流出、网络老化的形势下，动力网各类隐患和安全风险交织叠加，影响安全的因素日益增多。</p>
+             <p class="row_info">指数”作为一种无量纲的相对比较指标，具有直观易懂、科学准确等特点，广泛应用于经济社会管理活动 。 2019年，山东联通将指数首次应用于通信电源管理，实现用数字表征电源系统的整体危险程度，是一种有效的划分风险等级的工具。</p>
+             <p class="row_info">SI从客观因素、局房配套、电源系统、应急资源、安全管理5个维度的26个指标进行综合评价，用红、黄、绿三色对高风险、中等风险、低风险电源系统进行色谱标识，可按照地区、局站、电源系统维度直观展示整体安全性。</p>
+             <div class="zbdetailbox flex">
+               <div class="flex1">
+                   <ul>
+                      <li class="zbtitle">客观因素</li>
+                      <li>系统规模</li>
+                      <li>市电等级</li>
+                      <li>值守方式</li>
+                      <li>油机配置</li>
+                      <li>自动化程度</li>
+                      <li>供电质量</li>
+                      <li>机房环境</li>
+                      <li>高压自动倒换</li>
+                   </ul>
+               </div>
+               <div class="flex1">
+                  <ul>
+                      <li class="zbtitle">局房配套</li>
+                      <li>高压系统健康度</li>
+                      <li>变压器健康度</li>
+                      <li>低压配电健康度</li>
+                      <li>油机健康度</li>
+                   </ul>
+               </div>
+               <div class="flex1">
+                  <ul>
+                      <li class="zbtitle">电源系统</li>
+                      <li>动环监控可用度</li>
+                      <li>电源设备健康系数</li>
+                      <li>蓄电池监控度</li>
+                   </ul>
+               </div>
+               <div class="flex1">
+                  <ul>
+                      <li class="zbtitle">应急资源</li>
+                      <li>变压器冗余容量</li>
+                      <li>油机带载能力（含备用）</li>
+                      <li>电池后备时长与应急</br>
+                        处置时长匹配度</li>
+                   </ul>
+               </div>
+               <div class="flex1">
+                  <ul>
+                      <li class="zbtitle">安全管理</li>
+                      <li>管理组织机构</li>
+                      <li>电源配套维护与检测</li>
+                      <li>制度落实</li>
+                      <li>应急预案</li>
+                      <li>培训与演练</li>
+                   </ul>
+               </div>
+             </div>
+           </div>
+        </div>
+      </div>
+    </el-dialog>
+ 
+
+    
+    <Footer :tabdata="tabdata" class="initfoot"></Footer>
+
+  </div>
+</template>
+
+<script>
+  import Header from '@/components/resource_visual/header2';
+  import Footer from '@/components/resource_visual/footer';
+  import store from 'store'
+  import {mapState} from 'vuex'
+  import echarts_init from '../fu/echart_lines'
+  import echarts_init2 from '../logechart'
+  var _ = require('@/utils/lodash.js')
+  var Qs = require('@/utils/qs.js')
+ import waterPoloChart from '@/views/resource_visual/echarts_component/waterPoloChart'
+ import serviceApi from '@/api/duan_donghuan'
+  var self = null
+  export default {
+    data() {
+      return {
+        dhsbData:{},
+        isDialogShow_ZHY: false,
+        rt1status: '1',
+        pmstatus: '1',
+        dialogTitle: '',
+        isDialogShow: false,
+        gisTitle: '山东省',
+        cityCode: '370000',
+        iframeSrc: '',
+        rowttabStatus: '1',
+        gisQueryParams: {},
+        queryParams: {},
+        gisMapData: {},
+        mapLevel: 1,
+        areaCode: '',
+        tableData1: [],
+        control: [],
+        dhtcolums: [
+            {'title': '市电引入线路', filed: 'f2', width: 120},
+            {'title': '高压系统', filed: 'f2'},
+            {'title': '变压器', filed: 'f2'},
+            {'title': '低压系统', filed: 'f2'},
+            {'title': '交流配电', filed: 'f2'},
+            {'title': '开关电源系统', filed: 'f2', width: 160},
+            {'title': 'UPS系统', filed: 'f2'},
+            {'title': '蓄电池组', filed: 'f2'},
+            {'title': '机房空调', filed: 'f2'},
+            {'title': '发电机', filed: 'f2'},
+            {'title': '监控', filed: 'f2'},
+        ],
+        leftTable1: [
+            {f1: 244}
+        ],
+        comisDialogShow: false,
+        isDialogShow_SM: false,
+        comDataList: [],
+        comCol: [],
+        cometitle: '',
+        jzjfData: {},
+        zdyhData: {},
+        zdyhactiveName: '1',
+        zdfxSelectCity: '',
+        zdfxtableData: [],
+        zdyhDialogShow: false,
+        zdfxMxtableData: [],
+        zdywData: {},
+        gzzyData: {},
+        yxjkData: {},
+        tabdata: [
+          { title: '动环', active: true, href: '/unicomwisdomeyes/movering' },
+          { title: '大华监控', active: false, href: '/unicomwisdomeyes/monitor' },
+          { title: '沃家神眼', active: false, href: '/unicomwisdomeyes/monitor_jt' },
+        ],
+        vloading: false,
+        or_he: '1',
+
+      }
+    },
+    components: {
+      Header,
+      Footer,
+      
+    },
+    created() {
+      self = this;
+      if (this.$route.query.pagesource && this.$route.query.pagesource == 'yhzl') {
+        this.or_he = '0'
+      } else {
+        this.or_he = '1'
+      }
+    },
+    mounted() {
+      var self = this;
+      var initArea_id = '370000'
+      this.mapLevel = 1;
+      if (store.get('userInfo')) {
+        var userInfo =  store.get('userInfo')
+        var mapLevel = userInfo.levelAreaLevel;
+        
+        if (mapLevel == '1') {
+          // 全省
+          initArea_id = '370000'
+          self.gisTitle  = '山东省'
+          self.mapLevel = '1';
+          self.control = []
+        } else if (mapLevel == '2') {
+          // 地市
+          initArea_id = '370000'
+          self.gisTitle  = '山东省'
+          self.mapLevel = '1';
+          self.control = ['370000', userInfo.levelAreaCode]
+        }   else if (mapLevel >= '3') {
+            // 区县
+            initArea_id = userInfo.levelAreaCode;
+            self.mapLevel = '2';
+            self.gisTitle  = userInfo.levelAreaName
+            self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode]
+        }
+     }
+     this.cityCode = initArea_id;
+     this.initGisMap(initArea_id);
+    this.initgisTitle = this.gisTitle + '';
+
+    // 注册地图事件
+       window.addEventListener('message',self.gismapListener, true);
+
+      this.serverInit()
+
+    
+      
+    },
+    watch: {
+     
+    },
+    computed: {
+      ...mapState({
+        searchDate: state => state.resource.searchDate,
+      }),
+     
+      
+    },
+    methods: {
+      initSortTabledata (datas, nokeys) {
+        var datal= _.cloneDeep(datas);
+        datal.forEach(item => {
+          Object.keys(item).forEach(key => {
+              if (nokeys && nokeys.indexOf(key) == -1) {
+                 Number(item[key]) || Number(item[key]) === 0 ? item[key] =  Number(item[key]) : item[key];
+              }
+             
+          })
+        });
+      
+        return datal
+      }, 
+      // 重大隐患详情
+      zdyhDetail () {
+        this.zdyhDialogShow = true;
+        this.zdfxSelectCity = '';
+        this.zdyhactiveName = '1'
+        this.serviceDhZdfxXq()
+      },
+      handleClickrow (row) {
+        this.zdfxSelectCity = row.name;
+        this.zdyhactiveName = '2'
+        this.serviceDhZdfxMx(row.code)
+      },
+      comdetailFn (title, type) {
+        this.cometitle = title;
+        this.comisDialogShow = true;
+        this.comDataList = [];
+        if (type == '1') {
+          this.comCol = [ 
+            {title: '组织名称', filed: 'name', width: '120'},
+            {title: '核心局站', filed: 'hexin_juzhan_nums', sortable: true},
+            {title: '汇聚局站', filed: 'huiju_juzhan_nums', sortable: true},
+            // {title: '区县母局站', filed: 'vip_juzhan_nums', sortable: true},
+          ];
+          this.serviceDhJzslXq()
+
+
+        } else if (type == '2') {
+          this.comCol = [ 
+            {title: '组织名称', filed: 'name', width: '120'},
+            {title: '严重告警', filed: 'serious_alarm_nums', sortable: true},
+            {title: '主要告警', filed: 'major_alarm_nums', sortable: true},
+            {title: '次要告警', filed: 'secondary_alarm_nums', sortable: true},
+            {title: '警告告警', filed: 'notice_alarm_nums', sortable: true},
+          ];
+          this.serviceDhAlarmNumsXq()
+        }
+      },
+      serverInit () {
+         this.serviceDhJzsl()
+         this.serviceDhZdfx()
+         this.serviceDhZdyw()
+         this.serviceDhDhGyYj()
+         this.serviceDhjiance()
+         this.serviceDhSheBei()
+         this.serviceDhAlarmNums()
+      },
+      serviceDhAlarmNumsXq  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        this.vloading = true
+        serviceApi.serviceDhAlarmNumsXq(params).then((res) => {
+            this.vloading = false
+          if (res.rspCode == '0000') {
+             var datal =  res.result.data || [];
+             
+            this.comDataList = this.initSortTabledata(datal, ['code']);
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+       serviceDhAlarmNums () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhAlarmNums(params).then((res) => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            var Adata = [
+                  {
+                    name: '严重告警',
+                    value: datal.serious_alarm_nums || 0
+                  },
+                  {
+                    name: '主要告警',
+                    value: datal.major_alarm_nums || 0
+                  },
+                  {
+                    name: '次要告警',
+                    value: datal.secondary_alarm_nums || 0
+                  },
+                    {
+                    name: '警告告警',
+                    value:datal.notice_alarm_nums || 0
+                  },
+                ]
+            var total = 0;
+            Adata.forEach(tiem => {
+              total +=  (Number(tiem.value) || 0)
+            })
+            
+              var params2 = {
+                domId: 'chart_gzgj',
+                unit: '',
+                total: total,
+                colors: ['#db3c3c', '#e58029', '#e3a73a', '#e7d36e'],
+                data: Adata
+              }
+              echarts_init2.initpieca2(params2)
+           
+          
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhSheBei () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhSheBei(params).then((res) => {
+          if (res.rspCode == '0000') {
+            
+            var datal =  res.result.data[0] || {};
+            this.dhsbData = datal
+           
+             this.initEchart()
+          
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhjiance  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhjiance(params).then((res) => {
+          
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            this.yxjkData = datal
+          
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhDhGyYj  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhDhGyYj(params).then((res) => {
+          
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            this.gzzyData = datal
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhZdyw  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhZdyw(params).then((res) => {
+          
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            this.zdywData = datal
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhZdfxMx  (code) {
+        var params = {
+          cityCode: code,
+        }
+        this.zdfxMxtableData = []
+        serviceApi.serviceDhZdfxMx(params).then((res) => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data || [];
+            this.zdfxMxtableData = this.initSortTabledata(datal, ['code']);
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+       serviceDhZdfxXq  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhZdfxXq(params).then((res) => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data || [];
+            datal = datal.filter(item => {
+              return item.code != self.cityCode
+            })
+            this.zdfxtableData = this.initSortTabledata(datal, ['code']);
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhZdfx  () {
+        var params = {
+          cityCode:  this.cityCode,
+        }
+        serviceApi.serviceDhZdfx(params).then((res) => {
+          
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            this.zdyhData = datal;
+             var waterchart1 = {
+                id: 'jjlchart',
+                value: datal.finish_bug_nums_lv ||0
+              }
+             waterPoloChart.initChart(waterchart1);
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhJzsl () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhJzsl(params).then((res) => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data[0] || {};
+            this.jzjfData = datal;
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      serviceDhJzslXq  () {
+        var params = {
+          cityCode: this.cityCode,
+        }
+        serviceApi.serviceDhJzslXq(params).then((res) => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data || [];
+            datal = datal.filter(item => {
+              return item.code != self.cityCode
+            })
+            this.comDataList = this.initSortTabledata(datal);
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      gismapListener(e) {
+        if (e.data.message == 'levelSwitch') {
+          self.gisTitle = e.data.area_name || '山东省',
+          self.mapLevel = e.data.level
+          self.areaCode = e.data.area_id;
+          self.gisMapData = e.data;
+          self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+          self.gisQueryParams.area_name = '';
+          console.log('message', e.data)
+          self.cityCode = (e.data.area_id || '370000');
+          self.serverInit()
+        }
+      },
+     
+      initGisMap(initArea_id) {
+        // 初始化地图参数
+        this.gisQueryParams = {
+          yanhuang:  this.or_he,
+          control: this.control.join(','),
+          level: this.mapLevel,
+          sceneid: '010',
+          gis_sceneid:  '010',
+          area_id: initArea_id,
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no: store.get('staffId') || '',
+          timest: this.$store.state.resource.searchDate
+        };
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+        this.iframeSrc = window.gis_iframeSrc +  `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+
+      },
+
+  
+      initEchart() {
+      
+         var datasmap = [
+           {'name': '变压器', nkey: 'bianya_nums', rkey: 'bianya_yq_nums'},
+           {'name': '发电机', nkey: 'fadian_nums', rkey: 'fadian_yq_nums'},
+           {'name': '交流配电', nkey: 'jiaoliupeidian_nums', rkey: 'jiaoliupeidian_yq_nums'},
+           {'name': '整流屏', nkey: 'zhengliuping_nums', rkey: 'zhengliuping_yq_nums'},
+           {'name': '直流配电', nkey: 'zhiliuping_nums', rkey: 'zhiliuping_yq_nums'},
+           {'name': 'UPS', nkey: 'ups_nums', rkey: 'ups_yq_nums'},
+           {'name': '组合开关电源', nkey: 'zhkgdy_nums', rkey: 'zhkgdy_yq_nums'},
+           {'name': '蓄电池', nkey: 'xudianchi_nums', rkey: 'xudianchi_yq_nums'},
+           {'name': '机房空调', nkey: 'jf_kongtiao_nums', rkey: 'jf_kongtiao_yq_nums'},
+           {'name': '普通空调', nkey: 'kongtiao_nums', rkey: 'kongtiao_yq_nums'},
+           {'name': '动环监控FSU', nkey: 'jiankong_nums', rkey: 'jiankong_yq_nums'},
+          {'name': '外市电', nkey: 'waishidian_nums', rkey: 'waishidian_zg_nums'},
+           {'name': '高压系统', nkey: 'gaoya_nums', rkey: ''},
+           {'name': '低压系统', nkey: 'diya_nums', rkey: ''},
+
+         ]
+          var datal = this.dhsbData
+          var xData = datasmap.map(item => {
+            return item.name;
+          })
+          var barData = datasmap.map(item => {
+            return datal[item.nkey]
+          })
+           var lineData = datasmap.map(item => {
+            return datal[item.rkey] 
+          })
+         var chartParams = {
+            domId: 'chart_line1',
+            zoomVal: 100,
+            legend: ['设备数量', '逾期占比'],
+            rotate: 40,
+            name: '动环基础设备',
+            color: 'rgba(237,161,54, 0.8)',
+            xData: xData,
+            barData:  barData,
+            lineData: lineData,
+          }
+          echarts_init.initEchart_barLine(chartParams)
+      }
+    },
+    destroyed() { // 在组件生命周期结束的时候销毁。
+      window.removeEventListener('message', this.gismapListener, true)
+    }
+  }
+</script>
+
+<style lang='scss' scoped>
+  @import url('../comtable.scss');
+
+  /deep/ .bottom-tab {
+    width: 60%;
+  }
+
+  /deep/ .bottom-tab .bottom-item {
+    padding: 4px 30px !important;
+  }
+
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: -30px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+
+  .leftbox, .rightbox {
+    width: 500px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    padding-bottom: 30px;
+  }
+
+  .centerbox {
+    flex: 1;
+    background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 100px 15px 15px 15px;
+    position: relative;
+
+  }
+
+  // .item-title {
+  //   font-size: 22px;
+  //   color: aqua;
+  //   background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat;
+  //   background-size: 100% 100%;
+  //   line-height: 38px;
+  //   padding-left: 58px;
+  // }
+
+    .item-title {
+   font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+
+  .chartbox {
+    width: 100%;
+    height: 100%;
+  }
+  .mslylbox {
+      .chartbox {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 15px 20px;
+    }
+  }
+
+  .gdjkitem {
+    height: 68px;
+    width: 72px;
+    margin: 0 auto;
+    background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+    background-size: 100% 100%;
+    line-height: 68px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bolder;
+
+  }
+
+  .gdjkitembox {
+    text-align: center;
+    position: relative;
+    margin-top: 12px;
+
+    &:not(:last-child)::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: -8px;
+      top: 26px;
+    }
+  }
+
+
+  .mtheader {
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+  }
+
+  .mtbody {
+    height: 100%;
+    margin: 6px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mtbody .scrollitem {
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 5px;
+  }
+
+  .mtbody .scrollitem:nth-child(odd) {
+    background: rgba(4, 54, 108, 0.7);
+  }
+
+  .centTab {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 30px;
+    text-align: center;
+
+   .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+    }
+  }
+
+  .rowttabs {
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    .rowttabs-item {
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #5b7bc9;
+      margin-right: 10px;
+      color: #698bdf;
+      cursor: pointer;
+    }
+
+    .rowttabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+    }
+  }
+  .substTab {
+    text-align: center;
+    .el-radio {
+      color: #ddd;
+      margin-right: 20px;
+    }
+    /deep/ .el-radio__input .el-radio__inner {
+        border-color: #ddd;
+        background: #ddd;
+    }
+    /deep/ .el-radio__input.is-checked + .el-radio__label {
+        color: #f3c911;
+    } 
+    /deep/ .el-radio__input.is-checked .el-radio__inner {
+        order-color: #ede90f;
+       background: #e4ac47;
+    }
+  }
+  .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+  }
+  .pull-right {
+    float: right;
+    .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+      margin-right: 15px;
+    }
+  }
+
+
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn {
+z-index: 9999;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+  
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 13px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 14px !important;
+}
+
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  padding: 6px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 22px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+
+.pmdetalibox {
+  display: flex;
+  min-height: 500px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.left_pmtb {
+  width: 380px;
+}
+.right_pmtb {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px dashed #404e77;
+  .rpmtitle {
+    position: absolute;
+    color: aqua;
+    font-size: 20px;
+    top: -34px;
+    text-align: center;
+    width: 100%;
+    .subtagtab {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      .rowttabs {
+        height: 30px;
+        line-height: 30px;
+        .rowttabs-item {
+          padding: 3px 6px;
+        }
+      }
+    }
+
+  }
+}
+.box-item {
+  position: relative;
+  .trowttabs {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+.sutabtitle {
+  background: rgba(25,89,162, 0.3);
+  height: 38px;
+  border-radius: 20px;
+  line-height: 38px;
+}
+.sutabtitle .flex1{
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.4;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/ligtdian.png') no-repeat;
+  background-position: center -38px;
+}
+.rowicbox {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+}
+.rowicbox2 {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    .lgwbox {
+        text-align: center;
+        padding-top: 10px;
+    .lgwnum {
+        font-size: 24px;
+        color: #f7e713;
+    }
+    .lgwimg {
+        margin: 20px 0;
+        
+        img {
+            width: 45px;
+        }
+    }
+    .lgwfont {
+        font-size: 18px; 
+        margin-top: 10px;
+        .unit {
+            font-size: 16px;
+            margin-left: 2px;
+        }
+    }
+}
+}
+
+ 
+.rowicbox3 {
+    margin-bottom: 5px;
+    padding-bottom:5px;
+    .lgwbox {
+        text-align: center;
+    .lgwimg {
+        padding: 12px;
+        border: 1px solid rgb(119, 164, 236); 
+        width: 70px;
+        height: 70px;
+        text-align: center;
+        border-radius: 50%;
+        margin: 0 auto;
+        box-sizing: border-box;
+        box-shadow: 0 0 4px rgb(119, 164, 236);
+        
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .lgwfont {
+        font-size: 18px; 
+        margin-top: 15px;
+        color: rgb(210, 229, 245);
+    }
+}
+}
+.lgwbox {
+    text-align: center;
+    padding-top: 10px;
+    .lgwnum {
+        font-size: 20px;
+        color: #f7e713;
+    }
+    .lgwimg {
+        margin: 6px 0;
+        img {
+            width: 32px;
+        }
+    }
+    .lgwfont {
+          margin-top: 10px;
+        font-size: 16px; 
+        .unit {
+            font-size: 16px;
+            margin-left: 2px;
+        }
+    }
+}
+
+ @keyframes turn{
+      0%{-webkit-transform:rotate(0deg);}
+      25%{-webkit-transform:rotate(90deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      75%{-webkit-transform:rotate(270deg);}
+      100%{-webkit-transform:rotate(360deg);}
+  }
+  .tjbtn {
+     position: absolute;
+    right: 60px;
+    top: 40px;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 10px rgb(56, 148, 235);
+    cursor: pointer;
+    animation:turn 8s linear infinite; 
+    z-index: 99;
+    img {
+      width: 44px;
+      z-index: 99;
+    }
+  }
+
+
+ .tjtitle {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, #1a92d4, transparent);
+    line-height: 34px;
+    padding-left: 15px;
+    border-radius: 20px 0 0 20px;
+    width: 60%;
+  }
+  .tjitem {
+    // padding: 10px;
+    color: #fff;
+    font-size: 20px;
+    p {
+      line-height: 48px;
+      margin-bottom: 0;
+    }
+  }
+   /deep/ .custom_table2 {
+       margin-top: 12px;
+   }
+ /deep/ .custom_table2.custom_table.el-table th {
+    background: none;
+    text-align: center;
+    color: #fff !important;
+    font-size: 16px;
+    padding: 10px 0;
+    font-weight: normal !important;
+}
+ /deep/ .custom_table2.custom_table.el-table td {
+      font-size: 18px !important;
+      padding: 8px 0;
+      color: #f7e713;
+    
+ }
+  /deep/ .custom_table2.custom_table.el-table tr td:not(:last-child) {
+     border-right: 1px dashed #2d3d5e !important;
+  }
+  .zdmore  {
+    cursor: pointer;
+  }
+  .panebox {
+    min-height: 700px;
+  }
+  /deep/ .mytabs  .el-tabs__item {
+    font-size: 16px !important;
+  }
+   /deep/ .mytabs  .el-tabs__item.is-active {
+    color: #02f6ff!important;
+ }
+    /deep/ .mytabs .el-tabs__item {
+    color: #92a9d8;
+    position: relative;
+} 
+  /deep/ .el-table__fixed-header-wrapper,   /deep/ .el-table__fixed-body-wrapper {
+    background: #00123f !important;
+  }
+  /deep/  .el-table__fixed::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: transparent !important;
+    z-index: 4;
+}
+.centerb_box {
+  text-align: center;
+  margin: 5px 0;
+  .row_cb {
+    line-height: 28px;
+  }
+ 
+}
+.row_cb:not(:last-child) {
+  border-bottom: 1px dashed #546cac;
+   margin-bottom: 8px;
+}
+ .dpinline {
+    font-size: 18px;
+    text-align: center;
+    
+    &.rtnum {
+      color: #f5f78e;
+      font-size: 20px;
+    }
+    .unit {
+      font-size: 16px;
+    }
+  }
+  /deep/ .el-loading-mask {
+    background-color: rgba(6,26,58, 0.7);
+  }
+  .linksm {
+    position: absolute;
+    right: 160px;
+    top: 53px;
+    font-size: 18px;
+    .fontsm {
+      text-decoration: underline;
+      margin-left: 6px;
+    }
+    
+  }
+  .sm_content {
+    padding: 15px 0;
+  }
+  .row_info {
+    font-size: 18px;
+    color: #fff;
+    line-height: 30px;
+    text-indent: 24px;
+    margin: 0;
+    margin-bottom: 5px;
+  }
+  .zbdetailbox {
+    color: #fff;
+    border: 1px solid #496099;
+    border-radius: 5px;
+    padding: 5px 10px;
+    .flex1:not(:last-child) {
+      margin-right: 10px;
+      border-right: 1px solid #546cac;
+      padding-right: 10px;
+    }
+    ul, li {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-align: center;
+      font-size: 18px;
+      line-height: 28px;
+      margin-bottom: 4px;
+    }
+    .zbtitle {
+      font-size: 20px;
+      color: bisque;
+      border-bottom: 1px solid #71c1e6;
+      line-height: 40px;
+    }
+  }
+</style>

@@ -1,0 +1,520 @@
+<template>
+    <div id="app">
+       
+        <comheader :backbtn = false title="山东联通网络智慧眼"></comheader>
+       <div class="el-main" >
+        <div class="lun menuparent menuparent_yun"  style="position:absolute;left:420px;top: 290px;">                        
+             <video src="/static/mp4/bg_sd5.2_10.mp4"  class="yun_wang" autoplay="autoplay" muted="muted" loop="loop"></video>  
+            <a href="#wheel" class="wheel-button"><span>
+            <img src="./img/bg_sd6-1.png" class="bg_sd_piao" ></span></a>
+
+            
+            <ul id="wheel" class="menuitem" data-angle="[-20,340]">
+               
+                <li class="item"  >
+                    <a  href="/#/unicomwisdomeyes/it_cloudpage" ><img src="./img/bg_sd7-1.png"></a>
+                </li>
+                <li class="item" >
+                    <a href="http://cupn.unicom.local:8191/"  target="_blank"><img src="./img/bg_sd7-4.png"></a>
+                </li>
+                <li class="item" >
+                    <!-- <a  href="/#/unicomwisdomeyes/cloud_idc"><img src="./img/bg_sd7-5.png"></a> -->
+                    <a  href="https://134.32.43.45:31943/imax/build/index.html#/screen1/play" target="_blank"><img src="./img/bg_sd7-5.png"></a>
+                   
+                </li>
+                <li class="item" >
+                    <a href="/#/unicomwisdomeyes/ct_cloudpage" ><img src="./img/bg_sd7-2.png"></a>
+                </li>
+                <li class="item" >
+                    <a href="/#/unicomwisdomeyes/cloud_business" ><img src="./img/bg_sd7-3.png"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="lun menuparent menuparent_wang" style=" position:absolute;left:250px;top: 600px;">
+            <video src="/static/mp4/bg_sd5.2_11.mp4"  class="wang_yun" autoplay="autoplay" muted="muted" loop="loop" ></video>
+            <a href="#wheel2" class="wheel-button"><span><img src="./img/bg_sd6-2.png" class="bg_sd_piao" ></span></a>
+            
+            <ul id="wheel2" class="menuitem" data-angle="[-20,340]">
+                <li class="item">
+                    <a   href="/#/unicomwisdomeyes/movering" ><img src="./img/bg_sd8-4.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/emergencies_power"><img src="./img/bg_sd8-5.png"></a>
+                </li>
+             
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/network_loadbear"><img src="./img/bg_sd8-3.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/network_wireless"><img src="./img/bg_sd8-2.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/broadband"><img src="./img/bg_sd8-1.png"></a>
+                </li>
+              
+            </ul>
+        </div>
+        <div class="lun menuparent menuparent_duan" style=" position:absolute;left:620px;top:786px; ">
+            <a href="#wheel3" class="wheel-button"><span><img src="./img/bg_sd6-3.png" class="bg_sd_piao" ></span></a>
+            <ul id="wheel3" class="menuitem" data-angle="all">
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/fixed_network"><img src="./img/bg_sd9-1.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/move_network"><img src="./img/bg_sd9-2.png"></a>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="lun menuparent menuparent_ye" style=" position:absolute;left: 1160px;top: 784px; ">
+            <a href="#wheel5" class="wheel-button"><span><img src="./img/bg_sd6-4.png" class="bg_sd_piao" ></span></a>
+            <ul id="wheel5 " class="menuitem" data-angle="all">
+        
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/zhengqi_zhyx"><img src="./img/bg_sd10-1.png"></a>
+                </li>
+            
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/scfz_page"><img src="./img/bg_sd10-2.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/wldc_page"><img src="./img/bg_sd10-3.png"></a>
+                </li>
+                 <li class="item">
+                    <a href="/#/unicomwisdomeyes/yhzl_index?area_id=100000"><img src="./img/bg_sd7-yhzl.png"></a>
+                </li>
+        
+            </ul>
+        </div>
+         <div class="lun menuparent menuparent_fu " style=" position:absolute;left: 1500px;top: 580px; ">
+            <a href="#wheel4" class="wheel-button"><span><img src="./img/bg_sd6-5.png" class="bg_sd_piao" ></span></a>
+            <ul id="wheel4" class="menuitem" data-angle="all">
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/toushensu"><img src="./img/bg_sd11-1.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/jsc_kdfn"><img src="./img/bg_sd11-2.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/zhengqi_jfbz"><img src="./img/bg_sd11-3.png"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/manyidu"><img src="./img/bg_sd11-4.png"></a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="lun menuparent menuparent_an " style=" position:absolute;left: 1326px;top: 290px; ">
+            <a href="#wheel4" class="wheel-button"><span><img src="./img/bg_sd6-6.png" class="bg_sd_piao" ></span></a>
+            <ul id="wheel4" class="menuitem" data-angle="all">
+                 <li class="item">
+                    <a    href="/#/unicomwisdomeyes/netsafe"><img  src="./img/an_wa.png"></a>
+                </li>   
+               <li class="item">
+                   <a @click = "jumpTojk" v-if = "mapLevel != '1'"><img src="./img/an_xina_h.png"></a>
+                   <a v-if = "mapLevel == '1'" @click = "jumpTojk" href="https://134.32.31.210/#/newExternalAttack" target="_blank"><img src="./img/an_xina.png"></a>
+               </li>
+            </ul>
+        </div>
+       
+        <div class="lun menuparent menuparent_cs" style=" position:absolute;left:900px;top:346px;; ">
+            <a href="/#/unicomwisdomeyes/home_ai" class="wheel-button">
+                <span class="aipnghover">
+                  <img src="./img/bg_sd40.png"  style="width: 120px;" class="bg_sd40">
+                  <img src="./img/bg_sd39.png"  style="width: 120px;" class="bg_sd39">
+                </span>
+                </a>
+            <ul id="wheel6" class="menuitem" data-angle="all">
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/home_ai"><img src="./img/bg_sd12-3.png" width="120px"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/home_ai" >
+                        <img src="./img/bg_sd12-2.png" width="120px"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/home_ai"><img src="./img/bg_sd12-1.png" width="120px"></a>
+                </li>
+                <li class="item">
+                    <a href="/#/unicomwisdomeyes/home_ai">
+                      <div style="width:120px; color:#37beed ;font-size: 16px;font-weight: bold;
+                      height: 20px;line-height: 20px;
+                      ">AI应用超市</div></a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="xuanzhun">
+             <a href="/#/unicomwisdomeyes/networkCapab">
+                <div id="xuanzhun1">
+                </div>
+                <div id="xuanzhun2">
+                </div>
+                <div id="xuanzhun3">
+                </div>
+                <div class="bg_sd3-g">
+                </div>
+                <div class="guangxiao">
+                </div>
+            
+                <div class="bg_sd3-zi">
+                </div>
+             </a>
+           
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+require('./css/wheelmenu.css');
+import comheader from '@/components/resource_visual/header2'
+import store from 'store';
+import {getLogInfo} from '@/api/logservice'
+import logService from '@/pagelog'
+export default {
+    data () {
+        
+        return {
+          staffId: '',
+          mapLevel: '',
+          safeImg: require('./img/an_wa.png'),         
+        }
+    },
+    components: {
+      comheader,
+    },
+    created () {
+        var userInfo = store.get('userInfo')
+        this.mapLevel = userInfo.levelAreaLevel;
+        this.staffId = userInfo.staffId
+        if (this.mapLevel > 2) {
+            this.safeImg = require('./img/an_wa_h.png');
+        } else {
+            this.safeImg = require('./img/an_wa.png');
+        }
+    },
+    mounted () {
+       
+       this.$nextTick(() => {
+        // $(".wheel-button").wheelmenu({
+        //     trigger: "hover",
+        //     animation: "fly",
+        //     animationSpeed: "medium",
+        // });
+       })
+    },
+    methods: {
+        jumpTojk () {
+            
+            if ( this.mapLevel  == '1') {
+                var logparams = {
+                        "title": '安-信安',
+                        "pcode": '1009', //父类id
+                        "code": '100902', //当前id
+                    }
+                logService(logparams)
+            } else {
+                this.$alert('用户无权限访问该页面！', '提示', {
+                 confirmButtonText: '确定',
+               });
+            }
+           
+         return true;
+        },
+        // 日志记录
+        getLogInfo  () {
+            getLogInfo({}).then((res) => {
+            if (res.rspCode == '0000') {
+              
+            } else {
+                this.$message.error(res.rspMsg)
+            }
+            })
+        },
+        safeRouter (url) {
+           if ( this.mapLevel  < 3) {
+                this.$router.push(url)
+            } else {
+                this.$alert('用户无权限访问该页面！', '提示', {
+                 confirmButtonText: '确定',
+                });
+            }
+        },
+        messageFn (url) {
+            
+            if (url &&  this.staffId  ==  'SUPERUSER') {
+                this.$router.push(url)
+            } else {
+                 this.$alert('用户无权限访问该页面', '提示', {
+                  confirmButtonText: '确定',
+                 });
+            }
+        }
+    }
+}
+</script>
+
+
+<style lang="scss" scoped>
+
+  .aipnghover .bg_sd40{
+    display:inline-block;
+  }
+  .aipnghover .bg_sd39{
+    display:none;
+  }
+  .aipnghover:hover .bg_sd40{
+    display:none;
+  }
+  .aipnghover:hover .bg_sd39{
+    display:inline-block;
+  }
+ #app {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      background-image: url(img/bg_sd5.2.png);
+      background-repeat: no-repeat;
+      background-size: 1920px 1080px;
+      overflow: hidden;
+  }
+  #xuanzhun {
+      width: 460px;
+      height: 460px;
+      margin: 120px 710px;
+      position: relative;
+  }
+  .bg_sd_piao{
+   
+      width: 11rem;
+      -webkit-transition: all 0.3s; 
+      -moz-transition: all 0.3s; 
+      -o-transition: all 0.3s;
+  }
+  .bg_sd_piao:hover{		
+      transform: scale(1.2);
+  }
+
+
+
+ .menuparent {
+     z-index: 999;
+ }
+ .menuitem {
+     position: absolute;
+     left: 0px;
+     top: -10px;
+     padding: 0;
+     margin: 0;
+     
+ }
+ .menuitem li {
+     position: absolute;
+     left: 30px;
+     top: 50px;
+     transform: rotate(-90deg)  scale(0);
+     transition: all 0.3s linear;
+ }
+ .menuitem video {
+     z-index: 10;
+ }
+//   .menuitem li img {
+//       width: 100px;
+//   }
+ .menuparent:hover  .menuitem li {
+     transform: rotate(0deg) scale(1);
+ }
+
+  .menuparent_yun:hover   .menuitem li:nth-child(1) {
+    left: 180px;
+    top: 0px;
+  
+  }
+ .menuparent_yun:hover   .menuitem li:nth-child(2) {
+     left: 126px;
+    top: 126px;
+  
+  }
+ .menuparent_yun:hover   .menuitem li:nth-child(3) {
+      left: -86px;
+      top: 126px;
+  }
+
+   .menuparent_yun:hover   .menuitem li:nth-child(4) {
+    left: -120px;
+    top: 0px;
+  }
+   .menuparent_yun:hover .menuitem li:nth-child(5) {
+    left: 28px;
+    top: -80px;
+  }
+
+  
+    .menuparent_wang:hover   .menuitem li:nth-child(1) {
+    left: 180px;
+    top: 0px;
+   }
+  .menuparent_wang:hover   .menuitem li:nth-child(2) {
+     left: 130px;
+     top: 130px;
+   }
+  
+    .menuparent_wang:hover   .menuitem li:nth-child(3) {
+    left: -80px;
+    top: 130px;
+   }
+  
+    .menuparent_wang:hover   .menuitem li:nth-child(4) {
+     left: -120px;
+     top: 0px;
+   }
+    .menuparent_wang:hover .menuitem li:nth-child(5) {
+     left: 28px;
+     top: -80px;
+   }
+  
+  
+//   .menuparent_wang:hover  .menuitem li:nth-child(1) {
+//     left: 180px;
+//     top: -30px;
+//    }
+//   .menuparent_wang:hover   .menuitem li:nth-child(2) {
+//      left: 180px;
+//      top: 100px;
+//    }
+  
+//     .menuparent_wang:hover   .menuitem li:nth-child(3) {
+//     left: -120px;
+//     top: 100px;
+//    }
+  
+//     .menuparent_wang:hover   .menuitem li:nth-child(4) {
+//      left: -120px;
+//      top: -30px;
+//    }
+//     .menuparent_wang:hover .menuitem li:nth-child(5) {
+//      left: 28px;
+//      top: -90px;
+//    }
+//    .menuparent_wang:hover .menuitem li:nth-child(6) {
+//      left: 24px;
+//      top: 150px;
+//    }
+  
+  
+  
+  
+  .menuparent_duan:hover   .menuitem li:nth-child(1) {
+     left: -140px;
+     top: 50px;
+   }
+  
+    .menuparent_duan:hover   .menuitem li:nth-child(2) {
+      left: 190px;
+      top: 50px;
+   } 
+  
+  
+  .menuparent_ye:hover   .menuitem li:nth-child(1) {
+   left: -140px;
+   top: 50px;
+  }
+  
+   .menuparent_ye:hover   .menuitem li:nth-child(2) {
+    left: 190px;
+    top: 50px;
+  }
+  
+   .menuparent_ye:hover   .menuitem li:nth-child(3) {
+     left: 26px;
+    top: -90px;
+  }
+
+ .menuparent_ye:hover   .menuitem li:nth-child(4) {
+     left: 30px;
+    top: 160px;
+  }
+  
+  
+  
+  .menuparent_fu:hover   .menuitem li:nth-child(1) {
+
+   left: 190px;
+   top: 50px;
+  }
+  .menuparent_fu:hover   .menuitem li:nth-child(2) {
+   left: -140px;
+   top: 50px;
+  }
+    .menuparent_fu:hover   .menuitem li:nth-child(3) {
+    left: 26px;
+    top: 170px;
+  }
+    .menuparent_fu:hover   .menuitem li:nth-child(4) {
+    left: 26px;
+    top: -80px;
+  }
+
+
+  .menuparent_an:hover   .menuitem li:nth-child(1) {
+
+   left: 190px;
+   top: 50px;
+  }
+  .menuparent_an:hover   .menuitem li:nth-child(2) {
+   left: -140px;
+   top: 50px;
+  }
+
+ 
+
+  
+  .menuparent_cs:hover  .menuitem li:nth-child(1) {
+    left: 0px;
+    top: -190px;
+  }
+  .menuparent_cs:hover  .menuitem li:nth-child(2) {
+  left: 190px;
+  top: 140px;
+  }
+ .menuparent_cs:hover  .menuitem li:nth-child(3) {
+  left: -190px;
+  top: 140px;
+
+  }
+ .menuparent_cs:hover  .menuitem li:nth-child(4) {
+    left:20px;
+    top: 120px;
+}
+
+
+
+  .yun_wang{
+    width:167px;height:241px;
+    position: absolute;
+    left: -147px;
+    top:146px;
+    display: none;
+    opacity:0.75;
+    }
+  
+  .wang_yun{
+    width:167px;height:241px;
+    position: absolute;
+    left:21px;
+    top:-163px;
+    display: none;
+    opacity: 0.6;
+    
+  }
+
+  
+ .menuparent_yun:hover  .yun_wang {
+   display: block; 
+    }
+ .menuparent:hover  .wang_yun {
+     display: block; 
+ }
+</style>

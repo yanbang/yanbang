@@ -1,0 +1,26 @@
+<template>
+    <div class="bg" @click="goToPage('/navigation')">
+
+    </div>
+</template>
+
+<script>
+    export default {
+        methods: {
+            goToPage(url) {
+                if (!url) return
+                this.$router.push(url)
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    .bg{
+        width: 100%;
+        height: 100%;
+        background: url('~@/assets/zj/navigation/jtluyou/zqsx_lycj.png') no-repeat;
+        background-size: 100% 100%;
+        cursor: pointer;
+    }
+</style>

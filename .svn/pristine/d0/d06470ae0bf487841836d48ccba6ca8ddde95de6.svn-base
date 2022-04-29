@@ -1,0 +1,3582 @@
+<!--应急通信 -->
+<template>
+  <div class = "contentbox">
+     <Header title="山东联通网络智慧眼-营服CEO" ></Header>
+    <div class = "contentbody">
+      <div  class = "leftbox flex colflex">
+            <div class = "titlefont item-title">
+                <div class=" rowttabs3" style="left: 15px">
+                <span class="rowttabs-item" :class="{'active': left_status1 == '1'}" @click="left_status1 = '1'">固网匹配</span>
+                <span class="rowttabs-item" :class="{'active': left_status1 == '2'}" @click="left_status1 = '2'">移网匹配</span>
+                </div>
+            </div>
+      <div class = "flex1 flex colflex"  v-show="left_status1 == 1">
+          <div class="box-item flex colflex flex1">
+            <div class="flex1 flex selectbox active">
+              <div class="itemboxtitle">光猫匹配
+                
+              </div>
+               <span class="zdmore pull-right" style=" position: absolute;right: 10px;top: 0; color: #57b4f1;" @click="isDialogShow_gm = true"><span class="el-icon-more"></span></span>
+              <div class="flex1 matitembox">
+                <div class="lgwbox">
+                <div class="lgwnum">{{matchleftdate.p_gm | formatVal}}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/光猫.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">匹配量</div>
+              </div>
+                <div v-show="false" class="piechartbox" id="piechart_1"></div>
+              </div>
+
+              <div class="flex1 matitembox">
+                <div class="piechartbox" id="piechart_2"></div>
+                <div class="mattitle">匹配率</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-item flex colflex flex1 ">
+            <div class="flex1 flex selectbox">
+               <div class="itemboxtitle">路由器匹配 </div>
+                <span class="zdmore pull-right" style=" position: absolute;right: 10px;top: 0; color: #57b4f1;" @click="isDialogShow_ly = true"><span class="el-icon-more"></span></span>
+              <div class="flex1 matitembox">
+                 <div class="lgwbox">
+                <div class="lgwnum">{{matchleftdate.p_ly | formatVal}}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/路由器.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">匹配量</div>
+              </div>
+                <div v-show="false" class="piechartbox" id="piechart_3"></div>
+                <!-- <div class="mattitle">匹配量</div> -->
+              </div>
+
+              <div class="flex1 matitembox">
+
+                <div class="piechartbox" id="piechart_4"></div>
+                <div class="mattitle">匹配率</div>
+              </div>
+            </div>
+          </div>
+
+
+           <div class="box-item flex colflex flex1">
+
+            <div class="flex1 flex selectbox active">
+              <div class="itemboxtitle"> <span>Pon+lan用户</span>
+                
+              </div>
+               <span class="zdmore pull-right" style=" position: absolute;right: 10px;top: 0; color: #57b4f1; " @click="gwDetailFn_ygw('Pon+lan用户', '4')"><span class="el-icon-more"></span></span>
+              <div class="flex1 matitembox">
+                <div class="lgwbox">
+                 <div class="lgwnum">{{gw_leftdata.lan_pon_nums | formatVal}}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/images_zy/khindex2.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">用户数</div>
+              </div>
+                <div v-show="false" class="piechartbox" id="piechart_1"></div>
+                <!-- <div class="mattitle">匹配量</div> -->
+              </div>
+
+              <div class="flex1 matitembox">
+
+              </div>
+            </div>
+          </div>
+        
+      </div>
+ 
+        
+        <div class="flex1 flex colflex" v-show="left_status1 == 2">
+            <div class="flex colflex box-item flex1">
+                
+
+                <div class="box-item flex colflex flex1">
+
+                <div class="flex1 flex selectbox">
+                    <div class="itemboxtitle">端业匹配  <span v-show="mapLevel > 4" style="margin-left: 10px">(营服)</span></div>
+                    <div class="flex1 matitembox">
+
+                    <div class="piechartbox" id="piechart_7"></div>
+                    <div class="mattitle">4G终端</div>
+                    </div>
+
+                    <div class="flex1 matitembox">
+
+                    <div class="piechartbox" id="piechart_8"></div>
+                    <div class="mattitle">5G终端</div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="box-item flex colflex flex1 ">
+
+                <div class="flex1 flex selectbox">
+                    <div class="itemboxtitle">网业匹配  <span v-show="mapLevel > 4" style="margin-left: 10px">(营服)</span></div>
+                    <div class="flex1 matitembox">
+
+                    <div class="piechartbox" id="piechart_9"></div>
+                    <div class="mattitle">4G套餐</div>
+                    </div>
+
+                    <div class="flex1 matitembox">
+
+                    <div class="piechartbox" id="piechart_10"></div>
+                    <div class="mattitle">5G套餐</div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="box-item flex colflex flex1">
+                <!-- <div class="item-title titlefont">
+                    <span>端网匹配情况</span>
+                    <span class="zdmore pull-right" @click="isDialogShow = true"><span class="el-icon-more"></span></span>
+                </div> -->
+                <div class="flex1 flex selectbox">
+                    <div class="itemboxtitle">端网匹配  <span v-show="mapLevel > 4" style="margin-left: 10px">(营服)</span></div>
+                    <div class="flex1 matitembox">
+   
+                    <div class="piechartbox" id="piechart_11"></div>
+                    <div class="mattitle">4G网络</div>
+                    </div>
+
+                    <div class="flex1 matitembox">
+
+                    <div class="piechartbox" id="piechart_12"></div>
+                    <div class="mattitle">5G网络</div>
+                    </div>
+                </div>
+                </div>
+                </div>
+                <div class="box-item flex colflex">
+                <div class="item-title titlefont">
+                    <span>5G端网业协同</span>
+                    <span class="zdmore pull-right" @click = "jumpage('5g')">链接》</span>
+                </div>
+            
+                </div>
+                
+
+            </div>
+
+
+
+
+      </div>
+     
+      <div class = "centerbox flex colflex" style="height: 72%">
+         <div class="tjbtn" @click="getEyesConten"><img src="../zhyeys.png" alt="" srcset=""></div>
+         <!-- <div class="centTab2">
+            <el-radio-group v-model="tabstatus"  size="small">
+                  <el-radio  label="02010" border>装机</el-radio>
+                  <el-radio  label="02020" border>修机</el-radio> 
+                  <el-radio  label="02030" border>投诉</el-radio> 
+                  <el-radio  label="02040" border>群障</el-radio> 
+            </el-radio-group>
+        
+        </div>
+
+            <div class = "substTab">
+               <el-radio-group v-model="subRadio">
+                  <el-radio  label="2">超时</el-radio>
+                  <el-radio  label="1">预警</el-radio> 
+              </el-radio-group>
+ 
+
+               <div class="pull-rightdetail">
+                <span class="alink"  @click="gdDetailmodelShow = true" >工单详情</span>
+              </div> 
+            </div> -->
+            <div class="pull-rightdetail">
+                <span class="alink"  @click="gdDetailmodelShow = true" >工单详情</span>
+              </div> 
+           <div class="gistitle">
+              <span class="titlefont"  @click="qjinfoDetail">{{gisTitle}}</span>
+            </div>
+        <iframe ref="gisiframe" id="gisiframe" :src="iframeSrc" style="widh: 100%; height: 100%" frameborder="0"></iframe>
+    
+      </div>
+         <el-carousel :interval="0" arrow="always" class="rowbox" style="    width: 900px;
+         margin-top: 50px;
+    position: absolute;
+    bottom:1.5rem;
+    left: 31.25rem">
+        <el-carousel-item>
+          <div>
+      
+            
+            <span class="spanai1">
+              <a @click="isDialogShow2_1=true" style="color: #00FFFF; font-size: 1.125rem; cursor: pointer ">
+                <img src="../home/img/bg_sd15-4.png" class="bg_sd15" /></br>
+                装维工单一屏监控消红</a>
+            </span>
+            <span class="spanai1">
+              <a @click="isDialogShow1_4=true" style="color: #00FFFF; font-size: 1.125rem; cursor: pointer "
+                href="#">
+                <img src="../home/img/bg_sd15-6.png" class="bg_sd15" /></br>
+                自助测速</a>
+            </span>
+            <span class="spanai1">
+              <a @click="isDialogShow1_3=true" style="color: #00FFFF; font-size: 1.125rem; cursor: pointer "
+                href="#">
+                <img src="../home/img/bg_sd15-15.png" class="bg_sd15" /></br>
+                宽带/IPTV自助报障</a>
+            </span>
+            <span class="spanai1">
+              <a @click="isDialogShow3_2=true" style="color: #00FFFF; font-size: 1.125rem; cursor: pointer "
+                href="#">
+                <img src="../home/img/bg_sd15-10.png" class="bg_sd15" /></br>
+                分光器端口智能清查</a>
+            </span>
+           <span class="spanai1">
+             <a @click="isDialogShow1_2=true" style="color: #00FFFF; font-size: 1.125rem; cursor: pointer "
+               href="#">
+               <img src="../home/img/bg_sd15-7.png" class="bg_sd15" /></br>
+               宽带/IPTV二维码用户自助扫码诊断</a>
+           </span>
+      
+          </div>
+      
+        </el-carousel-item>
+      
+      </el-carousel> 
+      <div class = "rightbox flex colflex">
+       <div class = "flex1" >
+        <div class = "box-item flex colflex" style="height:260px">
+           <div class = "item-title titlefont">
+             <div class=" rowttabs3" style="left: 15px">
+                <span class="rowttabs-item" :class="{'active': right_status1 == '1'}" @click="right_status1 = '1'">装移机工单完成情况</span>
+                <span class="rowttabs-item" :class="{'active': right_status1 == '2'}" @click="right_status1 = '2'">无资源工单完成情况</span>
+              </div>
+           </div>
+            
+             <div  class = "flex1 flex" style="padding-top: 0px" v-show="right_status1 == 1">
+              <div class="flex1 text-center yxtopitem">
+                  <div class = "numfont">{{formatNumber(kdZtcsData.zyj_cs_finish_all) || '--'}}</div>
+                  <div><img src="@/assets/resImg/24h.png" alt="" srcset=""></div>
+                  <div class = "titlefont">超24小时竣工</div>
+                </div>
+
+                <div class="flex1 text-center yxtopitem">
+                  
+                  <div class = "numfont">{{formatNumber(kdZtcsData.zyj_cs48_finish_all) || '--'}}</div>
+                  <div><img src="@/assets/resImg/48h.png" alt="" srcset=""></div>
+                  <div class = "titlefont">超48小时竣工</div>
+                </div>
+            </div>
+
+             <div  class = "flex1 flex"  style="padding-top: 0px" v-show="right_status1 == 2">
+              <div class="flex1 text-center yxtopitem">
+                  <div class = "numfont">{{formatNumber(kdZtcsData.wotjs_intcount) || '--'}}</div>
+                  <div class="bimgbox">
+                     
+                     <img src="@/assets/resImg/24h.png" alt="" >
+                  </div>
+                  <div class = "titlefont">超7天完成数</div>
+                </div>
+
+                <div class="flex1 text-center yxtopitem">
+                  
+                  <div class = "numfont">{{formatNumber(kdZtcsData.motjs_intcount) || '--'}}</div>
+                  <div>
+                    <img src="@/assets/resImg/48h.png" alt="" srcset="">
+                 </div>
+                  <div class = "titlefont">超30天完成数</div>
+                </div>
+            </div>
+        </div>
+
+      
+         <div class = " flex1 box-item flex colflex" style="min-height: 300px">
+           <div class = "item-title titlefont">
+                <div class="rowttabs3" >
+                    <span class="rowttabs-item" :class="{'active': right_status2== '1'}" @click="right_status2 = '1'">装移机在途工单</span>
+                    <span class="rowttabs-item" :class="{'active': right_status2 == '2'}" @click="right_status2 = '2'">无资源待装工单</span>
+                </div>
+
+           </div>
+            <div class="flex1 flex colfle"  v-show="right_status2 == 1">
+                <div class="rowttabs" >
+                    <span class="rowttabs-item" :class="{'active': zyjztStatus == '1'}" @click="zyjztStatus = '1'">当月</span>
+                    <span class="rowttabs-item" :class="{'active': zyjztStatus == '2'}" @click="zyjztStatus = '2'">累计</span>
+                </div>
+                <div  class = "flex1" >
+                <div class="rightTable">
+                    <div class="tHead">
+                        <div  class="emptyth"  style="min-width: 92px;"></div>
+                        <div>营业</div>
+                        <div>配置</div>
+                        <div>装机</div>
+                        <div>异常</div>
+                        <div>合计</div>
+                    </div>
+                    <div class="tBody" v-for="(colitem, pindex) in columKeys_csgd" :key="pindex">
+                        <div class = "td bg titlecell titlefont">
+                            {{renderF1name(pindex)}}
+                        </div>
+                        <div class="td bg" v-for="(item, idnex) in colitem" :key="idnex">
+                        <div class = "tdcell numfont">{{kdZtcsData[item] | formatVal}}</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+             <div class="flex1 flex colfle"  v-show="right_status2 == 2">
+                <div class="rowttabs" >
+                    <span class="rowttabs-item" :class="{'active': zyjztStatus2 == '1'}" @click="zyjztStatus2 = '1'">当月</span>
+                    <span class="rowttabs-item" :class="{'active': zyjztStatus2 == '2'}" @click="zyjztStatus2 = '2'">累计</span>
+                </div>
+
+             <div  class = "flex1">
+               <div class="rightTable">
+                  <div class="tHead">
+                    <div class="emptyth" style="min-width: 92px;"></div>
+                    <div>外勘</div>
+                    <div>建设评估</div>
+                    <div>建设回笼</div>
+                    <div>用户激活库</div>
+                    <div>合计</div>
+                  </div>
+                  <div class="tBody" v-for="(colitem, pindex) in columKeys_wzygd" :key="pindex">
+                    <div class = "td bg titlecell titlefont">
+                        {{renderF1name2(pindex)}}
+                    </div>
+                    <div class="td bg" v-for="(item, idnex) in colitem" :key="idnex">
+                       <div class = "tdcell numfont">{{kdDzgdData[item] | formatVal}}</div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+
+
+        </div>
+
+      <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+           <div class="rowttabs3" >
+                <span class="rowttabs-item" :class="{'active': right_status3== '1'}" @click="right_status3 = '1'">公客感知</span>
+                <span class="rowttabs-item" :class="{'active': right_status3 == '2'}" @click="right_status3 = '2'">业务发展完成率</span>
+            </div>
+          </div>
+          <div class = "flex1" v-show = "right_status3 == 1">
+               <div class="rowttabs" >
+                    <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}" @click="rowttabsClick('1')">装机</span>
+                    <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}" @click="rowttabsClick('2')">修机</span>
+                </div>
+                <div class="flex1">
+                    <div class="chartbox" id="chart_line3" style="width: 500px; height: 280px"></div>
+                </div>
+          </div>
+          <div class="flex1"  v-show = "right_status3 == 2">
+              <div class="chartbox" id="chart_line2"  style="width: 500px; height: 280px"></div>
+          </div>
+         
+        </div>
+
+        <!-- <div class = " box-item flex colflex " style="height: 300px">
+           <div class = "item-title titlefont">
+             <span>装机工单</span>
+           </div>
+           <div  class = "flex gdxixbox">
+              <div class="flex1">
+                <div class="numfont">{{kdZtcsData.zj_accept_intcount | formatVal}}</div>
+                <div class="gdtfont">受理量</div>
+              </div>
+               <div class="flex1">
+                <div class="numfont">{{kdZtcsData.zj_mcomplete_count | formatVal}}</div>
+                <div class="gdtfont">竣工量</div>
+              </div>
+               <div class="flex1">
+                <div class="numfont">{{kdZtcsData.zj_intransit_count | formatVal}}</div>
+                <div class="gdtfont">在途量</div>
+              </div>
+            </div>
+            <div  class = "flex1 flex gdxixbox" style="text-align: center">
+              <div class="flex1">
+                <div class="chhartbox" id="waterChartj1"></div>
+                <div class="gdtfont" style="margin-top: 10px">注销率</div>
+              </div>
+              <div class="flex1">
+                <div class="chhartbox" id="waterChartj2"></div>
+                <div class="gdtfont" style="margin-top: 10px">24小时竣工率</div>
+              </div>
+              <div class="flex1">
+                <div class="chhartbox"  id="waterChartj3"></div>
+                <div class="gdtfont" style="margin-top: 10px">48小时竣工率</div>
+              </div>
+            </div>
+        </div> -->
+      </div>
+  
+      </div>
+    </div>
+    
+    
+    <el-dialog :visible.sync="isDialogShow2_1" width="80%" :modal-append-to-body='false' @close="isShow2_1=false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">装维工单一屏监控消红</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="tankuangsize">
+            <div class="tjtitle">
+              <img src="../home/img/bg_sd15-4.png" style="margin: 10px;float: left; width: 200px;" />
+              <div class="tankuangsize2">
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用名称：</label></el-col>
+                  <el-col :span="20"><a class="baibiaoti">装维工单一屏监控消红</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">痛点分析：</label></el-col>
+                  <el-col :span="20"><a>
+                      1、营服小CEO、交付调度人员不能实时掌握当前营服内的超时、预警工单情况；不能及时调度，消除超时工单。<br />
+                      2、营服小CEO、交付调度人员不能及时掌握智家工程师的装维效能。</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用简介：</label></el-col>
+                  <el-col :span="20">
+                    <a>对工单运营情况进行预警和超时的动态展示，营服小CEO、交付调度人员实时视掌握装移机工单流转情况，小CEO可及时调度和转派超时工单，并根据工单分布情况合理分配装维工作量，加快营服区域工作进度，提升智家工程师装维效能，提升工单处理效率和用户感知。</a>
+                  </el-col>
+                </el-row>
+    
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a>公客服务支撑</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用入口：</label></el-col>
+                  <el-col :span="20"><a>公众客服支撑系统、装维APP</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户群体：</label></el-col>
+                  <el-col :span="20"><a>营服小CEO、综调人员</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">视频说明：</label></el-col>
+                  <el-col :span="20"><a @click="isShow2_1=!isShow2_1"><img src="../home/img/bg_sd32.png"></a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用来源：</label></el-col>
+                  <el-col :span="20"><a>省交付中心&nbsp;&nbsp;&nbsp;燕飞</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用打分：</label></el-col>
+                  <el-col :span="20">
+                    <el-rate v-model="value1"></el-rate>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户评论：</label></el-col>
+                  <el-col :span="13">
+                    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+                      <li v-for="i in count" class="infinite-list-item">匿名{{ i }}：这个应用挺实用的，效果非常好，给5星好评！</li>
+                    </ul>
+                  </el-col>
+    
+                  <el-col :span="4">
+                    <el-button type="primary" size="small" @click="innerVisible6 = true">我要评论</el-button>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" icon="el-icon-edit" circle
+                  style=" position: absolute;right:30px;top: 20px;" @click="editVisible6 = true"> </el-button> -->
+                <img src="../home/img/bg_sd38.png" style=" position: absolute;right:30px;bottom: 20px; width: 140px;">
+              </div>
+    
+            </div>
+    
+            <div class="tjbody" style="margin: 0px auto;" v-if="isShow2_1">
+              <img src="../home/img/bg_sd35.png" class="video-da-guan" @click="isShow2_1=!isShow2_1">
+              <video src="/static/mp4/装维工单一屏监控消红.mp4" id="video2_1" autoplay="false" controls="controls"
+                class="video-da">
+              </video>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialogShow1_4" width="80%" :modal-append-to-body='false' @close="isShow1_4=false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">自助测速</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="tankuangsize">
+            <div class="tjtitle">
+              <img src="../home/img/bg_sd15-6.png" style="margin: 10px;float: left; width: 200px;" />
+              <div class="tankuangsize2">
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用名称：</label></el-col>
+                  <el-col :span="20"><a class="baibiaoti">自助测速</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">痛点分析：</label></el-col>
+                  <el-col :span="20"><a>用户宽带使用不畅时，无法知晓宽带网络是否正常。</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用简介：</label></el-col>
+                  <!-- <el-col :span="20">
+                    <a>测速功能是分为宽带与手机两个模块对网速测试。宽带测速时需打开手机wifi并将手机与需要测速的宽带连接后进行测速，手机测速时需关闭wifi打开移动网络进行测速。帮助用户更加快速便捷的进行宽带与手机测试，步骤简化，方便用户。</a>
+                  </el-col> -->
+                  <el-col :span="20">
+                    <a>用户使用网络感知网速慢时，可自行使用手机、PAD等终端对网速进行测试。终端使用WIFI需要测速的宽带网络连接后，选择测速平台开始测试网络上行、下行速率，帮助用户确认宽带网络质量，提升用户感知。
+                      智家工程师修障时可使用手机对用户家庭网络进行测速，测试网络是否达标，完成“四必测”规定动作。</a>
+                  </el-col>
+                </el-row>
+    
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a>用户自助化系统</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用入口：</label></el-col>
+                  <el-col :span="20"><a>中国联通APP、山东联通微信公众号</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户群体：</label></el-col>
+                  <el-col :span="20"><a>客户</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">视频说明：</label></el-col>
+                  <el-col :span="20"><a @click="isShow1_4=!isShow1_4"><img src="../home/img/bg_sd32.png"></a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用来源：</label></el-col>
+                  <el-col :span="20"><a>省云网运营中心&nbsp;&nbsp;&nbsp;张广辉</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用打分：</label></el-col>
+                  <el-col :span="20">
+                    <el-rate v-model="value1"></el-rate>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户评论：</label></el-col>
+                  <el-col :span="13">
+                    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+                      <li v-for="i in count" class="infinite-list-item">匿名{{ i }}：这个应用挺实用的，效果非常好，给5星好评！</li>
+                    </ul>
+                  </el-col>
+    
+                  <el-col :span="4">
+                    <el-button type="primary" size="small" @click="innerVisible4 = true">我要评论</el-button>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" icon="el-icon-edit" circle
+                  style=" position: absolute;right:30px;top: 20px;" @click="editVisible4 = true"> </el-button> -->
+                <img src="../home/img/bg_sd38.png" style=" position: absolute;right:30px;bottom: 20px; width: 140px;">
+              </div>
+    
+            </div>
+    
+            <div class="tjbody" style="margin: 0px auto;" v-if="isShow1_4">
+              <img src="../home/img/bg_sd35.png" class="video-xiao-guan" @click="isShow1_4=!isShow1_4">
+              <video src="/static/mp4/自助测速.mp4" autoplay="false" id="video1_4" controls="controls"
+                class="video-xiao">
+              </video>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialogShow1_3" width="80%" :modal-append-to-body='false' @close="isShow1_3=false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">宽带/IPTV自助报障</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="tankuangsize">
+            <div class="tjtitle">
+              <img src="../home/img/bg_sd15-15.png" style="margin: 10px;float: left; width: 200px;" />
+              <div class="tankuangsize2">
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用名称：</label></el-col>
+                  <el-col :span="20"><a class="baibiaoti">宽带/IPTV自助报障</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">痛点分析：</label></el-col>
+                  <el-col :span="20"><a>遇到网络故障，用户只能拨打电话，还得查找账号，过程繁琐，处理时间长，用户感知差。</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用简介：</label></el-col>
+                  <el-col :span="20"><a>用户宽带网络故障时，可通过微信或公众号报障，选择宽带账号，填写联系人后实现一键报障，简单快捷，增进用户体验。</a>
+                  </el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a>掌沃通（公客）</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a>掌沃通（公客）</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用入口：</label></el-col>
+                  <el-col :span="20"><a>中国联通APP、山东联通微信公众号</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户群体：</label></el-col>
+                  <el-col :span="20"><a>客户</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">视频说明：</label></el-col>
+                  <el-col :span="20"><a @click="isShow1_3=!isShow1_3"><img src="../home/img/bg_sd32.png"></a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用来源：</label></el-col>
+                  <el-col :span="20"><a>省云网运营中心&nbsp;&nbsp;&nbsp;张广辉</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用打分：</label></el-col>
+                  <el-col :span="20">
+                    <el-rate v-model="value1"></el-rate>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户评论：</label></el-col>
+                  <el-col :span="13">
+                    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+                      <li v-for="i in count" class="infinite-list-item">匿名{{ i }}：这个应用挺实用的，效果非常好，给5星好评！</li>
+                    </ul>
+                  </el-col>
+    
+                  <el-col :span="4">
+                    <el-button type="primary" size="small" @click="innerVisible3 = true">我要评论</el-button>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" icon="el-icon-edit" circle
+                  style=" position: absolute;right:30px;top: 20px;" @click="editVisible3 = true"> </el-button> -->
+                <img src="../home/img/bg_sd38.png" style=" position: absolute;right:30px;bottom: 20px; width: 140px;">
+              </div>
+    
+            </div>
+    
+            <div class="tjbody" style="margin: 0px auto;" v-if="isShow1_3">
+              <img src="../home/img/bg_sd35.png" class="video-xiao-guan" @click="isShow1_3=!isShow1_3">
+              <video src="/static/mp4/宽带IPTV自助报障.mp4" autoplay="false" id="video1_3" controls="controls" width="320px"
+                class="video-xiao">
+              </video>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialogShow3_2" width="80%" :modal-append-to-body='false' @close="isShow3_2=false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">分光器端口智能清查</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="tankuangsize">
+            <div class="tjtitle">
+              <img src="../home/img/bg_sd43.png" style="margin: 10px;float: left; width: 200px;" />
+              <div class="tankuangsize2">
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用名称：</label></el-col>
+                  <el-col :span="20"><a class="baibiaoti">分光器端口智能清查</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">痛点分析：</label></el-col>
+                  <el-col :span="20"><a>
+                      1、装维人员装机时端口占用混乱、无法按工单信息装机，需前后台频繁校对，花费时间长，装机效率低。 <br />
+                      2、分光器端口信息混乱，经现场核查后需后台变更，无法现场确认和变更，资源变更效率低及时性差。
+                    </a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用简介：</label></el-col>
+                  <el-col :span="20">
+                    <a>装维人员装机或修障时以装代清，顺便处理分光器端口占用错误等问题，现场通过手机扫分光器二维码后，对占用信息进行智判，手机端显示接入端口、皮线账号等信息，对不一致的资源进行现场资源占用变更操作，提高了装维效能，提高资源准确率。</a>
+                  </el-col>
+                </el-row>
+    
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a> 公客服务支撑</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用入口：</label></el-col>
+                  <el-col :span="20"><a>号线运维APP</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户群体：</label></el-col>
+                  <el-col :span="20"><a>智家工程师</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">视频说明：</label></el-col>
+                  <el-col :span="20"><a @click="isShow3_2=!isShow3_2"><img src="../home/img/bg_sd32.png"></a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用来源：</label></el-col>
+                  <el-col :span="20"><a>省交付中心&nbsp;&nbsp;&nbsp;赵建新</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用打分：</label></el-col>
+                  <el-col :span="20">
+                    <el-rate v-model="value1"></el-rate>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户评论：</label></el-col>
+                  <el-col :span="13">
+                    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+                      <li v-for="i in count" class="infinite-list-item">匿名{{ i }}：这个应用挺实用的，效果非常好，给5星好评！</li>
+                    </ul>
+                  </el-col>
+    
+                  <el-col :span="4">
+                    <el-button type="primary" size="small" @click="innerVisible11 = true">我要评论</el-button>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" icon="el-icon-edit" circle
+                  style=" position: absolute;right:30px;top: 20px;" @click="editVisible11 = true"> </el-button> -->
+                <img src="../home/img/bg_sd38-3.png" style=" position: absolute;right:30px;bottom: 20px; width: 140px;">
+              </div>
+    
+            </div>
+    
+            <div class="tjbody" style="margin: 0px auto;" v-if="isShow3_2">
+              <img src="../home/img/bg_sd35.png" class="video-xiao-guan" @click="isShow3_2=!isShow3_2">
+              <video src="/stati/mp4/分光器端口智能清查.mp4" autoplay="false" id="video3_2" controls="controls"
+                class="video-xiao">
+              </video>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialogShow1_2" width="80%" :modal-append-to-body='false' @close="isShow1_2=false">
+      
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">宽带/IPTV二维码用户自助扫码诊断</div>
+        </div>
+        <div class="dialogTableBg">
+          <div class="tankuangsize">
+            <div class="tjtitle">
+              <img src="../home/img/bg_sd15-7.png" style="margin: 10px;float: left; width: 200px;" />
+              <div class="tankuangsize2">
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用名称：</label></el-col>
+                  <el-col :span="20"><a class="baibiaoti">宽带/IPTV二维码用户自助扫码诊断</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">痛点分析：</label></el-col>
+                  <el-col :span="20"><a>用户无法判断宽带、IPTV是否故障原因，用户无法识别光猫和路由器匹配情况。</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用简介：</label></el-col>
+                  <el-col :span="20">
+                    <a>用户遇到宽带或IPTV故障时，可使用此应用对故障原因进行诊断，选择宽带账号提交现象和故障代码后，系统会根据此宽带账号的当前运行情况进行功能诊断并给出诊断结果。
+                      智家工程师在用户家使用自助诊断可短时间明确故障原因，无需远程支撑，节省故障处理时间，能够提高维护效率。通过故障诊断推送的端业匹配情况，推荐用户更换路由器，促进市场业务发展。</a>
+                  </el-col>
+                </el-row>
+    
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用系统：</label></el-col>
+                  <el-col :span="20"><a>掌沃通（公客）</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用入口：</label></el-col>
+                  <el-col :span="20"><a>中国联通APP、山东联通微信公众号</a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户群体：</label></el-col>
+                  <el-col :span="20"><a>客户</a></el-col>
+                </el-row>
+    
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">视频说明：</label></el-col>
+                  <el-col :span="20"><a @click="isShow1_2=!isShow1_2"><img src="../home/img/bg_sd32.png"></a></el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用来源：</label></el-col>
+                  <el-col :span="20"><a>省云网运营中心&nbsp;&nbsp;&nbsp;张广辉</a>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">应用打分：</label></el-col>
+                  <el-col :span="20">
+                    <el-rate v-model="value1"></el-rate>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4"><label class="lanlabel">用户评论：</label></el-col>
+                  <el-col :span="13">
+                    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+                      <li v-for="i in count" class="infinite-list-item">匿名{{ i }}：这个应用挺实用的，效果非常好，给5星好评！</li>
+                    </ul>
+                  </el-col>
+    
+                  <el-col :span="4">
+                    <el-button type="primary" size="small" @click="innerVisible2 = true">我要评论</el-button>
+                  </el-col>
+                </el-row>
+                <!-- <el-button type="primary" icon="el-icon-edit" circle
+                  style=" position: absolute;right:30px;top: 20px;" @click="editVisible2 = true"> </el-button> -->
+                <img src="../home/img/宽带IPTV二维码用户自助扫码诊断.jpg" style=" position: absolute;right:30px;bottom: 20px; width: 140px;">
+              </div>
+    
+            </div>
+    
+            <div class="tjbody" style="margin: 0px auto;" v-if="isShow1_2">
+              <img src="../home/img/bg_sd35.png" class="video-xiao-guan" @click="isShow1_2=!isShow1_2">
+              <video src="/static/mp4/宽带IPTV二维码用户自助扫码诊断.mp4" autoplay="false" id="video1_2" controls="controls"
+                class="video-xiao">
+              </video>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </el-dialog>
+      
+      <el-dialog :visible.sync="isDialogShow2" width="94%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{dialogTitle}}</div>
+            
+          </div>
+          <div class="dialogTableBg">
+            <div class="pmdetalibox">
+              <div class="left_pmtb" v-loading= "left_pmtbloaing">
+                  <el-table :data="pm_tableData"  style="width: 100%;overflow: auto;" height = "560">
+                    <el-table-column
+                      label="排名" 
+                      type="index"
+                      width="60">
+                    </el-table-column>
+                    <el-table-column prop="name" label="名称" width="auto"  show-overflow-tooltip> </el-table-column>
+                    <el-table-column :prop="pmkeyVal" :label="pmName + '工单'" width="100">
+                       <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn(scope.row)">{{scope.row[pmkeyVal]}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-if= "d_pmstatus == '1' || d_pmstatus == '2'" width="60" :prop="init_province_pmkey" label="省排名"  > </el-table-column>
+                    <el-table-column v-if= "d_pmstatus == '2'"  width="60"  :prop="init_city_pmkey" label="市排名"> </el-table-column>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                  </el-table>
+              </div>
+              <div class="right_pmtb flex1">
+                <div class="rpmtitle titlefont">
+                  <span>工单明细</span>
+                </div>
+                <div >
+                  <el-table :data="pm_tableDataDetail"  style="width: 1100px;" height = "560" v-loading = "tdloading" >
+                    <el-table-column label="营服名称"  prop="org_name"  width="160px" align="left" ></el-table-column>
+                    <el-table-column prop="task_order_cd" label="工单流水号" show-overflow-tooltip width="200px"> </el-table-column>
+                    <el-table-column prop="deal_userid" label="智A工号" show-overflow-tooltip width="100px"> </el-table-column>
+                    <el-table-column prop="deal_username" label="智A姓名" show-overflow-tooltip width="80px"> </el-table-column>
+                    <el-table-column prop="deal_usercall" label="智A联系方式" show-overflow-tooltip width="100px"> </el-table-column>
+                    <el-table-column prop="busi_nbr" label="业务号码" show-overflow-tooltip width="120px"> </el-table-column>
+                    <el-table-column prop="cust_call" label="用户联系方式" show-overflow-tooltip  width="120px"> </el-table-column>
+                    <el-table-column prop="cust_hurry_times" label="用户催修次数" show-overflow-tooltip  width="100px"> </el-table-column>
+                    <el-table-column prop="address" label="装机地址" width="300px" align="left"> </el-table-column>
+                    <el-table-column prop="create_dt" label="受理时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                    <el-table-column prop="requirte_date" label="预约时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                    <el-table-column prop="back_dt" label="回单时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                    <el-table-column prop="prod_name" label="产品类型" show-overflow-tooltip > </el-table-column> 
+                  </el-table>
+                </div>
+
+            
+                 
+              </div>
+            </div>
+           
+          </div>
+        </div>
+      </el-dialog>
+
+
+
+       <el-dialog :visible.sync="bqdetailShow" width="82%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{gisTitle}}-人员详情</div>
+          </div>
+          <div class="dialogTableBg">
+            <el-table :data="bq_tableDataDetail"  height = "600" v-loading = "tdloadingbq" >
+              <!-- <el-table-column prop="userId" label="工号"   align="left" ></el-table-column> -->
+              <el-table-column prop="orgName" label="机构" width="220px" align="left" > </el-table-column>
+              <el-table-column prop="userName" label="人员姓名" width="140px"  > </el-table-column>
+              <el-table-column prop="mobile" label="装维电话"  > </el-table-column>
+              <el-table-column prop="repairNum" label="修机数量"  sortable > </el-table-column>
+              <el-table-column prop="installNum" label="装机数量"  sortable> </el-table-column>
+              <el-table-column prop="repOverTimeNum" label="修机超时数量"  sortable> </el-table-column>
+              <el-table-column prop="insOverTimeNum" label="装机超时数量"  sortable > </el-table-column> 
+              <el-table-column prop="repWarnNum" label="修机预警数量"   sortable> </el-table-column> 
+              <el-table-column prop="insWarnNum" label="装机预警数量"  sortable> </el-table-column> 
+              <el-table-column prop="updateTime" label="更新时间"  width="200px" > </el-table-column>
+            </el-table>
+           
+          </div>
+        </div>
+      </el-dialog>
+
+      <el-dialog :visible.sync="gdDetailmodelShow" width="80%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{gisTitle}}-工单详情</div>
+          </div>
+          <div class="dialogTableBg">
+            <el-table  class="mytab custom_table grouptable groupheadtable" :data="gdDetailmodelTable" size = "mini"  height = "680" v-loading = "tdloadingbq" >
+                <el-table-column
+                label="序号" 
+                type="index"
+                width="60">
+              </el-table-column>
+          
+               <el-table-column prop="name" label="区域"> </el-table-column>
+              <el-table-column prop="all_nums" label="总工单数量"  sortable> </el-table-column>
+              <el-table-column prop="=" label="装机" >
+                    <el-table-column prop="zyj_gaojing_nums" label="超时"  sortable >
+                        <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row,  '020102')">{{scope.row['zyj_gaojing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="zyj_yujing_nums" label="预警"  sortable >
+                      <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row, '020101')">{{scope.row['zyj_yujing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                     <!-- <el-table-column prop="zyj_total_nums" label="总量"  sortable >
+                    </el-table-column> -->
+              </el-table-column>
+               <el-table-column prop="=" label="修机" >
+                    <el-table-column prop="xj_gaojing_nums" label="超时"  sortable >
+                        <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row,'020202')">{{scope.row['xj_gaojing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="xj_yujing_nums" label="预警"  sortable >
+                      <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row,  '020201')">{{scope.row['xj_yujing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                     <!-- <el-table-column prop="xj_nums" label="总量"  sortable >
+                    </el-table-column> -->
+              </el-table-column>
+
+               <el-table-column prop="=" label="投诉" >
+                    <el-table-column prop="ts_gaojing_nums" label="超时"  sortable >
+                        <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row , '020302')">{{scope.row['ts_gaojing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="ts_yujing_nums" label="预警"  sortable >
+                      <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row, '020301')">{{scope.row['ts_yujing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                     <!-- <el-table-column prop="ts_nums" label="总量"  sortable >
+                    </el-table-column> -->
+              </el-table-column>
+
+               <el-table-column prop="=" label="群障" >
+                    <el-table-column prop="qz_gaojing_nums" label="超时"  sortable >
+                        <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row, '020402')">{{scope.row['qz_gaojing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="qz_yujing_nums" label="预警"  sortable >
+                      <template slot-scope="scope">
+                         <span class="alink" @click="gdmxDetailFn2(scope.row, '020401')">{{scope.row['qz_yujing_nums']}}</span>
+                        </template>
+                    </el-table-column>
+                     <!-- <el-table-column prop="qz_nums" label="总量"  sortable >
+                    </el-table-column> -->
+              </el-table-column>
+            
+            
+            </el-table>
+           
+          </div>
+        </div>
+      </el-dialog>
+
+       <el-dialog :visible.sync="gdxq_isDialogShow" width="95%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{gdxq_title}}</div>
+            
+          </div>
+          <div class="dialogTableBg">
+             <el-table :data="pm_tableDataDetail"  style="width: 100%;" height = "680" v-loading = "tdloading" >
+                <el-table-column label="营服名称"  prop="org_name"  align="left"  width="180px"></el-table-column>
+                <el-table-column prop="task_order_cd" label="工单流水号" width="200px" align="left"> </el-table-column>
+                <el-table-column prop="deal_userid" label="智A工号"  width="120px"  > </el-table-column>
+                <el-table-column prop="deal_username" label="智A姓名" show-overflow-tooltip width=""> </el-table-column>
+                <el-table-column prop="deal_usercall" label="智A联系方式" width="160px" > </el-table-column>
+                <el-table-column prop="busi_nbr" label="业务号码"  width="120px" > </el-table-column>
+                <el-table-column prop="cust_call" label="用户联系方式" width="120px"> </el-table-column>
+                <el-table-column prop="cust_hurry_times" label="用户催修次数" width="120px" > </el-table-column>
+                <el-table-column prop="address" label="装机地址" width="240px" align="left"> </el-table-column>
+                <el-table-column prop="create_dt" label="受理时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                <el-table-column prop="requirte_date" label="预约时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                <el-table-column prop="back_dt" label="回单时间" show-overflow-tooltip  width="160px"> </el-table-column>
+                <el-table-column prop="prod_name" label="产品类型" show-overflow-tooltip > </el-table-column> 
+            </el-table>
+          </div>
+        </div>
+      </el-dialog>
+
+    <el-dialog :visible.sync="isDialogShow_ZHY" width="50%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">智慧眼详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px; max-height: 640px; overflow: auto">
+            <div class="eyesmodelbox" v-html="zhy_content">
+            
+            </div>
+        </div>
+      </div>
+    </el-dialog>
+
+    
+    <el-dialog :visible.sync="qjinfoIshow" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{tjgisTitle}}详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+           
+          <el-table class="inittable_qj"  v-if = "mapLevel < 5" :data="mydDetailData"  size="mini" style="width: 100%">
+            <el-table-column v-for="(col, index) in qjcoldata1" :key="index" :prop="col.filed" :label="col.title">
+              <template slot-scope="scope">
+                 <span v-if="col.rate">{{scope.row[col.filed]}}%</span>
+                 <span v-else>{{scope.row[col.filed]}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+
+
+          <el-table v-if = "mapLevel <= 2" class="inittable_qj" :data="mydDetailData"  size="mini" style="width: 100%; margin-top:20px">
+            <el-table-column v-for="(col, index) in qjcoldata2" :key="index" :prop="col.filed" :label="col.title">
+              <template slot-scope="scope">
+                 <span v-if="col.rate">{{scope.row[col.filed]}}%</span>
+                 <span v-else>{{scope.row[col.filed]}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+
+           <el-table class="inittable_qj" :data="mydDetailData"  size="mini" style="width: 100%; margin-top: 20px">
+            <el-table-column v-for="(col, index) in qjcoldata3" :key="index" :prop="col.filed" :label="col.title">
+              <template slot-scope="scope">
+                 <span v-if="col.rate">{{scope.row[col.filed]}}%</span>
+                 <span v-else>{{scope.row[col.filed]}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="comisDialogShow" width="60%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{cometitle}}</div>
+          </div>
+          <div class="dialogTableBg" >
+                <el-table :data="comDataList"  size = "mini" height="700px" >
+                       <el-table-column v-for="(col, index) in teamCol" :key="index" 
+                        :prop="col.filed" 
+                        :label="col.title"
+                        :min-width="col.width" 
+                        show-overflow-tooltip
+                        :sortable = "col.sortable">
+                      </el-table-column>
+                </el-table>       
+          </div>
+        </div>
+      </el-dialog>
+
+
+       <el-dialog :visible.sync="isDialogShow_ygw" width="80%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{detaliTitle}}详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+            <el-table :data="comeGwTable" v-if = "isDialogShow_ygw"  size = "mini" height="650px" >
+              <el-table-column v-for="(col, index) in tableCol" :key="index" :prop="col.filed" :label="col.title" align="center" :sortable="col.sortable">
+                <template slot-scope="scope">
+                  <span v-if="col.unit">{{scope.row[col.filed] | formatVal}}<span>{{col.unit}}</span></span>
+                  <span v-else >{{scope.row[col.filed] | formatVal}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+     <el-dialog :visible.sync="isDialogShow_gm" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">光猫匹配</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+              <el-table class="custom_table grouptable groupheadtable" :data="sbTabledata" height="620px"  size = "mini">
+                  <el-table-column prop="name" label="组织"> </el-table-column>
+                   <el-table-column prop="bplv_gm_100" label="匹配量" sortable>
+                           <template slot-scope="scope">
+                              <span>{{scope.row['p_gm']}}</span>
+                            </template>
+                       </el-table-column>
+                        <el-table-column prop="bplv_gm_1000" label="匹配率" sortable>
+                             <template slot-scope="scope">
+                                <span>{{scope.row['plv_gm']}}%</span>
+                            </template>
+                       </el-table-column>
+                  
+           
+              </el-table>
+        </div>
+      </div>
+    </el-dialog>
+     <el-dialog :visible.sync="isDialogShow_ly" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">路由器匹配</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 600px">
+                <el-table class="custom_table grouptable groupheadtable" :data="sbTabledata" height="620px"  size = "mini">
+                  <el-table-column prop="name" label="组织"> </el-table-column>
+                   <el-table-column prop="lybplv_gm_100" label="匹配量" sortable>
+                           <template slot-scope="scope">
+                              <span>{{scope.row['p_ly']}}</span>
+                            </template>
+                       </el-table-column>
+                        <el-table-column prop="lybplv_gm_1000" label="匹配率" sortable>
+                              <template slot-scope="scope">
+                              <span>{{scope.row['plv_ly']}}%</span>
+                            </template>
+                       </el-table-column>
+              </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog :visible.sync="buildiframeshow" width="80%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">楼宇核查</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 720px">
+               <iframe v-if="buildiframeshow" ref="gisiframe_build" id="gisiframe_build" :src="buildiframessrc" style="width: 100%; min-height:700px" frameborder="0"></iframe>
+        </div>
+      </div>
+    </el-dialog>
+
+      
+      <!-- <Footer  v-if = "!$route.query.pageiframe"  :tabdata="tabdata" class="initfoot"></Footer> -->
+  </div>
+</template>
+
+<script>
+var self = null
+import Header from '@/components/resource_visual/header2';
+import Footer from '@/components/resource_visual/footer';
+
+import store from 'store'
+import { mapState } from 'vuex'
+import echartInit from '@/views/resource_visual/jscpages/wxfn_echart'
+import serviceApi from '@/views/resource_visual/jscpages/serviceApi'
+import serviceApi2 from '@/api/networkeye'
+ import {warnList, serviceKdGjpm, serviceKdGdmx, serviceBQdetail} from "@/api/broadband/warn";
+var _ = require('@/utils/lodash.js')
+var Qs = require('@/utils/qs.js')
+  import {efficacyList} from "@/api/broadband/efficacy";
+import echarts_init from '../fu/echart_lines';
+
+import echartInit_yw from '../wisdomeyes/initechart'
+
+import serviceApi_yw from '@/api/wisdomeyes'
+import serviceApi_ygw from '@/api/duanApi' 
+export default {
+  data () {
+    return {
+      buildiframeshow: false,
+      buildiframessrc: '',
+      isDialogShow_gm: false,
+      isDialogShow_ly: false,
+      count: 0,
+      value1: 5,
+      value2: null,
+        right_status1: 1,
+        right_status2: 1,
+        right_status3: 1,
+        left_status1: 1,
+         gw_leftdata: {},
+               jdhdata: {},
+        gwTableData: [],
+        jdhTableData: [],
+        comeGwTable: [],
+         tableCol: [],
+         detaliTitle: '',
+      gwTableData_jdh: [],
+      leftstatus_ceo: 1,
+      rightstatus_ceo: 1,
+      teamCol: [],
+      cometitle: '',
+      comDataList: [],
+      comisDialogShow: false,
+      gdDetailmodelShow: false,
+      gdxq_isDialogShow: false,
+      gdDetailmodelTable: [],
+      gdxq_title: '',
+      left_pmtbloaing: false,
+      d_pmstatus: false,
+      isDialogShow2: false,
+      tabstatus: '02010',
+      subRadio: '2',
+      zyjztStatus2: 1,
+      zyjztStatus: 1,
+      gisTitle: '山东省',
+      isDialogShow: false,
+      rowttabStatus: '1',
+      rowttabStatus2: '1',
+      bzhd_checkList: ['00', '01', '02'],
+      cityCode: '370000',
+      iframeSrc: '',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tabdata: [
+         {title: '宽带赋能', active: true, href: '/unicomwisdomeyes/jsc_kdfn'},
+          {title: '综合效能', active: false, href: '/unicomwisdomeyes/broadband_zhxn'},
+         
+        ],
+       selectOptions1: [{
+          value: '1',
+          label: '超24小时'
+        }, {
+          value: '2',
+          label: '超48小时'
+        }],
+        selectVal1: '1',
+        selectOptions2: [{
+          value: '1',
+          label: '当月'
+        }, {
+          value: '2',
+          label: '累计'
+        }],
+        selectVal2: '1',
+
+        selectOptions3: [{
+          value: '1',
+          label: '超7天'
+        }, {
+          value: '2',
+          label: '超30天'
+        }],
+        selectVal3: '1',
+        selectOptions4: [{
+          value: '1',
+          label: '当月'
+        }, {
+          value: '2',
+          label: '累计'
+        }],
+        selectVal4: '1',
+
+        
+        sbTabledata: [],
+        kdDzgdData: {},
+        kdZtcsData: {},
+        columKeys_csgd: [],
+        columKeys_wzygd: [],
+        columKeys1: [],
+        columKeys2: [],
+        columKeys3: [],
+        columKeys4: [],
+
+        pmkeyVal: 'zyj_gaojing_nums',
+        pm_tableData: [],
+        pmName: '装机超时',
+        pm_tableDataDetail: [],
+        bqtableData: [],
+        warnList: [],
+        tdloading: false,
+        dialogTitle: '',
+        qspmyf_status: '2',
+        init_province_pmkey: 'zyj_gaojing_order_sf',
+        init_city_pmkey: 'zyj_gaojing_order_ds',
+        control: [],
+        initgisTitle: '',
+        bqdetailShow: false,
+        bq_tableDataDetail: [],
+        tdloadingbq: false,
+        zhy_content: '',
+        isDialogShow_ZHY: false,
+        mydDetailData: [],
+        qjinfoIshow: false,
+        qjcoldata1: [],
+        qjcoldata2: [],
+        qjcoldata3: [],
+        qjtable1: [],
+        qjtable2: [],
+        qjtable3: [],
+        pcityName: '',
+        ftphList2: [],
+        ftphList_ywfz: [],
+        averageData: {},
+        averageData2: {},
+        isDialogShow_ygw: false,
+        isDialogShow2_1: false,
+        isShow2_1: false,
+        isDialogShow1_4: false,
+        isShow1_4: false,
+        isDialogShow1_3: false,
+        isShow1_3: false,
+        isDialogShow3_2: false,
+        isShow3_2: false,
+        isDialogShow1_2: false,
+        isShow1_2: false,
+        matchleftdate: {}
+    }
+  },
+  components: {
+    Header,
+    Footer,
+    
+   
+  },
+  created() {
+    self = this;
+  },
+  mounted () {
+      var initArea_id = this.$route.query.code  ||  '8353694'
+      this.mapLevel = 4;
+      this.gisTitle =  this.$route.query.name ||  '济南市中普利门',
+    //   if (store.get('userInfo')) {
+    //       var userInfo =  store.get('userInfo')
+    //        var mapLevel = userInfo.levelAreaLevel;
+    //        // 分权分域
+    //         if (mapLevel == '1') {
+    //           // 全省
+    //           initArea_id = '370000'
+    //           self.gisTitle = '山东省'
+    //           self.mapLevel = '1'
+    //           self.control = ['370000']
+    //         } else if (mapLevel == '2') {
+    //           // 地市
+    //           initArea_id = '370000'
+    //           self.gisTitle = '山东省'
+    //           self.mapLevel = '1'
+    //           self.control = ['370000', userInfo.levelAreaCode]
+    //         } else if (mapLevel == '3') {
+    //           // 区县
+    //           initArea_id = userInfo.levelAreaCode
+    //           self.mapLevel = '2'
+    //           self.gisTitle = userInfo.levelAreaName
+    //           self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode]
+    //         } 
+    //   }
+    this.cityCode = initArea_id;
+    this.initGisMap(initArea_id);
+    this.initgisTitle = this.gisTitle + '';
+     // 注册地图事件
+    window.addEventListener('message',self.gismapListener, true);
+    this.initService()
+    this.getList()
+    this.getList2()
+    this.getList_ywfz()
+    // this.serviceKdKnZw()
+
+    this.servicejkdDwypp() // 移网匹配
+    this.serviceDgwGm() // 固网信息
+    this.servicejkdSbpp() //固网匹配
+    this.servicejkdSbppXq() // 详情
+  },
+  watch: {
+    
+    zygdSelectType (type) {
+       if (type == '11') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye', 'zyj_cs_on_way_peizhi', 'zyj_cs_on_way_zhuangji', 'zyj_cs_on_way_yichang', 'zyj_cs_on_way_all']
+        } else if (type == '12') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye_year', 'zyj_cs_on_way_peizhi_year', 'zyj_cs_on_way_zhuangji_year', 'zyj_cs_on_way_yichang_year', 'zyj_cs_on_way_all_year']
+        }  else if (type == '21') {
+           this.columKeys1 = ['zyj_cs_on_way_yingye_48', 'zyj_cs_on_way_peizhi_48', 'zyj_cs_on_way_zhuangji_48', 'zyj_cs_on_way_yichang_48', 'zyj_cs_on_way_all_48']
+        }  else if (type == '22') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye_48_year', 'zyj_cs_on_way_peizhi_48_year', 'zyj_cs_on_way_zhuangji_48_year', 'zyj_cs_on_way_yichang_48_year', 'zyj_cs_on_way_all_48_year']
+      }
+    },
+    zygdSelectType2 (type) {
+      var ztzjSelectType = this.zygdSelectType2;
+      if (ztzjSelectType == '11') {
+        this.columKeys3 = ['zj_dz_cs_waikan7', 'zj_dz_cs_bulid7', 'zj_dz_cs_call_back7', 'zj_dz_cs_jihuo7', 'zj_dz_cs_all7']
+      } else if (ztzjSelectType == '12') {
+         this.columKeys3 = ['zj_dz_cs_waikan7_year', 'zj_dz_cs_bulid7_year', 'zj_dz_cs_call_back7_year', 'zj_dz_cs_jihuo7_year', 'zj_dz_cs_all7_year']
+      }  else if (ztzjSelectType == '21') {
+         this.columKeys3 = ['zj_dz_cs_waikan30', 'zj_dz_cs_bulid30', 'zj_dz_cs_call_back30', 'zj_dz_cs_jihuo30', 'zj_dz_cs_all30']
+      }  else if (ztzjSelectType == '22') {
+         this.columKeys3 = ['zj_dz_cs_waikan30_year', 'zj_dz_cs_bulid30_year', 'zj_dz_cs_call_back30_year', 'zj_dz_cs_jihuo30_year', 'zj_dz_cs_all30_year']
+      }
+    },
+    zyjztStatus (type) {
+      if (type == 1) {
+        this.columKeys_csgd = [
+          ['zyj_cs_on_way_yingye', 'zyj_cs_on_way_peizhi', 'zyj_cs_on_way_zhuangji', 'zyj_cs_on_way_yichang', 'zyj_cs_on_way_all'],
+          ['zyj_cs_on_way_yingye_48', 'zyj_cs_on_way_peizhi_48', 'zyj_cs_on_way_zhuangji_48', 'zyj_cs_on_way_yichang_48', 'zyj_cs_on_way_all_48'],
+          ['zyj_on_way_yingye', 'zyj_on_way_peizhi', 'zyj_on_way_zhuangji', 'zyj_on_way_yichang', 'zyj_on_way_all']
+        ]
+        this.columKeys2 = ['zyj_on_way_yingye', 'zyj_on_way_peizhi', 'zyj_on_way_zhuangji', 'zyj_on_way_yichang', 'zyj_on_way_all']
+      } else if (type == 2) {
+        this.columKeys_csgd = [
+          ['zyj_cs_on_way_yingye_year', 'zyj_cs_on_way_peizhi_year', 'zyj_cs_on_way_zhuangji_year', 'zyj_cs_on_way_yichang_year', 'zyj_cs_on_way_all_year'],
+          ['zyj_cs_on_way_yingye_48_year', 'zyj_cs_on_way_peizhi_48_year', 'zyj_cs_on_way_zhuangji_48_year', 'zyj_cs_on_way_yichang_48_year', 'zyj_cs_on_way_all_48_year'],
+          ['zyj_on_way_yingye_year', 'zyj_on_way_peizhi_year', 'zyj_on_way_zhuangji_year', 'zyj_on_way_yichang_year', 'zyj_on_way_all_year']
+        ]
+        this.columKeys2 = ['zyj_on_way_yingye_year', 'zyj_on_way_peizhi_year', 'zyj_on_way_zhuangji_year', 'zyj_on_way_yichang_year', 'zyj_on_way_all_year']
+      }
+    },
+    zyjztStatus2 (type) {
+      if (type == 1) {
+         this.columKeys_wzygd = [
+            ['zj_dz_cs_waikan7', 'zj_dz_cs_bulid7', 'zj_dz_cs_call_back7', 'zj_dz_cs_jihuo7', 'zj_dz_cs_all7'],
+            ['zj_dz_cs_waikan30', 'zj_dz_cs_bulid30', 'zj_dz_cs_call_back30', 'zj_dz_cs_jihuo30', 'zj_dz_cs_all30'],
+            ['zj_dz_waikan', 'zj_dz_bulid', 'zj_dz_call_back', 'zj_dz_jihuo', 'zj_dz_all']
+         ]
+         this.columKeys4 = ['zj_dz_waikan', 'zj_dz_bulid', 'zj_dz_call_back', 'zj_dz_jihuo', 'zj_dz_all']
+      } else if (type == 2) {
+        this.columKeys_wzygd = [
+            ['zj_dz_cs_waikan7_year', 'zj_dz_cs_bulid7_year', 'zj_dz_cs_call_back7_year', 'zj_dz_cs_jihuo7_year', 'zj_dz_cs_all7_year'],
+            ['zj_dz_cs_waikan30_year', 'zj_dz_cs_bulid30_year', 'zj_dz_cs_call_back30_year', 'zj_dz_cs_jihuo30_year', 'zj_dz_cs_all30_year'],
+            ['zj_dz_waikan_year', 'zj_dz_bulid_year', 'zj_dz_call_back_year', 'zj_dz_jihuo_year', 'zj_dz_all_year']
+         ]
+       this.columKeys4 = ['zj_dz_waikan_year', 'zj_dz_bulid_year', 'zj_dz_call_back_year', 'zj_dz_jihuo_year', 'zj_dz_all_year']
+      }
+    },
+     gisStatus (type) {
+        var pmkeyVal = '';
+        var pmName  = ''
+        switch (type) {
+          case '020102':
+            // 装机超时
+            pmkeyVal =  'zyj_gaojing_nums'
+            pmName = '装机超时'
+            this.qspmyf_status = '2'
+            this.init_province_pmkey = 'zyj_gaojing_order_sf'
+            this.init_city_pmkey = 'zyj_gaojing_order_ds'
+            break;
+          case '020101':
+              // 装机预警
+            pmkeyVal =  'zyj_yujing_nums'
+             pmName = '装机预警'
+             this.qspmyf_status = '1'
+             this.init_province_pmkey = 'zyj_yujing_order_sf'
+             this.init_city_pmkey = 'zyj_yujing_order_ds'
+            break;
+          case '020202':
+            // 修机超时
+             pmkeyVal =  'xj_gaojing_nums'
+             pmName = '修机超时'
+             this.qspmyf_status = '4'
+              this.init_province_pmkey = 'xj_gaojing_order_sf'
+             this.init_city_pmkey = 'xj_gaojing_order_ds'
+            break;
+          case '020201':
+            // 修机预警
+             pmkeyVal =  'xj_yujing_nums'
+             pmName = '修机预警'
+             this.qspmyf_status = '3'
+            this.init_province_pmkey = 'xj_yujing_order_sf'
+             this.init_city_pmkey = 'xj_yujing_order_ds'
+            break;
+          case '020302':
+            // 投诉超时
+            pmkeyVal =  'ts_gaojing_nums'
+             pmName = '投诉超时'
+             this.qspmyf_status = '5'
+             this.init_province_pmkey = 'ts_gaojing_order_sf'
+             this.init_city_pmkey = 'ts_gaojing_order_ds'
+            break;
+          case '020301':
+             // 投诉预警
+            pmkeyVal =  'ts_yujing_nums'
+            pmName = '投诉预警'
+            this.qspmyf_status = '5'
+             this.init_province_pmkey = 'ts_yujing_order_sf'
+             this.init_city_pmkey = 'ts_yujing_order_ds'
+            
+            break;
+          case '020402':
+            // 群障超时
+            pmkeyVal =  'qz_gaojing_nums'
+             pmName = '群障超时'
+             this.qspmyf_status = '8'
+            this.init_province_pmkey = 'qz_gaojing_order_sf'
+             this.init_city_pmkey = 'qz_gaojing_order_ds'
+            break;
+          case '020401':
+             // 群障预警
+            pmkeyVal =  'qz_yujing_nums'
+             pmName = '群障预警'
+             this.qspmyf_status = '7'
+              this.init_province_pmkey = 'qz_yujing_order_sf'
+             this.init_city_pmkey = 'qz_yujing_order_ds'
+            break;
+          default:
+            break;
+        }
+        this.pmName = pmName;
+        this.pmkeyVal = pmkeyVal
+        
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams));
+        gisQueryParams.message = "changeType";
+        gisQueryParams.gis_sceneid = type;
+        this.$refs['gisiframe'].contentWindow.postMessage(gisQueryParams, '*')
+
+       
+      }  
+  },
+  computed: {
+    ...mapState({
+       searchDate: state => state.resource.searchDate,
+    }),
+    tjgisTitle () {
+      var tjgisTitle = ''
+      if (this.mapLevel == 1) {
+        tjgisTitle = '山东联通公司'
+      } else if (this.mapLevel == 2) {
+        tjgisTitle = this.gisTitle + '联通公司';
+      }  else if (this.mapLevel == 3) {
+        tjgisTitle = this.gisTitle + '分公司';
+      }  else if (this.mapLevel == 4) {
+        tjgisTitle = this.gisTitle + '营服中心';
+      } else {
+        tjgisTitle =  this.gisTitle 
+      }
+      return tjgisTitle
+    },
+    gisStatus () {
+      return this.tabstatus + this.subRadio;
+    },
+    zygdSelectType () {
+      return this.selectVal1 + ''  + this.selectVal2
+    },
+    zygdSelectType2 () {
+       return this.selectVal3 + ''  + this.selectVal4
+    },
+
+  
+  },
+  methods: {
+        servicejkdSbppXq  () {
+        var params = {
+          cityCode: this.cityCode
+        }
+        serviceApi_yw.servicejkdSbppXq (params).then((res) => {
+          if (res.rspCode == '0000') {
+              var datal = res.result.data || []
+              this.sbTabledata = this.initSortTabledata(datal)
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+      },
+      servicejkdSbpp () {
+        var params = {
+          cityCode: this.cityCode
+        }
+      serviceApi_yw.servicejkdSbpp(params).then((res) => {
+        if (res.rspCode == '0000') {
+            var datal = res.result.data[0] || {}
+            this.matchleftdate = datal;
+
+            // this.renderChart(1, datal.bplv_gm_100)
+            // this.renderChart(2, datal.bplv_gm_1000)
+            this.renderChart(2, datal.plv_gm)
+
+            // this.renderChart(3, datal.lybplv_gm_100)
+            // this.renderChart(4, datal.lybplv_gm_1000)
+            this.renderChart(4, datal.plv_ly)
+
+            // this.renderChart(5, datal.linux_rate)
+            // this.renderChart(6, datal.android_rate)
+
+           //  this.renderChart(6, datal.plv_jd)  //暂时注释
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+     handleRemove(file, fileList) {
+       console.log(file, fileList);
+     },
+     handlePreview(file) {
+       console.log(file);
+     },
+     load() {
+       this.count += 2
+     },
+     handleClose() {
+       isShow1_1 = !isShow1_1
+     },
+     khsjClick(type) {
+       if (type) {
+         this[type] = true
+       } else {
+         this.$alert('该功能正在开发，敬请期待！', '提示', {
+           confirmButtonText: '确定',
+         });
+       }
+     },
+     handleSelect() {
+     
+     },
+     serviceDgwGm  () {
+       var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi_ygw.serviceDgwGm(params).then((res) => {
+        
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          var parentData = datal.filter(item => {
+            return item.code == params.cityCode
+          })
+
+          this.gw_leftdata = parentData[0] || {};
+          this.gwTableData  = datal;
+
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+      serviceDgwJdh () {
+       var params = {
+        cityCode: '370000'   //  临时写死
+      }
+      serviceApi_ygw.serviceDgwJdh(params).then((res) => {
+        
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          var parentData = datal.filter(item => {
+            return item.code == params.cityCode
+          })
+
+          this.jdhdata = parentData[0] || {};
+          this.jdhTableData = datal; 
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+     gwDetailFn_ygw (title, type) {
+      //  jdhTableData: [],
+      
+      // gwTableData: [],
+      this.detaliTitle = title;
+      this.comeGwTable = this.gwTableData
+      if (type == '1') {
+        this.tableCol = [
+          {filed: 'name', title: '组织'},
+          {filed: 'bm_gm', title: '百兆光猫', sortable: true},
+          {filed: 'qm_gm', title: '千兆光猫', sortable: true},
+          // {filed: 'wm_gm', title: '万兆光猫', sortable: true},
+          // {filed: 'bp_gm', title: '光猫不匹配数', sortable: true},
+          // {filed: 'bplv_gm', title: '光猫不匹配率', sortable: true, unit: '%'},
+        ]
+      } else if (type == '5') {
+        this.tableCol = [
+         {filed: 'name', title: '组织'},
+         {filed: 'bp_gm', title: '光猫不匹配数', sortable: true},
+        {filed: 'bplv_gm', title: '光猫不匹配率', sortable: true, unit: '%'},
+        ]
+      } else if (type == '2') {
+        this.tableCol = [
+          {filed: 'name', title: '组织'},
+          {filed: 'bm_ly', title: '百兆路由器', sortable: true},
+          {filed: 'qm_ly', title: '千兆路由器', sortable: true},
+          // {filed: 'wm_ly', title: '万兆路由', sortable: true},
+           // {filed: 'ly_gm', title: '路由不匹配数', sortable: true},
+          // {filed: 'lybplv_gm', title: '路由不匹配率', sortable: true, unit: '%'},
+        ]
+      }  else if (type == '6') {
+        this.tableCol = [
+          {filed: 'name', title: '组织'},
+         
+           {filed: 'ly_gm', title: '路由器不匹配数', sortable: true},
+           {filed: 'lybplv_gm', title: '路由器不匹配率', sortable: true, unit: '%'},
+        ]
+      }  else if (type == '7') {
+         this.comeGwTable = this.jdhTableData
+         this.tableCol = [
+          {filed: 'name', title: '组织'},
+          {filed: 'bp_rate', title: '机顶盒不匹配率', sortable: true, unit: '%'},
+        ]
+      } else if (type == '4') {
+        this.tableCol = [
+          {filed: 'name', title: '组织'},
+          {filed: 'lan_pon_nums', title: 'PON+LAN用户数', sortable: true},
+         // {filed: 'pon_lan_bp_nums', title: 'PON+LAN不匹率配数', sortable: true},
+         // {filed: 'pon_lan_bp_lv', title: 'PON+LAN不匹配率', sortable: true, unit: '%'},
+        ]
+      }  else if (type == '3') {
+        this.comeGwTable = this.jdhTableData
+          // box_num	items	机顶盒数量;
+          // linux_num	items	Linux标清机顶盒数量;
+          // linux_rate	items	Linux标清机顶盒数量占比;
+          // android_num	items	Android高清机顶盒数量;
+          // android_rate	items	Android高清机顶盒数量占比;
+          // android4k_num	items	Android4K机顶盒数量;
+          // android4k_rate	items	Android4K机顶盒数量占比;
+          // chao_num	items	3.0超高清4K机顶盒数量;
+          // chao_rate	items	3.0超高清4K机顶盒数量占比;
+          // bp_rate	items	机顶盒不匹配率
+        this.tableCol = [
+          {filed: 'name', title: '地市'},
+          {filed: 'box_num', title: '机顶盒数量', sortable: true},
+          {filed: 'linux_num', title: 'Linux标清机顶盒数量', sortable: true},
+          {filed: 'android_num', title: 'Android高清机顶盒数量', sortable: true},
+          {filed: 'android4k_num', title: 'Android4K机顶盒数量', sortable: true},
+          // {filed: 'bp_rate', title: '机顶盒不匹配率', sortable: true, unit: '%'},
+        ]
+      } else if (type == '8') {
+        this.tableCol = [
+          {filed: 'name', title: '地市'},
+          //{filed: 'lan_pon_nums', title: 'PON+LAN用户数', sortable: true},
+          {filed: 'pon_lan_bp_nums', title: 'PON+LAN不匹率配数', sortable: true},
+          {filed: 'pon_lan_bp_lv', title: 'PON+LAN不匹配率', sortable: true, unit: '%'},
+        ]
+      }
+      this.isDialogShow_ygw = true
+  
+    },
+    rowttabsClick(type) {
+        this.rowttabStatus = type;
+        this.fillParam('change_status')
+    },
+     orderDataFn (datas, key) {
+        return  _.orderBy(datas, function (item) {
+            return Number(item[key])  || 0;
+        }, ['desc']);
+    },
+     getList2() {
+         var cityCode = this.cityCode
+         efficacyList(cityCode).then(response => {
+            var datal = response.filter(item => {
+              return item.code != '0000'
+            })
+            var avdatal = response.filter(item => {
+              return item.code == '0000'
+            })
+             this.averageData = avdatal.length > 0 ? avdatal[0] : {}
+            this.ftphList2 = datal;
+            this.fillParam()
+          })
+      },
+     getList_ywfz() {
+         var cityCode =  this.cityCode
+         efficacyList(cityCode).then(response => {
+            var datal = response.filter(item => {
+              return item.code != '0000'
+            })
+            var avdatal = response.filter(item => {
+              return item.code == '0000'
+            })
+            this.averageData2 = avdatal.length > 0 ? avdatal[0] : {}
+            this.ftphList_ywfz = datal;
+            this.fillParam_ywfz()
+          })
+      },
+     fillParam_ywfz () {
+         
+          var ftphList =  this.ftphList_ywfz
+          var params2_orderData = this.orderDataFn(ftphList, 'kd_fz_rate');
+          let charts2 = {
+            domId: 'chart_line2',
+            unit: '百分比',
+             zoomVal: 100,
+            names: ['宽带发展', '固话发展', '移网发展'],
+            lineX: params2_orderData.map(item => {
+              return item.name
+            }),
+            value: [
+               params2_orderData.map(item => {
+                  return item.kd_fz_rate
+                }),
+                params2_orderData.map(item => {
+                  return item.gh_fz_rate
+                }),
+                params2_orderData.map(item => {
+                  return item.yw_fz_rate
+                }),
+            ],
+           bar_markLine: [this.averageData.kd_fz_rate, this.averageData.gh_fz_rate, this.averageData.yw_fz_rate],
+
+          }
+        echarts_init.initechart_lines(charts2);
+     },
+     fillParam(type) {
+        var ftphList = this.ftphList2;
+        var tabstatus = this.rowttabStatus;
+        var Xdata = ftphList.map(item => {
+          return item.name
+        });
+        let charts3 = {
+            domId: 'chart_line3',
+            unit: '百分比',
+            zoomVal: 100,
+            names: ['公客履约率', '联系客户及时率', '催单率', '7天重复障碍率'],
+            lineX: Xdata,
+            value: [],
+            bar_markLine: [],
+
+        }
+        if (tabstatus == '1') {
+          // 装机
+          var keyarr = ['zj_intime_rate', 'zj_linlk_intime_rate', 'zj_hurry_rate']
+          var orderData1 = this.orderDataFn(ftphList, 'zj_intime_rate');
+          
+          charts3.names = ['公客履约率', '联系客户及时率', '催单率'],
+          charts3.Xdata = orderData1.map(item => {
+            return item.name
+          });
+          charts3.value = keyarr.map(key => {
+             return orderData1.map(item => {
+                  return item[key]
+              })
+          })
+          charts3.bar_markLine = [this.averageData.zj_intime_rate, this.averageData.zj_linlk_intime_rate, this.averageData.zj_hurry_rate ]
+        } else  if(tabstatus == '2') {
+          // 修机
+          var orderData2 = this.orderDataFn(ftphList, 'gz_hurry_rate');
+          charts3.Xdata = orderData2.map(item => {
+            return item.name
+          });
+          var keyarr = [ 'gz_linlk_intime_rate', 'gz_hurry_rate', 'gz_cf_rate']
+          charts3.names = [ '联系客户及时率', '催单率', '7天重复障碍率'],
+          charts3.value = keyarr.map(key => {
+             return orderData2.map(item => {
+                  return item[key]
+              })
+          })
+          charts3.bar_markLine = [this.averageData.gz_linlk_intime_rate, this.averageData.gz_hurry_rate, this.averageData.gz_cf_rate ]
+        } 
+        echarts_init.initechart_lines(charts3);
+
+         
+         
+      },
+      
+    gwDetailFn (title, type) {
+      this.comisDialogShow = true
+      this.comDataList = []
+      this.cometitle = title;
+      if (type == 1) {
+        this.teamCol = [
+          {'title': '组织名称', filed: 'name'},
+          {'title': '超时24小时工单完成情况', filed: 'zyj_cs_finish_all', sortable: true},
+          {'title': '超时48小时工单完成情况', filed: 'zyj_cs48_finish_all', sortable: true},
+        ]
+        this.queryDetailBykey('serviceKdZhuangyidetail')
+      } else if (type == 2) {
+        this.teamCol = [
+          {'title': '组织名称', filed: 'name'},
+          {'title': '无资源超7天工单完成情况', filed: 'wotjs_intcount', sortable: true},
+          {'title': '无资源超30天工单完成情况', filed: 'motjs_intcount', sortable: true},
+        ]
+        this.queryDetailBykey('serviceKdDaizhuangdetail')
+      }
+    },
+    queryDetailBykey (service) {
+       let params={
+          cityCode:this.cityCode
+        }
+        serviceApi[service] (params).then(res => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data || [];
+
+            this.comDataList =  this.initSortTabledata(datal, 'code') 
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+    },
+    qjinfoDetail () {
+      this.qjinfoIshow = true
+      this.servicejkdWgyfbqr2()
+    },   
+     servicejkdWgyfbqr2(){//地市详情
+       let that = this;
+        let params={
+          cityCode:this.cityCode
+        }
+        serviceApi2.servicejkdWgyfbqr(params).then(res => {
+          if (res.rspCode == '0000') {
+            var datal =  res.result.data || [];
+            that.mydDetailData = datal
+            that.renderqjTable(datal)
+          } else {
+            this.$message.error(res.rspMsg)
+          }
+        })
+    },
+    renderqjTable (datal) {
+      
+      var mapLevel = this.mapLevel;
+      if (mapLevel == 1) {
+        this.qjcoldata1 = [
+          {title: '地市分公司数量', filed: 'num_city'},
+          {title: '区县分公司数量', filed: 'num_sub'},
+          {title: '网营数量', filed: 'num_int'},
+          {title: '营服数量', filed: 'num_org'},
+          {title: '维护人员', filed: 'num_wht'},
+          {title: '装维人员', filed: 'num_bqr'},
+        ];
+
+
+         this.qjcoldata2 = [
+          {title: 'BRAS数', filed: 'num_bras'},
+          {title: 'PON端口数', filed: 'num_pon'},
+          {title: 'OLT设备数', filed: 'num_olt'},
+          {title: 'OLT端口占用率', filed: 'rate_olt', rate: true},
+        ];
+
+         this.qjcoldata3 = [
+          {title: '分光器数', filed: 'num_fgq'},
+          {title: '分光器端口数', filed: 'num_fgqport'},
+          {title: '分光器端口占用率', filed: 'rate_fgqport', rate: true},
+        ]
+      } else  if (mapLevel == 2) {
+        this.qjcoldata1 = [
+          {title: '区县分公司数量', filed: 'num_sub'},
+          {title: '网营数量', filed: 'num_int'},
+          {title: '营服数量', filed: 'num_org'},
+          {title: '维护人员', filed: 'num_wht'},
+          {title: '装维人员', filed: 'num_bqr'},
+        ];
+
+
+         this.qjcoldata2 = [
+          {title: 'PON端口数', filed: 'num_pon'},
+          {title: 'OLT设备数', filed: 'num_olt'},
+          {title: 'OLT端口占用率', filed: 'rate_olt', rate: true},
+        ];
+
+         this.qjcoldata3 = [
+          {title: '分光器数量', filed: 'num_fgq'},
+          {title: '分光器端口数', filed: 'num_fgqport'},
+          {title: '分光器端口占用率', filed: 'rate_fgqport', rate: true},
+        ]
+      } else  if (mapLevel == 3) {
+
+        this.qjcoldata1 = [
+          {title: '网营数量', filed: 'num_int'},
+          {title: '营服数量', filed: 'num_org'},
+          {title: '维护人员', filed: 'num_wht'},
+          {title: '装维人员', filed: 'num_bqr'},
+        ];
+
+         this.qjcoldata3 = [
+          {title: '分光器数', filed: 'num_fgq'},
+          {title: '分光器端口数', filed: 'num_fgqport'},
+          {title: '分光器端口占用率', filed: 'rate_fgqport', rate: true},
+        ]
+      }  else  if (mapLevel == 4) {
+
+        this.qjcoldata1 = [
+          {title: '装维人员', filed: 'num_bqr'},
+        ];
+
+         this.qjcoldata3 = [
+          {title: '分光器数', filed: 'num_fgq'},
+          {title: '分光器端口数', filed: 'num_fgqport'},
+          {title: '分光器端口占用率', filed: 'rate_fgqport', rate: true},
+        ]
+      } else  if (mapLevel == 5) {
+
+         this.qjcoldata3 = [
+          {title: '分光器数', filed: 'num_fgq'},
+          {title: '分光器端口数', filed: 'num_fgqport'},
+          {title: '分光器端口占用率', filed: 'rate_fgqport', rate: true},
+        ]
+      }
+    },
+
+     getEyesConten () {//地市智慧眼
+       this.isDialogShow_ZHY = true;
+       var params = {
+        code:'fu-zwkdfn',
+        "area_code": this.cityCode,
+      };
+      this.queryEyesInfo(params).then(res => {
+        this.zhy_content = res
+      })
+      
+    },
+    serviceKdKnZw () {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.serviceKdKnZw(params).then((res) => {
+      
+        // this.left_pmtbloaing = false
+        // var datal = res.result.data || []
+        // this.renderPm_tableData(datal)        
+      }).catch(err => {
+        this.left_pmtbloaing = false
+      })
+    },
+    initSortTabledata (datas, nokey) {
+      var datal= _.cloneDeep(datas);
+       datal.forEach(item => {
+       
+        Object.keys(item).forEach(key => {
+            if (key != nokey) {
+              Number(item[key]) || Number(item[key]) === 0 ? item[key] =  Number(item[key]) : item[key];
+            }
+            
+        })
+      });
+      return datal
+    },
+    queryBqDetail () {
+        var params = {
+          cityCode: this.cityCode
+        }
+        this.tdloadingbq = true
+        this.bq_tableDataDetail = []
+        serviceBQdetail(params).then((res) => {
+           this.tdloadingbq = false
+          var datal = this.initSortTabledata(res.result.data)
+          this.bq_tableDataDetail = datal || []
+        }).catch(err => {
+           this.tdloadingbq = false
+        })
+      },
+      bquserDetail () {
+        this.bqdetailShow = true;
+        this.queryBqDetail()
+      },
+      formatNumber (num) {
+        if (Number(num) || Number(num) == 0) {
+          return Number(num).toLocaleString()
+        } else {
+          return ''
+        }
+      },
+      renderF1name (index) {
+        var name = ''
+        if (index == 0) {
+          name = '超24小时'
+        } else if (index == 1) {
+          name = '超48小时'
+        } else if (index == 2) {
+          name = '在途工单'
+        }
+        return name
+      },
+      renderF1name2 (index) {
+        var name = ''
+        if (index == 0) {
+          name = '超7天'
+        } else if (index == 1) {
+          name = '超30天'
+        } else if (index == 2) {
+          name = '待装工单'
+        }
+        return name
+      },
+      serviceKdQspm () {
+        var busiTypeMap = {
+           '020101': '1',
+           '020102': '2',
+           '020201': '3',
+           '020202': '4',
+           '020301': '5',
+           '020302': '6',
+           '020401': '7',
+           '020402': '8'
+         }
+        var params = {
+          order_type:  busiTypeMap[this.gisStatus],
+        }
+        this.left_pmtbloaing = true
+        serviceApi.serviceKdQspm(params).then((res) => {
+          
+           this.left_pmtbloaing = false
+            var datal = res.result.data || []
+            this.renderPm_tableData(datal)        
+          }).catch(err => {
+            this.left_pmtbloaing = false
+          })
+      },
+      gdmxDetailFn (row) {
+        
+        this.serviceKdGdmx(row.code)
+      },
+      gdmxDetailFn2 (row, key) {
+        this.serviceKdGdmx2(row, key)
+      },
+
+      serviceKdGdmx2 (row, key) {
+         var busiTypeMap = {
+           '020101': '1',
+           '020102': '2',
+           '020201': '3',
+           '020202': '4',
+           '020301': '5',
+           '020302': '6',
+           '020401': '7',
+           '020402': '8'
+         }
+          var busiTypeMap2 = {
+           '020101': '装机预警',
+           '020102': '装机超时',
+           '020201': '修机预警',
+           '020202': '修机超时',
+           '020301': '投诉预警',
+           '020302': '投诉超时',
+           '020401': '群障预警',
+           '020402': '群障超时'
+         }
+         this.gdxq_title = row.name + '-' + busiTypeMap2[key] + '清单';
+         var params = {
+            busiType: busiTypeMap[key],
+            cityCode: row.code
+          }
+          this.pm_tableDataDetail = []
+          this.tdloading = true
+          this.gdxq_isDialogShow = true
+          serviceKdGdmx(params).then((res) => {
+            this.tdloading = false
+            var datal = res.result.data || []
+            this.pm_tableDataDetail = datal           
+          }).catch(err => {
+             this.tdloading = false
+          })
+      },
+         // 工单明细
+      serviceKdGdmx (cityCode) {
+         var busiTypeMap = {
+           '020101': '1',
+           '020102': '2',
+           '020201': '3',
+           '020202': '4',
+           '020301': '5',
+           '020302': '6',
+           '020401': '7',
+           '020402': '8'
+         }
+         var params = {
+            busiType: busiTypeMap[this.gisStatus],
+            cityCode: cityCode
+          }
+          this.pm_tableDataDetail = []
+          this.tdloading = true
+          serviceKdGdmx(params).then((res) => {
+            this.tdloading = false
+            var datal = res.result.data || []
+            this.pm_tableDataDetail = datal           
+          }).catch(err => {
+             this.tdloading = false
+          })
+      },
+      getList(){
+        var self = this;
+        var cityCode = this.cityCode
+        this.ftphList = []
+         this.gdDetailmodelTable = []
+        warnList(cityCode).then(response => {
+          var datal = response.filter(item => {
+            return item.code !=  '0000'
+          });
+          this.ftphList = datal;
+          this.gdDetailmodelTable = this.initSortTabledata(datal, 'code')
+          
+        })
+      },
+      serviceKdGjpm () {
+        var params = {
+          cityCode: this.cityCode
+        }
+        this.pm_tableData = [];
+        this.left_pmtbloaing = true
+        serviceKdGjpm(params).then((res) => {
+          this.left_pmtbloaing = false
+          var datal = res.result.data || []
+          datal = datal.filter(item => {
+            return item.code != '0000'
+          })
+          this.renderPm_tableData(datal)
+        })
+      },
+      renderPm_tableData (datas) {
+        
+        var self = this;
+        this.pm_tableData = [];
+        var dataList = (datas || _.cloneDeep(this.ftphList));
+
+        dataList.forEach(item => {
+          item.init_province_pmkey = item[this.init_province_pmkey] || ''
+          item.init_city_pmkey = item[this.init_city_pmkey] || ''
+        });
+        this.pm_tableData =  _.orderBy(dataList, function (item) {
+              return Number(item[self.pmkeyVal] || 0)
+        }, 'desc');
+     },
+     getList_BQ(){
+        var cityCode = this.cityCode  //'8106666'
+        this.bqtableData = []
+        warnList(cityCode).then(response => { 
+           this.bqtableData = response;
+        })
+      },
+  
+    tabStatusFn(type) {
+      this.tabstatus = type;
+    },
+    initService () {
+      this.serviceKdDzgd()
+      this.serviceKdZtcs()
+    },
+    render_kdDzgdData () {
+      var ztzjSelectType = this.zygdSelectType2;
+      if (ztzjSelectType == '11') {
+        this.columKeys3 = ['zj_dz_cs_waikan7', 'zj_dz_cs_bulid7', 'zj_dz_cs_call_back7', 'zj_dz_cs_jihuo7', 'zj_dz_cs_all7']
+      } else if (ztzjSelectType == '12') {
+         this.columKeys3 = ['zj_dz_cs_waikan7_year', 'zj_dz_cs_bulid7_year', 'zj_dz_cs_call_back7_year', 'zj_dz_cs_jihuo7_year', 'zj_dz_cs_all7_year']
+      }  else if (ztzjSelectType == '21') {
+         this.columKeys3 = ['zj_dz_cs_waikan30', 'zj_dz_cs_bulid30', 'zj_dz_cs_call_back30', 'zj_dz_cs_jihuo30', 'zj_dz_cs_all30']
+      }  else if (ztzjSelectType == '22') {
+         this.columKeys3 = ['zj_dz_cs_waikan30_year', 'zj_dz_cs_bulid30_year', 'zj_dz_cs_call_back30_year', 'zj_dz_cs_jihuo30_year', 'zj_dz_cs_all30_year']
+      }
+
+
+      // if (this.zyjztStatus2 == 1) {
+      //   this.columKeys4 = ['zj_dz_waikan', 'zj_dz_bulid', 'zj_dz_call_back', 'zj_dz_jihuo', 'zj_dz_all']
+      // } else if (this.zyjztStatus2 == 2) {
+      //    this.columKeys4 = ['zj_dz_waikan_year', 'zj_dz_bulid_year', 'zj_dz_call_back_year', 'zj_dz_jihuo_year', 'zj_dz_all_year']
+      // }
+
+
+      if (this.zyjztStatus2 == 1) {
+         this.columKeys_wzygd = [
+            ['zj_dz_cs_waikan7', 'zj_dz_cs_bulid7', 'zj_dz_cs_call_back7', 'zj_dz_cs_jihuo7', 'zj_dz_cs_all7'],
+            ['zj_dz_cs_waikan30', 'zj_dz_cs_bulid30', 'zj_dz_cs_call_back30', 'zj_dz_cs_jihuo30', 'zj_dz_cs_all30'],
+            ['zj_dz_waikan', 'zj_dz_bulid', 'zj_dz_call_back', 'zj_dz_jihuo', 'zj_dz_all']
+         ]
+         this.columKeys4 = ['zj_dz_waikan', 'zj_dz_bulid', 'zj_dz_call_back', 'zj_dz_jihuo', 'zj_dz_all']
+      } else if (this.zyjztStatus2 == 2) {
+         this.columKeys_wzygd = [
+            ['zj_dz_cs_waikan7_year', 'zj_dz_cs_bulid7_year', 'zj_dz_cs_call_back7_year', 'zj_dz_cs_jihuo7_year', 'zj_dz_cs_all7_year'],
+            ['zj_dz_cs_waikan30_year', 'zj_dz_cs_bulid30_year', 'zj_dz_cs_call_back30_year', 'zj_dz_cs_jihuo30_year', 'zj_dz_cs_all30_year'],
+            ['zj_dz_waikan_year', 'zj_dz_bulid_year', 'zj_dz_call_back_year', 'zj_dz_jihuo_year', 'zj_dz_all_year']
+         ]
+          this.columKeys4 = ['zj_dz_waikan_year', 'zj_dz_bulid_year', 'zj_dz_call_back_year', 'zj_dz_jihuo_year', 'zj_dz_all_year']
+      }
+    },
+    serviceKdDzgd () {
+      var params = {
+         "cityCode": this.cityCode
+      };
+      serviceApi.serviceKdDzgd(params).then(res => {
+        if (res.rspCode == '0000') {
+           this.kdDzgdData = res.result.data[0] || {}
+           this.render_kdDzgdData()
+         } else {
+           this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    render_kdZtcsData () {
+      
+       var data = this.kdZtcsData;
+       var ztzjSelectType = this.zygdSelectType;
+        if (ztzjSelectType == '11') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye', 'zyj_cs_on_way_peizhi', 'zyj_cs_on_way_zhuangji', 'zyj_cs_on_way_yichang', 'zyj_cs_on_way_all']
+        } else if (ztzjSelectType == '12') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye_year', 'zyj_cs_on_way_peizhi_year', 'zyj_cs_on_way_zhuangji_year', 'zyj_cs_on_way_yichang_year', 'zyj_cs_on_way_all_year']
+        }  else if (ztzjSelectType == '21') {
+           this.columKeys1 = ['zyj_cs_on_way_yingye_48', 'zyj_cs_on_way_peizhi_48', 'zyj_cs_on_way_zhuangji_48', 'zyj_cs_on_way_yichang_48', 'zyj_cs_on_way_all_48']
+        }  else if (ztzjSelectType == '22') {
+          this.columKeys1 = ['zyj_cs_on_way_yingye_48_year', 'zyj_cs_on_way_peizhi_48_year', 'zyj_cs_on_way_zhuangji_48_year', 'zyj_cs_on_way_yichang_48_year', 'zyj_cs_on_way_all_48_year']
+        }
+
+        var zyjztStatus = this.zyjztStatus
+        if (zyjztStatus == 1) {
+          this.columKeys_csgd = [
+            ['zyj_cs_on_way_yingye', 'zyj_cs_on_way_peizhi', 'zyj_cs_on_way_zhuangji', 'zyj_cs_on_way_yichang', 'zyj_cs_on_way_all'],
+            ['zyj_cs_on_way_yingye_48', 'zyj_cs_on_way_peizhi_48', 'zyj_cs_on_way_zhuangji_48', 'zyj_cs_on_way_yichang_48', 'zyj_cs_on_way_all_48'],
+            ['zyj_on_way_yingye', 'zyj_on_way_peizhi', 'zyj_on_way_zhuangji', 'zyj_on_way_yichang', 'zyj_on_way_all']
+          ]
+          this.columKeys2 = ['zyj_on_way_yingye', 'zyj_on_way_peizhi', 'zyj_on_way_zhuangji', 'zyj_on_way_yichang', 'zyj_on_way_all']
+        } else if (zyjztStatus == 2) {
+          this.columKeys_csgd = [
+            ['zyj_cs_on_way_yingye_year', 'zyj_cs_on_way_peizhi_year', 'zyj_cs_on_way_zhuangji_year', 'zyj_cs_on_way_yichang_year', 'zyj_cs_on_way_all_year'],
+            ['zyj_cs_on_way_yingye_48_year', 'zyj_cs_on_way_peizhi_48_year', 'zyj_cs_on_way_zhuangji_48_year', 'zyj_cs_on_way_yichang_48_year', 'zyj_cs_on_way_all_48_year'],
+            ['zyj_on_way_yingye_year', 'zyj_on_way_peizhi_year', 'zyj_on_way_zhuangji_year', 'zyj_on_way_yichang_year', 'zyj_on_way_all_year']
+          ]
+          this.columKeys2 = ['zyj_on_way_yingye_year', 'zyj_on_way_peizhi_year', 'zyj_on_way_zhuangji_year', 'zyj_on_way_yichang_year', 'zyj_on_way_all_year']
+        }
+
+      
+
+    },
+    serviceKdZtcs () {
+      var params = {
+         "cityCode": this.cityCode
+      };
+      serviceApi.serviceKdZtcs(params).then(res => {
+        if (res.rspCode == '0000') {
+           this.kdZtcsData = res.result.data[0] || {}
+          this.render_kdZtcsData()
+         } else {
+           this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    gismapListener (e) {
+      if (e.data.message == 'levelSwitch') {
+        
+         self.gisTitle = e.data.area_name ||  this.initgisTitle
+         self.mapLevel = e.data.level
+         self.areaCode = e.data.area_id;
+         self.gisMapData = e.data;
+         self.gisQueryParams = Object.assign({},  self.gisQueryParams, e.data)
+         self.gisQueryParams.area_name = '';
+         console.log('message', e.data)
+         self.cityCode = e.data.area_id;
+         self.initService()
+        // if (self.mapLevel >=  4){
+        //     self.getList_BQ()
+        // } else{
+        //     self.getList()
+        // }
+          self.getList()
+      }  else if (e.data.message == 'clickBuild') {
+        // //debugger
+        this.buildiframeshow = true;
+        this.buildiframessrc = e.data.buildUrl
+      }
+    },
+    initGisMap (initArea_id) {
+       // 初始化地图参数
+        this.gisQueryParams = {
+          level: this.mapLevel,
+          control: this.control.join(','),
+          sceneid: 3,
+          gis_sceneid: '06' ||  this.gisStatus,
+          area_id: initArea_id,
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no: store.get('staffId') || '',
+          timest: this.$store.state.resource.searchDate
+        };
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+
+        this.iframeSrc = window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+    },
+
+
+     servicejkdDwypp () {
+       //写死
+       if (this.mapLevel > 4) {
+         return
+       }
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi_yw.servicejkdDwypp(params).then((res) => {
+        if (res.rspCode == '0000') {
+            var datal = res.result.data[0] || {}
+            
+            this.renderChart(7, datal.dy_rate_4G)
+            this.renderChart(8, datal.dy_rate_5G)
+
+            this.renderChart(9, datal.wy_rate_4G)
+            this.renderChart(10, datal.wy_rate_5G)
+
+            this.renderChart(11, datal.dw_rate_4G)
+            this.renderChart(12, datal.dw_rate_5G)
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+
+     renderChart (domId, val) {
+       let params1 = {
+          domId: 'piechart_' + domId,
+          value: Number(parseFloat(val))  || 0
+        }
+       new echartInit_yw.initAnipie2(params1)
+    },
+
+ 
+  },
+  updated() {
+     var self = this;
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message',this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+
+  @import url('../comtable.scss');
+    /deep/ .bottom-tab {
+    width: 60%;
+  }
+
+  /deep/ .bottom-tab .bottom-item {
+    padding: 4px 10px !important;
+  }
+  .tjtitle {
+   /* color: #fff;
+    font-size: 18px;
+    font-weight: bolder;
+    letter-spacing: 1px;
+    background: linear-gradient(45deg, #1a92d4, transparent);
+    line-height: 34px;
+    padding-left: 15px;
+    border-radius: 20px 0 0 20px;
+    width: 60%; */
+  }
+  .tjitem {
+    // padding: 10px;
+    color: #fff;
+    font-size: 20px;
+    p {
+      line-height: 48px;
+      margin-bottom: 0;
+    }
+  }
+  .bcolor {
+    color: #3be21a;
+  }
+ 
+  .header-smallTitle {
+    line-height: 50px;
+    font-size: 22px;
+  }
+ @keyframes turn{
+      0%{-webkit-transform:rotate(0deg);}
+      25%{-webkit-transform:rotate(90deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      75%{-webkit-transform:rotate(270deg);}
+      100%{-webkit-transform:rotate(360deg);}
+  }
+  .tjbtn {
+     position: absolute;
+    right: 36px;
+    top: 36px;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 10px rgb(56, 148, 235);
+    cursor: pointer;
+    animation:turn 8s linear infinite; 
+    z-index: 99;
+    img {
+      width: 44px;
+      z-index: 99;
+    }
+  }
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: 10px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+ .leftbox,  .rightbox {
+   width: 500px;
+   height: 100%;
+   box-sizing: border-box;
+   padding: 15px;
+   padding-bottom: 30px;
+ }
+ .centerbox {
+    flex: 1;
+    background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 100px 20px 20px 20px;
+    position: relative;
+
+ }
+.cbottom-box {
+   flex: 1;
+   margin-top: 10px;
+   box-sizing: border-box;
+   position: relative;
+   padding-top: 50px;
+   position: relative;
+}
+
+//  .item-title {
+//    font-size: 22px;
+//    color: aqua;
+//    background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat ;
+//    background-size: 100% 100%;
+//    line-height: 38px;
+//     padding-left: 58px;
+//     position: relative;
+//  }
+
+  .item-title {
+   font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   height: 48px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+ .chartbox {
+   width: 100%;
+   height: 100%;
+ }
+
+ .gdjkitem {
+   height: 68px;
+   width: 72px;
+   margin: 0 auto;
+   background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+  
+ }
+  .substTab {
+    text-align: center;
+    position: relative;
+    .el-radio {
+      color: #ddd;
+      margin-right: 20px;
+    }
+    /deep/ .el-radio__input .el-radio__inner {
+        border-color: #ddd;
+        background: #ddd;
+    }
+    /deep/ .el-radio__input.is-checked + .el-radio__label {
+        color: #f3c911;
+    } 
+    /deep/ .el-radio__input.is-checked .el-radio__inner {
+       color: #ede90f;
+       background: #e4ac47;
+    }
+  }
+  .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+  }
+  .pull-rightdetail {
+    position: absolute;
+    right: 120px;
+    top: 50px;
+    .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+  }
+ .gdjkitembox {
+   text-align: center;
+   position: relative;
+   margin-top: 12px;
+   &:not(:last-child)::after{
+     content: '';
+     display: block;
+     width: 18px;
+     height: 18px;
+     background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+     background-size: 100% 100%;
+     position: absolute;
+     right: -8px;
+     top: 26px;
+   }
+ }
+
+
+.mtheader {
+  text-align: center;
+  line-height: 34px;
+  font-size: 16px;
+  color: #51d1ee;
+  border-bottom: 1px solid #308497;
+}
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4,54,108,0.7);
+}
+ .centTab {
+   position: absolute;
+   z-index: 10;
+   width: 100%;
+   top: 30px;
+   text-align: center;
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 140px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+       font-weight: bold;
+    }
+ }
+ .tunit {
+   font-size: 16px;
+ }
+ .centTab2 {
+   position: absolute;
+   z-index: 10;
+   width: 100%;
+   top: 70px;
+   text-align: center;
+ }
+ /deep/.centTab2 .el-radio-group .el-radio__label {
+   font-size: 16px !important;
+ }
+ /deep/.centTab2 .el-radio-group .is-checked .el-radio__label {
+  color: #02f6ff;
+ }
+  /deep/.centTab2 .el-radio-group .el-radio {
+    color: #818fad;
+    margin-right: 10px;
+}
+  /deep/.centTab2 .el-radio--small.is-bordered {
+  border-radius: 15px;
+  border: 1px solid #9baacf;
+}
+  /deep/.centTab2  .el-radio--small.is-bordered.is-checked {
+    border: 1px solid #85e2e6;
+  }
+
+ /deep/.centTab2 .el-radio-group  .el-radio__input .el-radio__inner {
+    position: relative;
+    top: -2px;
+  }
+  /deep/.centTab2 .el-radio-group  .el-radio__input.is-checked .el-radio__inner {
+    border-color: #01dfff;
+    background: #01dfff;
+
+}
+
+
+ .cardetailbox {
+   display: flex;
+   padding: 15px 0;
+   .imgbox {
+     margin-right: 30px;
+     width: 380px;
+     img {
+       width: 380px;
+       height: 250px; 
+     }
+   }
+   .fontbox {
+     color: #fff;
+     font-size: 16px;
+   }
+ }
+ /deep/.el-table tbody tr.rowclassname_00  td{
+   color: rgb(243, 198, 101)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_01  td{
+   color: rgb(92, 235, 74)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_02  td{
+   color: rgb(86, 212, 243)!important;
+ }
+
+ .checkgroupbox {
+   position: absolute;
+   right: 10px;
+   top: 0;
+ }
+ .checkgroupbox .el-checkbox {
+   margin-right: 15px;
+   .el-checkbox__label {
+     margin-left: 6px;
+   }
+ }
+  /deep/ .checkstate01 .el-checkbox__label {
+     color: rgb(92, 235, 74)!important;
+  }
+   /deep/ .checkstate00 .el-checkbox__label {
+     color: rgb(243, 198, 101)!important;
+  }
+  /deep/ .checkstate02 .el-checkbox__label {
+    color: rgb(86, 212, 243)!important;
+  }
+
+  /deep/ #bzhdTable tbody tr {
+    cursor: pointer !important;
+  }
+
+  .box-item {
+  position: relative;
+}
+
+  .infinite-list {
+    padding-left: 0px;
+    margin-left: 0px;
+    height: 2rem;
+    color: #FFFFFF;
+  }
+  .centTab {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 30px;
+    text-align: center;
+
+   .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+    }
+  }
+  
+  .rowttabs {
+   height: 40px;
+  line-height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+     color: #45d8e2;
+  }
+ }
+
+.rowttabs3 {
+
+  margin-bottom: 0px;
+  position: relative;
+  .rowttabs-item {
+    padding: 4px 10px;
+    // border-radius: 5px;
+    // border: 1px solid #5b7bc9;
+    margin-right: 30px;
+    color: #698bdf;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .rowttabs-item.active {
+    font-weight: bold;
+    border-bottom: 1px solid #45d8e2;
+     color: #45d8e2;
+  }
+ }
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+ .dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .left2 {
+       color: #02f6ff;
+       font-size: 26px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+.hddetali {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  overflow: auto;
+  height: 320px;
+  h3 {
+     color: #fff;
+  }
+}
+.swiperClass {
+  width: 80%;
+  height: 280px;
+  margin:  0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #19daec;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+
+.gistitle {
+  position: absolute;
+  left: 30px;
+  top: 50px;
+  font-size: 24px;
+  color: aqua;
+  z-index: 99;
+  cursor: pointer;
+
+}
+.anpiebox {
+  height: 140px;
+}
+.piefont {
+  font-size: 15px;
+  line-height: 38px;
+  text-align: center;
+}
+
+
+.rightTable {
+      width: 100%;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #02f6ff;
+      margin-top: 0px;
+      .tHead,.tBody {
+        display: flex;
+        .wid19 {
+          background-image: none;
+        }
+      }
+      .tHead {
+        margin-top: 0px;
+        line-height: 60px;
+        font-size: 15px;
+        div {
+          flex: 1;
+          text-align: center;
+          background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          background-position: center 18px;
+          font-weight: bolder;
+        }
+        .wid19 {
+          background-image: none;
+        }
+        .emptyth {
+           background-image: none;
+        }
+      }
+      .tBody {
+        .td {
+          flex: 1;
+          text-align: center;
+           font-size: 18px;
+          div {
+            line-height: 68px;
+            border-bottom: 1px dashed #134192;
+          }
+        }
+        
+        .bg {
+          background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+          background-repeat: no-repeat;
+          background-position: center left;
+          background-size: 1px 100%;
+          div {
+            font-size: 18px;
+            color: #bbebf3;
+          }
+        }
+        .bg:first-child {
+            background-image: none;
+        }
+        .titlecell {
+          font-size: 16px;
+          line-height: 68px;
+          min-width: 92px;
+        }
+      }
+    }
+    .piefont2 {
+      position: relative;
+      top: -10px;
+      text-align: center;
+      font-size: 15px;
+      .sudubox {
+        font-size: 20px;
+        color: rgb(240, 161, 15);
+      }
+
+    }
+    .bitembox {
+      margin: 0 auto;
+      text-align: center;
+      .bimg {
+        margin: 10px 0;
+        width: 68px;
+        height: 60px;
+      }
+      .numfont {
+        font-size: 22px;
+        color: aqua;
+      }
+      .infofont {
+        font-size: 16px;
+      }
+    }
+   /deep/.border-box-content {
+      padding: 15px 10px;
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+    .rowtitem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .sub_rowtitem {
+        display: flex;
+        margin-bottom: 10px;
+        .inconbox {
+          margin-right: 40px;
+          width: 42px;
+          height: 42px;
+          background: #031962;
+          text-align: center;
+          border-radius: 50%;
+          box-shadow: 0 0 10px rgba(53, 98, 233, 0.8);
+          margin-bottom: 10px;
+          position: relative;
+          top: 5px;
+          img {
+            width: 40px;
+          }
+        }
+        .flex1 {
+          text-align: center;
+        }
+        .numfont {
+          color: rgb(241, 169, 13);
+          font-size: 20px;
+        }
+        .titlefont {
+          font-size: 16px;
+        }
+
+      }
+    }
+    .rowtitem1 {
+      flex: 1.2;
+    }
+.yxtopitem {
+   padding: 15px;
+  .titlefont {
+    font-size: 20px;
+    color: #bbe1f0;
+  }
+  .numfont {
+    font-size: 26px;
+    color: #f6c864;
+    line-height: 40px;
+  }
+  img{
+    height: 130px;
+    margin-top: -15px;
+  }
+}
+.gdxixbox {
+  padding: 10px;
+  text-align: center;
+  .numfont {
+    font-size: 20px;
+    color: #f3c323;
+    line-height: 46px;
+  }
+  .gdtfont {
+    font-size: 18px;
+    color: aqua;
+    font-weight: bolder;
+  }
+}
+.chhartbox {
+  width: 100%;
+  height: 100px;
+}
+  /deep/ .el-select .el-input__inner {
+    height: 28px;
+    // width: 100px;
+    background: transparent;
+    color: #1fe3ef;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-color: #3bc8d9;
+  }
+
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 16px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 15px !important;
+}
+
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  padding: 6px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+  max-height: 45px;
+  overflow-y: hidden;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+
+.pmdetalibox {
+  display: flex;
+  min-height: 520px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 30px;
+}
+.left_pmtb {
+  width: 500px;
+}
+.right_pmtb {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px dashed #404e77;
+  .rpmtitle {
+    position: absolute;
+    color: aqua;
+    font-size: 20px;
+    top: -34px;
+    text-align: center;
+    width: 100%;
+    .subtagtab {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      .rowttabs {
+        height: 30px;
+        line-height: 30px;
+        .rowttabs-item {
+          padding: 3px 6px;
+        }
+      }
+    }
+
+  }
+}
+ .lgwbox {
+      text-align: center;
+      padding-top: 40px;
+      .lgwnum {
+          font-size: 24px;
+          color: #f7e713;
+      }
+      .lgwimg {
+          margin: 12px 0;
+          img {
+              width: 44px;
+          }
+      }
+      .lgwfont {
+         font-size: 20px; 
+      }
+  }
+/deep/ .el-loading-mask {
+    background-color: rgba(6,26,58, 0.7);
+  }
+
+/deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.custom_table .cellRborder {
+  border-right: 1px dashed rgb(45, 61, 94) !important;
+}
+/deep/.el-table__fixed{
+  background: #010d2d !important;
+}
+
+/deep/.el-table__fixed::before, /deep/ .el-table__fixed-right::before  {
+   background: transparent !important;
+}
+/deep/.el-dialog__headerbtn{
+  z-index: 9999;
+}
+/deep/ .el-loading-mask {
+  background-color: rgba(6,26,58, 0.7);
+}
+ /deep/ .grouptable.el-table tbody td {
+   border-right: 1px dashed rgb(45, 61, 94) !important
+ }
+ /deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.el-table__fixed{
+  background: #00133e !important;
+}
+</style>
+
+<style lang="css">
+.initselect.el-select-dropdown {
+    background: rgb(9,55,112) !important;
+  }
+
+.initselect .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #07234d;
+}
+.initselect .el-select-dropdown__item {
+  color: #fff;
+}
+.initselect .el-select-dropdown__item.selected {
+  color: aqua;
+}
+.initselect.el-select-dropdown {
+  border: solid 1px #93b1f7;
+}
+.initselect .popper__arrow::after {
+  border-bottom-color: #093770 !important;
+}
+.el-tooltip__popper.is-dark {
+  font-size: 14px!important;
+}
+
+.linkdetail {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  color: #b8d2f2;
+  font-size: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.inittable_qj {
+  border: 1px solid #2b69a9 !important;
+  margin-top: 20px;
+}
+.inittable_qj.el-table .cell {
+    padding: 8px 6px !important;
+    font-size: 18px !important;
+}
+
+.mattitle {
+  font-size: 18px;
+  margin-top: 15px;
+}
+.matitembox {
+  text-align: center;
+  padding-top: 40px;
+}
+.piechartbox {
+  height: 140px;
+  width: 240px;
+
+}
+
+.itemboxtitle {
+  position: absolute;
+  width: 160px;
+  padding: 4px 10px;
+  top: 0;
+  left: -10px;
+  font-size: 16px;
+  background: linear-gradient(to right, #02153863, #0ca6bf, #00113163);
+  font-weight: bolder;
+  text-align: center;
+}
+.selectbox {
+  margin: 10px 0;
+  padding: 10px;
+  position: relative;
+   border-radius: 5px;
+   border: 1px solid #224aa2;
+    overflow: hidden;
+}
+
+
+</style>
+
+
+<style lang="scss">
+  .video-da {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 98%;
+    width: 100%;
+    background-color: #000000;
+  }
+
+  .video-da-guan {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 32px;
+    z-index: 99;
+  }
+
+  .video-xiao {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 98%;
+    width: 100%;
+    background-color: #000000;
+  }
+
+  .video-xiao-guan {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 32px;
+    z-index: 99;
+  }
+
+
+  .tankuangsize {
+    min-height: 800px;
+    position: relative;
+    font-size: 26px;
+  }
+
+  .tankuangsize2 {
+    margin-top: 20px;
+    float: left;
+    width: 1180px;
+  }
+
+  .el-row a {
+    color: #ffffff;
+  }
+
+  .baibiaoti {
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration:none
+  }
+ .baibiaoti:hover {
+    color: #ffffff;
+    cursor: pointer;
+    text-decoration: underline
+  }
+  .lanlabel {
+    color: #00F9FA;
+  }
+
+  .el-carousel__arrow--left {
+    cursor: pointer;
+    background: url('../home/img/bg_sd21-2.png');
+    height: 48px;
+    width: 48px;
+  }
+
+  .el-carousel__arrow--right {
+    cursor: pointer;
+    background: url('../home/img/bg_sd21.png');
+    height: 48px;
+    width: 48px;
+  }
+
+  .el-carousel__arrow i {
+    color: transparent;
+  }
+
+  .el-carousel__indicators--horizontal {
+    display: none;
+  }
+
+  .spanai1 {
+    margin-top: 3.75rem;
+    margin-left: 3.375rem;
+    height:7.5rem;
+    width: 110px;
+    float: left;
+    text-align: center;
+  }
+
+  .el-row {
+    margin-bottom: 0px;
+  }
+
+  .bg_sd15 {
+    height:  80px;
+    margin: 30px auto 10px auto;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+  }
+
+  .bg_sd15:hover {
+    transform: scale(1.2);
+  }
+
+  .rowbox {
+   // background-image: url('../home/img/bg_sd14.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    width: 100%;
+    // height: 240px;
+    // margin-top: 4%
+  }
+
+  .el-dialog {
+    -webkit-transform: none;
+    transform: none;
+    left: 0;
+    position: relative;
+    z-index: 20000;
+    margin: 0 auto;
+    padding-bottom: 30px;
+    background-image: url('~@/assets/images/bigScreen/kuang.png');
+    background-size: 100% 100%;
+    background-color: rgba(220, 38, 38, 0);
+  }
+
+  .el-dialog__body {
+    padding: 0px 20px;
+  }
+
+  .el-dialog__headerbtn {
+    z-index: 9999;
+  }
+
+  .el-dialog__headerbtn .el-dialog__close {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 2px 20px 0 0;
+    border: 2px solid #193987;
+    border-radius: 5px;
+    background: #1e1e88;
+  }
+
+  .dialogCon {
+    padding: 0 40px;
+
+    .dialogTitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 30px;
+      border-bottom: 1px dashed #404e77;
+      padding: 5px 0;
+
+      .left {
+        display: inline-block;
+        padding-right: 110px;
+        font-size: 20px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+
+      .title-right {
+        color: #218cc8;
+        font-size: 12px;
+        font-family: Microsoft YaHei;
+
+        div {
+          width: 38px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          display: inline-block;
+          cursor: pointer;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+
+        .active {
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+        }
+      }
+    }
+  }
+</style>
+
+

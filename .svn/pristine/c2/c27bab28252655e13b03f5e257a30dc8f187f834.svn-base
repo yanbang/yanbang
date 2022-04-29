@@ -1,0 +1,325 @@
+<template>
+<!--  @sort-change='tableSortChange'-->
+  <div>
+    <el-table :data="AroundTheCitys" style="width: 96%" height="590" >
+      <el-table-column
+        prop="eparchyName"
+        label="归属地市"
+      >
+        <template slot-scope="scope">
+          <a style="cursor:pointer" class="titleSpan1">{{scope.row.eparchyName}}</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="gridName"
+        label="营服名称"
+      >
+
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.gridName}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="dayNew"
+        label="日发展"
+      >
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.dayNew}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="dayAchive"
+        label="日完成率"
+      >
+        <template slot-scope="scope">
+          <a v-if="scope.row.dayStatus == 2" class="titleSpan1" style="color: #02f6fe !important">{{ scope.row.dayAchive }}%</a>
+          <a v-else-if="scope.row.dayStatus  == 1" style="color: #ffcc00 !important"
+             class="titleSpan1"
+          >{{ scope.row.dayAchive }}%</a>
+          <a v-else class="titleSpan1">{{ scope.row.dayAchive }}%</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="weekNew"
+        label="周发展"
+      >
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.weekNew}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        prop="weekAchive"
+        label="周完成率"
+      >
+        <template slot-scope="scope">
+          <a v-if="scope.row.weekStatus == 2" class="titleSpan1" style="color: #02f6fe !important">{{ scope.row.weekAchive }}%</a>
+          <a v-else-if="scope.row.weekStatus  == 1" class="titleSpan1" style="color: #ffcc00 !important"
+          >{{ scope.row.weekAchive }}%</a>
+          <a v-else class="titleSpan1">{{ scope.row.weekAchive }}%</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="weekHb"
+        label="周环比"
+      >
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.weekHb}}%</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="monNew"
+        label="月发展"
+      >
+        <template slot-scope="scope">
+          <span class="titleSpan1">{{scope.row.monNew}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="monAchive"
+        label="月完成率"
+      >
+        <template slot-scope="scope">
+          <a v-if="scope.row.monStatus == 2" class="titleSpan1" style="color: #02f6fe !important">{{ scope.row.monAchive }}%</a>
+          <a v-else-if="scope.row.monStatus  == 1" class="titleSpan1" style="color: #ffcc00 !important"
+          >{{ scope.row.monAchive }}%</a>
+          <a v-else class="titleSpan1">{{ scope.row.monAchive }}%</a>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="qthAchive"
+        label="季度序时完成率"
+      >
+        <template slot-scope="scope">
+          <a v-if="scope.row.qthStatus == 2" class="titleSpan1" style="color: #02f6fe !important">{{ scope.row.qthAchive }}%</a>
+          <a v-else-if="scope.row.qthStatus  == 1" class="titleSpan1" style="color: #ffcc00 !important"
+          >{{ scope.row.qthAchive }}%</a>
+          <a v-else class="titleSpan1">{{ scope.row.qthAchive }}%</a>
+        </template>
+      </el-table-column>
+    </el-table>
+<!--    <el-table-->
+<!--        :data="popList"-->
+<!--        style="width: 100%"-->
+<!--        :before-close="handleClose"-->
+<!--      >-->
+<!--        <el-table-column-->
+<!--          prop="eparchyName"-->
+<!--          label="归属地市"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--      <el-table-column-->
+<!--        prop="gridName"-->
+<!--        label="营服名称"-->
+<!--      ></el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="dayNew"-->
+<!--          label="日发展"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="dayCchive"-->
+<!--          label="日完成率"-->
+<!--          sortable-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="weekNew"-->
+<!--          label="周发展"-->
+<!--        >-->
+<!--        </el-table-column>-->
+
+<!--        <el-table-column-->
+<!--          prop="weekAchive"-->
+<!--          label="周完成率"-->
+<!--          sortable-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="weekHb"-->
+<!--          label="周环比"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="monNew"-->
+<!--          label="月发展"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="monAchive"-->
+<!--          label="月完成率"-->
+<!--          sortable-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--        <el-table-column-->
+<!--          prop="qthAchive"-->
+<!--          label="季度序时完成场"-->
+<!--        >-->
+<!--        </el-table-column>-->
+<!--      </el-table>-->
+
+  </div>
+
+</template>
+
+<script>
+import { getPopList } from '@/views/Evaluate/service/service'
+export default {
+  props:{
+    rowData:Object,
+    dataType:String,
+    popList:Array
+  },
+name: "dialogComponent",
+  data(){
+    return{
+      dialogTableVisible:true,
+      AroundTheCitys:[
+      ],
+    }
+  },
+  watch:{
+    popList(){
+      this.AroundTheCitys = this.popList
+      // this.getPopList()
+    }
+  },
+  mounted() {
+    //alert(this.dialogVisible)
+    this.dialogTableVisible = true
+   // if(this.popList){
+   //   this.AroundTheCitys = []
+   //   this.popList = this.AroundTheCitys
+   // }
+   //  this.getPopList()
+  },
+  methods:{
+    handleClose(){
+      this.dialogTableVisible = false
+      this.dialogVisible = false
+      this.$emit(this.dialogVisible)
+    },
+    //监听顺序方法
+    tableSortChange(column){
+      const self = this
+      let index = 0
+      let tmpList = []
+      let string = column.prop
+      this.AroundTheCitys.forEach(obj => {
+        obj[string] = parseFloat(obj[string])
+
+      })
+
+      let tmplist2 = []
+      if (column.order === 'descending'){
+        // console.log(JSON.stringify(self.sortByKey(tmpList, column.prop)))
+        // this.tableList = self.sortByKey(tmpList, column.prop)
+        this.sortA(tmpList,column.prop)
+      }else {
+        // this.tableList = self.sort(tmpList, column.prop)
+        this.sortB(tmpList,column.prop)
+      }
+
+      this.AroundTheCitys.forEach(obj => {
+        console.log(obj[column.prop])
+      })
+    },
+    // 顺序
+    sortByKey(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+
+        console.log(JSON.stringify(array))
+        return x >= y;
+      })
+    },
+
+    sortA(arr,name){
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (let i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+
+      }
+      this.AroundTheCitys = arr
+    },
+    sortB(arr,name){
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (let i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.AroundTheCitys = arr
+    },
+
+    //倒叙
+    sort(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+        return x < y;
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+/deep/ .el-table{
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th{
+  background: none !important;
+  background: url("../../assets/images/bigScreen/fullService/597bcdc505fa3.png") 50% 18px  !important;
+  text-align: center !important;
+  color: #02F6FF !important;
+  font-size: 12px !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center ;
+}
+/deep/ .el-table tr{
+  background: none !important;
+}
+/deep/.el-table td{
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #FFFFFF;
+}
+/deep/ .el-table th.is-leaf, .el-table td{
+  border: none !important;
+  color: #FFFFFF ;
+}
+/deep/.el-table::before{
+  height: 0 !important;
+}
+/deep/.el-table th > .cell{
+  display: contents !important;
+}
+
+.titleSpan1{
+  font-size: 14px;
+  font-family: 'DigifaceWide';
+  src: url('../../assets/fonts/digifaw.ttf');
+  display: block;
+}
+</style>

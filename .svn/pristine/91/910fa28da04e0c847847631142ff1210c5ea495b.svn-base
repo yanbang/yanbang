@@ -1,0 +1,11 @@
+function postMessage (vueObj,refdom,params) {
+    
+    const mapFrame = vueObj.$refs[refdom]
+    const iframeWin = mapFrame.contentWindow
+     iframeWin.postMessage(params, '*')
+  
+};
+
+export default postMessage
+
+

@@ -1,0 +1,61 @@
+<template>
+  <div>
+    <el-col :span="24">
+      <div class="thisWeek" :data="week">
+        <div class="thisWeekcontent">
+          本周发展
+          <span class="span1" style="margin-left: 10px; margin-right: 10px">{{ week.weekNum }} </span>
+          <span class="span2">户</span>
+          ，周目标完成
+          <span class="span3" style="margin-left: 10px">{{ week.weekPct }}%</span>
+        </div>
+      </div>
+    </el-col>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'development',
+  props: {
+    week: Object,
+  },
+  data() {
+    return {
+      cumulative: 10379,
+      // week: {
+      //   cumulative: '10379',
+      //   target: '148.7',
+      //   ranking: '02',
+      // },
+    }
+  },
+}
+</script>
+
+<style scoped>
+.thisWeek {
+  width: 100%;
+  font-size: 14px;
+}
+.thisWeek .thisWeekcontent {
+  line-height: 37px;
+  padding-left: 40px;
+  font-size: 14px;
+  color: #02f6ff;
+}
+.span1 {
+  color: #fdfeff;
+  font-size: 18px;
+  font-family: 'DigifaceWide';
+}
+.thisWeek .span2 {
+  font-size: 14px;
+  color: #fdfeff;
+}
+.span3 {
+  font-family: 'DigifaceWide';
+  font-size: 18px;
+  color: #ffcc00;
+}
+</style>

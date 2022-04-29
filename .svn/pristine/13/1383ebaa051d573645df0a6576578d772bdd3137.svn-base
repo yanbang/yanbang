@@ -1,0 +1,1459 @@
+<!--IDC -->
+<template>
+  <div class="contentbox">
+    <Header
+      v-if="or_he == '0'"
+      backurl="/unicomwisdomeyes/yhzl_index"
+      title="山东联通网络智慧眼-沿黄战略"
+      subtitle="网络能力"
+    ></Header>
+    <Header v-else title="山东联通网络智慧眼-云" subtitle="IDC"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+        <div class="box-item flex colflex " style="height: 200px">
+          <div class="item-title titlefont">
+            <span>空间能力</span>
+          </div>
+
+          <div class="flex1">
+            <div class="flex flex1 colflex">
+              <div class="flex1 jxwlrow flex" style="padding-top: 20px">
+                <div class="flex1">
+                  <div>
+                    <span class="numfont">{{ kjnlData.room_num || '-' }}</span>
+                  </div>
+                  <div><img style="width: 50px" src="@/assets/images/images_zy/jfindex.png" alt="" srcset="" /></div>
+                  <div class="jxinfo">机房数</div>
+                </div>
+                <div class="flex1">
+                  <div>
+                    <span class="numfont">{{ kjnlData.frame_num || '-' }}</span>
+                  </div>
+                  <div><img src="@/assets/images/images_zy/iconimg2.png" alt="" srcset="" /></div>
+                  <div class="jxinfo">机架数</div>
+                </div>
+                <div class="flex1">
+                  <div>
+                    <span class="numfont">{{ kjnlData.frame_num_use || '-' }}</span>
+                  </div>
+                  <div>
+                    <img src="@/assets/images/kxjj.png" alt="" srcset="" />
+                  </div>
+                  <div class="jxinfo">已分配机架数</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>供电能力</span>
+          </div>
+          <div class="flex1">
+            <el-table
+              id="wlnlTable1"
+              ref="gdnltable"
+              class="custom_table tstable"
+              :data="tableData1"
+              style="width: 100%"
+              height="280"
+              size="mini"
+              show-summary
+              border
+            >
+              <el-table-column prop="name" label="IDC中心名称" fixed show-overflow-tooltip width="120px">
+              </el-table-column>
+              <el-table-column prop="zhi_sys_num" label="直流系统(套)" width="auto"> </el-table-column>
+              <el-table-column prop="ups_sys_num" width="auto" label="UPS系统(套)"> </el-table-column>
+              <el-table-column prop="capacity_total_zhi" width="auto" label="直流系统可用总容量(A)"> </el-table-column>
+              <el-table-column prop="capacity_surplus_zhi" width="auto" label="直流系统剩余容量(A)"> </el-table-column>
+
+              <el-table-column prop="capacity_total_ups" width="auto" label="UPS系统可用总容量(KVA)"> </el-table-column>
+              <el-table-column prop="capacity_surplus_ups" width="auto" label="UPS系统剩余容量(KVA)"> </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>制冷能力</span>
+          </div>
+          <div class="flex1">
+            <el-table
+              id="wlnlTable1"
+              ref="zlnltable"
+              class="custom_table"
+              :data="tableData2"
+              style="width: 100%"
+              height="280"
+              size="mini"
+              show-summary
+              border
+            >
+              <el-table-column prop="name" label="IDC中心名称" show-overflow-tooltip width="auto"> </el-table-column>
+              <el-table-column prop="cool_capacity" label="制冷能力(KW)" sortable width="auto"> </el-table-column>
+              <el-table-column prop="air_conditioner" width="auto" sortable label="空调总量(台)"> </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <!-- <div class="box-item flex colflex flex1" >
+          <div class="item-title titlefont">
+            <span>云资源池</span>
+          </div>
+          <div class="flex1">
+                 <div class = "centbotbox_k flex1">
+                    <div class = "flex" style="border-bottom: 1px solid #0e328a; line-height: 30px; margin-top: 5px; font-size: 16px">
+                      <div class="flex11" style="text-align: right; width: 100px"> </div>
+                      <div class="flex1">IT云 </div>
+                      <div class="flex1">CT云</div>
+                      <div class="flex1">业务云</div>
+                    </div>
+
+                    <div class = "flex scrollrow">
+                      <div class="flex11" style="text-align: right; width: 100px">内存(G)</div>
+                      <div class="flex1">{{yzyData.ITMemory}}</div>
+                      <div class="flex1">{{yzyData.CTMemory}}</div>
+                      <div class="flex1">{{yzyData.businessMemory}}</div>
+                    </div> 
+                    <div class = "flex scrollrow">
+                      <div class="flex11" style="text-align: right; width: 100px">VCPU(个)</div>
+                      <div class="flex1">{{yzyData.ITVCPU}}</div>
+                      <div class="flex1">{{yzyData.CTVCPU}}</div>
+                      <div class="flex1">{{yzyData.businessVCPU}}</div>
+                    </div> 
+                    <div class = "flex scrollrow">
+                      <div class="flex11" style="text-align: right; width: 100px">储存总量(G)</div>
+                      <div class="flex1">{{yzyData.ITStorage}} </div>
+                      <div class="flex1">{{yzyData.CTStorage}}</div>
+                      <div class="flex1">{{yzyData.businessStorage}}</div>
+                    </div> 
+                </div>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="centerbox flex colflex">
+        <div class="gistitle">
+          <span class="titlefont">{{ gisTitle }}</span>
+        </div>
+        <!-- <div class="tjbtn"  @click="isDialogShow_ZHY=true" ><img src="../zhyeys.png" alt="" srcset=""></div> -->
+        <div class="tjbtn" @click="getEyesInfo"><img src="../zhyeys.png" alt="" srcset="" /></div>
+        <div class="idcdetail">
+          <img src="@/assets/images/vksh.png" style="width: 20px" alt="" srcset="" />
+          <a class="alink" target="_blank" href="https://134.32.43.45:31943/imax/build/index.html#/screen1/play"
+            >IDC详情</a
+          >
+        </div>
+
+        <iframe
+          ref="gisiframe"
+          id="gisiframe"
+          :src="iframeSrc"
+          style="widh: 100%; height: 100%"
+          frameborder="0"
+        ></iframe>
+      </div>
+      <div class="rightbox flex colflex">
+        <!-- <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>总出口带宽(G)</span>
+          </div>
+
+           <div class="flex1">
+            <div class="chartbox" id="chart_right1"></div>
+          </div>
+        </div> -->
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>带宽利用率(%)</span>
+            <!-- <span class="zdmore pull-right" @click="dialogShow1 = true"><span class="el-icon-more"></span></span> -->
+          </div>
+
+          <div class="flex1">
+            <div class="chartbox" id="chart_right2"></div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex">
+          <div class="item-title titlefont">
+            <span>省内省外流量分析</span>
+          </div>
+          <div class="flex1 flex">
+            <div class="swiperbox" style="height: 250px; width: 100%">
+              <div class="swiper-container swiperClass">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide" v-for="(itemtable, index) in tableData_sw" :key="index" style="width: 100%">
+                    <el-table
+                      class="mytab custom_table grouptable groupheadtable"
+                      :data="itemtable"
+                      style="width: 100%"
+                      height="240"
+                      size="mini"
+                      border
+                    >
+                      <el-table-column prop="name" label="地市" show-overflow-tooltip width="140"> </el-table-column>
+                      <el-table-column label="平均(G)" width="auto">
+                        <el-table-column prop="avg_inll" label="入流量" show-overflow-tooltip width="auto">
+                        </el-table-column>
+                        <el-table-column prop="avg_outll" label="出流量" show-overflow-tooltip width="auto">
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column label="峰值(G)" width="auto">
+                        <el-table-column prop="max_inll" label="入流量" show-overflow-tooltip width="auto">
+                        </el-table-column>
+                        <el-table-column prop="max_outll" label="出流量" show-overflow-tooltip width="auto">
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                  <div class="swiper-pagination" slot="pagination"></div>
+                </div>
+                <!-- <div class="swiper-pagination"></div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex">
+          <div class="item-title titlefont">
+            <span>其它运营商流量分析</span>
+          </div>
+
+          <div class="flex1 flex">
+            <div class="swiperbox" style="height: 240px; width: 100%">
+              <div class="swiper-container2 swiperClass">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide" style="width: 100%">
+                    <div class="chartitle">济南IDC</div>
+                    <div class="schartbox" id="schartbox1"></div>
+                  </div>
+                  <div class="swiper-slide" style="width: 100%">
+                    <div class="chartitle">青岛IDC</div>
+                    <div class="schartbox" id="schartbox2"></div>
+                  </div>
+                  <div class="swiper-slide" style="width: 100%">
+                    <div class="chartitle">鲁南IDC</div>
+                    <div class="schartbox" id="schartbox3"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <el-dialog :visible.sync="dialogShow1" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{ gisTitle }}详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <video width="100%" height="600px" controls id="videoBox">
+            <source src="/view/images/shiping.mp4" type="video/mp4" />
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="isDialogShow_ZHY" width="50%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">IDC-智慧眼</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px; max-height: 600px; overflow: auto">
+          <div class="eyesmodelbox" v-html="zhy_content"></div>
+          <!-- <div style="min-height: 280px; position: relative;">
+               <div class="tjtitle">
+                 {{gisTitle}}分析
+               </div>
+             
+               <div class = "tjbody" style="margin-top: 10px; margin-left: 10px; margin-bottom: 50px">
+            
+                 <div class="tjitem">
+                  <p>全省带宽流入利用率最高地市为<span class="bcolor">{{zhyData.name1}}</span>, 利用率为<span class="bcolor">{{zhyData.value1}}%</span>。</p>
+                  <p>全省带宽流出利用率最高地市为<span class="bcolor">{{zhyData.name2}}</span>, 利用率为<span class="bcolor">{{zhyData.value2}}%</span>。</p>
+                 </div> 
+               </div>
+               
+             </div> -->
+        </div>
+      </div>
+    </el-dialog>
+
+    <Footer v-if="or_he == '0'" :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+var swpchart1 = null
+var swpchart2 = null
+var swpchart3 = null
+import Header from '@/components/resource_visual/header2'
+import Footer from '@/components/resource_visual/footer'
+import store from 'store'
+import { mapState } from 'vuex'
+var _ = require('@/utils/lodash.js')
+var Qs = require('@/utils/qs.js')
+var self = null
+import echarts_init from '@/views/resource_visual/echarts_component/echart_bardc'
+
+import serviceApi from '@/api/idcapi'
+import serviceApis from '@/api/network/wireless'
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      zhyData: {
+        name1: '',
+        name2: '',
+        value1: '',
+        value2: ''
+      },
+      isDialogShow_ZHY: false,
+      wcxnStatus: '1',
+      rt1status: '1',
+      pmstatus: '1',
+      dialogTitle: '',
+      isDialogShow: false,
+      gisTitle: '山东省',
+      cityCode: '370000',
+      iframeSrc: '',
+      rowttabStatus: '1',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tabdata: [
+        {
+          title: '移网',
+          active: false,
+          href: '/unicomwisdomeyes/network_wireless?pagesource=yhzl'
+        },
+        {
+          title: '宽带',
+          active: false,
+          href: '/unicomwisdomeyes/broadband?pagesource=yhzl'
+        },
+        {
+          title: '承载',
+          active: false,
+          href: '/unicomwisdomeyes/network_loadbear?pagesource=yhzl'
+        },
+        {
+          title: 'IDC',
+          active: true,
+          href: '/unicomwisdomeyes/cloud_idc?pagesource=yhzl'
+        }
+      ],
+      tcolums1: [
+        { title: '地市', filed: 'name', width: '120' },
+        { title: '千兆用户数预警', filed: 'f1' },
+        { title: '峰值流量预警', filed: 'f2' },
+        { title: '中维预警', filed: 'f3' }
+      ],
+      tableData1: [],
+      tableData2: [],
+      tableData3: [
+        { name: 'VCPU', value: 100 },
+        { name: '存储(T)', value: 170 },
+        { name: '内存容量(G)', value: 120 }
+      ],
+      dialogShow1: false,
+      zbdetailColums: [
+        { filed: 'f1', title: '客户名称' },
+        { filed: 'f1', title: '所属行业' },
+        { filed: 'f1', title: '收入信息' }
+      ],
+      zbdetailData: [],
+      IDC_ID: '',
+      control: [],
+      IDC_TYPE: '1',
+      kjnlData: {},
+      yzyData: {},
+      tableData_sw: [],
+      swiper1: null,
+      swiper2: null,
+      zhy_content: '',
+      or_he: '1'
+    }
+  },
+  components: {
+    Header,
+    Footer
+  },
+  created() {
+    self = this
+    if (this.$route.query.pagesource && this.$route.query.pagesource == 'yhzl') {
+      this.or_he = '0'
+    } else {
+      this.or_he = '1'
+    }
+  },
+  mounted() {
+    //     省级用户	1	370000	["370000"]
+    // 地市级用户（例如济南）	1	370000	["370000", "0531"]
+    // 区县级用户（例如章丘区）	2	0531	["370000", "0531", "370114"]
+
+    var self = this
+    var initArea_id = '370000'
+    this.mapLevel = 1
+    // 分权分域
+    if (store.get('userInfo')) {
+      var userInfo = store.get('userInfo')
+      var mapLevel = userInfo.levelAreaLevel
+      if (mapLevel == '1') {
+        // 省级用户
+        this.control = ['370000']
+      } else if (mapLevel >= '2') {
+        this.control = ['370000', userInfo.levelAreaCode]
+      }
+    }
+    this.cityCode = initArea_id
+    this.initGisMap(initArea_id)
+    // 注册地图事件
+    window.addEventListener('message', self.gismapListener, true)
+
+    this.initService()
+    this.initService_once()
+
+    this.swiper1 = new Swiper('.swiper-container', {
+      init: false,
+      loop: false,
+      observer: true,
+      observeParents: true,
+      autoplay: {
+        delay: 5000,
+        pauseOnMouseEnter: true,
+        disableOnInteraction: false
+      }
+    })
+
+    this.swiper2 = new Swiper('.swiper-container2', {
+      init: false,
+      loop: false,
+      observer: true,
+      observeParents: true,
+      autoplay: {
+        delay: 5000,
+        pauseOnMouseEnter: true,
+        disableOnInteraction: false
+      }
+    })
+  },
+  watch: {
+    wcxnStatus(val, oldval) {
+      self['swiper' + oldval].autoplay.stop()
+      this.$nextTick(() => {
+        self['swiper' + val].update()
+        self['swiper' + val].autoplay.start()
+
+        if (val == 2) {
+          swpchart1.$resize()
+          swpchart2.$resize()
+          swpchart3.$resize()
+        }
+      })
+    },
+    dialogShow1(val) {
+      if (!val) {
+        var myVideo = document.getElementById('videoBox')
+        myVideo.pause()
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      searchDate: state => state.resource.searchDate
+    })
+  },
+  methods: {
+    initService_once() {
+      this.query_idcYzyld() // 云资源池 （全省）
+      this.query_idcdklyl() // 带宽及利用率
+      this.query_idcLxfx()
+    },
+    initService() {
+      this.query_idckjnl() // 空间能力
+      this.query_idcgdnl() // 供电能力
+      this.query_idczlnl() // 制冷能力
+    },
+    initSortTabledata(datas) {
+      var datal = _.cloneDeep(datas)
+      datal.forEach(item => {
+        Object.keys(item).forEach(key => {
+          Number(item[key]) || Number(item[key]) === 0 ? (item[key] = Number(item[key])) : item[key]
+        })
+      })
+
+      return datal
+    },
+    orderDataFn(datas, key) {
+      return _.orderBy(
+        datas,
+        function(item) {
+          return Number(item[key]) || 0
+        },
+        ['desc']
+      )
+    },
+    // 流向分析
+    query_idcLxfx() {
+      if (this.IDC_TYPE == '2') {
+        return
+      }
+      var params = {
+        or_he: this.or_he,
+        code: this.cityCode
+      }
+      serviceApi.service_idc_llfx(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = []
+          res.result.data.forEach(item => {
+            let itemTabe = []
+            let row1 = {
+              name: item.idc_name + '-总流量',
+              avg_inll: item.avg_in_total,
+              avg_outll: item.avg_out_total,
+              max_inll: item.max_in_total,
+              max_outll: item.max_out_total
+            }
+            let row2 = {
+              name: item.idc_name + '-省内流量',
+              avg_inll: item.avg_in_inside,
+              avg_outll: item.avg_out_inside,
+              max_inll: item.max_in_inside,
+              max_outll: item.max_out_inside
+            }
+            let row3 = {
+              name: item.idc_name + '-省外流量',
+              avg_inll: item.avg_in_outside,
+              avg_outll: item.avg_out_outside,
+              max_inll: item.max_in_outside,
+              max_outll: item.max_out_outside
+            }
+            itemTabe = [row1, row2, row3]
+            datal.push(itemTabe)
+          })
+          this.tableData_sw = datal
+
+          function getXdata(pdata) {
+            var avg_in_keys = [
+              'avg_in_lt',
+              'avg_in_al',
+              'avg_in_dx',
+              'avg_in_yd',
+              'avg_in_tx',
+              'avg_in_hw',
+              'avg_in_jyw',
+              'avg_in_zky',
+              'avg_in_tot'
+            ]
+            var avg_out_keys = [
+              'avg_out_lt',
+              'avg_out_al',
+              'avg_out_dx',
+              'avg_out_yd',
+              'avg_out_tx',
+              'avg_out_hw',
+              'avg_out_jyw',
+              'avg_out_zky',
+              'avg_out_tot'
+            ]
+            var max_in_keys = [
+              'max_in_lt',
+              'max_in_al',
+              'max_in_dx',
+              'max_in_yd',
+              'max_in_tx',
+              'max_in_hw',
+              'max_in_jyw',
+              'max_in_zky',
+              'max_in_tot'
+            ]
+            var max_out_keys = [
+              'max_out_lt',
+              'max_out_al',
+              'max_out_dx',
+              'max_out_yd',
+              'max_out_tx',
+              'max_out_hw',
+              'max_out_jyw',
+              'max_out_zky',
+              'max_out_tot'
+            ]
+            var keyarrs = [avg_in_keys, avg_out_keys, max_in_keys, max_out_keys]
+            var xdatas = []
+            keyarrs.forEach(item => {
+              var sxdatas = []
+              item.forEach(skey => {
+                sxdatas.push(pdata[skey] || 0)
+              })
+              xdatas.push(sxdatas)
+            })
+
+            return xdatas
+          }
+
+          // ['平均入流量', '平均出流量', '最大入流量',  '最大出流量'],
+          var eparams1 = {
+            domId: 'schartbox1',
+            xData: [
+              '联通(省内+省外)',
+              '阿里云',
+              '网间-电信',
+              '网间-移动',
+              '腾讯云',
+              '华为云',
+              '网间-教育网',
+              '网间-中科院',
+              '总计'
+            ],
+            datas: getXdata(res.result.data[0])
+          }
+          swpchart1 = new echarts_init.initEchart_bar2line(eparams1)
+          var eparams2 = {
+            domId: 'schartbox2',
+            xData: [
+              '联通(省内+省外)',
+              '阿里云',
+              '网间-电信',
+              '网间-移动',
+              '腾讯云',
+              '华为云',
+              '网间-教育网',
+              '网间-中科院',
+              '总计'
+            ],
+            datas: getXdata(res.result.data[1])
+          }
+          swpchart2 = new echarts_init.initEchart_bar2line(eparams2)
+          var eparams3 = {
+            domId: 'schartbox3',
+            xData: [
+              '联通(省内+省外)',
+              '阿里云',
+              '网间-电信',
+              '网间-移动',
+              '腾讯云',
+              '华为云',
+              '网间-教育网',
+              '网间-中科院',
+              '总计'
+            ],
+            datas: getXdata(res.result.data[2])
+          }
+          swpchart3 = new echarts_init.initEchart_bar2line(eparams3)
+
+          this.$nextTick(() => {
+            window.setTimeout(function() {
+              self['swiper1'].init()
+              self['swiper2'].init()
+
+              self['swiper2'].el.onmouseover = function() {
+                self['swiper2'].autoplay.stop()
+              }
+              self['swiper2'].el.onmouseout = function() {
+                self['swiper2'].autoplay.start()
+              }
+            }, 300)
+          })
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    // 1.4.7IDC带宽及利用率
+    query_idcdklyl() {
+      if (this.IDC_TYPE == '2') {
+        return
+      }
+      var params = {
+        or_he: this.or_he,
+        code: this.cityCode
+      }
+
+      serviceApi.service_idc_outbrand(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = this.orderDataFn(res.result.data, 'total_outbrand_cn')
+          var Xdata = datal.map(item => {
+            return item.name
+          })
+
+          var data1 = datal.map(item => {
+            return item.total_outbrand_cn
+          })
+
+          var eparams1 = {
+            domId: 'chart_right1',
+            xAxis: Xdata,
+            unit: 'G',
+            data: data1
+          }
+          // echarts_init.initComBar(eparams1);
+
+          var data21 = datal.map(item => {
+            return item.in_branduse_rate
+          })
+          var data22 = datal.map(item => {
+            return item.out_branduse_rate
+          })
+          var eparams2 = {
+            domId: 'chart_right2',
+            legend: ['最大流入', '最大流出'],
+            xData: Xdata,
+            unit: '%',
+            barData: [data21, data22]
+          }
+          // echarts_init.initEchart_bar2(eparams2)
+
+          var eparams2dk = {
+            domId: 'chart_right2',
+            xData: Xdata,
+            datas: [data21, data22]
+          }
+          echarts_init.initEchart_2line(eparams2dk)
+
+          var orderdata1 = this.orderDataFn(datal, 'in_branduse_rate')
+          var orderdata2 = this.orderDataFn(datal, 'out_branduse_rate')
+          this.zhyData.name1 = orderdata1[0].name
+          this.zhyData.value1 = orderdata1[0].in_branduse_rate
+          this.zhyData.name2 = orderdata2[0].name
+          this.zhyData.value2 = orderdata2[0].out_branduse_rate
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    orderDataFn(datas, key) {
+      return _.orderBy(
+        datas,
+        function(item) {
+          return Number(item[key]) || 0
+        },
+        ['desc']
+      )
+    },
+    // 空间能力
+    query_idckjnl() {
+      var params = {
+        code: this.IDC_TYPE == '1' ? this.cityCode : this.IDC_ID,
+        type: this.IDC_TYPE,
+        or_he: this.or_he
+      }
+      serviceApi.service_idc_kjnl(params).then(res => {
+        if (res.rspCode == '0000') {
+          this.kjnlData = res.result.data[0] || {}
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    // 供电能力
+    query_idcgdnl() {
+      var params = {
+        code: this.IDC_TYPE == '1' ? this.cityCode : this.IDC_ID,
+        type: this.IDC_TYPE,
+        or_he: this.or_he
+      }
+      this.tableData1 = []
+      serviceApi.service_idc_gdnl(params).then(res => {
+        // //debugger
+        if (res.rspCode == '0000') {
+          this.tableData1 = res.result.data || []
+          this.$nextTick(() => {
+            this.$refs.gdnltable.doLayout()
+          })
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    // 制冷能力
+
+    query_idczlnl() {
+      var params = {
+        code: this.IDC_TYPE == '1' ? this.cityCode : this.IDC_ID,
+        type: this.IDC_TYPE,
+        or_he: this.or_he
+      }
+      this.tableData2 = []
+      serviceApi.service_idc_zlnl(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = this.initSortTabledata(res.result.data)
+          this.tableData2 = datal || []
+          this.$nextTick(() => {
+            this.$refs.zlnltable.doLayout()
+          })
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    // 云资源池
+    query_idcYzyld() {
+      var params = {
+        or_he: this.or_he,
+        cityCode: '370000'
+      }
+
+      serviceApi.service_idc_yzyld(params).then(res => {
+        if (res.rspCode == '0000') {
+          this.yzyData = res.result.data[0] || {}
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    getEyesInfo() {
+      //智慧眼
+      this.isDialogShow_ZHY = true
+      this.getEyesConten()
+    },
+    getEyesConten() {
+      var params = {
+        code: 'yun-IDC',
+        area_code: '37000' || this.cityCode
+      }
+      serviceApis.servicejkdTc(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.zhy_content = datal.zhy_content
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    rowttabsClick(type) {
+      this.rowttabStatus = type
+    },
+    gismapListener(e) {
+      if (e.data.message == 'levelSwitch') {
+        self.gisTitle = e.data.area_name || '山东省'
+        self.mapLevel = e.data.level
+        self.areaCode = e.data.area_id
+        self.gisMapData = e.data
+        self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+        self.gisQueryParams.area_name = ''
+        console.log('message', e.data)
+        self.cityCode = e.data.area_id || '370000'
+        self.IDC_TYPE = '1'
+      } else if (e.data.message == 'changeCity') {
+        self.gisTitle = e.data.area_name || '山东省'
+        self.mapLevel = e.data.level
+        self.areaCode = e.data.area_id
+        self.gisMapData = e.data
+        self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+        self.gisQueryParams.area_name = ''
+        self.cityCode = e.data.area_id
+        self.IDC_ID = ''
+        self.IDC_TYPE = '1'
+        this.initService()
+      } else if (e.data.message == 'clickStar') {
+        self.IDC_ID = e.data.area_id
+        self.gisTitle = e.data.area_name
+        self.IDC_TYPE = '2'
+        this.initService()
+        // this.dialogShow1 = true
+      }
+    },
+
+    initGisMap(initArea_id) {
+      // 初始化地图参数
+      this.gisQueryParams = {
+        yanhuang: this.or_he,
+        control: this.control.join(','),
+        level: this.mapLevel,
+        sceneid: 5,
+        gis_sceneid: '0101',
+        area_id: initArea_id,
+        poi_city_id: '',
+        system_type: 'C40',
+        login_no: store.get('staffId') || '',
+        timest: this.$store.state.resource.searchDate
+      }
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.iframeSrc = window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`
+    }
+  },
+  destroyed() {
+    // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('../comtable.scss');
+/deep/ .bottom-tab {
+  width: 60%;
+}
+
+/deep/ .bottom-tab .bottom-item {
+  padding: 4px 30px !important;
+}
+
+.contentbody {
+  flex: 1;
+  display: flex;
+  box-sizing: border-box;
+  background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+  background-size: auto 100%;
+  margin: -30px 10px 10px 10px;
+  position: relative;
+}
+
+.leftbox,
+.rightbox {
+  width: 520px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 15px 10px;
+  padding-bottom: 30px;
+}
+.rightbox {
+  width: 540px;
+}
+
+.centerbox {
+  flex: 1;
+  background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+  background-size: 100% 100%;
+  margin-top: 10px;
+  margin-bottom: 80px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 100px 20px 20px 20px;
+  position: relative;
+}
+
+.item-title {
+  font-size: 18px;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 46px;
+  padding-left: 36px;
+  margin-bottom: 5px;
+  font-weight: bolder;
+}
+
+.chartbox {
+  width: 100%;
+  height: 100%;
+}
+
+.gdjkitem {
+  height: 68px;
+  width: 72px;
+  margin: 0 auto;
+  background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.gdjkitembox {
+  text-align: center;
+  position: relative;
+  margin-top: 12px;
+
+  &:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -8px;
+    top: 26px;
+  }
+}
+
+.mtheader {
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  color: #51d1ee;
+  border-bottom: 1px solid #308497;
+}
+
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4, 54, 108, 0.7);
+}
+
+.centTab {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  top: 30px;
+  text-align: center;
+
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+    background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+  }
+  .centtabitem.active {
+    opacity: 1;
+  }
+}
+
+.rowttabs {
+  height: 34px;
+  line-height: 34px;
+  position: absolute;
+  top: 5px;
+  right: 0px;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+    color: #45d8e2;
+  }
+}
+.substTab {
+  text-align: center;
+  .el-radio {
+    color: #ddd;
+    margin-right: 20px;
+  }
+  /deep/ .el-radio__input .el-radio__inner {
+    border-color: #ddd;
+    background: #ddd;
+  }
+  /deep/ .el-radio__input.is-checked + .el-radio__label {
+    color: #f3c911;
+  }
+  /deep/ .el-radio__input.is-checked .el-radio__inner {
+    border-color: #ede90f;
+    background: #e4ac47;
+  }
+}
+.alink {
+  cursor: pointer;
+  color: #27b5ee;
+  text-decoration: underline;
+}
+.pull-right {
+  float: right;
+  .alink {
+    cursor: pointer;
+    color: #27b5ee;
+    text-decoration: underline;
+    margin-right: 15px;
+  }
+}
+
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn {
+  z-index: 9999;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 13px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 15px !important;
+}
+
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  padding: 6px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  padding: 0 6px;
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4, 54, 108, 0.4) !important;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 20px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+
+.pmdetalibox {
+  display: flex;
+  min-height: 500px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.left_pmtb {
+  width: 380px;
+}
+.right_pmtb {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px dashed #404e77;
+  .rpmtitle {
+    position: absolute;
+    color: aqua;
+    font-size: 20px;
+    top: -34px;
+    text-align: center;
+    width: 100%;
+    .subtagtab {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      .rowttabs {
+        height: 30px;
+        line-height: 30px;
+        .rowttabs-item {
+          padding: 3px 6px;
+        }
+      }
+    }
+  }
+}
+.box-item {
+  position: relative;
+  margin-bottom: 6px;
+  .trowttabs {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+.sutabtitle {
+  background: rgba(25, 89, 162, 0.3);
+  height: 38px;
+  border-radius: 20px;
+  line-height: 38px;
+}
+.sutabtitle .flex1 {
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 0.4;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/ligtdian.png') no-repeat;
+  background-position: center -38px;
+}
+.sutabtitle .flex1.active {
+  opacity: 1;
+}
+
+.jxwlrow {
+  text-align: center;
+  align-items: center;
+  padding-top: 0px;
+  .numfont {
+    color: rgb(255, 204, 0);
+    font-size: 22px;
+  }
+  img {
+    width: 40px;
+    height: 40px;
+    margin: 5px 0 5px 0;
+  }
+  .jxinfo {
+    line-height: 30px;
+    font-size: 18px;
+  }
+}
+/deep/ .el-table__fixed {
+  background: #010f31;
+}
+/deep/ .el-table__fixed::before,
+/deep/.el-table__fixed-right::before {
+  background: transparent;
+}
+/deep/ .el-table .el-table__fixed-footer-wrapper td,
+/deep/ .el-table .el-table__footer-wrapper td {
+  color: #03f6ff !important;
+  font-size: 16px !important;
+}
+/deep/ .el-table .el-table__fixed td {
+  border-right: 1px dashed #2d3d5e !important;
+}
+.progressbox {
+  text-align: center;
+  padding: 10px;
+}
+
+.zdmore {
+  float: right;
+  font-size: 16px;
+  cursor: pointer;
+  color: #57b4f1;
+  margin-right: 0px;
+  text-decoration: underline;
+  position: relative;
+  z-index: 999;
+}
+
+.centbotbox_k {
+  text-align: center;
+  .scrollrow {
+    color: #e0f1f5;
+    line-height: 32px;
+    border-bottom: 1px dashed #152f5f;
+    font-size: 15px;
+    .flex1 {
+      padding: 0 5px;
+    }
+  }
+}
+.swiperbox {
+  width: 100%;
+  height: 100%;
+}
+
+/deep/ .el-loading-mask {
+  background-color: rgba(6, 26, 58, 0.7);
+}
+/deep/ .grouptable.el-table tbody td {
+  border-right: 1px dashed rgb(45, 61, 94) !important;
+}
+/deep/.groupheadtable.custom_table thead th:not(:last-child) {
+  border-right: 1px solid rgb(45, 61, 94) !important;
+}
+/deep/.el-table__fixed {
+  background: #00133e !important;
+}
+
+/deep/.el-table__fixed::before,
+/deep/ .el-table__fixed-right::before {
+  background: transparent !important;
+}
+/deep/ .el-table th.is-leaf {
+  font-size: 15px !important;
+}
+/deep/ .tstable.el-table th.is-leaf {
+  font-size: 13px !important;
+}
+.swiperClass {
+  width: 100%;
+  height: 250px;
+  overflow-x: hidden;
+  .swiper-slide {
+    width: 100%;
+  }
+}
+
+/deep/.mytab.custom_table.el-table tbody tr td {
+  border-bottom: 1px dashed rgb(45, 61, 94) !important;
+  padding: 15px 0 !important;
+}
+/deep/.mytab.custom_table.el-table thead th > .cell {
+  font-size: 15px !important;
+}
+/deep/.mytab.custom_table.el-table thead th {
+  padding: 8px 0 !important;
+}
+.schartbox {
+  width: 100%;
+  height: 240px;
+  position: relative;
+}
+.chartitle {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  font-size: 16px;
+  color: rgb(54, 238, 238);
+}
+.idcdetail {
+  position: absolute;
+  right: 150px;
+  top: 54px;
+  img {
+    position: relative;
+    top: -2px;
+  }
+  .alink {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+}
+
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.tjbtn {
+  position: absolute;
+  right: 60px;
+  top: 40px;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 10px rgb(56, 148, 235);
+  cursor: pointer;
+  animation: turn 8s linear infinite;
+  z-index: 99;
+  img {
+    width: 44px;
+    z-index: 99;
+  }
+}
+
+.tjtitle {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  background: linear-gradient(45deg, #1a92d4, transparent);
+  line-height: 34px;
+  padding-left: 15px;
+  border-radius: 20px 0 0 20px;
+  width: 60%;
+}
+.tjitem {
+  // padding: 10px;
+  color: #fff;
+  font-size: 20px;
+  p {
+    line-height: 48px;
+    margin-bottom: 0;
+  }
+}
+</style>

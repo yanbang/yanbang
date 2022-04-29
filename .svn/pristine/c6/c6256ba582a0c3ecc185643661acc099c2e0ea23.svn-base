@@ -1,0 +1,131 @@
+import request from '@/utils/request';
+// ZhyJkdCon/servicejkdGwzb  1固网指标
+// ZhyJkdCon/servicejkdGwzbXq  2固网指标详情
+// ZhyJkdCon/servicejkdYwzb  3移网指标
+// ZhyJkdCon/servicejkdYwzbXq  4移网指标详情
+// ZhyJkdCon/servicejkdKhjg  5网络线-考核结果
+// ZhyJkdCon/servicejkdKhjgXq  6网络线-考核结果详情
+// ZhyJkdCon/servicejkdTsjg  7网络线-双提升结果
+// ZhyJkdCon/servicejkdSbpp  1设备匹配
+// ZhyJkdCon/servicejkdSbppXq  2设备匹配详情
+// ZhyJkdCon/servicejkdDwypp  3端网业匹配
+// ZhyJkdCon/servicejkdDwyppXq 4端网业匹配详情
+// ZhyJkdCon/servicejkdRysl  1队伍建设各类人员数量
+// ZhyJkdCon/servicejkdRyslXq  2队伍建设各类人员数量详情
+
+
+
+
+// ZhyJkdCon/servicejkdKm  1网运占比成本-按科目
+// ZhyJkdCon/servicejkdKmXq  2网运占比成本-按科目详情
+// ZhyJkdCon/servicejkdDs  3网运占比成本-按地市
+// ZhyJkdCon/servicejkdCbxn  4成本效能指标
+// ZhyJkdCon/servicejkdCbxnXq 5成本效能指标详情
+
+// ZhyJkdCon/servicejkdXnzb  1收入效能指标
+// ZhyJkdCon/servicejkdXnzbXq 2收入效能指标详情
+
+// ZhyJkdCon/servicejkdRygc     3队伍建设人员构成
+// ZhyJkdCon/servicejkdRygcXq  4队伍建设人员构成详情
+
+
+
+// ZhyJkdCon/servicejkdKdgmXq    5.1.2.6卓越度宽带规模详情
+// ZhyJkdCon/servicejkdSfzb    1卓越度按省份划分的指标
+// ZhyJkdCon/servicejkdMydXq  2工信部满意度详情
+// ZhyJkdCon/servicejkdSnzb  3卓越度省内相关指标
+
+// ZhyJkdCon/servicejkdSnzbXq 4卓越度省内相关指标详情
+// ZhyJkdCon/servicejkdJxwlXq 5卓越度匠心网络详情
+
+
+// ZhyJkdCon/servicejkdHxzb  10画像指标
+// ZhyJkdCon/servicejkdWlyhXq  11移动网络用户体验详情
+// ZhyJkdCon/servicejkdZlspXq  12宽带质量和服务水平详情
+// ZhyJkdCon/servicejkdZzjfXq  13五自及ICT自主交付详情
+// ZhyJkdCon/servicejkdGjgxXq  14共建共享详情
+
+
+// ZhyJkdCon/servicejkdHxggXq   5.1.3.16划小改革得分详情
+
+// ZhyJkdCon/servicejkdSfgm  5.1.2.7卓越度室分规模
+// ZhyJkdCon/servicejkdSfgmXq  5.1.2.8卓越度室分规模详情
+
+const api = {
+    servicejkdGxgzXq: '/ZhyJkdCon/servicejkdGxgzXq', //5.1.3.3干线故障率详情 
+    servicejkdZlrcXq: '/ZhyJkdCon/servicejkdZlrcXq',
+    servicejkdNlpyXq: '/ZhyJkdCon/servicejkdNlpyXq', //队伍建设能力培养数量详情
+    servicejkdZydwXq: '/ZhyJkdCon/servicejkdZydwXq', // 设专业队伍数量详情
+    servicejkdZdfXq: '/ZhyJkdCon/servicejkdZdfXq',
+    servicejkdWdkd: '/ZhyJkdCon/servicejkdWdkd',
+    servicejkdJzgmXq: '/ZhyJkdCon/servicejkdJzgmXq',
+    servicejkdAqscXq: '/ZhyJkdCon/servicejkdAqscXq',
+    servicejkdHxggXq: '/ZhyJkdCon/servicejkdHxggXq',
+    servicejkdSfgm: '/ZhyJkdCon/servicejkdSfgm',
+    servicejkdSfgmXq: '/ZhyJkdCon/servicejkdSfgmXq',
+
+    servicejkdHxzb: '/ZhyJkdCon/servicejkdHxzb',
+    servicejkdWlyhXq: '/ZhyJkdCon/servicejkdWlyhXq',
+    servicejkdZlspXq: '/ZhyJkdCon/servicejkdZlspXq',
+    servicejkdZzjfXq: '/ZhyJkdCon/servicejkdZzjfXq',
+    servicejkdGjgxXq: '/ZhyJkdCon/servicejkdGjgxXq',
+
+    servicejkdKdgmXq: '/ZhyJkdCon/servicejkdKdgmXq',
+    servicejkdGwzb: '/ZhyJkdCon/servicejkdGwzb',
+    servicejkdGwzbXq: '/ZhyJkdCon/servicejkdGwzbXq',
+    servicejkdYwzb: '/ZhyJkdCon/servicejkdYwzb',
+    servicejkdYwzbXq: '/ZhyJkdCon/servicejkdYwzbXq',
+    servicejkdKhjg: '/ZhyJkdCon/servicejkdKhjg',
+    servicejkdKhjgXq: '/ZhyJkdCon/servicejkdKhjgXq',
+    servicejkdTsjg: '/ZhyJkdCon/servicejkdTsjg',
+    servicejkdSbpp: '/ZhyJkdCon/servicejkdSbpp',
+    servicejkdSbppXq: '/ZhyJkdCon/servicejkdSbppXq',
+    servicejkdDwypp: '/ZhyJkdCon/servicejkdDwypp',
+    servicejkdDwyppXq: '/ZhyJkdCon/servicejkdDwyppXq',
+    servicejkdRysl: '/ZhyJkdCon/servicejkdRysl',
+    servicejkdRyslXq: '/ZhyJkdCon/servicejkdRyslXq',
+
+    servicejkdRygc: '/ZhyJkdCon/servicejkdRygc',
+    servicejkdRygcXq: '/ZhyJkdCon/servicejkdRygcXq',
+    // 1卓越度 
+    servicejkdSfzb: '/ZhyJkdCon/servicejkdSfzb',
+    servicejkdMydXq: '/ZhyJkdCon/servicejkdMydXq',
+    servicejkdSnzb: '/ZhyJkdCon/servicejkdSnzb',
+    servicejkdSnzbXq: '/ZhyJkdCon/servicejkdSnzbXq',
+    servicejkdJxwlXq: '/ZhyJkdCon/servicejkdJxwlXq',
+    servicejkdMydpx: 'ZhyJkdCon/servicejkdMydpx', //工信部满意度排名
+    servicejkdMydpx2: 'ZhyJkdCon/servicejkdMydpx2', //工信部满意度排名
+
+    // 效能
+    servicejkdKm: '/ZhyJkdCon/servicejkdKm',
+    servicejkdKmXq: '/ZhyJkdCon/servicejkdKmXq',
+    servicejkdDs: '/ZhyJkdCon/servicejkdDs',
+    servicejkdCbxn: '/ZhyJkdCon/servicejkdCbxn',
+    servicejkdCbxnXq: '/ZhyJkdCon/servicejkdCbxnXq',
+    servicejkdXnzb: '/ZhyJkdCon/servicejkdXnzb',
+    servicejkdXnzbXq: '/ZhyJkdCon/servicejkdXnzbXq',
+    servicejkdTc: '/ZhyJkdCon/servicejkdTc2', // 智慧眼弹窗
+
+    servicejkdMou: '/ZhyJkdCon/servicejkdMou', // 5.1.6.1mou指标
+    servicejkdDou: '/ZhyJkdCon/servicejkdDou', //5.1.6.2dou指标
+    servicejkdMouDou: '/ZhyJkdCon/servicejkdMouDou', //5.1.6.3moudou指标详情
+    servicejkdDdk: '/ZhyJkdCon/servicejkdDdk', //5.1.6.4单端口小区收入指标
+    servicejkdDdkXq: '/ZhyJkdCon/servicejkdDdkXq', //5.1.6.5单端口小区收入详情
+
+
+
+}
+
+var serviceApi = {}
+Object.keys(api).forEach(key => {
+    serviceApi[key] = function(parameter) {
+
+        return request({
+            url: api[key],
+            method: 'post',
+            data: parameter
+        })
+    }
+})
+
+export default serviceApi

@@ -1,0 +1,226 @@
+<!-- 资源小区右侧 -->
+<template>
+   <div class="flex1 flex  flexcol" >
+
+         <div class = "lefttbox" style="height: 60%;">
+             <div class = "felx statename">
+               <div class = "iconbox">
+                 <img src="~@/assets/images/bigScreen/resource/icon.png" style="width: 65px" alt="" >
+               </div>
+               <div class = "statename_right flex1">
+                 <div class = "rstitle">{{zyxqxxData.villageNameTot || '--'}}</div>
+                 <div class = "rborderc">
+                   <span class = "nfont">小区编码</span>
+                   <span class="numfont">{{zyxqxxData.villageIdTot}}</span>
+                 </div>
+               </div>
+               
+             </div>
+
+             <div class = "stateinfo clexrfix">
+               <div class="stateitm flex1 stateitmleft">
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">物业公司</span>
+                    <span >{{zyxqxxData.propertyName || '--'}}</span>
+                 </div>
+
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">车位数量</span>
+                    <span class = "numfont">{{zyxqxxData.parkingNum || '-'}}</span>
+                 </div>
+
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">销售状态</span>
+                    <span >{{zyxqxxData.isSold == "N" ? '停售': '在售'}}</span>
+                 </div>
+
+                  <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">是否进线</span>
+                    <span >{{zyxqxxData.isIncoming == '1' ? '已进线' : '未进线'}}</span>
+                 </div>
+                
+               </div>
+               <div class="stateitm flex1" style="margin-left: 5px">
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">建设环节</span>
+                    <span >{{zyxqxxData.consLevel || '-'}}</span>
+                 </div>
+
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">是否A类</span>
+                    <span >{{zyxqxxData.isVillageA == '1' ? '是' : '否'}}</span>
+                 </div>
+
+                 <div>
+                    <span class = "nfont bcolor" style="margin-right: 10px">进线时间</span>
+                    <span >{{zyxqxxData.incomingTime || '-'}}</span>
+                 </div>
+               </div>
+             </div>
+
+             <div class="ybpchartbox flex flex1">
+               <div class = "flex flex1">
+                 <div class = "flex flex1 echartGaugebox" >
+                   <echartGauge :pvalue = "zyxqxxData.kdNum" domid = "echartGauge1"></echartGauge>
+                   <div class = "bcolor nfont" style="font-size: 13px">联通用户数</div>
+                 </div>
+                 <div class = "flex flex1 echartGaugebox">
+                   <echartGauge :pvalue = "zyxqxxData.hushuA" domid = "echartGauge2"></echartGauge>
+                    <div class = "bcolor nfont" style="font-size: 13px">小区用户数</div>
+                 </div>
+               </div>
+               <div class = "flex flex1 " style="margin-top: 10px">
+                  <div class="flex1 peiitem" >
+                      <echartPie :pvalue = "zyxqxxData.famRate" domid = "echartPie_rstate1"></echartPie>
+                      <div class = "piefon nfont bcolor">家庭渗透率</div>
+                  </div>
+                  <div class="flex1 peiitem" >
+                      <echartPie :pvalue = "zyxqxxData.porRate" domid = "echartPie_rstate2"></echartPie>
+                      <div class = "piefon nfont bcolor">端口占用率</div>
+                  </div>
+
+                   <div class="flex1 peiitem" >
+                      <echartPie :pvalue = "zyxqxxData.firporRate" domid = "echartPie_rstate3"></echartPie>
+                      <div class = "piefon nfont bcolor">一级分光占有率</div>
+                  </div>
+                 
+               </div>
+             </div>
+         </div>
+
+         <div class = "flex flex1 flexcol" style="margin-top: 30px;">
+           <div class = "flex rbtbox">
+              <div class="tabs-item flex" style="width: 100px">
+                <div class = "tab_borderleft"></div>
+                <div class = "tabfon bcolor" style="color:#02F6FF; margin: 0 auto;">变化趋势</div>
+                <div class = "tab_borderright"></div>
+              </div>
+              <div class = "flex1 clearfix">
+                <div class="pull-right">
+                  <!-- <span class = "stabitem nfont " :class = "{'active': bhqsState == 1}" @click="bhqsClick('1')">周</span> -->
+                  <span class = "stabitem nfont" :class = "{'active': bhqsState == 2}" @click="bhqsClick('2')">月</span>
+                </div>
+              </div>
+              
+           </div>
+           <div class = "flex1" >
+                <echart-line :edata = "lineData"   domid = "stechartline2" ></echart-line>
+              </div>
+         </div>
+   </div>
+</template>
+
+<script>
+import echartLine from './echartLine'
+import echartGauge from './echartGauge'
+import echartPie from './echartPie'
+import resourceApi from '@/api/resource'
+var _ =  require('lodash') 
+export default {
+  props: ['mapLevel', 'queryParams'],
+  data () {
+    return {
+      bhqsState: 2,
+      lineData: {
+        title: [ '端口占用率','家庭渗透率'],
+        xdata: [],
+        vdata: [
+          [],
+          []
+        ]
+      },
+      zyxqxxData: {},
+    }
+  },
+  components: {
+    echartLine,
+    echartGauge,
+    echartPie
+  },
+  mounted () {},
+  watch: {
+    queryParams: {
+      handler(params) {
+        if (params.mLevel == 5) {
+           this.serviceInit();
+        }
+      },
+      deep: true,
+      immediate: true
+    },
+  },
+  computed: {},
+  methods: {
+    serviceInit () {
+      var params = JSON.parse(JSON.stringify(this.queryParams))
+      this.service_zyXqxx(params)
+      this.service_zyXqBhqs(params)
+    },
+    service_zyXqxx (params) {
+      this.zyxqxxData = {}
+       resourceApi.zyXqxx(params).then(data => {
+          function initKes(dataoj, keys) {
+            dataoj[keys] = (dataoj[keys] || dataoj[keys] == 0) ? dataoj[keys] : '-';
+          }
+          if (data.rspCode = '0000' ) {
+            if (data.result.data.length > 0) {
+               if (data.result.data[0]) {
+                 var dataoj = data.result.data[0];
+                 var maps = ['kdNum','hushuA','famRate','porRate', 'firporRate']
+                 maps.forEach(item => {
+                   initKes(dataoj, item)
+                 })
+                
+               }
+               this.zyxqxxData = data.result.data[0] || {}
+            }
+          }
+       })
+    },
+    service_zyXqBhqs (params) {
+       resourceApi.zyXqBhqs(params).then(data => {
+         if (data.rspCode = '0000') {
+          var sdata  =  data.result.data[0];
+          
+          var Index = 1;
+          var Xmap = []
+          for (let key in sdata) {
+            if(_.startsWith(key, 'showCode')) {
+              Xmap.push(1) 
+            }
+          }
+          var xdata = [];
+          var vdata = [];
+          var vdata1 = [];
+          var vdata2 = [];
+          Xmap.forEach((item, index) => {
+            if (index === 0) {
+              xdata.push(sdata['showCode'])
+              vdata1.push(sdata['porRate'] || null)
+              vdata2.push(sdata['famRate'] || null)
+            } else {
+              xdata.push(sdata['showCode' + index])
+              vdata1.push(sdata['porRate' + index] || null)
+              vdata2.push(sdata['famRate' + index] || null)
+            }
+          });
+          this.lineData =  {
+            title: [ '端口占用率','家庭渗透率'],
+            xdata: xdata,
+            vdata: [
+              vdata1,
+              vdata2
+            ]
+          }
+         }
+       })
+    },
+    bhqsClick (val) {
+      this.bhqsState = val
+    },
+  }
+}
+</script>
+
+<style lang='css' scoped>
+</style>

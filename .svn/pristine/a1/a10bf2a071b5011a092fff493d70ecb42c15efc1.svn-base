@@ -1,0 +1,111 @@
+<template>
+  <div class="dialogTableBg1">
+    <!-- <div style="display: block; height: 10px"></div>
+    <div style="margin-top: 10px; margin-left: 20px; width: 100%">
+      <span class="chartTitle">{{ title }}</span>
+      <img
+        src="../../../assets/images/bigScreen/fullService/Rectangle@2x.png"
+        style="height: 14px; width: 60px; margin-left: 10px"
+      />
+      <span v-if="title === '流失'" style="float: right; margin-right: 50px" @click="fiveGDialogShow = true"
+        >更多<img
+          width="9px"
+          height="13px"
+          style="margin-left: 10px"
+          src="~@/assets/images/bigScreen/resource/dleft.png"
+      /></span>
+    </div> -->
+    <el-table ref="singleTable" :data="tableData" border highlight-current-row style="width: 90%; margin-left: 5%">
+      <el-table-column type="index" width="50"> </el-table-column>
+      <el-table-column property="date" label="日期" width="120"> </el-table-column>
+      <el-table-column property="name" label="姓名" width="120"> </el-table-column>
+      <el-table-column property="address" label="地址"> </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'table',
+  props: {
+    title: {
+      type: String,
+      default: function () {
+        return ''
+      },
+    },
+  },
+  data() {
+    return {
+      tableData: [
+        {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市',
+        },
+      ],
+    }
+  },
+  watch: {},
+  created() {},
+  mounted() {},
+  methods: {},
+}
+</script>
+
+<style scoped lang="less">
+.chartTitle {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-family: 'MFBanHei';
+  font-size: 20px;
+  color: #02f6ff;
+}
+.dialogTableBg1 {
+  border: 1px solid pink;
+}
+/deep/.dialogTableBg1 .el-table th {
+  background: rgba(4, 154, 171, 0.2) !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: left !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table tr {
+  background: rgba(4, 154, 171, 0.4) !important;
+  color: #fff !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table td {
+  padding: 12px 0;
+  padding-left: 15px;
+  border: rgba(0, 160, 233, 0.42) solid 1px !important;
+  border-top: none !important;
+  text-align: left !important;
+  border-left: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(2) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(3) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table tr:last-child td {
+  border-bottom: none !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg tr {
+  background: none !important;
+}
+/deep/.dialogTableBg1 .el-table .el-table__expanded-cell {
+  padding: 0 !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg td {
+  padding: 12px 0;
+  padding-left: 15px;
+}
+/deep/ .dialogTableBg1 .tableNullBg td:first-child {
+  padding-left: 45px;
+}
+</style>

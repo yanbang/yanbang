@@ -1,0 +1,23 @@
+<template>
+  <div class="container2">
+    <div class="centericon">
+      <div class="douyin"></div>
+      <div class="play"></div>
+      <div class="download"></div>
+      <div class="iphone"></div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {};
+  },
+  mounted() {},
+
+  methods: {},
+};
+</script>
+<style lang="less" scoped>
+
+</style>

@@ -1,0 +1,169 @@
+<template>
+  <div>
+    <el-table :data="AroundTheCitys" style="width: 100%" :before-close="handleClose">
+      <el-table-column prop="eparchyName" label="归属地市"> </el-table-column>
+      <el-table-column prop="dayNew" label="日发展"> </el-table-column>
+      <el-table-column prop="dayCchive" label="日完成率" sortable> </el-table-column>
+      <el-table-column prop="weekNew" label="周发展"> </el-table-column>
+
+      <el-table-column prop="weekAchive" label="周完成率" sortable> </el-table-column>
+      <el-table-column prop="weekHb" label="周环比"> </el-table-column>
+      <el-table-column prop="monNew" label="月发展"> </el-table-column>
+      <el-table-column prop="monAchive" label="月发展率" sortable> </el-table-column>
+      <el-table-column prop="qthAchive" label="一季度序时完成场"> </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    dialogVisible: Array,
+  },
+  name: 'dialog',
+  data() {
+    return {
+      dialogTableVisible: true,
+      AroundTheCitys: [
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '高老庄',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '2016',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+      ],
+    }
+  },
+  mounted() {
+    alert(this.dialogVisible)
+    this.dialogTableVisible = true
+  },
+  methods: {
+    handleClose() {
+      this.dialogTableVisible = false
+      this.dialogVisible = false
+      this.$emit(this.dialogVisible)
+    },
+  },
+}
+</script>
+
+<style scoped>
+/deep/ .el-table {
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th {
+  background: none !important;
+  background: url('../../assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 12px !important;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+</style>

@@ -1,0 +1,236 @@
+<template>
+  <div class="app">
+    <div style="width: 280px; height: 180px" class="echarts" ref="amount"></div>
+    <div style="width: 400px; height: 400px" class="pic" ref="pics"></div>
+  </div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+export default {
+  data() {
+    return {}
+  },
+
+  mounted() {
+    this.initLine()
+    this.initPie()
+  },
+
+  methods: {
+    initLine() {
+      var myChart1 = echarts.init(this.$refs.amount)
+      var option = {
+        tooltip: {
+          trigger: 'axis',
+        },
+        color: ['#4B0082', '#1E90FF'],
+        legend: {
+          top: 20,
+          right: 40,
+          textStyle: {
+            fontFamily: 'MicrosoftYaHei',
+            fontSize: 12,
+            color: 'rgba(255, 255, 255, 1)',
+          },
+          data: ['VOLTE话务量', '3G话务量'],
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true,
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          splitLine: {
+            //x网格样式
+            show: true,
+            lineStyle: {
+              color: 'rgba(255, 255, 255, 0.1)',
+              type: 'solid',
+              width: '1',
+            },
+          },
+          axisLine: {
+            //x坐标轴样式
+            lineStyle: {
+              type: 'solid',
+              color: '#657CA8', //左边线的颜色
+              width: '2', //坐标线的宽度
+            },
+          },
+          data: ['1月', '2月', '3月', '4月', '5月'],
+        },
+        yAxis: {
+          type: 'value',
+          axisLine: {
+            //x坐标轴样式
+            lineStyle: {
+              type: 'solid',
+              color: '#657CA8', //左边线的颜色
+              width: '2', //坐标线的宽度
+            },
+          },
+          splitLine: {
+            //网格线
+            lineStyle: {
+              type: 'solid', //设置网格线类型 dotted：虚线   solid:实线
+              color: 'rgba(255, 255, 255, 0.1)',
+            },
+            show: true, //隐藏或显示
+          },
+        },
+        series: [
+          {
+            name: 'VOLTE话务量',
+            type: 'line',
+            stack: 'Total',
+            lineStyle: {
+              normal: {
+                color: '#4B0082',
+              },
+            },
+            data: [120, 132, 101, 134, 90],
+          },
+          {
+            name: '3G话务量',
+            type: 'line',
+            stack: 'Total',
+            lineStyle: {
+              normal: {
+                color: '#1E90FF',
+              },
+            },
+            data: [220, 182, 191, 234, 290],
+          },
+        ],
+      }
+      myChart1.setOption(option)
+    },
+    initPie() {
+      var colorList = ['#6F53FD', '#2DF6E6']
+      var myChart = echarts.init(this.$refs.pics)
+      myChart.setOption({
+        tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {c} ({d}%)',
+        },
+        title: {
+          text: 'VOLTE',
+          subtext: '话务量占比',
+          x: 'center',
+          y: '170',
+          textStyle: {
+            fontSize: 13,
+            fontWeight: 'normal',
+            color: ['#FFF900'],
+          },
+          subtextStyle: {
+            color: '#FFF900',
+            fontSize: 12,
+          },
+        },
+        grid: {
+          bottom: 150,
+          left: 0,
+          right: '10%',
+        },
+        legend: {
+          show: false,
+          orient: 'vertical',
+          top: 'middle',
+          right: '%',
+          textStyle: {
+            color: '#f2f2f2',
+            fontSize: 12,
+          },
+          icon: 'roundRect',
+        },
+        series: [
+          // 主要展示层的
+          {
+            radius: ['20%', '27%'],
+            center: ['50%', '50%'],
+            type: 'pie',
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return colorList[params.dataIndex]
+                },
+              },
+            },
+            label: {
+              normal: {
+                show: false,
+              },
+            },
+            data: [
+              {
+                value: 2319.18,
+                name: 'VOLTE话务量',
+              },
+              { value: 900.59, name: '3G话务量' },
+            ],
+          },
+          // 边框的设置
+          {
+            radius: ['25%', '27%'],
+            center: ['50%', '50%'],
+            type: 'pie',
+            label: {
+              normal: {
+                show: false,
+              },
+              emphasis: {
+                show: false,
+              },
+            },
+            labelLine: {
+              normal: {
+                show: false,
+              },
+              emphasis: {
+                show: false,
+              },
+            },
+            animation: false,
+            tooltip: {
+              show: false,
+            },
+            itemStyle: {
+              normal: {
+                color: 'rgba(54,49,137,0.5)',
+              },
+            },
+            data: [
+              {
+                value: 1,
+              },
+            ],
+          },
+        ],
+      })
+    },
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.app {
+  position: relative;
+  .pic {
+    position: absolute;
+    top: 110px;
+    left: 240px;
+    
+  }
+  .echarts {
+    position: absolute;
+    top: 200px;
+    left: 103px;
+    z-index: 333;
+  }
+}
+</style>

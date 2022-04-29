@@ -1,0 +1,80 @@
+import request from '@/utils/request'
+
+const tableApi = {
+  getCityDetail:'/assessQuality/xfzyhtcfd',
+  getfristTable:'/assessQuality/xfzyhscyc',
+  getDepositData:'/assessQuality/clyhsw',
+  getNewMassData:'/assessQuality/xfzyhsw'
+
+}
+
+/**
+ * get user 2step code open?
+ * @param parameter {*}
+ */
+export default tableApi
+
+//cityDetail
+export function getCityDetail(parameter) {
+  return request({
+    url: tableApi.getCityDetail,
+    method: 'post',
+    data: parameter
+    // data: {
+    //   "timest": "20210220",
+    //   "eparchyCode": "0000",
+    //   "areaCode": "",
+    //   "gridId": "",
+    //   "flag": "2",
+    //   "pctFlag": "2"
+    // }
+  })
+}
+//首次预存
+export function getfristTable(parameter) {
+  return request({
+    url: tableApi.getfristTable,
+    method: 'post',
+    data: parameter
+    // data: {
+    //   "timest": "20210220",
+    //   "eparchyCode": "0000",
+    //   "areaCode": "",
+    //   "gridId": "",
+    //   "flag": "2",
+    //   "pctFlag": "2"
+    // }
+  })
+}
+//存量用户三无
+export function getDepositData(parameter) {
+  return request({
+    url: tableApi.getDepositData,
+    method: 'post',
+    data: parameter
+    // data: {
+    //   "timest": "20210220",
+    //   "eparchyCode": "0000",
+    //   "areaCode": "",
+    //   "gridId": "",
+    //   "flag": "2",
+    //   "pctFlag": "2"
+    // }
+  })
+}
+//新发展用户三无
+export function getNewMassData(parameter) {
+  return request({
+    url: tableApi.getNewMassData,
+    method: 'post',
+    data: parameter
+    // data: {
+    //   "timest": "20210220",
+    //   "eparchyCode": "0000",
+    //   "areaCode": "",
+    //   "gridId": "",
+    //   "flag": "2",
+    //   "pctFlag": "2"
+    // }
+  })
+}

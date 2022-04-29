@@ -1,0 +1,76 @@
+<template>
+  <div class="content">
+    <slot />
+    <div class="bottom">
+      <div v-for="i in list" :key="i.name" :class="{'active': i.active}" @click="openPage(i.url)">{{i.name}}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    list: Array,
+  },
+  created() {
+  },
+  mounted() {
+  },
+  methods: {
+    openPage(val) {
+      this.list.forEach(obj => {
+        // if (obj.url === val){
+        //   obj.active = true
+        // }else {
+        //   obj.active = false
+        // }
+      })
+      this.$router.push({ path: val })
+      // alert(val)
+    },
+  }
+}
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+.content {
+  height: 100%;
+  display: flex;
+  padding: 20px;
+  position: relative;
+  margin: 15px;
+  margin-top: -35px;
+  background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+  background-size: auto 100%;
+  padding-bottom: 0;
+}
+.bottom {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  left: 33.6%;
+  div {
+    flex: 1;
+    height: 61px;
+    line-height: 58px;
+    font-size: 28px;
+    font-family: YouSheBiaoTiHei;
+    font-weight: 400;
+    color: #92d7fb;
+    text-align: center;
+    margin: 0 10px;
+    background-image: url('~@/assets/images/bigScreen/btn_tab.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+  }
+  .active {
+    color: #fff;
+    background-image: url('~@/assets/images/bigScreen/bg-bottom.png');
+  }
+}
+</style>

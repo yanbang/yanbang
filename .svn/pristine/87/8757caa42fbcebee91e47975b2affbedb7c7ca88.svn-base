@@ -1,0 +1,357 @@
+<template>
+  <div class="mapBar" ref="HBMap" style=" height:560px;"></div>
+</template>
+
+<script>
+import echarts from 'echarts'
+import zhejiang from '@/assets/js/map/zhejiang.json'
+import hangzhou from '@/assets/js/map/hangzhou.json'
+import huzhou from '@/assets/js/map/huzhou.json'
+import jiaxing from '@/assets/js/map/jiaxing.json'
+import jinhua from '@/assets/js/map/jinhua.json'
+import lishui from '@/assets/js/map/lishui.json'
+import ningbo from '@/assets/js/map/ningbo.json'
+import quzhou from '@/assets/js/map/quzhou.json'
+import shaoxing from '@/assets/js/map/shaoxing.json'
+import taizhou from '@/assets/js/map/taizhou.json'
+import wenzhou from '@/assets/js/map/wenzhou.json'
+import zhoushan from '@/assets/js/map/zhoushan.json'
+
+function getRandom(start = 0.6, end = 1) {
+  let num = Math.random() * (end - start) + start
+  return num
+}
+export default {
+  name: ' ',
+  components: {},
+  data() {
+    return {
+      cityName: '全省',
+      hoverCityName: ''
+    }
+  },
+  watch: {
+    cityName(val) {
+      this.getHBMapData()
+    }
+  },
+  created() {
+    echarts.registerMap('浙江', zhejiang)
+    echarts.registerMap('杭州市', hangzhou)
+    echarts.registerMap('湖州市', huzhou)
+    echarts.registerMap('嘉兴市', jiaxing)
+    echarts.registerMap('金华市', jinhua)
+    echarts.registerMap('丽水市', lishui)
+    echarts.registerMap('宁波市', ningbo)
+    echarts.registerMap('衢州市', quzhou)
+    echarts.registerMap('绍兴市', shaoxing)
+    echarts.registerMap('台州市', taizhou)
+    echarts.registerMap('温州市', wenzhou)
+    echarts.registerMap('舟山市', zhoushan)
+  },
+  mounted() {
+    this.getHBMapData()
+  },
+  methods: {
+    getHBMapData() {
+      var data = [
+        {
+          name: '杭州',
+          value: 5103
+        },
+        {
+          name: '湖州',
+          value: 3032
+        },
+        {
+          name: '嘉兴',
+          value: 3030
+        },
+        {
+          name: '绍兴',
+          value: 2420
+        },
+        {
+          name: '宁波',
+          value: 2780
+        },
+        {
+          name: '舟山',
+          value: 1780
+        },
+        {
+          name: '衢州',
+          value: 1780
+        },
+        {
+          name: '金华',
+          value: 780
+        },
+        {
+          name: '台州',
+          value: 80
+        },
+        {
+          name: '丽水',
+          value: 2780
+        },
+        {
+          name: '温州',
+          value: 1780
+        }
+      ]
+
+      var geoCoordMap = {
+        杭州: [119.553576, 29.987459],
+        湖州: [120.102398, 30.667198],
+        嘉兴: [120.750865, 30.462653],
+        绍兴: [120.582112, 29.697117],
+        宁波: [121.549792, 29.668388],
+        舟山: [122.106863, 30.216028],
+        衢州: [118.372631, 29.041708],
+        金华: [120.149506, 29.089524],
+        台州: [121.428599, 28.861378],
+        丽水: [119.921786, 28.251993],
+        温州: [120.672111, 28.200575]
+      }
+
+      var dt = [
+        {
+          name: '杭州市',
+          value: 5555
+        },
+        {
+          name: '湖州市',
+          value: 402
+        },
+        {
+          name: '嘉兴市',
+          value: 401
+        },
+        {
+          name: '绍兴市',
+          value: 3421
+        },
+        {
+          name: '宁波市',
+          value: 2782
+        },
+        {
+          name: '舟山市',
+          value: 202
+        },
+        {
+          name: '衢州市',
+          value: 201
+        },
+        {
+          name: '金华市',
+          value: 272
+        },
+        {
+          name: '台州市',
+          value: 2701
+        },
+        {
+          name: '丽水市',
+          value: 2702
+        },
+        {
+          name: '温州市',
+          value: 1081
+        }
+      ]
+
+      var planePath =
+        'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z'
+      var convertData = function(data) {
+        var res = []
+        for (var i = 0; i < data.length; i++) {
+          var geoCoord = geoCoordMap[data[i].name]
+          if (geoCoord) {
+            res.push({
+              name: data[i].name,
+              value: geoCoord.concat(data[i].value)
+            })
+          }
+        }
+        return res
+        console.log(res)
+        //debugger
+      }
+      var color = ['#a6c84c']
+      var series = []
+      ;[['浙江', data]].forEach(function(item, i) {
+        series.push(
+          {
+            name: '定位',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: convertData(
+              data
+                .sort(function(a, b) {
+                  return b.value - a.value
+                })
+                .slice(0, 5)
+            ),
+            symbolSize: function(val) {
+              return val[1] / 1
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            itemStyle: {
+              normal: {
+                color: '#fff',
+                shadowBlur: 20,
+                shadowColor: '#015baf'
+              }
+            },
+            zlevel: 1
+          },
+          {
+            type: 'map',
+            map: '浙江',
+            zlevel: 0,
+            itemStyle: {
+              normal: {
+                borderColor: 'transparent',
+                color: '#000'
+              }
+            },
+            data: dt
+          },
+          {
+            name: '点',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            symbol: 'pin',
+            symbolSize: function(val) {
+              return val[2] / 50
+            },
+            label: {
+              normal: {
+                show: true,
+                textStyle: {
+                  color: '#000'
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#fff', //标志颜色
+                borderColor: '#fff',
+                borderWidth: 2
+              },
+              emphasis: {
+                borderColor: '#fff',
+                borderWidth: 2
+              }
+            },
+            zlevel: 6,
+            data: convertData(item[1])
+          }
+        )
+      })
+      const option = {
+        visualMap: {
+          min: 10,
+          max: 5000,
+          left: 'left',
+          top: 'bottom',
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true,
+          inRange: {
+            color: ['#0385fe', '#ffffff']
+          },
+
+          textStyle: {
+            color: '#31b1fe'
+          }
+        },
+        // visualMap: { //视觉映射组件
+        // 	type: 'piecewise', //分段型。
+        // 	splitNumber: 5,
+        // 	inverse: true,
+        // 	pieces: [{
+        // 			min: 20001,
+        // 			max: 25000,
+        // 			color: '#0988fe'
+        // 		}, {
+        // 			min: 15001,
+        // 			max: 20000,
+        // 			color: '#2b99fe'
+        // 		},
+        // 		{
+        // 			min: 10001,
+        // 			max: 15000,
+        // 			color: '#48a7fe'
+        // 		},
+        // 		{
+        // 			min: 5001,
+        // 			max: 10000,
+        // 			color: '#82c3ff'
+        // 		},
+        // 		{
+        // 			min: 1,
+        // 			max: 5000,
+        // 			color: '#d9eeff'
+        // 		},
+        // 	],
+        // 	left: 'left',
+        // 	top: 'bottom',
+        // 	textStyle: {
+        // 		color: '#2b99fe'
+        // 	}
+        // },
+
+        geo: {
+          map: '浙江',
+          itemStyle: {
+            normal: {
+              areaColor: '#ddd',
+              borderColor: 'transparent'
+            },
+            emphasis: {
+              areaColor: '#ccc'
+            }
+          }
+        },
+        series: series
+      }
+
+      const dom = this.$refs.HBMap
+      const echart = echarts.init(dom)
+      echart.setOption(option)
+      // echart.on("click", (param) => {
+      //   if (!param.name || !this.cityList.some(v => v.name == param.name)) return
+      //   this.cityName = param.name
+      // })
+      // echart.on("mouseover", (param) => {
+      //   if (!param.name || !this.cityList.some(v => v.name == param.name)) return
+      //   this.hoverCityName = param.name
+      // })
+      // echart.on('dblclick', (param) => {
+      //     // console.log(param)
+      //     this.cityName = "全省"
+      // })
+      echart.on('mouseout', () => {
+        this.hoverCityName = ''
+      })
+      setTimeout(() => {
+        echart.dispatchAction({
+          type: 'geoSelect',
+          name: curSelectCityName
+        })
+      })
+    },
+
+    goToPage(url) {
+      if (!url) return
+      this.$router.push(url)
+    }
+  }
+}
+</script>

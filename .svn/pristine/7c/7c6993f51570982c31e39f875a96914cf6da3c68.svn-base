@@ -1,0 +1,35 @@
+<template>
+  <div class="r1">
+    <div class="r1s"><R1s /></div>
+    <div class="r1x"><R1x /></div>
+  </div>
+</template>
+<script>
+import R1s from "./componets/R1s.vue";
+import R1x from "./componets/R1x.vue";
+export default {
+  components: { R1s, R1x },
+  data() {
+    return {};
+  },
+  created() {},
+  computed: {},
+  methods: {},
+};
+</script>
+<style lang="less" scoped>
+.r1{
+    position: relative;
+   
+    .r1s{
+      position: absolute;
+      top:-70px;
+       left: 30px;
+    }
+    .r1x{
+        position: absolute;
+         top:140px;
+         left: 53px;
+    }
+}
+</style>

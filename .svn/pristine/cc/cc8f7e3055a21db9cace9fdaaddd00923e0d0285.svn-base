@@ -1,0 +1,346 @@
+<template>
+  <div style="height: 100%; width: 100%">
+    <el-table :data="rightList" style="width: 100%" @row-click="handle">
+      <el-table-column prop="eparchyName" label="地区"> </el-table-column>
+      <el-table-column prop="pct0" label="完成率=0%"> </el-table-column>
+      <el-table-column prop="pct50" label="0%<完成率≤50%"> </el-table-column>
+      <el-table-column prop="pct100" label="50%<完成率≤100%"> </el-table-column>
+      <el-table-column prop="pctOver" label="完成率≤100%"> </el-table-column>
+    </el-table>
+    <div>
+      <el-dialog title="全省周完成率低于10%的营服" :visible.sync="dialogTableVisible">
+        <!-- <dialog></dialog> -->
+        <el-table :data="popList" style="width: 100%">
+          <el-table-column prop="eparchyName" label="归属地市"> </el-table-column>
+          <el-table-column prop="gridName" label="营服"> </el-table-column>
+          <el-table-column prop="dayNew" label="当日发展"> </el-table-column>
+          <el-table-column prop="dayCchive" label="日完成率" sortable> </el-table-column>
+          <el-table-column prop="weekNew" label="周发展"> </el-table-column>
+          <el-table-column prop="weekAchive" label="周完成率" sortable> </el-table-column>
+          <el-table-column prop="monNew" label="月累发展"> </el-table-column>
+          <el-table-column prop="monAchive" label="月完成率" sortable> </el-table-column>
+          <el-table-column prop="qthAchive" label="季度序时完成场" sortable> </el-table-column>
+        </el-table>
+      </el-dialog>
+    </div>
+  </div>
+</template>
+
+<script>
+// import dialog from '@/components/Financial/dialog'
+import { rightList, popList } from '@/api/financial'
+export default {
+  name: 'CityFinish',
+  components: {
+    // dialog,
+  },
+  props: {
+    timest: String,
+    flag: String,
+  },
+  data() {
+    return {
+      dialogTableVisible: false,
+      finishCity: [
+        {
+          eparchyName: '全省',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+        {
+          eparchyName: '滨州',
+          pct0: '10',
+          pct50: '35',
+          pct100: '46',
+          pctover: '30',
+        },
+      ],
+      AroundTheCitys: [
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '高老庄',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '2016',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+      ],
+      rightList: [],
+      popList: [],
+      // timest: '',
+      EparchyCode: '',
+      AreaCode: '',
+      GridId: '',
+      // Flag: '',
+    }
+  },
+  watch: {
+    timest(value) {
+      this.updateRightPage()
+      this.updatePopPage()
+    },
+  },
+  created() {
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    this.AreaCode = userInfo.areaCode
+    this.EparchyCode = userInfo.eparchyCode
+    this.GridId = userInfo.gridId
+  },
+  mounted() {
+    this.updateRightPage()
+    this.updatePopPage()
+  },
+  methods: {
+    handle(row, event, column) {
+      this.dialogTableVisible = true
+    },
+    goto(row, event, column) {
+      alert(123)
+    },
+    updateRightPage() {
+      rightList({
+        timest: this.timest,
+        eparchyCode: this.EparchyCode,
+        areaCode: this.AreaCode,
+        gridId: this.GridId,
+        flag: this.flag,
+      }).then((res) => {
+        console.log(res)
+        this.rightList = res.result.tblList
+      })
+    },
+    updatePopPage() {
+      popList({
+        timest: this.timest,
+        eparchyCode: this.EparchyCode,
+        areaCode: this.AreaCode,
+        gridId: this.GridId,
+        flag: this.flag,
+      }).then((res) => {
+        console.log(res)
+        this.popList = res.result.tblList
+      })
+    },
+  },
+}
+</script>
+
+<style scoped lang="scss">
+/deep/ .el-table {
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th {
+  background: none !important;
+  background: url('../../assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 12px !important;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-dialog {
+  width: 66%;
+  background: transparent;
+  background-image: url('../../assets/images/bigScreen/kuang.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+/deep/.el-icon-close:before {
+  content: none !important;
+}
+/deep/.el-dialog__headerbtn .el-dialog__close {
+  width: 35px;
+  height: 35px;
+  background-image: url('../../assets/images/bigScreen/close.png');
+  background-repeat: no-repeat;
+  margin: 0 30px;
+}
+/deep/.el-dialog__title {
+  color: #02f6ff;
+  font-size: 24px;
+  width: 516px;
+  font-size: 24px;
+  font-family: PangMenZhengDao-3;
+  font-weight: 400;
+  background-image: url('../../assets/images/bigScreen/fullService/biaoti.png');
+  background-position: right;
+  background-repeat: no-repeat;
+  margin-left: 30px;
+  display: block;
+}
+</style>

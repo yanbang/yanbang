@@ -1,0 +1,1653 @@
+<template>
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">业务</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 左边 -->
+        <div class="left">
+          <!-- 按产品 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                构-新发展按速率
+              </div>
+              <div class="title-right">
+                <div @click="tabClick(0, 'd')" :class="{'active': tabs[0] === 'd'}">当日</div>
+                <div @click="tabClick(0, 'm')" :class="{'active': tabs[0] === 'm'}">月累</div>
+                <div @click="tabClick(0, 'y')" :class="{'active': tabs[0] === 'y'}">年累</div>
+              </div>
+            </div>
+            <!-- <a-icon type="loading" style="font-size:24px"/> -->
+            <div class="left-top">
+              <div class="con">
+                <div class="bigText color1">{{speed.smallRate}} <span>%</span></div>
+                <div class="smallText" style="color:#fff">≤300M ：{{speed.smallTotal}}户</div>
+              </div>
+              <div class="chart" id="leftTopChart">
+                <div class="bg"></div>
+              </div>
+              <div class="con">
+                <div class="bigText color2">{{speed.bigRate}} <span>%</span></div>
+                <div class="smallText">>300M ：{{speed.bigTotal}}户</div>
+              </div>
+            </div>
+            <div class="left-lineChart">
+              <div class="chartTitle">
+                <div class="left">近7日发展量趋势</div>
+                <div class="right" @click="showDialog(4)">
+                  更多 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </div>
+              </div>
+              <div class="lineChart" id="leftLineChart"></div>
+            </div>
+          </div>
+          <!-- 按融合 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                构-新发展按用户
+              </div>
+              <div class="title-right">
+                <div @click="tabClick(1, 'd')" :class="{'active': tabs[1] === 'd'}">当日</div>
+                <div @click="tabClick(1, 'm')" :class="{'active': tabs[1] === 'm'}">月累</div>
+                <div @click="tabClick(1, 'y')" :class="{'active': tabs[1] === 'y'}">年累</div>
+              </div>
+            </div>
+            <div class="left-waterPoloChart">
+              <div class="left-item" v-for="(i,index) in waterPoloList" :key="index">
+                <div class="waterPoloChart" :id="`waterPoloChart${index}`"></div>
+                <div class="itemName">{{i.name || '-'}}</div>
+                <div class="itemNum">{{i.num || '-'}}<span>户</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- 按渠道 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                效-新发展按渠道
+              </div>
+              <div class="title-right">
+                <div @click="tabClick(2, 'd')" :class="{'active': tabs[2] === 'd'}">当日</div>
+                <div @click="tabClick(2, 'm')" :class="{'active': tabs[2] === 'm'}">月累</div>
+                <div @click="tabClick(2, 'y')" :class="{'active': tabs[2] === 'y'}">年累</div>
+              </div>
+            </div>
+            <div class="leftBarChart" id="leftBarChart"></div>
+          </div>
+        </div>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="centerTop">
+            <div class="centerTop-title">
+              <div class="titleLeft">量-宽带发展</div>
+              <div class="titleRight" @click="showDialog(1)">
+                发展趋势 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+              </div>
+            </div>
+            <div class="centerTop-con">
+              <div class="centerItem" v-for="i in develop" :key="i.id">
+                <div class="centerItem-top">
+                  <div :class="['itemBg', {'month': i.id == '月'},{'year': i.id == '年'}]"></div>
+                  <div class="itemText">
+                    <div>{{i.id}}完成率</div>
+                    <div class="color" :style="{'color':color[i.index]}">{{i.rate}} <span :style="{'color':color[i.index]}">%</span></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="centerItem-center marginB">
+                    <div class="itemTitle">当{{i.id}}发展</div>
+                    <div class="itemText">{{i.num}} <span>户</span></div>
+                  </div>
+                  <!-- <div class="centerItem-center" v-if="i.dayRate || i.dayRate == 0">
+                                    <div class="itemTitle"></div>
+                                    <div class="itemText1">
+                                        环比<span :class="['margin', {'green': i.status == 1}, {'yellow': i.status == 0}]">{{i.status == 1 ? '-' : '+'}}{{i.dayRate}}%</span>
+                                        同比<span :class="['margin', {'green': i.status == 1}, {'yellow': i.status == 0}]">{{i.status == 1 ? '-' : '+'}}{{i.tongRate}}%</span>
+                                    </div>
+                                </div> -->
+                </div>
+                <div class="centerItem-center">
+                  <div class="itemTitle">{{i.id}}发展目标</div>
+                  <div class="itemText">{{i.total}} <span>户</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="centerBottom">
+            <div class="centerTop-title">
+              <div class="titleLeft">{{mapData.label}}发展量</div>
+              <div class="titleRight">
+                <span class="margin" v-if="mapData.level < 4" @click="showDialog(2)">
+                  详细数据 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+                <span v-if="mapData.level < 3" @click="showDialog(3)">
+                  营服排行榜 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+              </div>
+            </div>
+            <div class="map">
+              <iframe ref="iframe" :src="iframeSrc" frameborder="0" style="width: 100%; height: 100%"></iframe>
+            </div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <!-- 宽带流失 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">质-宽带流失</div>
+            </div>
+            <div class="rightTable">
+              <div class="tHead">
+                <div class="wid19"></div>
+                <div>当日流失</div>
+                <div>月累流失</div>
+                <div>年累流失</div>
+              </div>
+              <div class="tBody">
+                <div class="td wid19">
+                  <div>{{loss && loss.length > 0 && loss[0].name || '-'}}</div>
+                  <div>{{loss && loss.length > 0 && loss[1].name || '-'}}</div>
+                </div>
+                <div class="td bg">
+                  <div>{{loss && loss.length > 0 && loss[0].day || '-'}}</div>
+                  <div>{{loss && loss.length > 0 && loss[1].day || '-'}}</div>
+                </div>
+                <div class="td bg">
+                  <div>{{loss && loss.length > 0 && loss[0].mon || '-'}}</div>
+                  <div>{{loss && loss.length > 0 && loss[1].mon || '-'}}</div>
+                </div>
+                <div class="td bg">
+                  <div>{{loss && loss.length > 0 && loss[0].year || '-'}}</div>
+                  <div>{{loss && loss.length > 0 && loss[1].year || '-'}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 宽带存量 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">构-宽带存量</div>
+              <!-- <div class="title-right">
+                <div @click="tabClick(3, 'm')" :class="{'active': tabs[3] === 'm'}">当月</div>
+                <div @click="tabClick(3, 'y')" :class="{'active': tabs[3] === 'y'}">年累</div>
+              </div> -->
+            </div>
+            <div class="rightCenterPieChart">
+              <!-- :style=" {'height': index > 2 ? '270px' : '200px'}" -->
+              <div class="rightItem" v-for="(i,index) in rightCenterPieList" style="height: 200px" :key="index" :id="`rightCenterPieChart${index}`"></div>
+            </div>
+          </div>
+          <!-- 宽带资源 -->
+          <!--
+
+
+
+
+
+-->
+        </div>
+      </template>
+    </FlexBox>
+    <!-- 发展趋势 -->
+    <el-dialog :visible.sync="isDialog1" width="60%" :before-close="handleClose" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">{{mapData.area_name || '全省'}}宽带发展趋势</div>
+        <div class="dialogChart" id="dialogMouthChart"></div>
+        <!-- <div class="dialogChart" id="dialogYearChart"></div> -->
+      </div>
+    </el-dialog>
+    <!-- 全省移网发展明细 -->
+    <el-dialog :visible.sync="isDialog2" width="60%" :before-close="handleClose" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">{{mapData.area_name || '全省'}}宽带发展明细</div>
+        <div class="dialogTableBg">
+          <el-table :key="dialogTableKey" :data="dialogTable" @sort-change='tableSortChange' style="width: 100%; height:730px;overflow: auto;">
+            <el-table-column prop="regionName" label="地区"> </el-table-column>
+            <el-table-column prop="dayTarget" label="日目标"> </el-table-column>
+            <el-table-column prop="dayDevelop" label="当日发展"> </el-table-column>
+            <el-table-column prop="dayRate" label="日完成率" sortable='aa'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._dayStatus == 1" style="color: #00B050 !important">{{scope.row.dayRate}}%</span>
+                <span v-else-if="scope.row._dayStatus == 2" style="color: #C00000 !important">{{scope.row.dayRate}}%</span>
+                <span v-else>{{scope.row.dayRate}}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="monTarget" label="月目标"> </el-table-column>
+            <el-table-column prop="monDevelop" label="月累发展"> </el-table-column>
+            <el-table-column prop="monRate" label="月完成率" sortable='bb'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._monStatus == 1" style="color:#00B050 !important">{{scope.row.monRate}}%</span>
+                <span v-else-if="scope.row._monStatus == 2" style="color: #C00000 !important">{{scope.row.monRate}}%</span>
+                <span v-else>{{scope.row.monRate}}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="yearTarget" label="年目标"> </el-table-column>
+            <el-table-column prop="yearDevelop" label="年累发展"> </el-table-column>
+            <el-table-column prop="yearRate" label="年完成率" sortable='cc'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._yearStatus == 1" style="color: #00B050 !important">{{scope.row.yearRate}}%</span>
+                <span v-else-if="scope.row._yearStatus == 2" style="color: #C00000 !important">{{scope.row.yearRate}}%</span>
+                <span v-else>{{scope.row.yearRate}}%</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 排行榜 -->
+    <el-dialog :visible.sync="isDialog3" width="60%" :before-close="handleClose" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">{{mapData.area_name || '全省'}}宽带发展营服排行榜</div>
+        <div class="dialogBtn">
+          <div class="dialogBtn-left">
+            <div @click="dialogSub(1)" :class="['dialogBtn-item',{'dialogBtnOn1': dialogBtnOn == 1}]">日完成率前10</div>
+            <div @click="dialogSub(2)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 2}]">月完成率前10</div>
+            <div @click="dialogSub(3)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 3}]">年完成率前10</div>
+          </div>
+          <div class="dialogBtn-right">
+            <div @click="dialogSub(4)" :class="['dialogBtn-item',{'dialogBtnOn1': dialogBtnOn == 4}]">日完成率后10</div>
+            <div @click="dialogSub(5)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 5}]">月完成率后10</div>
+            <div @click="dialogSub(6)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 6}]">年完成率后10</div>
+          </div>
+        </div>
+        <div class="dialogTable">
+          <el-table :key="dialogTableKey" :data="dialogTableTop10" style="width: 100%;height:450px;overflow: auto;">
+            <el-table-column prop="a" label="排名" min-width="1">
+              <template slot-scope="scope">
+                <span v-if="scope.$index == 0" class="tableTh tableThTop1"></span>
+                <span v-else-if="scope.$index == 1" class="tableTh tableThTop2"></span>
+                <span v-else-if="scope.$index == 2" class="tableTh tableThTop3"></span>
+                <span v-else class="tableTh">{{ scope.$index + 1 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="gridName" label="营服" min-width="3"></el-table-column>
+            <el-table-column prop="areaName" label="归属地市" min-width="1"></el-table-column>
+            <el-table-column prop="dayObject" :label="`${tableLabel}目标`" min-width="1"></el-table-column>
+            <el-table-column prop="dayNew" :label="`当${tableLabel}发展`" min-width="1"></el-table-column>
+            <el-table-column prop="dayAchive" :label="`${tableLabel}完成率`" min-width="1">
+              <template slot-scope="scope">{{scope.row.dayAchive}}%</template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <!-- 半年发展量趋势 -->
+    <el-dialog :visible.sync="isDialog4" width="60%" :before-close="handleClose" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">宽带发展按速率</div>
+        <div class="dialogTableBg">
+          <el-table ref="table" :key="dialogTableKey" :data="dialogTable1" style="width: 100%;height:400px; overflow: auto;">
+            <el-table-column prop="kpiName" label="速率"></el-table-column>
+            <el-table-column prop="curDay" label="当日发展"></el-table-column>
+            <el-table-column prop="curMon" label="月累发展"></el-table-column>
+            <el-table-column prop="curYear" label="年累发展"></el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import store from 'store'
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import leftTopChart from '@/config/bigscreen/fullService-leftTopPie.js'
+import leftLine from '@/config/bigscreen/fullService-leftLine.js'
+import waterPoloChart from '@/config/bigscreen/fullService-waterPoloChart.js'
+import leftBarChart from '@/config/bigscreen/fullService-leftBarChart.js'
+import rightPieChart from '@/config/bigscreen/fullService-rightPieChart.js'
+import rightCenterPie from '@/config/bigscreen/broad-RightCenterPie.js'
+import {
+  bandSpeed, bandSpeedMore, bandUser, bandChannel, bandDevelop, bandTrend,
+  bandDetail, bandCampTop10, bandLoss, bandStock, bandResource, kdHalfYearTrend
+} from '@/api/bigscreen.js'
+
+export default {
+  components: {
+    Header,
+    FlexBox
+  },
+  data() {
+    return {
+      param: {},
+      timest: '',
+      userInfo: [],
+      mapData: [],
+      speedData: [],
+      userData: [],
+      channelData: [],
+      speed: {},
+      develop: [],
+      percent: 1,
+      percent1: 1,
+      percent2: 1,
+      color: ['#00B050', '#fff', '#C00000'],
+      loss: {},
+      stockData: [],
+      resourceData: [],
+      tabs: ['d', 'd', 'd', 'm'],
+      iframeSrc: '',
+      bottomList: [
+        {
+          name: '移网发展',
+          url: '/bigscreen/fullService',
+        }, {
+          name: '5G发展',
+          url: '/bigscreen/5Gdevelop/5G',
+        },
+        {
+          name: '宽带发展',
+          url: '/bigscreen/broadbandPage',
+          active: true
+        }, {
+          name: '2I发展',
+          url: '/bigscreen/5Gdevelop/2I',
+        }],
+      waterPoloList: [],
+      rightPieList: [],
+      rightCenterPieList: [],
+      isDialog1: false,
+      isDialog2: false,
+      isDialog3: false,
+      isDialog4: false,
+      dialogTable: [],
+      dialogTable1: [],
+      dialogTableTop10: [],
+      dialogLine: [],
+      dialogBtnOn: 1,
+      tableLabel: '日',
+      index: 0,
+      dialogTableKey: '',
+    }
+  },
+  created() {
+    this.initParam()
+  },
+  mounted() {
+    if (this.userInfo.isAddMask == '1') {
+      this.$watermark(this.userInfo.serialNumber);
+    } else {
+      this.$watermark("");
+    }
+    let level = this.mapData.level
+    let eparchyCode = this.userInfo.eparchyCode
+    let areaCode = this.userInfo.areaCode
+    let gridId = this.userInfo.gridId
+    let timest = this.timest
+    this.iframeSrc = `http://134.32.115.253:18080/sdresview/?level=${level}&sceneid=1&gis_sceneid=6&area_id=${gridId || areaCode || eparchyCode}&poi_city_id=370100&timest=${timest}`
+  },
+  destroyed() {
+    window.removeEventListener("message", this.mapInit, true);
+  },
+  methods: {
+    getDate(date) {
+      this.timest = date
+      this.param.timest = this.timest
+      // 注册地图事件
+      window.addEventListener('message', this.mapInit, true)
+      this.init()
+      this.mapSet()
+    },
+    mapInit(e) {
+      let that = this
+      if (e.data.message == 'levelSwitch') {
+        that.mapData = e.data
+        if (e.data.level == 1) {
+          that.param.eparchyCode = '0000'
+          that.param.areaCode = ''
+          that.param.gridId = ''
+          that.param.mLevel = '1'
+        } else if (e.data.level == 2) {
+          that.param.eparchyCode = e.data.area_id
+          that.param.areaCode = ''
+          that.param.gridId = ''
+          that.param.mLevel = '2'
+        } else if (e.data.level == 3) {
+          // that.param.eparchyCode = ''
+          that.param.areaCode = e.data.area_id
+          that.param.gridId = ''
+          that.param.mLevel = '3'
+        } else if (e.data.level == 4) {
+          // that.param.eparchyCode = ''
+          // that.param.areaCode = ''
+          that.param.gridId = e.data.area_id
+          that.param.mLevel = '4'
+        }
+        that.param.timest = that.timest
+        // console.log('map', that.mapData, that.param)
+        that.init()
+      }
+    },
+    mapSet() {
+      let param = {
+        timest: this.param.timest,
+        level: this.param.mLevel,
+        sceneid: '1',
+        gis_sceneid: '6',
+        area_id: this.mapData && this.mapData.area_id ? this.mapData.area_id : '',
+        poi_city_id: '370100',
+        message: "changeTime",
+        city: this.mapData && this.mapData.city ? this.mapData.city : '',
+
+      }
+      window.frames[0].postMessage(param, "*");
+    },
+    initParam() {
+      this.userInfo = store.get('userInfo');
+      Object.assign(this.mapData, { label: this.userInfo.dataAreaName || '各地市' })
+      if (store.get('userInfo').gridId) {
+        this.mapData.level = 4;
+        
+      } else if (store.get('userInfo').areaCode) {
+        this.mapData.level = 3;
+        
+      } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+        this.mapData.level = 2;
+        
+      } else {
+        this.mapData.level = 1;
+      };
+      // 默认参数
+      this.param = {
+        "timest": this.timest,
+        "eparchyCode": this.userInfo.eparchyCode || '',
+        "areaCode": this.userInfo.areaCode || '',
+        "gridId": this.userInfo.gridId || '',
+        "mLevel": this.mapData.level || '',
+        "flag": "1",
+        "chnlKindId": ""
+      }
+    },
+    init() {
+      // console.log('111 index:', this.index++)
+      // console.log('timest:', this.timest)
+      this.tabs = ['d', 'd', 'd', 'm'],
+        this.bandSpeedData()
+      this.bandUserData()
+      this.bandChannelData(this.tabs[2])
+      this.bandDevelopData()
+      this.bandLossData()
+      this.bandStockData()
+      //   this.bandResourceData()
+      this.leftLineChart()
+
+      this.getDialogTable1Data()
+      this.getDialogDatailData()
+      this.getDialogTop10(1)
+    },
+    openPage() {
+      let level = this.param.mLevel
+      let eparchyCode = this.param.eparchyCode
+      let areaCode = this.param.areaCode
+      let gridId = this.param.gridId
+      this.$router.push({ path: `/bigscreen/resource_level4?level=${level}&eparchyCode=${eparchyCode}&areaCode=${areaCode}&gridId=${gridId}` })
+    },
+    tabClick(index, val) {
+      this.$set(this.tabs, index, val)
+      if (index == 0) {
+        this.leftTopChart(val)
+      } else if (index == 1) {
+        this.waterPoloChartList(val)
+      } else if (index == 2) {
+        this.bandChannelData(val)
+      } else if (index == 3) {
+        this.rightCenterPieChartList(val)
+      }
+    },
+    // 按速率 接口
+    bandSpeedData() {
+      let that = this
+      that.speedData = []
+      bandSpeed(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.speedData = res.result.data || ''
+          that.speedData && that.leftTopChart(this.tabs[0])
+        }
+      })
+    },
+    // 按速率
+    leftTopChart(val) {
+      let result = this.speedData ? val == 'd' && this.speedData.day || val == 'm' && this.speedData.mon || val == 'y' && this.speedData.year : ''
+      this.speed = {
+        total: result.sum || '-',
+        smallRate: result.le300pt || '-',
+        smallTotal: result.le300 || '-',
+        bigRate: result.gt300pt || '-',
+        bigTotal: result.gt300 || '-',
+      }
+      let data = {
+        id: 'leftTopChart',
+        value: this.speed.bigRate,
+        mum: this.speed.total
+      }
+      leftTopChart.initPie(data)
+    },
+    // 半年发展量趋势
+    leftLineChart() {
+      let that = this
+      let result = ''
+      kdHalfYearTrend(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          result = res.result.data || ''
+          let xAxis = []
+          let data1 = []
+          let data2 = []
+          result && result.length > 0 && result.map((i, index) => {
+            i.value && i.value.map(c => {
+              if (index == 0) {
+                xAxis.push(c.xi)
+                data1.push(c.value)
+              }
+              if (index == 1) {
+                data2.push(c.value)
+              }
+            })
+          })
+
+          let data = {
+            id: 'leftLineChart',
+            xAxis: xAxis,
+            legend: result && result.length > 0 && [result[1].kpiName, result[0].kpiName,],
+            data1: data2,
+            data2: data1
+          }
+          leftLine.initChart(data)
+        }
+      })
+    },
+    // 按用户 接口
+    bandUserData() {
+      let that = this
+      that.userData = []
+      bandUser(this.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.userData = res.result.data || ''
+          that.userData && that.waterPoloChartList(this.tabs[1])
+        }
+      })
+    },
+    waterPoloChartList(val) {
+      const result = this.userData
+      const ICBAND0014 = result.ICBAND0014 || ''
+      const ICBAND0015 = result.ICBAND0015 || ''
+      const ICBAND0016 = result.ICBAND0016 || ''
+      const ICBAND0038 = result.ICBAND0038 || ''
+      const ICBAND0039 = result.ICBAND0039 || ''
+      const ICBAND0040 = result.ICBAND0040 || ''
+      this.waterPoloList = [{
+        name: '单宽用户',
+        num: ICBAND0014 ? val == 'd' && (ICBAND0014.curDay || '-') || val == 'm' && (ICBAND0014.curMon || '-') || val == 'y' && (ICBAND0014.curYear || '-') : '-',
+        value: ICBAND0038 ? val == 'd' && (ICBAND0038.curDay || '-') || val == 'm' && (ICBAND0038.curMon || '-') || val == 'y' && (ICBAND0038.curYear || '-') : '-',
+      }, {
+        name: '融合用户',
+        num: ICBAND0015 ? val == 'd' && (ICBAND0015.curDay || '-') || val == 'm' && (ICBAND0015.curMon || '-') || val == 'y' && (ICBAND0015.curYear || '-') : '-',
+        value: ICBAND0039 ? val == 'd' && (ICBAND0039.curDay || '-') || val == 'm' && (ICBAND0039.curMon || '-') || val == 'y' && (ICBAND0039.curYear || '-') : '-',
+      }, {
+        name: '新发展零流量用户',
+        num: ICBAND0016 ? val == 'd' && (ICBAND0016.curDay || '-') || val == 'm' && (ICBAND0016.curMon || '-') || val == 'y' && (ICBAND0016.curYear || '-') : '-',
+        value: ICBAND0040 ? val == 'd' && (ICBAND0040.curDay || '-') || val == 'm' && (ICBAND0040.curMon || '-') || val == 'y' && (ICBAND0040.curYear || '-') : '-',
+      }]
+      setTimeout(() => {
+        this.waterPoloList.map((i, index) => {
+          this.waterPoloChart(index, i);
+        })
+      }, 0);
+    },
+    // 按用户
+    waterPoloChart(index, val) {
+      let data = {
+        id: 'waterPoloChart' + index,
+        value: val.value,
+      }
+      waterPoloChart.initChart(data)
+    },
+    // 按渠道 接口
+    bandChannelData(val) {
+      var that = this
+      const param = that.param
+      that.channelData = []
+      let index = '1'
+      if (val == 'm') {
+        index = '2'
+      } else if (val == 'y') {
+        index = '3'
+      } else {
+        index = '1'
+      }
+      bandChannel({
+        timest: param.timest,
+        eparchyCode: param.eparchyCode,
+        areaCode: param.areaCode || '00',
+        gridId: param.gridId || '00',
+        mLevel: param.mLevel,
+        sortType: index
+      }).then(res => {
+        if (res.rspCode === '0000') {
+          that.channelData = res.result.data || ''
+          setTimeout(() => {
+            that.channelData && that.leftBarChart(val)
+          });
+        }
+      })
+    },
+    // 按渠道
+    leftBarChart(val) {
+      let xAxis = []
+      let value = []
+      let list = this.channelData || ''
+      list && list.length > 0 && list.map(i => {
+        xAxis.push(i.kpiName)
+        value.push(val == 'd' && (i.curDay || '-') || val == 'm' && (i.curMon || '-') || val == 'y' && (i.curYear || '-'))
+      })
+      let data = {
+        id: 'leftBarChart',
+        xAxis: xAxis,
+        value: value
+      }
+      leftBarChart.initChart(data)
+    },
+    // 宽带发展量 接口
+    bandDevelopData() {
+      let result = ''
+      bandDevelop(this.param).then(res => {
+        if (res.rspCode === '0000') {
+          result = res.result.data || ''
+          const ICBAND0002 = result.ICBAND0002 || ''
+          const ICBAND0001 = result.ICBAND0001 || ''
+          const ICBAND0003 = result.ICBAND0003 || ''
+          if (ICBAND0002.curDay > 100) {
+            this.percent = 0
+          } else if (ICBAND0002.curDay < 50) {
+            this.percent = 2
+          } else {
+            this.percent = 1
+          }
+          if (ICBAND0002.curMon > 100) {
+            this.percent1 = 0
+          } else if (ICBAND0002.curMon < 50) {
+            this.percent1 = 2
+          } else {
+            this.percent1 = 1
+          }
+          if (ICBAND0002.curYear > 100) {
+            this.percent2 = 0
+          } else if (ICBAND0002.curYear < 50) {
+            this.percent2 = 2
+          } else {
+            this.percent2 = 1
+          }
+          this.develop = [{
+            id: '日',
+            index: this.percent,
+            rate: ICBAND0002 ? ICBAND0002.curDay : '-',
+            num: ICBAND0001 ? ICBAND0001.curDay : '-',
+            total: ICBAND0003 ? parseInt(ICBAND0003.curDay) : '-',
+            status: 1
+          }, {
+            id: '月',
+            index: this.percent1,
+            rate: ICBAND0002 ? ICBAND0002.curMon : '-',
+            num: ICBAND0001 ? ICBAND0001.curMon : '-',
+            total: ICBAND0003 ? parseInt(ICBAND0003.curMon) : '-',
+            status: 0
+          }, {
+            id: '年',
+            index: this.percent2,
+            rate: ICBAND0002 ? ICBAND0002.curYear : '-',
+            num: ICBAND0001 ? ICBAND0001.curYear : '-',
+            total: ICBAND0003 ? parseInt(ICBAND0003.curYear) : '-',
+            status: 1
+          }]
+        }
+      })
+    },
+    // 宽带流失 接口
+    bandLossData() {
+      let that = this
+      that.loss = []
+      bandLoss(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.loss = res.result.data || ''
+        }
+      })
+    },
+    // 宽带存量 接口
+    bandStockData() {
+      let that = this
+      that.stockData = []
+      bandStock(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.stockData = res.result.data || ''
+          that.rightCenterPieChartList(this.tabs[2])
+        }
+      })
+    },
+    rightCenterPieChartList(val) {
+
+      let result = this.stockData || ''
+      this.rightCenterPieList = []
+      result && result.length > 0 && result.map(i => {
+        // this.rightCenterPieList.push({
+        //   name: i.name || '-',
+        //   value: (val == 'm' && i.monRate) || (val == 'y' && i.yeaRate) || '-',
+        //   chainRatio: '万户',
+        //   chainRatioValue: (val == 'm' && i.monNum) || (val == 'y' && i.yearNum) || '-'
+        // })
+        this.rightCenterPieList.push({
+          name: i.name || '-',
+          value: i.dayRate || '-',
+          chainRatio: '万户',
+          chainRatioValue: i.dayNum || '-'
+        })
+      })
+      setTimeout(() => {
+        this.rightCenterPieList.map((i, index) => {
+          this.rightCenterPieChart(index, i);
+        })
+      });
+    },
+    // 宽带存量
+    rightCenterPieChart(index, val) {
+      let data = {
+        id: 'rightCenterPieChart' + index,
+        index: index,
+        name: val.name,
+        value: val.value,
+        chainRatio: this.param.mLevel == 1 && val.chainRatio !== '-' ? val.chainRatio : '',
+        chainRatioValue: this.param.mLevel == 1 && val.chainRatioValue !== '-' ? (val.chainRatioValue / 10000).toFixed(2) : val.chainRatioValue,
+        subTitle: val.subTitle,
+        value1: val.value1,
+      }
+      rightCenterPie.initChart(data, this.rightCenterPieList)
+    },
+    // 宽带资源 接口
+    bandResourceData() {
+      let that = this
+      that.resourceData = []
+      bandResource(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.resourceData = res.result.data || ''
+          that.rightPieChartList()
+        }
+      })
+    },
+    // 宽带资源
+    rightPieChartList() {
+      const result = this.resourceData || ''
+      const ICBAND0030 = result.ICBAND0030 || ''
+      const ICBAND0031 = result.ICBAND0031 || ''
+      const ICBAND0032 = result.ICBAND0032 || ''
+      this.rightPieList = [{
+        name: '家庭渗透率',
+        value: ICBAND0030 ? ICBAND0030.curMon : '-',
+      }, {
+        name: '端口利用率',
+        value: ICBAND0031 ? ICBAND0031.curMon : '-',
+      }, {
+        name: '未进线住宅小区',
+        // num: 12345,
+        value: ICBAND0032 ? ICBAND0032.curMon : '-',
+      }]
+      //   setTimeout(() => {
+      //     this.rightPieList.map((i, index) => {
+      //       this.rightPieChart(index, i)
+      //     })
+      //   }, 1000);
+    },
+    rightPieChart(index, val) {
+      let data = {
+        id: 'rightPieChart' + index,
+        value: val.value
+      }
+      rightPieChart.initChart(data)
+    },
+    // 弹框
+    showDialog(val) {
+      if (val == 1) {
+        this.isDialog1 = true
+        this.dialogLineChartData()
+      }
+      if (val == 2) {
+        this.isDialog2 = true
+      }
+      if (val == 3) {
+        this.isDialog3 = true
+      }
+      if (val == 4) {
+        this.isDialog4 = true
+      }
+    },
+    // 关闭弹框
+    handleClose() {
+      this.isDialog1 = false
+      this.isDialog2 = false
+      this.isDialog3 = false
+      this.isDialog4 = false
+    },
+    dialogLineChart(id) {
+      let xAxis = []
+      let result = this.dialogLine || ''
+      let data1 = []
+      let data2 = []
+      result && result.length > 0 && result.map((i, index) => {
+        i.value.map(c => {
+          if (index == 0) {
+            xAxis.push(c.xi)
+            data1.push(c.curDay)
+          }
+          if (index == 1) {
+            data2.push(c.curDay)
+          }
+        })
+      })
+      // if(id == 'dialogMouthChart') {
+      //     xAxis = ['1','2','3','4','5','6','7','8','9','10','11','12']
+      // } else {
+      //     xAxis = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+      // }
+      let data = {
+        id: id,
+        lable: id == 'dialogMouthChart' ? '月度趋势' : '年度趋势',
+        xAxis: xAxis,
+        data1: data1,
+        data2: data2
+      }
+      leftLine.initChart(data)
+    },
+    dialogSub(index) {
+      this.dialogBtnOn = index
+      if (index == 1 || index == 4) {
+        this.tableLabel = '日'
+      }
+      if (index == 2 || index == 5) {
+        this.tableLabel = '月'
+      }
+      if (index == 3 || index == 6) {
+        this.tableLabel = '年'
+      }
+      this.getDialogTop10(index)
+    },
+    //  按速率 更多
+    getDialogTable1Data() {
+      let that = this
+      that.dialogTable1 = []
+      bandSpeedMore(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          this.dialogTableKey = Math.ceil(Math.random() * 10);
+          that.dialogTable1 = res.result.data || ''
+        }
+      })
+    },
+    //  发展趋势 更多
+    dialogLineChartData() {
+      let that = this
+      that.dialogLine = []
+      bandTrend(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          that.dialogLine = res.result.data || ''
+          that.dialogLine && that.dialogLineChart('dialogMouthChart');
+          // that.dialogLineChart('dialogYearChart');
+        }
+      })
+    },
+    // 排行榜
+    getDialogTop10(val) {
+      let that = this
+      that.param.flag = val
+      that.dialogTableTop10 = []
+      bandCampTop10(that.param).then(res => {
+        if (res.rspCode === '0000') {
+          this.dialogTableKey = Math.ceil(Math.random() * 10);
+          that.dialogTableTop10 = res.result.data || ''
+          this.$forceUpdate()
+        }
+      })
+    },
+    // 详细信息
+    getDialogDatailData() {
+      let that = this
+      let param = that.param
+      that.dialogTable = []
+      bandDetail({
+        timest: param.timest,
+        eparchyCode: param.eparchyCode == '0000' ? '' : param.eparchyCode,
+        areaCode: param.areaCode,
+        gridId: param.gridId,
+        mLevel: param.mLevel
+      }).then(res => {
+        if (res.rspCode === '0000') {
+          this.dialogTableKey = Math.ceil(Math.random() * 10);
+          that.dialogTable = res.result.data || ''
+          this.$forceUpdate()
+        }
+      })
+    },
+    //监听顺序方法
+    tableSortChange(column) {
+      const self = this
+      let index = 0
+      let tmpList = []
+      this.allData = this.dialogTable[0]
+      let string = column.prop
+      this.dialogTable.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+      if (column.order === 'descending') {
+        this.sortA(tmpList, column.prop)
+      } else {
+        this.sortB(tmpList, column.prop)
+      }
+
+      this.dialogTable.unshift(this.allData)
+    },
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+
+      }
+      this.dialogTable = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.dialogTable = arr
+    },
+  }
+}
+</script>
+
+<style lang="less" scoped>
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+  //   height: 780px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 10px !important;
+}
+/deep/.dialogTableBg1 .el-table th {
+  background: rgba(4, 154, 171, 0.2) !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: left !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table tr {
+  background: rgba(4, 154, 171, 0.4) !important;
+  color: #fff !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table td {
+  padding: 12px 0;
+  padding-left: 15px;
+  border: rgba(0, 160, 233, 0.42) solid 1px !important;
+  border-top: none !important;
+  text-align: left !important;
+  border-left: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(2) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(3) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table tr:last-child td {
+  border-bottom: none !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg tr {
+  background: none !important;
+}
+/deep/.dialogTableBg1 .el-table .el-table__expanded-cell {
+  padding: 0 !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg td {
+  padding: 12px 0;
+  padding-left: 15px;
+}
+/deep/ .dialogTableBg1 .tableNullBg td:first-child {
+  padding-left: 45px;
+}
+/deep/.dialogTable .el-table th {
+  background: none !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 14px !important;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.dialogTable .el-table tbody tr:nth-child(-n + 3) {
+  width: 100%;
+  background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 663.png') !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100% !important;
+}
+/deep/.dialogTable .el-table td {
+  padding: 6px 10px;
+  font-size: 14px !important;
+  font-family: Microsoft YaHei !important;
+}
+/deep/.dialogTable .el-table tbody td:nth-child(-n + 2) {
+  text-align: left !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-family: DigifaceWide !important;
+  padding: 6px 0;
+}
+/deep/.dialogTableBg td {
+  background: url('~@/assets/images/bigScreen/fullService/Shape 1387.png') no-repeat left !important;
+}
+/deep/.el-table td:first-child {
+  background: none !important;
+}
+/deep/.dialogTableBg .el-table td:first-child {
+  font-family: Microsoft YaHei !important;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0;
+}
+/deep/.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: #02f6ff;
+}
+
+/deep/.el-table .descending .sort-caret.descending {
+  border-top-color: #02f6ff;
+}
+.dialogBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  .dialogBtn-left,
+  .dialogBtn-right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+  }
+  .dialogBtn-left {
+    justify-content: flex-start;
+  }
+  .dialogBtn-right {
+    justify-content: flex-end;
+  }
+  .dialogBtn-item {
+    width: 165px;
+    height: 38px;
+    text-align: center;
+    font-size: 15px;
+    font-family: Microsoft YaHei;
+    color: #00ffff;
+    margin-left: -15px;
+    line-height: 38px;
+    cursor: pointer;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 2.png') no-repeat;
+  }
+  .dialogBtn-item:first-child {
+    width: 139px;
+    padding-left: 13px;
+    text-align: left;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 3.png') no-repeat;
+  }
+  .dialogBtnOn1 {
+    color: #fff;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657.png') no-repeat 100% !important;
+  }
+  .dialogBtnOn {
+    color: #fff;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 5.png') no-repeat 100% !important;
+  }
+}
+.dialogTable {
+  .tableTh {
+    width: 19px;
+    height: 19px;
+    background: url('~@/assets/images/bigScreen/fullService/Ellipse 669.png') no-repeat;
+    text-align: center;
+    line-height: 19px;
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+  }
+  .tableThTop1 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/one.png') no-repeat;
+  }
+  .tableThTop2 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/two.png') no-repeat;
+  }
+  .tableThTop3 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/three.png') no-repeat;
+  }
+}
+.dialogCon {
+  padding: 0 50px;
+  .dialogTitle {
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    // padding-right: 30px;
+
+    display: inline-block;
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+    // .left{
+    //     display: inline-block;
+    //     padding-right: 110px;
+    //     font-size: 24px;
+    //     font-family: MFBanHei;
+    //     font-weight: 400;
+    //     color: #02F6FF;
+    //     background-image: image-set(
+    //         url("~@/assets/images/bigScreen/fullService/Rectangle 561.png") 1x,
+    //         url("~@/assets/images/bigScreen/fullService/Rectangle@2x.png") 2x
+    //     );
+    //     background-repeat: no-repeat;
+    //     background-position: center right;
+    // }
+    .title-right {
+      color: #218cc8;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+  .dialogChart {
+    width: 100%;
+    height: 400px;
+    margin-top: 50px;
+  }
+}
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  z-index: 1;
+  background-image: url('~@/assets/images/bigScreen/bigbg.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  position: relative;
+  z-index: 100;
+  .left {
+    width: 21%;
+    .left-top {
+      width: 100%;
+      height: 116px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      background-image: url('~@/assets/images/bigScreen/fullService/left-top.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      font-family: DigifaceWide;
+      margin: 10px 0;
+      .con {
+        .color1 {
+          color: #fff;
+        }
+        .color2 {
+          color: #00ffff;
+        }
+        .bigText {
+          font-size: 24px;
+          font-weight: 400;
+          span {
+            font-size: 12px;
+          }
+        }
+        .smallText {
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #02f6ff;
+        }
+      }
+      .chart {
+        width: 120px;
+        height: 120px;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-center.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        font-size: 24px;
+        font-weight: 400;
+        color: #02f6ff;
+        position: relative;
+        .bigText {
+          margin-top: 35px;
+        }
+        .smallText {
+          font-size: 12px;
+        }
+      }
+    }
+    .left-lineChart {
+      width: 100%;
+      margin: 10px 0;
+      .chartTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .left {
+          width: 148px;
+          height: 29px;
+          line-height: 29px;
+          text-align: center;
+          font-size: 18px;
+          font-family: YouSheBiaoTiHei;
+          font-weight: 400;
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/header-right.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          margin: 10px 0;
+        }
+        .right {
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #a5e8fe;
+          cursor: pointer;
+          text-align: right;
+        }
+      }
+      .lineChart {
+        width: 100%;
+        height: 140px;
+      }
+    }
+    .leftBarChart {
+      width: 100%;
+      margin-top: 10px;
+      height: 220px;
+    }
+  }
+  .left-waterPoloChart {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .left-item {
+      flex: 3;
+      color: #02f6ff;
+      margin-top: 10px;
+    }
+    .waterPoloChart {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .itemName {
+      font-size: 12px;
+    }
+    .itemNum {
+      font-family: DigifaceWide;
+      font-size: 18px;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    .centerTop {
+      width: 100%;
+      height: 245px;
+      background-image: url('~@/assets/images/bigScreen/fullService/center-top.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .centerTop-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px 0 40px;
+      .titleLeft {
+        padding-right: 110px;
+        font-size: 24px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+      .titleRight {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #a5e8fe;
+        cursor: pointer;
+      }
+    }
+    .centerTop-con {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 30px;
+      .centerItem {
+        flex: 3;
+        font-size: 15px;
+        font-family: Microsoft YaHei;
+        color: #02f6ff;
+      }
+      .centerItem-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        .itemBg {
+          width: 93px;
+          height: 80px;
+          background-image: url('~@/assets/images/bigScreen/fullService/y-day.png');
+          background-repeat: no-repeat;
+          background-position: 100% 100%;
+        }
+        .month {
+          background-image: url('~@/assets/images/bigScreen/fullService/y-mouth.png');
+        }
+        .year {
+          background-image: url('~@/assets/images/bigScreen/fullService/y-year.png');
+        }
+        .itemText {
+          padding-left: 20px;
+          .color {
+            margin-top: 5px;
+            font-size: 24px;
+            color: #fff;
+            font-family: DigifaceWide;
+            span {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      .marginB {
+        margin-bottom: 22px;
+      }
+      .centerItem-center {
+        display: flex;
+        align-items: center;
+        .itemTitle {
+          width: 100px;
+        }
+        .itemText {
+          color: #fff;
+          font-size: 24px;
+          font-family: DigifaceWide;
+          span {
+            font-size: 15px;
+          }
+        }
+        .itemText1 {
+          color: #02f6ff;
+          .margin {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+    .centerBottom {
+      width: 100%;
+      height: 631px;
+      margin-top: 20px;
+      background-image: url('~@/assets/images/bigScreen/fullService/mapBg.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      .centerTop-title {
+        padding-top: 30px;
+      }
+      .margin {
+        margin-right: 20px;
+      }
+      .map {
+        padding: 10px 30px 30px;
+        height: 90%;
+      }
+    }
+  }
+  .right {
+    width: 21%;
+    .leftContent {
+      padding-bottom: 10px;
+    }
+    .rightTable {
+      width: 100%;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+      margin-top: 10px;
+      .tHead,
+      .tBody {
+        display: flex;
+        .wid19 {
+          width: 19% !important;
+          text-align: left;
+        }
+      }
+      .tHead {
+        line-height: 40px;
+        div {
+          width: 27%;
+          text-align: center;
+          background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          background-position: center 12px;
+        }
+        .wid19 {
+          background-image: none;
+        }
+      }
+      .tBody {
+        .td {
+          width: 27%;
+          text-align: center;
+          div {
+            padding: 10px 0;
+            line-height: 20px;
+          }
+        }
+        .bg {
+          background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+          background-repeat: no-repeat;
+          background-position: center left;
+          div {
+            font-size: 18px;
+            font-family: DigifaceWide;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    .rightBottomPieChart {
+      width: 120px;
+      height: 90px;
+      margin: 0 auto;
+    }
+    .rightCenterPieChart {
+      display: flex;
+      flex-wrap: wrap;
+      .rightItem {
+        width: 33.33%;
+      }
+    }
+  }
+  .leftContent {
+    width: 100%;
+    padding-bottom: 20px;
+    .title {
+      width: 100%;
+      height: 65px;
+      line-height: 65px;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      background-image: url('~@/assets/images/bigScreen/fullService/title.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      color: #02f6ff;
+      .title-left {
+        font-size: 26px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        span {
+          font-size: 20px;
+        }
+      }
+      .title-right {
+        color: #218cc8;
+        div {
+          width: 38px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          display: inline-block;
+          cursor: pointer;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+        .active {
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+        }
+      }
+    }
+  }
+  .leftContent:last-child {
+    padding: 0;
+  }
+  .green {
+    color: #66ff00 !important;
+  }
+  .yellow {
+    color: #ffff33;
+  }
+}
+</style>

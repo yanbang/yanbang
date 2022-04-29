@@ -1,0 +1,180 @@
+<!-- 左侧资源小区 -->
+<template>
+  <div class="flex1 flex  flexcol">
+    <div class="lefttbox" style="height: 58%; border-bottom: 1px dashed #2d71b5">
+      <div class="tabsbox">
+        <div class="tabs-item " :class="{ active: ywtjSate == 1 }" @click="ywtjClick('1')">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">带宽</div>
+          <div class="tab_borderright"></div>
+        </div>
+        <div class="tabs-item" :class="{ active: ywtjSate == 2 }" @click="ywtjClick('2')">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">融合</div>
+          <div class="tab_borderright"></div>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 1">
+        <div class="tjitem">
+          <span class="nfont tjnf">日发展</span>
+          <span class="numfont">702</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度日均发展</span>
+          <span class="numfont">613</span>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 2">
+        <div class="tjitem">
+          <span class="nfont tjnf">日转融</span>
+          <span class="numfont">702</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度日均转融</span>
+          <span class="numfont">613</span>
+        </div>
+      </div>
+
+      <div class="echart_linebox">
+        <div class="tabs-item echarttile">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">{{ ywtjSate == 1 ? '近七日日均发展变化' : '近七日日均转融变化' }}</div>
+          <div class="tab_borderright"></div>
+        </div>
+        <echart-line :xdata="lineXdata1" :vdata="lineVdata1" domid="echartline_state1"></echart-line>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 1">
+        <div class="tjitem">
+          <span class="nfont tjnf">月发展</span>
+          <span class="numfont">702</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度累计发展</span>
+          <span class="numfont">613</span>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 2">
+        <div class="tjitem">
+          <span class="nfont tjnf">月转融</span>
+          <span class="numfont">702</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度累计转融</span>
+          <span class="numfont">613</span>
+        </div>
+      </div>
+
+      <div class="flex tmbox" v-show="ywtjSate == 1">
+        <div class="flex1" style="margin-right: 15px">
+          <dl class="ltbomf">
+            <dt class="numfont">2.3%</dt>
+            <dd>宽带流失</dd>
+          </dl>
+        </div>
+        <div class="flex1">
+          <dl class="ltbomf">
+            <dt class="numfont">36.3%</dt>
+            <dd>包年到期续约率</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex1 liquidbox" style="margin-top: 10px">
+      <div class="liquiditem">
+        <div class="liqleft">
+          <img src="~@/assets/images/bigScreen/resource/zhuangji.png" style="width: 30px;" alt="" srcset="" />
+        </div>
+        <div class="liqright">
+          <div class="liqechartbox">
+            <div class="flex1">
+              <div style="width: 100%; height: 100%;">
+                <echart-liquid :pvalue="liquidVal1" domid="echartLiquid_state1"></echart-liquid>
+              </div>
+            </div>
+            <div class="numfont">2</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="liquidVal2" domid="echartLiquid_state2"></echart-liquid>
+            </div>
+            <div class="numfont">2</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="liquidVal3" domid="echartLiquid_state3"></echart-liquid>
+            </div>
+            <div class="numfont">2</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+        </div>
+      </div>
+      <div class="liquiditem">
+        <div class="liqleft">
+          <img src="~@/assets/images/bigScreen/resource/yiji.png" style="width: 30px;" alt="" srcset="" />
+        </div>
+        <div class="liqright">
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="liquidVal2" domid="echartLiquid_state4"></echart-liquid>
+            </div>
+            <div class="numfont">2</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+
+          <div class="liqechartbox">
+            <div class="flex1">
+              <div style="width: 100%; height: 100%;">
+                <echart-liquid :pvalue="liquidVal1" domid="echartLiquid_state5"></echart-liquid>
+              </div>
+            </div>
+            <div class="numfont">2</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import echartLine from './echartLine'
+import echartLiquid from './echartLiquid'
+export default {
+  props: ['mapLevel'],
+  data() {
+    return {
+      ywtjSate: 1,
+      liquidVal1: 0.4,
+      liquidVal2: 0.6,
+      liquidVal3: 0.7,
+      lineXdata1: [10, 11, 12, 13, 14],
+      lineVdata1: [
+        [100, 200, 139, 343, 245],
+        [120, 240, 119, 243, 145]
+      ]
+    }
+  },
+  components: {
+    echartLine,
+    echartLiquid
+  },
+  mounted() {},
+  watch: {},
+  computed: {},
+  methods: {
+    ywtjClick(val) {
+      this.ywtjSate = val
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+@import url('../css/component.scss');
+</style>

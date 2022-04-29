@@ -1,0 +1,359 @@
+<template>
+  <div>
+    <div class="content">
+      <div class="content-item">
+        <img class="leftkuang" src="../../assets/images/bigScreen/fullService/img_zuokuang.png" alt="" />
+        <div class="finish_box">
+          <div class="finish">周完成情况</div>
+          <div class="good-city">
+            <div class="marginAuto">
+              <img src="../../assets/images/bigScreen/fullService/icon_good.png" alt="" />
+            </div>
+            <div class="city">
+              <p>{{ goodCity.fristCity }}</p>
+              <p>{{ goodCity.nextCity }}</p>
+              <p>{{ goodCity.lastCity }}</p>
+            </div>
+          </div>
+        </div>
+        <img class="line" src="../../assets/images/bigScreen/fullService/Shape 1387@2x.png" alt="" />
+        <div class="finish_box">
+          <div class="good-city" style="margin-top: 50px">
+            <div class="marginAuto">
+              <img src="../../assets/images/bigScreen/fullService/img_bad.png" alt="" />
+            </div>
+            <div class="city">
+              <p>{{ badCity.fristCity }}</p>
+              <p>{{ badCity.nextCity }}</p>
+              <p>{{ badCity.lastCity }}</p>
+            </div>
+          </div>
+        </div>
+        <img class="rightkuang" src="../../assets/images/bigScreen/fullService/img_youkuang.png" alt="" />
+      </div>
+
+      <div class="content-item">
+        <img class="rightkuang" src="../../assets/images/bigScreen/fullService/img_zuokuang.png" alt="" />
+        <div class="finish_box">
+          <div class="finish">季度</div>
+          <div class="good-city">
+            <div class="marginAuto">
+              <img src="../../assets/images/bigScreen/fullService/icon_good.png" alt="" />
+            </div>
+            <div class="city">
+              <p>{{ goodCity.fristCity }}</p>
+              <p>{{ goodCity.nextCity }}</p>
+              <p>{{ goodCity.lastCity }}</p>
+            </div>
+          </div>
+        </div>
+        <img class="line" src="../../assets/images/bigScreen/fullService/Shape 1387.png" alt="" />
+        <div class="finish_box">
+          <div class="good-city" style="margin-top: 50px">
+            <div class="marginAuto">
+              <img src="../../assets/images/bigScreen/fullService/img_bad.png" alt="" />
+            </div>
+            <div class="city">
+              <p>{{ badCity.fristCity }}</p>
+              <p>{{ badCity.nextCity }}</p>
+              <p>{{ badCity.lastCity }}</p>
+            </div>
+          </div>
+        </div>
+        <img class="rightkuang last" src="../../assets/images/bigScreen/fullService/img_youkuang.png" alt="" />
+      </div>
+    </div>
+    <el-row>
+      <div style="padding: 0 0px">
+        <el-table :data="middleList" style="width: 100%" height="620">
+          <el-table-column prop="eparchyName" label="地区">
+            <template slot-scope="scope">
+              <a @click="cancelDialog(scope.row)" style="cursor: pointer">{{ scope.row.eparchyName }}</a>
+            </template>
+          </el-table-column>
+          <el-table-column prop="dayNew" label="日发展"> </el-table-column>
+          <el-table-column prop="dayAchive" label="日完成率" sortable>
+            <template slot-scope="scope">
+              <a v-if="scope.row.dayStatus == 2" style="color: #02f6fe !important">{{ scope.row.dayAchive }}%</a>
+              <a v-else-if="scope.row.dayStatus == 1" style="color: #ffcc00 !important">{{ scope.row.dayAchive }}%</a>
+              <a v-else>{{ scope.row.dayAchive }}%</a>
+            </template>
+          </el-table-column>
+          <el-table-column prop="weekNew" label="周发展"> </el-table-column>
+          <el-table-column prop="weekAchive" label="周完成率" sortable>
+            <template slot-scope="scope">
+              <a v-if="scope.row.weekStatus == 2" style="color: #02f6fe !important">{{ scope.row.weekAchive }}%</a>
+              <a v-else-if="scope.row.weekStatus == 1" style="color: #ffcc00 !important">{{ scope.row.weekAchive }}%</a>
+              <a v-else>{{ scope.row.weekAchive }}%</a>
+            </template>
+          </el-table-column>
+          <el-table-column prop="weekHb" label="周环比"> </el-table-column>
+          <el-table-column prop="monNew" label="月累发展"> </el-table-column>
+          <el-table-column prop="monAchive" label="月完成率" sortable>
+            <template slot-scope="scope">
+              <a v-if="scope.row.monStatus == 2" style="color: #02f6fe !important">{{ scope.row.monAchive }}%</a>
+              <a v-else-if="scope.row.monStatus == 1" style="color: #ffcc00 !important">{{ scope.row.monAchive }}%</a>
+              <a v-else>{{ scope.row.monAchive }}%</a>
+            </template>
+          </el-table-column>
+          <el-table-column prop="qthAchive" label="一季度序时完成">
+            <template slot-scope="scope">
+              <a v-if="scope.row.qthStatus == 2" style="color: #02f6fe !important">{{ scope.row.qthAchive }}%</a>
+              <a v-else-if="scope.row.qthStatus == 1" style="color: #ffcc00 !important">{{ scope.row.qthAchive }}%</a>
+              <a v-else>{{ scope.row.qthAchive }}%</a>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import { middleList } from '@/api/financial'
+export default {
+  name: 'CityFinance',
+  props: {
+    timest: String,
+    flag: String,
+  },
+  data() {
+    return {
+      AroundTheCity: [
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '济南',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '高老庄',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '2016',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+        {
+          eparchyName: '聊城',
+          dayNew: '99%',
+          dayCchive: '60%',
+          weekNew: '99%',
+          weekAchive: '150%',
+          weekHb: '255%',
+          monNew: '156%',
+          monAchive: '87%',
+          qthAchive: '54%',
+        },
+      ],
+      goodCity: {
+        fristCity: '菏泽',
+        nextCity: '济南',
+        lastCity: '聊城',
+      },
+      badCity: {
+        fristCity: '菏泽',
+        nextCity: '济南',
+        lastCity: '聊城',
+      },
+      GoodQuarter: {
+        fristCity: '菏泽',
+        nextCity: '济南',
+        lastCity: '聊城',
+      },
+      badQuarter: {
+        fristCity: '菏泽',
+        nextCity: '济南',
+        lastCity: '聊城',
+      },
+      middleList: [],
+      // timest: '',
+      EparchyCode: '',
+      AreaCode: '',
+      GridId: '',
+    }
+  },
+  watch: {
+    timest(value) {
+      this.updatePage()
+    },
+  },
+  created() {
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    this.AreaCode = userInfo.areaCode
+    this.EparchyCode = userInfo.eparchyCode
+    this.GridId = userInfo.gridId
+  },
+  mounted() {
+    this.updatePage()
+  },
+  methods: {
+    localCode() {},
+    updatePage() {
+      middleList({
+        timest: this.timest,
+        eparchyCode: this.EparchyCode,
+        areaCode: this.AreaCode,
+        gridId: this.GridId,
+        flag: this.flag,
+      }).then((res) => {
+        console.log(res)
+        this.middleList = res.result.tblList
+      })
+    },
+    cancelDialog(row) {
+      if (row.eparchyName === '全省') {
+        this.$router.push({
+          path: 'fifth-city',
+          params: {
+            eparchyName: row.eparchyName,
+          },
+        })
+      } else {
+        console.log(111)
+        this.$router.push({
+          name: 'fifth-OperationCenter',
+          params: {
+            eparchyName: row.eparchyName,
+          },
+        })
+      }
+    },
+  },
+}
+</script>
+
+<style scoped>
+.content {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  justify-content: space-between;
+}
+.content-item {
+  width: 49%;
+  height: 100%;
+  display: flex;
+}
+.finish_box {
+  width: 40%;
+  height: 100%;
+}
+.finish {
+  background-image: url('../../assets/images/bigScreen/tabbg2.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 90%;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #02f6ff;
+  font-family: MFBanHei;
+}
+.good-city {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: space-around;
+}
+.city {
+  color: #fff;
+  font-size: 14px;
+  font-family: '微软雅黑';
+  width: 40%;
+  text-align: center;
+}
+.city p {
+  margin: 0 auto;
+  margin-top: 9px;
+}
+.marginAuto {
+  width: 60%;
+  margin: auto 0;
+}
+.marginAuto img {
+  width: 90%;
+  margin-left: 5%;
+}
+.leftkuang {
+  width: 20px;
+  height: 100%;
+  left: 50px;
+  margin-left: 50px;
+}
+.rightkuang {
+  width: 20px;
+  height: 100%;
+}
+.line {
+  padding: 0 20px;
+}
+.last {
+  margin-right: 50px;
+}
+</style>

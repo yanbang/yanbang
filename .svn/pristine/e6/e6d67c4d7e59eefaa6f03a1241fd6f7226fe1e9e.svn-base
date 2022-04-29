@@ -1,0 +1,261 @@
+<template>
+    <div>
+        <div id="CrossChart2" style="width:235px;height:272px"></div>
+    </div>
+</template>
+<script>
+import * as echarts from 'echarts';
+export default {
+    methods: {
+        CrossChart2() {
+            var chartDom = document.getElementById('CrossChart2');
+            var myChart = echarts.init(chartDom);
+            var option;
+            var  category= [{
+                    name: "吉林",
+                    value: 10
+                },
+                {
+                    name: "宁夏",
+                    value: 20
+                },
+                {
+                    name: "福建",
+                    value: 40
+                },
+                {
+                    name: "甘肃",
+                    value: 60
+                },
+                {
+                    name: "广东",
+                    value: 80
+                },
+                {
+                    name: "贵州",
+                    value: 10
+                },
+                {
+                    name: "海南",
+                    value: 20
+                },
+                {
+                    name: "河北",
+                    value: 40
+                },
+                {
+                    name: "黑龙江",
+                    value: 60
+                },
+                {
+                    name: "湖北",
+                    value: 80
+                }
+            ]; // 类别
+            var  datas = [];
+            category.forEach(value => {
+                datas.push(value.value);
+            });
+            option = {
+                // backgroundColor:'#333',
+                xAxis: {
+                    max: 100,
+                    splitLine: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    }
+                },
+                grid: {
+                    left: 60,
+                    top: 5, // 设置条形图的边距
+                    right: 30,
+                    bottom: 40
+                },
+                yAxis: [{
+                    type: "category",
+                    inverse: false,
+                    data: category,
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    }
+                }],
+                series: [{
+                        // 内
+                        type: "bar",
+                        barWidth: 6,
+
+                        legendHoverLink: false,
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                barBorderRadius:[4,4,4,4],
+                                color: function(params) {
+                                    var color;
+                                    if(params.dataIndex==19){
+                                        color = {
+                                            type: "linear",
+                                            x: 0,
+                                            y: 0,
+                                            x2: 1,
+                                            y2: 0,
+                                            colorStops: [{
+                                                    offset: 0,
+                                                    color: "#66b1ff" // 0% 处的颜色
+                                                },
+                                                {
+                                                    offset: 1,
+                                                    color: "#409eff" // 100% 处的颜色
+                                                }
+                                            ]
+                                        }
+                                        }else if(params.dataIndex==18){
+                                        color = {
+                                            type: "linear",
+                                            x: 0,
+                                            y: 0,
+                                            x2: 1,
+                                            y2: 0,
+                                            colorStops: [{
+                                                    offset: 0,
+                                                    color: "#66b1ff" // 0% 处的颜色
+                                                },
+                                                {
+                                                    offset: 1,
+                                                    color: "#409eff" // 100% 处的颜色
+                                                }
+                                            ]
+                                        }
+                                        }else if(params.dataIndex==17){
+                                        color = {
+                                            type: "linear",
+                                            x: 0,
+                                            y: 0,
+                                            x2: 1,
+                                            y2: 0,
+                                            colorStops: [{
+                                                    offset: 0,
+                                                    color: "#66b1ff" // 0% 处的颜色
+                                                },
+                                                {
+                                                    offset: 1,
+                                                    color: "#409eff" // 100% 处的颜色
+                                                }
+                                            ]
+                                        }
+                                        }else{
+                                        color = {
+                                            type: "linear",
+                                            x: 0,
+                                            y: 0,
+                                            x2: 1,
+                                            y2: 0,
+                                            colorStops: [{
+                                                    offset: 0,
+                                                    color: "#66b1ff" // 0% 处的颜色
+                                                },
+                                                {
+                                                    offset: 1,
+                                                    color: "#409eff" // 100% 处的颜色
+                                                }
+                                            ]
+                                        }
+                                        }
+                                        return color;
+                                },
+                            }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: "left",
+                                formatter: "{b}",
+                                textStyle: {
+                                    color: "#fff",
+                                    fontSize: 12
+                                }
+                            }
+                        },
+                        data: category,
+                        z: 1,
+                        animationEasing: "elasticOut"
+                    },
+                    {
+                        // 分隔
+                        type: "pictorialBar",
+                        itemStyle: {
+                            normal:{
+                                color:"#333"
+                            }
+                        },
+                        symbolRepeat: "fixed",
+                        symbolMargin: 6,
+                        symbol: "rect",
+                        symbolClip: true,
+                        symbolSize: [2, 21],
+                        symbolPosition: "start",
+                        symbolOffset: [1, -1],
+                        data: category,
+                        z: 2,
+                        animationEasing: "elasticOut"
+                    },
+                    {
+                        // 外边框
+                        type: "pictorialBar",
+                        symbol: "rect",
+                        itemStyle: {
+                            normal: {
+                                color: "none"
+                            }
+                        },
+                        label: {
+                            normal: {
+                                formatter: (params) => {
+                                    var text;
+                                    if(params.dataIndex==1){
+                                        text = '{f|  '+params.data+'}';
+                                    }else if(params.dataIndex==2){
+                                        text = '{f|  '+params.data+'}';
+                                    }else if(params.dataIndex==3){
+                                        text = '{f|  '+params.data+'}';
+                                    }else{
+                                        text = '{f|  '+params.data+'}';
+                                    }
+                                    return text;
+                                },
+                                rich:{
+                                    f:{
+                                        color:"#ffffff"
+                                    }
+                                },
+                                position: 'right',
+                                show: true
+                            }
+                        },
+                        data: datas,
+                        z: 0,
+                        animationEasing: "elasticOut"
+                    }
+                ]
+            };
+            option && myChart.setOption(option);
+        }
+    },
+    mounted(){
+        this.CrossChart2();
+    }
+}
+</script>

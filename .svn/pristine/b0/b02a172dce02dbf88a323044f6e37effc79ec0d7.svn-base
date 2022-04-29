@@ -1,0 +1,71 @@
+<!-- 业务统计table :sort-orders="['ascending', 'descending']" -->
+<template>
+  <div>
+    <el-table :data="bstableData" style="width: 100%" height="580px" class="nfont bstable" @sort-change="changeSort">
+        <el-table-column prop="myInitName" label="地区" show-overflow-tooltip     align="center"  width="auto"></el-table-column>
+        <el-table-column prop="dayAvg" label="日均发展"    align="center"  width="auto"></el-table-column>
+        <el-table-column prop="dayTarget" label="日均发展目标"    align="center"  width="auto"></el-table-column>
+        <el-table-column prop="dayPct" label="日均完成率"  sortable = "custom"  align="center"  width="auto" >
+          <template slot-scope="scope">
+              <span :class=" 'status' + scope.row.dstatus"> {{renderPval(scope.row.dayPct)}} </span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="sqAvg" label="季度发展"    align="center"  width="auto"></el-table-column>
+        <el-table-column prop="sqTarget" label="季度任务目标"    align="center"  width="auto"></el-table-column>
+        <el-table-column prop="sqPct" label="季度完成率"  sortable = "custom"  align="center"  width="auto">
+           <template slot-scope="scope">
+              <span :class="'status' + scope.row.mstatus"> {{renderPval(scope.row.sqPct)}}  </span>
+            </template>
+        </el-table-column>          
+      </el-table>
+  </div>
+</template>
+
+<script>
+var lodash = require('@/utils/lodash')
+export default {
+  props: ['tabledata'],
+  data () {
+    return {
+      bstableData: []
+    }
+  },
+  components: {},
+  mounted () {},
+  watch: {
+    tabledata (data) {
+      this.bstableData =  _.cloneDeep(data);
+    }
+  },
+  computed: {},
+  methods: {
+    renderPval (val) {
+      if (!val && val != 0) {
+        return '-'
+      } else {
+        return val +'%'
+      }
+    },
+    changeSort (row) {
+      if (this.tabledata.length > 0 ) {
+         var fistData = this.tabledata[0];
+         var allData = _.cloneDeep(this.tabledata)
+         allData.shift();
+         var  ordertype = row.order;
+         if (ordertype){
+            ordertype = ordertype == 'ascending' ? 'asc' : 'desc'
+            allData = _.orderBy(allData, row.prop,  ordertype)
+            allData.unshift(fistData)
+            this.bstableData = allData;
+         } else {
+           this.bstableData =  _.cloneDeep(this.tabledata);
+         }
+      }
+      
+    }
+  }
+}
+</script>
+
+<style lang='css' scoped>
+</style>

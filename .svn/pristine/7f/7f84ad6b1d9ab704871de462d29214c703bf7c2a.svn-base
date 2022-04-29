@@ -1,0 +1,119 @@
+<!-- 仪盘表 -->
+<template>
+  <div :id="domid" class="echartbox"></div>
+</template>
+
+<script>
+import echarts from 'echarts'
+export default {
+  props: ['pvalue', 'domid'],
+  data() {
+    return {
+      myChart: null,
+      option: {
+   
+        series: [
+          {
+            type: 'gauge',
+            radius: '90%',
+            center: ['50%', '50%'],
+            splitNumber: 0, //刻度数量
+            startAngle: 220,
+            endAngle: -40,
+            axisLine: {
+              show: true,
+              lineStyle: {
+                width: 10,
+                color: [
+                  [
+                    0.38,
+                    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                      {
+                        offset: 0,
+                        color: '#ae3df6'
+                      },
+                      {
+                        offset: 1,
+                        color: '#53bef9'
+                      }
+                    ])
+                  ],
+                  [1, '#222e7d']
+                ]
+              }
+            },
+            //分隔线样式。
+            splitLine: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            pointer: {
+              show: false
+            },
+            title: {
+              show: true,
+              offsetCenter: [0, '-20%'], // x, y，单位px
+              textStyle: {
+                color: '#ddd',
+                fontSize: 16
+              }
+            },
+            //仪表盘详情，用于显示数据。
+            detail: {
+              show: true,
+              offsetCenter: [0, 0],
+              color: '#fff',
+              formatter: function(params) {
+                return params
+              },
+              textStyle: {
+                fontSize: 18,
+                color: '#fff'
+              }
+            },
+            data: []
+          }
+        ]
+      }
+    }
+  },
+  components: {},
+  mounted() {
+    var self = this
+    this.$nextTick(() => {
+      self.pvalue ? self.option.series[0].data = [self.pvalue] : self.option.series[0].data = [0];
+      self.myChart = echarts.init(document.getElementById(self.domid))
+      self.myChart.setOption(self.option, true)
+      self.$nextTick(() => {
+        self.myChart.resize()
+      })
+    })
+  },
+  watch: {
+     pvalue (val) {
+      this.initEcharts()
+    }
+  },
+  computed: {},
+  methods: {
+    initEcharts () {
+      var self = this
+     self.pvalue ? self.option.series[0].data = [self.pvalue] : self.option.series[0].data = [0];
+     this.myChart.setOption(this.option, true)
+     this.myChart.resize()
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+.echartbox {
+  width: 100%;
+  height: 100%;
+}
+</style>

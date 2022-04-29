@@ -1,0 +1,440 @@
+<template>
+
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">质量</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList" style="margin-top: -10px">
+      <template slot>
+        <!-- 中间 -->
+        <div class="center">
+          <span @click="back()" v-if="param.eparchyCode!='0000'" style="color: #02f6ff">
+            << 返回</span>
+              <!-- <el-row> -->
+              <div style="padding: 5px;margin: 5px">
+                <el-table :data="dialogTable" :cell-style="finalCellStyle" @sort-change='tableSortChange' style="width: 100%;height: 800px;overflow: auto;">
+                  <el-table-column prop="eparchyName" label="地区">
+                    <template slot-scope="scope">
+                      <a @click="cancelDialog(scope.row)" v-if="scope.row.areaCode ==='00'" style="cursor:pointer">{{scope.row.eparchyName}}</a>
+                      <a @click="cancelDialog(scope.row)" v-if="scope.row.areaCode !=='00'" style="cursor:pointer">{{scope.row.areaName}}</a>
+                      <a @click="cancelDialog(scope.row)" v-if="scope.row.chnlKindTypeCode !=='00'" style="cursor:pointer">{{scope.row.chnlKindType}}</a>
+                      <a href="javascript:;" v-if="scope.row.chnlKindId!=='00'" style="cursor:pointer">{{scope.row.chnlKindName}}</a>
+
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="" label="近七天">
+                    <el-table-column prop="new7" label="新发展三无用户" sortable='新发展三无用户'>
+                      <template slot-scope="scope">
+                        <span class="titleSpan1">{{scope.row.new7Sw}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="new7Rate" label="新发展三无用户占比" sortable='新发展三无用户占比'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row.new7RateStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.new7Rate }}%</a>
+                        <a v-else-if="scope.row.new7RateStatus  == 1" style="color: #00B050 !important" class="titleSpan1">{{ scope.row.new7Rate }}%</a>
+                        <a v-else class="titleSpan1">{{ scope.row.new7Rate }}%</a>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="new7Call" label="呼通数" sortable='呼通数'>
+                      <template slot-scope="scope">
+                        <span class="titleSpan1">{{scope.row.new7Call}}</span>
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column prop="new7Callrate" label="呼通率" sortable='呼通率'>
+                      <template slot-scope="scope">
+                        <!--                      <a v-if="scope.row.new7Rate_30Status == 2" class="titleSpan1" style="color: #5BE712 !important">{{ scope.row.new7Callrate }}%</a>-->
+                        <!--                      <a v-else-if="scope.row.new7Rate_30Status  == 1" class="titleSpan1" style="color: #ffcc00 !important"-->
+                        <!--                      >{{ scope.row.weekAchive }}%</a>-->
+                        <a class="titleSpan1">{{ scope.row.new7Callrate }}%</a>
+                      </template>
+                    </el-table-column>
+                  </el-table-column>
+                  <el-table-column prop="" label="近三十天">
+                    <el-table-column prop="new7_30" label="新发展三无用户" sortable='新发展三无用户'>
+                      <template slot-scope="scope">
+                        <span class="titleSpan1">{{scope.row.new30Sw}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="new7Rate_30" label="新发展三无用户占比" sortable='新发展三无用户占比'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row.new7Rate_30Status == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.new7Rate_30 }}%</a>
+                        <a v-else-if="scope.row.new7Rate_30Status  == 1" style="color: #00B050 !important" class="titleSpan1">{{ scope.row.new7Rate_30 }}%</a>
+                        <a v-else class="titleSpan1">{{ scope.row.new7Rate_30 }}%</a>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="new7Call_30" label="呼通数" sortable='呼通数'>
+                      <template slot-scope="scope">
+                        <span class="titleSpan1">{{scope.row.new7Call_30}}</span>
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column prop="new7Callrate_30" label="呼通率" sortable='呼通率'>
+                      <template slot-scope="scope">
+                        <!--                      <a v-if="scope.row.weekStatus == 2" class="titleSpan1" style="color: #5BE712 !important">{{ scope.row.weekAchive }}%</a>-->
+                        <!--                      <a v-else-if="scope.row.weekStatus  == 1" class="titleSpan1" style="color: #ffcc00 !important"-->
+                        <!--                      >{{ scope.row.weekAchive }}%</a>-->
+                        <a class="titleSpan1">{{ scope.row.new7Callrate_30 }}%</a>
+                      </template>
+                    </el-table-column>
+                  </el-table-column>
+
+                </el-table>
+              </div>
+              <!-- </el-row> -->
+        </div>
+        <div class="line-right"></div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import store from 'store'
+import { qualityLitsM } from '@/api/quality'
+export default {
+  components: {
+    Header,
+    FlexBox,
+  },
+  name: 'index',
+  data() {
+    return {
+      bottomList: [{
+        name: '三无',
+        url: '',
+      }
+      ],
+      dialogTable: [],
+      param: {},
+      timest: '',
+      backParam: ''
+    }
+  },
+  mounted() {
+    if (store.get('userInfo').isAddMask == '1') {
+      this.$watermark(store.get('userInfo').serialNumber);
+    } else {
+      this.$watermark("");
+    }
+    console.log(store.get('userInfo'))
+    //获取时间
+    this.timest = window.sessionStorage.getItem('selectTime')
+
+  },
+  methods: {
+    //获取时间
+    getDate(date) {
+      this.param.timest = date
+      this.param.eparchyCode = '0000'
+      this.getListt()
+    },
+    getListt(item) {
+      this.dialogTable = []
+      let par = item ? item : this.param
+      qualityLitsM(par).then(res => {
+        if (res.rspCode === '0000') {
+          this.dialogTable = res.result.listRes
+        }
+        console.log(this.dialogTable)
+      })
+    },
+    cancelDialog(item) {
+      let userinfo = store.get('userInfo')
+      if ((item.eparchyCode == userinfo.eparchyCode && item.areaCode == '00') || (item.areaCode == userinfo.areaCode) || (item.eparchyCode == userinfo.eparchyCode && userinfo.areaCode == '') || (userinfo.eparchyCode == '0000')) {
+        if (item.eparchyCode !== '') {
+          this.param.eparchyCode = item.eparchyCode
+        }
+        if (item.areaCode !== '00') {
+          this.param.areaCode = item.areaCode
+        }
+        if (item.chnlKindTypeCode !== '00') {
+          this.param.chnlKindTypeCode = item.chnlKindTypeCode
+        }
+        this.getListt()
+        this.backParam = item
+      } else {
+
+      }
+    },
+    //监听顺序方法
+    tableSortChange(column) {
+      let index = 0
+      let tmpList = []
+      this.allData = this.dialogTable[0]
+      let string = column.prop
+      this.dialogTable.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+      if (column.order === 'descending') {
+        this.sortA(tmpList, column.prop)
+      } else {
+        this.sortB(tmpList, column.prop)
+      }
+      this.dialogTable.unshift(this.allData)
+
+    },
+
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+
+      }
+      this.dialogTable = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.dialogTable = arr
+    },
+    back() {
+      let item = {
+        eparchyCode: '0000',
+        timest: this.param.timest
+      }
+      if (this.backParam.eparchyCode !== '0000' && this.backParam.areaCode == '00') {
+        this.param.eparchyCode = '0000'
+        this.getListt(item)
+      }
+      if (this.backParam.eparchyCode !== '0000' && this.backParam.areaCode !== '00' && this.backParam.chnlKindTypeCode == '00') {
+        this.param.eparchyCode = this.backParam.eparchyCode
+        this.param.areaCode = ''
+        this.backParam.areaCode = '00'
+        this.getListt()
+      }
+      if (this.backParam.eparchyCode !== '0000' && this.backParam.areaCode !== '00' && this.backParam.chnlKindTypeCode !== '00' && this.backParam.chnlKindId == '00') {
+        this.param.eparchyCode = this.backParam.eparchyCode
+        this.param.areaCode = this.backParam.areaCode
+        this.param.chnlKindTypeCode = ''
+        this.backParam.chnlKindTypeCode = '00'
+        this.getListt()
+      }
+    },
+    finalCellStyle({ row, column, rowIndex, columnIndex }) {
+      return {
+        padding: '7px'
+      }
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+// .line {
+//   height: 70%;
+//   width: 4px;
+//   background: #0b3d75;
+//   position: absolute;
+//   left: 55.3%;
+//   top: 14.5%;
+// }
+.line-right {
+  height: 90%;
+  width: 8px;
+  background: #01153b;
+  position: absolute;
+  right: 2.5%;
+  top: 3.1%;
+  z-index: 100;
+}
+/deep/ .el-table--border th {
+  border-bottom: none;
+}
+/deep/ .el-table--group,
+.el-table--border {
+  border: none;
+  //border-right: #ffffff solid 1px;
+  border-right: none !important;
+}
+/deep/ .el-table--border th,
+.el-table--border td {
+  //   border-right: none !important;
+  border-right: #0a3d75 solid 4px;
+  border-top: #0a3d75 solid 2px;
+  border-bottom: #0a3d75 solid 2px;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th {
+  background: none !important;
+  background: url('../../assets/images/bigScreen/fullService/597bcdc505fa3.png') 50% 18px !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 18px !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  border-right: 0.5px solid #0a3d75 !important;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+
+.titleSpan1 {
+  font-size: 14px;
+  font-family: 'DigifaceWide';
+  src: url('../../assets/fonts/digifaw.ttf');
+  display: block;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background: #01153b;
+  // background-image: image-set(
+  //     url("~@/assets/images/bigScreen/bg.jpg") 1x,
+  //     url("~@/assets/images/bigScreen/bg@2x.jpg") 2x
+  // );
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  position: relative;
+  z-index: 100;
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    .centerTop {
+      width: 100%;
+      height: 245px;
+      background-image: image-set(
+        url('~@/assets/images/bigScreen/fullService/center-top.png') 1x,
+        url('~@/assets/images/bigScreen/fullService/center-top@2x.png') 2x
+      );
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+
+  .borderLine {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 2px;
+    height: 1px;
+    border: 1px dashed #009bff;
+    border-image: -webkit-linear-gradient(#009bff, #16e4cf) 30 30;
+    border-image: -moz-linear-gradient(#009bff, #16e4cf) 30 30;
+    border-image: linear-gradient(#009bff, #16e4cf) 30 30;
+  }
+  .chartTitle {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-family: 'MFBanHei';
+    color: #02f6ff;
+  }
+}
+
+.centerTop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 0 40px;
+  .titleLeft {
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: image-set(
+      url('~@/assets/images/bigScreen/fullService/Rectangle 561.png') 1x,
+      url('~@/assets/images/bigScreen/fullService/Rectangle@2x.png') 2x
+    );
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .titleRight {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #a5e8fe;
+    cursor: pointer;
+  }
+}
+.centerBottom {
+  width: 100%;
+  height: 631px;
+  margin-top: 20px;
+  background-image: image-set(
+    url('~@/assets/images/bigScreen/fullService/mapBg.png') 1x,
+    url('~@/assets/images/bigScreen/fullService/mapBg@2x.png') 2x
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .centerTop-title {
+    padding-top: 30px;
+  }
+  .margin {
+    margin-right: 20px;
+  }
+  .map {
+    padding: 5px 30px 30px;
+    height: 90%;
+  }
+}
+</style>

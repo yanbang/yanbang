@@ -1,0 +1,543 @@
+<template>
+
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">策略</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList" style="margin-top: -10px">
+      <template slot>
+        <!-- 中间 -->
+        <div class="center">
+          <span @click="back()" v-if="param.eparchyCode!=''" style="color: #02f6ff">
+            << 返回</span>
+              <el-row>
+                <div style="padding: 15px;margin: 15px">
+                  <span class="chartTitle">营销策略</span>
+                  <el-select v-model="value" placeholder="请选择" @change="getListt(value)" popper-class="selectFrom" class="tabs" style="background-color: #0a3d75;margin-left: 10px;width: 250px;height: 20px">
+                    <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                  <el-table :data="tableList" :row-style="finalRowStyle" :cell-style="finalCellStyle" header-row-class-name="tableHead" style="width: 100%;height: 800px;overflow: auto;" @sort-change='tableSortChange'>
+                    <el-table-column prop="eparchyName" label="地区">
+                      <template slot-scope="scope">
+                        <a @click="cancelDialog(scope.row)" v-if="!scope.row.areaCode" style="cursor:pointer">{{scope.row.eparchyName}}</a>
+                        <a @click="cancelDialog(scope.row)" v-if="scope.row.areaCode !=='0000'" style="cursor:pointer">{{scope.row.areaName}}</a>
+                        <a v-if="scope.row.gridName" style="cursor:pointer">{{scope.row.gridName}}</a>
+
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="oweAll" :label="'上月'+key+'数'" sortable='用户数'>
+                      <template slot-scope="scope">
+                        <span class="titleSpan1">{{scope.row.oweAll}}</span>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="oweCall" label="呼通用户数" sortable='呼通用户数'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row.dayStatus == 2" class="titleSpan1" style="color:#C00000 !important">{{ scope.row.oweCall }}</a>
+                        <a v-else-if="scope.row.dayStatus  == 1" style="color: #00B050 !important" class="titleSpan1">{{ scope.row.oweCall }}</a>
+                        <a v-else class="titleSpan1">{{ scope.row.oweCall }}</a>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="oweCallrate" label="呼通率" sortable='呼通率'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row._oweCallrate_status == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.oweCallrate }}%</a>
+                        <a v-else-if="scope.row._oweCallrate_status == 1" style="color: #00B050 !important" class="titleSpan1">{{ scope.row.oweCallrate }}%</a>
+                        <a v-else class="titleSpan1">{{ scope.row.oweCallrate }}%</a>
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column prop="oweCz" label="充值数" sortable='充值数'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row.weekStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.oweCz }}</a>
+                        <a v-else-if="scope.row.weekStatus  == 1" class="titleSpan1" style="color: #00B050 !important">{{ scope.row.oweCz }}</a>
+                        <a v-else class="titleSpan1">{{ scope.row.oweCz }}</a>
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="oweCzrate" label="充值率" sortable='充值率'>
+                      <template slot-scope="scope">
+                        <a v-if="scope.row._oweCzrate_status == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.oweCzrate }}%</a>
+                        <a v-else-if="scope.row._oweCzrate_status  == 1" class="titleSpan1" style="color: #00B050 !important">{{ scope.row.oweCzrate }}%</a>
+                        <a v-else class="titleSpan1">{{ scope.row.oweCzrate }}%</a>
+                      </template>
+                    </el-table-column>
+
+                  </el-table>
+                </div>
+              </el-row>
+        </div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import store from 'store'
+import { tacticsLitsM } from '@/api/tactics'
+export default {
+  components: {
+    Header,
+    FlexBox,
+  },
+  name: 'index',
+  data() {
+    return {
+
+      bottomList: [{
+        name: '策略',
+        url: '',
+      }
+      ],
+      tableList: [],
+      options: [{
+        value: '01',
+        label: '欠费用户'
+      }, {
+        value: '02',
+        label: '余额不足用户'
+      }],
+      value: '01',
+      timest: '',
+      param: {},
+      allData: [],
+      key: '欠费用户'
+    }
+  },
+  async mounted() {
+    if (store.get('userInfo').isAddMask == '1') {
+      this.$watermark(store.get('userInfo').serialNumber);
+    } else {
+      this.$watermark("");
+    }
+    //获取时间
+    this.timest = window.sessionStorage.getItem('selectTime')
+
+  },
+
+  methods: {
+    //获取时间
+    getDate(date) {
+      this.timest = date
+      this.param = {
+        "timest": this.timest,
+        "eparchyCode": "",
+        "areaCode": "",
+        "gridId": "",
+        "mLevel": "1",
+        "TYPE_TAG": this.value,
+        "timeVeidoo": "d"
+      }
+
+      this.getListt(this.value)
+    },
+    getListt(type) {
+      this.options.forEach(obj => {
+        if (obj.value === this.value) {
+          this.key = obj.label
+        }
+      })
+      this.tableList = []
+      this.param.timest = this.timest
+      this.param.TYPE_TAG = this.value
+
+      tacticsLitsM(this.param).then(res => {
+        if (res.rspCode === '0000') {
+          this.tableList = res.result.data
+        }
+      })
+    },
+    cancelDialog(item) {
+      let userinfo = store.get('userInfo')
+      if ((item.eparchyCode == userinfo.eparchyCode) || (item.areaCode == userinfo.areaCode) || (item.areaCode && userinfo.areaCode == '') || (userinfo.eparchyCode == '0000')) {
+        if (item.eparchyCode !== '0000' && item.eparchyCode) {
+          this.param.eparchyCode = item.eparchyCode
+
+          this.param.mLevel = '2'
+        }
+        if (item.areaCode && item.areaCode !== '0000') {
+          this.param.mLevel = '3'
+          this.param.areaCode = item.areaCode
+          // this.param.eparchyCode = item.eparchyCode
+        }
+        this.getListt()
+      }
+    },
+    //监听顺序方法
+    tableSortChange(column) {
+      const self = this
+      let index = 0
+      let tmpList = []
+      this.allData = this.tableList[0]
+      let string = column.prop
+      this.tableList.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+
+      let tmplist2 = []
+      if (column.order === 'descending') {
+        // console.log(JSON.stringify(self.sortByKey(tmpList, column.prop)))
+        // this.tableList = self.sortByKey(tmpList, column.prop)
+        this.sortA(tmpList, column.prop)
+      } else {
+        // this.tableList = self.sort(tmpList, column.prop)
+        this.sortB(tmpList, column.prop)
+      }
+
+      this.tableList.forEach(obj => {
+        console.log(obj[column.prop])
+      })
+      this.tableList.unshift(this.allData)
+    },
+    // 顺序
+    sortByKey(array, key) {
+      return array.sort(function (a, b) {
+        let x = a[key];
+        let y = b[key];
+        console.log(JSON.stringify(array))
+        return x >= y;
+      })
+    },
+
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] >= arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.tableList = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] <= arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.tableList = arr
+    },
+    back() {
+      let tempLevel = this.param.mLevel
+      if (tempLevel === '3') {
+        this.param.mLevel = '2'
+        this.param.areaCode = ''
+        this.getListt()
+        // alert (1)
+      } else if (tempLevel === '2') {
+        this.param.eparchyCode = ''
+        this.param.mLevel = '1'
+        // alert (2)
+        this.getListt()
+      }
+
+    },
+    finalCellStyle({ row, column, rowIndex, columnIndex }) {
+      return {
+        padding: '8px'
+      }
+    },
+    finalRowStyle({ row, column, rowIndex, columnIndex }) {
+      return {
+        height: '20px'
+      }
+    }
+  }
+}
+</script>
+<style lang="less">
+.selectFrom {
+  color: #fff;
+  border: 1px solid #02f6ff !important;
+
+  /deep/ .el-select-dropdown__list {
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #01153b !important;
+    font-size: 18px;
+  }
+  .el-select-dropdown__item {
+    font-size: 18px;
+    color: #ffffff;
+  }
+  .el-select-dropdown__list {
+    text-align: left;
+    font-size: 18px;
+    background: #01153b !important;
+  }
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background: #01153b !important;
+    font-size: 18px;
+  }
+  //.el-select-dropdown__item {
+  //  color: #333333;
+  //  font-size: 18px;
+  //  background: #02F6FF !important;
+  //}
+  //.el-select-dropdown__item.hover,
+  //.el-select-dropdown__item:hover {
+  //  background: #02F6FF !important;
+  //}
+  //.el-scrollbar__wrap{
+  //  overflow: scroll;
+  //  height: 100%;
+  //  background-color: red;
+  //}
+  ///deep/ .el-scrollbar {
+  //  overflow: hidden;
+  //  position: relative;
+  //  background: #02F6FF;
+  //}
+}
+</style>
+
+<style lang="less" scoped>
+/deep/ .el-input--medium {
+  background: transparent;
+}
+.tableHead {
+  font-size: 20px;
+}
+
+/deep/ .el-dropdown-menu {
+  background-color: red;
+}
+/deep/ .el-dropdown-menu__item--divided:before {
+  background-color: red;
+}
+/deep/ .el-dropdown-menu__item--divided {
+  background-color: red;
+}
+
+/deep/ .el-select .el-input.is-focus .el-input__inner {
+  background: transparent;
+  background-image: url('../../assets/images/bigScreen/fullService/select_gb.png');
+  background-size: 100% 100%;
+}
+
+/deep/ .tabs .el-input__inner {
+  background: transparent;
+  -webkit-appearance: none;
+  ///*background-color: red;
+  /*background-image: none;*/
+  background-image: url('../../assets/images/bigScreen/fullService/select_gb.png');
+  background-size: 100% 100%;
+  border-radius: 4px;
+  /*border: 1px solid #DCDFE6;*/
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #ffffff;
+  display: inline-block;
+  //font-size: inherit;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  outline: none;
+  padding: 0 15px;
+  -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  width: 100%;
+}
+
+///deep/ .el-select-dropdown__list {
+//  background: transparent;
+//  list-style: none;
+//  padding: 6px 0;
+//  margin: 0;
+//  -webkit-box-sizing: border-box;
+//  box-sizing: border-box;
+//}
+
+/deep/ .el-table--border th {
+  border-bottom: none;
+}
+/deep/ .el-table--group,
+.el-table--border {
+  border: none;
+}
+/deep/ .el-table--border th,
+.el-table--border td {
+  border-right: none;
+}
+
+/deep/ .el-table {
+  background: none !important;
+  font-size: 18px !important;
+  font-family: Microsoft YaHei !important;
+  font-weight: 400 !important;
+}
+/deep/.el-table th {
+  background: none !important;
+  background: url('../../assets/images/bigScreen/fullService/597bcdc505fa3.png') 50% 18px !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 20px !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom center;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  border-right: 0.5px solid #0a3d75 !important;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+
+.titleSpan1 {
+  font-size: 14px;
+  font-family: 'DigifaceWide';
+  src: url('../../assets/fonts/digifaw.ttf');
+  display: block;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background: #01153b;
+  // background-image: image-set(
+  //     url("~@/assets/images/bigScreen/bg.jpg") 1x,
+  //     url("~@/assets/images/bigScreen/bg@2x.jpg") 2x
+  // );
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  position: relative;
+  z-index: 100;
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    .centerTop {
+      width: 100%;
+      height: 245px;
+      background-image: image-set(
+        url('~@/assets/images/bigScreen/fullService/center-top.png') 1x,
+        url('~@/assets/images/bigScreen/fullService/center-top@2x.png') 2x
+      );
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+
+  .borderLine {
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 2px;
+    height: 1px;
+    border: 1px dashed #009bff;
+    border-image: -webkit-linear-gradient(#009bff, #16e4cf) 30 30;
+    border-image: -moz-linear-gradient(#009bff, #16e4cf) 30 30;
+    border-image: linear-gradient(#009bff, #16e4cf) 30 30;
+  }
+  .chartTitle {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 22px;
+    font-family: 'MFBanHei';
+    color: #02f6ff;
+  }
+}
+
+.centerTop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 0 40px;
+  .titleLeft {
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: image-set(
+      url('~@/assets/images/bigScreen/fullService/Rectangle 561.png') 1x,
+      url('~@/assets/images/bigScreen/fullService/Rectangle@2x.png') 2x
+    );
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .titleRight {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #a5e8fe;
+    cursor: pointer;
+  }
+}
+.centerBottom {
+  width: 100%;
+  height: 631px;
+  margin-top: 20px;
+  background-image: image-set(
+    url('~@/assets/images/bigScreen/fullService/mapBg.png') 1x,
+    url('~@/assets/images/bigScreen/fullService/mapBg@2x.png') 2x
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .centerTop-title {
+    padding-top: 30px;
+  }
+  .margin {
+    margin-right: 20px;
+  }
+  .map {
+    padding: 10px 30px 30px;
+    height: 90%;
+  }
+}
+</style>

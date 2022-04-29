@@ -1,0 +1,57 @@
+<!--应急通信 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-安" subtitle="网安" ></Header>
+    <div class="contentbody">
+       
+        <iframe class="aqifrme" src="http://130.17.182.33:18889/cms/cmsnew/screennew/modules/scene/network_sec/screen_one/index.html" frameborder="0"></iframe>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import Header from '@/components/resource_visual/header2'
+var self = null
+export default {
+  data() {
+    return {
+    }
+  },
+  components: {
+    Header,
+    
+  },
+  created() {
+    self = this
+  },
+  mounted() {
+   
+    
+  },
+  watch: {
+    
+  },
+  computed: {
+    
+  },
+  methods: {},
+}
+</script>
+<style lang = "scss" scoped>
+.contentbody {
+  flex: 1;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: -100px;
+  position: relative;
+  height:100%;
+}
+ .aqifrme {
+  width: 100%;
+  height:100%;
+  border: none;
+  overflow-y: auto;
+ }
+ 
+</style>

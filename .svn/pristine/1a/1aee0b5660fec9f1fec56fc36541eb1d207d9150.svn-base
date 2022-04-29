@@ -1,0 +1,394 @@
+<!-- 左侧资源4级 -->
+<template>
+  <div class="flex1 flex  flexcol" >
+    <div class="lefttbox" style="height: 64%;">
+      <div class="tabsbox">
+        <div class="tabs-item " :class="{'active': ywtjSate == 1 }" @click="ywtjClick('1')">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">宽带</div>
+          <div class="tab_borderright"></div>
+        </div>
+        <div class="tabs-item" :class="{'active': ywtjSate == 2 }" @click="ywtjClick('2')">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">融合</div>
+          <div class="tab_borderright"></div>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 1">
+        <div class="tjitem">
+          <span class="nfont tjnf">日发展</span>
+          <span class="numfont">{{renderval('ICBAND0001', 'dayNew') }}</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度日均发展</span>
+          <span class="numfont">{{ renderval('ICBAND0001', 'avgJd') }}</span>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 2">
+        <div class="tjitem">
+          <span class="nfont tjnf">日转融</span>
+          <span class="numfont">{{renderval('ICBAND0033', 'dayNew')}}</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度日均转融</span>
+          <span class="numfont">{{renderval('ICBAND0033', 'avgJd')}}</span>
+        </div>
+      </div>
+
+      <div class="flex" >
+        <div class="imgrybox rywclbox">
+          <div class="" style="margin-right: 10px">
+            <img class="ryimg" src="@/assets/images/bigScreen/resource/ri.png" style="width: 60px" alt="" srcset="" />
+          </div>
+          <div class="flex1">
+            <div class="bcolor">日完成率</div>
+            <div class="numfont" style="font-size： 16px">
+              {{ywtjSate == 1 ? renderval('ICBAND0002', 'dayNew') : renderval('ICBAND0036', 'dayNew')}} %
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="echart_linebox">
+        <div class="tabs-item echarttile">
+          <div class="tab_borderleft"></div>
+          <div class="tabfon">{{ ywtjSate == 1 ? '近七日日均发展变化' : '近七日日均转融变化' }}</div>
+          <div class="tab_borderright"></div>
+        </div>
+
+         <echart-line :edata = "lineData" domid="echartline1"></echart-line>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 1">
+        <div class="tjitem">
+          <span class="nfont tjnf">月发展</span>
+           <span class="numfont">{{renderval('ICBAND0001', 'monNew') }}</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度累计发展</span>
+           <span class="numfont">{{renderval('ICBAND0001', 'qtNew') }}</span>
+        </div>
+      </div>
+
+      <div class="flex tjbox" v-show="ywtjSate == 2">
+        <div class="tjitem">
+          <span class="nfont tjnf">月转融</span>
+          <span class="numfont">{{renderval('ICBAND0033', 'monNew') }}</span>
+        </div>
+        <div class="tjitem">
+          <span class="nfont tjnf">本季度累计转融</span>
+          <span class="numfont">{{renderval('ICBAND0033', 'monNew') }}</span>
+        </div>
+      </div>
+
+      <div class="flex" >
+        <div class="imgrybox rywclbox">
+          <div class="" style="margin-right: 10px">
+            <img class="ryimg" src="@/assets/images/bigScreen/resource/yue.png" style="width: 60px" alt="" srcset="" />
+          </div>
+          <div class="flex1">
+            <div class="bcolor">月完成率</div>
+            <div class="numfont" style="font-size： 16px">
+              {{ywtjSate == 1 ? renderval('ICBAND0002', 'monNew') : renderval('ICBAND0036', 'qtNew')}} %
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="flex tmbox"
+        style="flex: 1;  align-items: center; margin-top: 5px; margin-bottom: 5px"
+        v-show="ywtjSate == 1"
+      >
+        <div class="flex1" style="margin-right: 15px">
+          <dl class="ltbomf">
+            <dt class="numfont">{{renderval('ICBAND0034', 'yearNew')}}%</dt>
+            <dd>宽带流失率</dd>
+          </dl>
+        </div>
+        <div class="flex1">
+          <dl class="ltbomf">
+            <dt class="numfont">{{renderval('ICBAND0035', 'yearNew')}}%</dt>
+            <dd>包年到期续约率</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex1 liquidbox" v-if="queryParams.gridId===''" style="margin-top: 5px">
+      <div class="liquiditem">
+        <div class="liqleft">
+          <img src="~@/assets/images/bigScreen/resource/zhuangji.png" style="width: 30px;" alt="" srcset="" />
+        </div>
+        <div class="liqright">
+          <div class="liqechartbox">
+            <div class="flex1">
+              <div style="width: 100%; height: 100%;">
+                <echart-liquid :pvalue="zyywZjdata.jgval1.pval" domid="echartLiquid1"></echart-liquid>
+              </div>
+            </div>
+            <div class="numfont">{{zyywZjdata.jgval1.num || '-'}}</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="zyywZjdata.jgval2.pval" domid="echartLiquid2"></echart-liquid>
+            </div>
+            <div class="numfont">{{zyywZjdata.jgval2.num || '-'}}</div>
+            <div class="nfont">月累注销率</div>
+          </div>
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="zyywZjdata.jgval3.pval" domid="echartLiquid3"></echart-liquid>
+            </div>
+            <div class="numfont">{{zyywZjdata.jgval3.num || '-'}}</div>
+            <div class="nfont">无条件受理竣工率</div>
+          </div>
+        </div>
+      </div>
+      <div class="liquiditem">
+        <div class="liqleft">
+          <img src="~@/assets/images/bigScreen/resource/yiji.png" style="width: 30px;" alt="" srcset="" />
+        </div>
+        <div class="liqright">
+          <div class="liqechartbox">
+            <div class="flex1">
+              <echart-liquid :pvalue="zyywYjdata.jgval1.pval" domid="echartLiquid4"></echart-liquid>
+            </div>
+            <div class="numfont">{{zyywYjdata.jgval1.num || '-'}}</div>
+            <div class="nfont">月累竣工率</div>
+          </div>
+
+          <div class="liqechartbox">
+            <div class="flex1">
+              <div style="width: 100%; height: 100%;">
+                <echart-liquid :pvalue="zyywYjdata.jgval2.pval" domid="echartLiquid5"></echart-liquid>
+              </div>
+            </div>
+            <div class="numfont">{{zyywYjdata.jgval2.num || '-'}}</div>
+            <div class="nfont">月累注销率</div>
+          </div>
+
+          <div class="liqechartbox" >
+            <div class="morediv" style="font-size: 16px; text-align: center; margin-top: 20px">
+              <span style="color: #26b8ff">
+                <!-- <router-link to="/BtoB/index">更多</router-link> -->
+                <a target="_blank" @click="routeLink">更多</a>
+              </span>
+              <img
+                style="width: 15px; height: 15px; position: relative; top: -1px"
+                src="~@/assets/images/bigScreen/resource/dleft.png"
+                alt=""
+                srcset=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import echartLine from './echartLine'
+import echartLiquid from './echartLiquid'
+import store from 'store'
+import { mapState } from 'vuex'
+import resourceApi from '@/api/resource'
+export default {
+  props: ['mapLevel', 'queryParams'],
+  data() {
+    return {
+       ywtjSate: 1,
+       ywtjDataMap: {
+        dkdata: {
+          day_new: 2123, //日发展
+          avg_jd: 2013 // 本季度日均发展
+          //日转融
+          //本季度日均转融
+        }
+      },
+      lineData: {
+        xdata:  [],
+        vdata: [
+          []
+        ]
+      },
+      zyywZjdata: {
+        jgval1 : {
+          num: '',
+          pval: 0,
+        },
+        jgval2 : {
+          num: '',
+          pval: 0,
+        },
+        jgval3 : {
+          num: '',
+          pval: 0,
+        }
+
+      },
+      zyywYjdata: {
+        jgval1 : {
+          num: '',
+          pval: 0,
+        },
+        jgval2 : {
+          num: '',
+          pval: 0,
+        }
+      },
+      zyywtjData: {},
+    }
+  },
+  components: {
+    echartLine,
+    echartLiquid
+  },
+  mounted() {},
+  watch: {
+    queryParams: {
+      handler(params) {
+        var qparams = JSON.parse(JSON.stringify(params));
+        if (params.mLevel >= 5) {
+          return;
+        }
+        this.serviceInit(qparams)
+      },
+      deep: true
+    },
+    ywtjSate (val) {
+      var qparams = JSON.parse(JSON.stringify(this.queryParams))
+      this.service_zyYwtjTrend(qparams)
+   
+    }
+  },
+  computed: {
+    searchDate () {
+      return this.$store.state.resource.searchDate
+    },
+  },
+  methods: { 
+    routeLink () {
+      var queryParams = JSON.parse(JSON.stringify(this.queryParams)) 
+      queryParams.type = 'queryParams'
+      queryParams.timeTap = new Date().getTime()
+      this.$emit('openD2dpage', {...queryParams});
+      // this.$router.push({'name' : 'BtoBIndex', query: {...queryParams}})
+
+    },
+    getywtjType () {
+      return this.ywtjSate;
+    },
+    serviceInit (params) {
+        this.service_zyYwtj(params);
+        this.service_zyYwtjTrend(params)
+        this.service_zyZjYjPct(params)
+    },
+    renderval (code, key) {
+      return this.zyywtjData[code] ? (this.zyywtjData[code][key] || '-') : '-';
+    },
+     // 业务统计
+    service_zyYwtj (params) {
+      resourceApi.zyYwtj(params).then(data => {
+        if (data.rspCode = '0000') {
+          this.zyywtjData =  data.result.data;
+        }
+      })
+    },
+    // 业务统计折线图
+    service_zyYwtjTrend (params) {
+      
+      params.actionType = this.ywtjSate
+      resourceApi.zyYwtjTrend(params).then(data => {
+        if (data.rspCode = '0000') {
+          var Xdata =  data.result.listThisMonth.map(item => {
+            return  item.timest.substring(item.timest.length - 4);
+          })
+          var Vdata1 = data.result.listThisMonth.map(item => {
+            return item.dayNew;
+          });
+          this.lineData = {
+            xdata:  Xdata || [],
+            vdata: [Vdata1] || [[]]
+          }
+        } else {
+          this.lineData = {
+            xdata:  [],
+            vdata: [
+              []
+            ]
+          }
+         
+        }
+      })
+    },
+    // 业务统计装机移机:
+    service_zyZjYjPct (params, type) {
+      // params.timest= "20210228"
+      // params.eparchyCode = '0531'
+      // params.areaCode = '01000102'
+      // params.gridId = '8106790'
+      var self = this;
+      self.zyywZjdata =  {
+        jgval1 : {
+          num: '-',
+          pval: '-',
+        },
+        jgval2 : {
+          num: '',
+          pval: '-',
+        },
+        jgval3 : {
+          num: '-',
+          pval: '-',
+        }
+
+      },
+      self.zyywYjdata = {
+        jgval1 : {
+          num: '-',
+          pval: '-',
+        },
+        jgval2 : {
+          num: '-',
+          pval: '-',
+        }
+      };
+
+      params.timestType = 'T-2'
+      resourceApi.zyZjYjPct(params).then(data => {
+        if (data.rspCode = '0000') {
+          if (data.result.data.actionTypeZj && data.result.data.actionTypeZj.length > 0) {
+            self.zyywZjdata.jgval1.num = data.result.data.actionTypeZj[0].mcompleteCount || '-'
+            self.zyywZjdata.jgval1.pval = data.result.data.actionTypeZj[0].mcompletePercent || '-'
+            self.zyywZjdata.jgval2.num = data.result.data.actionTypeZj[0].mcancelCount || '-'
+            self.zyywZjdata.jgval2.pval =  data.result.data.actionTypeZj[0].mcancelPercent ||  '-'
+            self.zyywZjdata.jgval3.pval = data.result.data.actionTypeZj[0].wtjcompletePercent ||  '-'
+            self.zyywZjdata.jgval3.num = data.result.data.actionTypeZj[0].wtjcompleteIntcount || '-'
+          }
+          if (data.result.data.actionTypeYj && data.result.data.actionTypeYj.length > 0) {
+            
+            self.zyywYjdata.jgval1.num = data.result.data.actionTypeYj[0].mcompleteCount || '-'
+            self.zyywYjdata.jgval1.pval = data.result.data.actionTypeYj[0].mcompletePercent ||  '-'
+            self.zyywYjdata.jgval2.num = data.result.data.actionTypeYj[0].mcancelCount || '-'
+            self.zyywYjdata.jgval2.pval = data.result.data.actionTypeYj[0].mcancelPercent || '-'
+          }
+                 
+        }
+      })
+    },
+    
+
+     // 带宽 融合切换
+    ywtjClick(val) {
+      this.ywtjSate = val;
+    }
+  }
+}
+</script>
+
+<style lang="css" scoped>
+@import url('../css/component.scss');
+</style>

@@ -1,0 +1,80 @@
+<template>
+  <div id="app">
+    <div style="width: 400px; height: 400px;margin-top:-120px;margin-left:-10px"
+         class="echarts"
+         ref="chart"></div>
+  </div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+export default {
+  name: 'HelloPie',
+
+  data() {
+    return {
+      total: '888'
+    }
+  },
+
+  mounted() {
+    var myChart = echarts.init(this.$refs.chart)
+    myChart.setOption({
+      label: {
+        alignTo: 'edge',
+        minMargin: 5,
+        edgeDistance: 10,
+        lineHeight: 15,
+        rich: {
+          time: {
+            fontSize: 10,
+            color: '#999'
+          }
+        }
+      },
+
+      title: {
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['20%', '25%'],
+          data: [
+            { value: 1048, name: '华为' },
+            { value: 735, name: 'oppo' },
+            { value: 580, name: 'vivo' },
+            { value: 484, name: '魅族' },
+            { value: 300, name: '小米' }
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          },
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                formatter: '{b} : {c} ({d}%)'
+              },
+              labelLine: { show: true }
+            }
+          }
+        }
+      ]
+    })
+  },
+
+  methods: {}
+}
+</script>
+
+<style lang="less" scoped></style>

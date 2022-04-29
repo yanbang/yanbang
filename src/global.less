@@ -1,0 +1,217 @@
+@import '~ant-design-vue/es/style/themes/default.less';
+
+html,
+body,
+#app, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+ //min-height: 1080px;
+ // overflow-y: auto;
+  position: relative;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+.bcolor {
+  color: #3be21a;
+}
+.ant-layout.layout-basic {
+  height: 100vh;
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar{
+  width: 5px;
+  height: 10px;
+  background-color: #080c1d79;
+  cursor: pointer;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #08193681;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+  background-color: #153c7e;
+}
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+// 数据列表 样式
+.table-alert {
+  margin-bottom: 16px;
+}
+// 数据列表 操作
+.table-operator {
+  margin-bottom: 18px;
+
+  button {
+    margin-right: 8px;
+  }
+}
+video {
+  background: rgb(2, 3, 27);
+}
+// 数据列表 搜索条件
+.table-page-search-wrapper {
+
+  .ant-form-inline {
+    .ant-form-item {
+      display: flex;
+      margin-bottom: 24px;
+      margin-right: 0;
+
+      .ant-form-item-control-wrapper {
+        flex: 1 1;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      > .ant-form-item-label {
+        line-height: 32px;
+        padding-right: 8px;
+        width: auto;
+      }
+      .ant-form-item-control {
+        height: 32px;
+        line-height: 32px;
+      }
+    }
+  }
+
+  .table-page-search-submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}
+.el-picker-panel__icon-btn {
+  color: #b6d4fa;
+}
+ .content {
+    position: relative;
+    z-index: 100;
+  }
+#markWater {
+  display: none!important;
+}
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.contentbox {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  //background: url('~@/assets/images/images_zy/bg.png') no-repeat;
+  background: url('~@/assets/zj/bg_zj1.png') no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.flex1 {
+  flex: 1;
+}
+.flex {
+  display: flex;
+} 
+.colflex {
+  flex-direction: column;
+}
+.ellipsis{
+  overflow: hidden;
+text-overflow:ellipsis;
+white-space: nowrap;
+}
+.gistitle {
+ position: absolute;
+  left: 30px;
+  top: 50px;
+  font-size: 24px;
+  color: aqua;
+
+}
+.eyesmodelbox {
+  font-size: 18px;
+  color: #fff;
+  line-height: 30px;
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+.zdmore {
+  cursor: pointer;
+}
+.zdmore .el-icon-more, .morebtn .el-icon-more{
+  font-size: 32px !important;
+}
+.itemtitle .smore .el-icon-more {
+  font-size: 32px !important;
+}
+
+.eyesmodelbox {
+     padding: 20px 0px;
+    font-size: 20px;
+    color: #fff;
+    line-height: 30px;
+    .iconimg {
+      margin-right: 10px;
+      color: rgb(250, 185, 34);
+    }
+    p {
+      margin-bottom: 10px;
+    }
+    .bcolor {
+      color: #3be21a;
+    }
+}
+
+

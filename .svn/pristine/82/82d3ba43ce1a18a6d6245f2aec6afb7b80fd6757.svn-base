@@ -1,0 +1,422 @@
+<!--  -->
+<template>
+  <div class = "p-relative" >
+    <div class = "echarts-title">
+      {{mapDatas.selectName}}
+    </div>
+    <div id = 'echarts_map' style="height:56vh;"></div>
+    <!-- // chartdatas -->
+    <div class="tagbtn">
+      <el-tag 
+          @click="tagchange(item)"
+          v-for="item in chartdatas"
+          :key="item.id"
+          :type="currtag ==  item.id ? 'success' : 'info'"
+          >
+          {{ item.name }}
+        </el-tag>
+    </div>
+    <div class = "cityTitle text-right" >
+      <span v-show="mapLevel != 1" @click="returnMap" class = "returnmap" style="margin-left: 15px;"><span class = "fa  fa-arrow-left"></span> 返回上一级</span>
+    </div>
+  </div>
+  
+</template>
+
+<script>
+var iframhost = ''
+
+var timer = null
+var zhejiangmap = require('@/assets/echarts/EchartsMapjson/zhejiang.json');  
+var cityMap = require('@/assets/echarts/gismap/china-main-city/china-main-city-map.js');
+import { mapState } from 'vuex';
+ import echarts from 'echarts'
+ var self = null
+export default {
+  props: ['height'],
+  data () {
+    var self = this;
+    return {
+      intervalFg: false,
+      currtag: 1,
+      chartdatas:  [],
+      mapDatas: {
+         provinceName: '浙江省',
+         cityName: '',
+         areaName: '',
+         level: '1',
+         selectName: '浙江省'
+      },
+      $echarts: '',
+      cityTitle: '浙江省',
+      mapLevel: 1,
+      mapChart: '',
+      echartsMapconfig :{
+
+        title: {
+          text: ' ',
+          subtext: ' ',
+          left: 'center',
+          show: false,
+        },
+        // tooltip: {
+        //   show:true,
+        //   trigger: 'item',
+        //   formatter (params) {
+        //       var res = params.name+'<br/>';
+        //       var myseries = self.echartsMapconfig.series;
+        //       for (var i = 0; i < myseries.length; i++) {
+        //           for(var j=0;j<myseries[i].data.length;j++){
+        //               if(myseries[i].data[j].name == params.name){
+        //                   res+=myseries[i].name +' : '+myseries[i].data[j].value+'</br>';
+        //               }
+        //           }
+        //       }
+        //       return res;
+        //   }
+        // },
+        grid: {
+          left: '1%',
+        },
+        legend: {
+          show: false,
+          orient: 'vertical',
+          left: 'left',
+          data: ['宽带用户数'],
+          textStyle: { //图例文字的样式
+            color: '#00edef',
+            fontSize: 12,
+      
+          },
+        },
+        visualMap: {
+          show:true,
+          min: 0,
+          max: 10000,
+          left: 'left',
+          top: 'bottom',
+          
+          selectedMode:'single', 
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true,
+  
+          inRange: {
+            color: ['#0385fe', '#ffffff']
+          },
+      
+          textStyle: {
+            color: '#31b1fe'
+          },
+          
+        },
+      
+        series: [{
+            name: ' ',
+            type: 'map',
+            mapType: '浙江省',
+            roam: false, //是否开启鼠标缩放和地图拖动。默认不开启。如果只想要开启缩放或者拖动，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+            layoutCenter: ['10%', '10%'],
+            scaleLimit: {
+             min: 0.8,
+             max: 1.5
+            },
+            // selectedMode:'single',
+            //selectedMode: 'multiple',
+            label: {
+              normal: {
+                show: true,                
+                formatter(params) {
+                    return  params.name + " "+ params.value
+                },               
+                position: 'top',
+                backgroundColor: 'rgba(40,93,151,.5)',
+                padding: [0, 10],
+                borderRadius: 3,
+                lineHeight: 24,
+                color: '#ffffff',
+              },
+              emphasis: {
+                show: true,
+                areacolor: '#000'
+              }
+            },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true
+                }
+              },
+              emphasis: {
+                color: '#000'
+              }
+            },
+            data: [],
+          },
+      
+
+      
+        ],
+      
+      },
+
+      
+      mapName: '',
+    }
+  },
+  components: {},
+  mounted () {
+    // this.moveLine();
+    
+    self= this;
+    this.$echarts =  echarts;
+    this.$echarts.registerMap('浙江省', zhejiangmap);
+    
+    this.mapChart = this.$echarts.init(document.getElementById('echarts_map'), 'macarons');
+    this.mapName = '浙江省';
+    var mapChart = this.mapChart;
+    mapChart.setOption(this.echartsMapconfig);
+    
+    
+    mapChart.on('click', function (params) {
+        if (params.componentType = '"series"' && self.mapLevel == 1) {
+          var cityCode= cityMap.default[params.name];
+            $.get(`/static/echarts/gismap/china-main-city/${cityCode}.json`).then(res => {
+             self.$echarts.registerMap(params.name, res);
+             self.echartsMapconfig.series[0].map = params.name;
+             self.echartsMapconfig.series[0].layoutCenter = ['10%', '10%'];
+             self.echartsMapconfig.series[0].data = [];
+             mapChart.clear()
+             mapChart.setOption(self.echartsMapconfig);
+             self.cityTitle = params.name;
+             self.mapLevel += 1;
+             let mapDatas =  {
+               provinceName: '浙江省',
+               cityName: params.name,
+               areaName: '',
+               level: self.mapLevel,
+               selectName: params.name
+              }
+              self.mapDatas = mapDatas
+             // self.$store.dispatch('changeCity', mapDatas)
+          })
+        } else {
+          let mapDatas =  {
+            provinceName: '浙江省',
+            cityName: self.mapDatas.cityName,
+            areaName:  params.name,
+            level:3,
+            selectName: params.name
+          }
+          self.mapDatas = mapDatas
+          // self.$store.dispatch('changeCity', mapDatas)
+        }
+        
+    });
+    
+  },
+  watch: {
+    intervalFg(newv, oldv) {
+      
+      if(newv) {
+        this.dyinterv()
+      }else{
+        
+      }
+      
+    },
+    mapDatas:  {
+      handler(data) {        
+         this.$emit('changemap', data)
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed: {
+   
+  },
+  methods: {
+
+    Array_max (arr){
+      return Math.max.apply(Math,arr);   
+    },
+    maxNumFn (data) {
+     var valsarr =  data.map((item) => {
+        return item.value
+      })
+     return   this.Array_max(valsarr) ;
+    },
+    renderEcahrtmap (data) { 
+      
+      
+      var mapChart  = this.mapChart;
+      
+      
+      
+      
+      // 取最大值，这里取的第一组的最大值，想要的效果是：点击第一组的取第一组，点击第2组取第二组的，并渲染到visualMap.max
+     // ['宽带用户数', '千兆用户数', '新覆盖小区数'],
+     
+      self.chartdatas = [
+              {name: '宽度工单', id: '1', maxnum: self.maxNumFn(data.arrlist), seriesDatas: data.arrlist},
+              {name: '故障工单', id: '2', maxnum: self.maxNumFn(data.arrlist2), seriesDatas: data.arrlist2},
+      ] 
+       
+      this.echartsMapconfig.visualMap.max =  self.chartdatas[self.currtag - 1].maxnum;
+      this.echartsMapconfig.series[0].data = self.chartdatas[self.currtag - 1].seriesDatas;
+      this.echartsMapconfig.series[0].name = self.chartdatas[self.currtag - 1].name;
+      // var valsarr =  data.arrlist.map((item) => {
+      //   return item.value
+      // })
+  
+      
+      // var maxnum = this.Array_max(valsarr) + 10;
+      // this.echartsMapconfig.visualMap.max = maxnum
+      // this.echartsMapconfig.series[0].data = data.arrlist;
+      // this.echartsMapconfig.series[1].data = data.arrlist2;
+      // this.echartsMapconfig.series[2].data = data.arrlist3;
+      mapChart.clear()
+      mapChart.setOption(this.echartsMapconfig);
+      
+      timer && window.clearInterval(timer)
+      var currtag = this.currtag;
+      timer = window.setInterval(() => {
+         
+         self.currtag = Number(self.currtag + 1)
+         if (self.currtag > 2) {
+           self.currtag = 1
+         }
+         self.echartsMapconfig.legend.data[0] =  self.chartdatas[self.currtag - 1].name;
+         self.echartsMapconfig.visualMap.max =  self.chartdatas[self.currtag -1].maxnum;
+         self.echartsMapconfig.series[0].data = self.chartdatas[self.currtag -1].seriesDatas;
+         self.echartsMapconfig.series[0].name = self.chartdatas[self.currtag - 1].name;
+         mapChart.clear()
+     
+         mapChart.setOption(self.echartsMapconfig, true);
+      }, 
+      5000)
+       
+      
+    },
+    returnMap () {
+  
+      var mapChart  = this.mapChart
+      this.echartsMapconfig.series[0].map = '浙江省';
+      this.echartsMapconfig.series[0].layoutCenter = ['10%', '10%'];
+      this.cityTitle = '浙江省';
+      this.mapLevel = 1;
+      // this.echartsMapconfig.series[0].data = proviceDatas;
+      mapChart.clear()
+      mapChart.setOption(this.echartsMapconfig);
+      let mapDatas =  {
+        provinceName: '浙江省',
+        cityName: '',
+        areaName: '',
+        level: 1,
+        selectName: '浙江省'
+      }
+  
+      self.mapDatas = mapDatas
+      
+      //this.$store.dispatch('changeCity', mapDatas)
+      
+    },
+    dyinterv() {
+      
+      
+      timer = window.setInterval(() => {
+         
+         self.currtag = Number(self.currtag + 1)
+         if (self.currtag > 2) {
+           self.currtag = 1
+         }
+         self.echartsMapconfig.legend.data[0] =  self.chartdatas[self.currtag - 1].name;
+         self.echartsMapconfig.visualMap.max =  self.chartdatas[self.currtag -1].maxnum;
+         self.echartsMapconfig.series[0].data = self.chartdatas[self.currtag -1].seriesDatas;
+         self.echartsMapconfig.series[0].name = self.chartdatas[self.currtag - 1].name;
+         this.mapChart.clear()
+           
+         this.mapChart.setOption(self.echartsMapconfig, true);
+      }, 
+      5000)
+    },
+    tagchange(item){
+       var currtag = []
+       this.currtag = item.id
+       
+        
+       this.intervalFg = false
+       window.clearInterval(timer)
+       
+       var mapChart  = this.mapChart;
+       this.echartsMapconfig.visualMap.max =  self.chartdatas[self.currtag - 1].maxnum;
+       this.echartsMapconfig.series[0].data = self.chartdatas[self.currtag - 1].seriesDatas;
+       this.echartsMapconfig.series[0].name = self.chartdatas[self.currtag - 1].name;
+       
+       mapChart.clear()
+       mapChart.setOption(this.echartsMapconfig);
+       
+      
+       window.setTimeout(() => {
+         
+        this.intervalFg = true
+       },5000)
+       
+    }
+    
+    
+    
+    
+    ///////////////
+  }
+}
+</script>
+
+
+<style lang='less' scoped>
+  .echarts-title {
+    position: absolute;
+    color: #328be6;
+    font-size: 16px;
+    z-index: 10;
+    width: 80px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #328be6;
+    left: 210px;
+    top: 36px;
+  }
+  .cityTitle {
+    position: absolute;
+    top: 550px;
+    right: 20px;
+    line-height: 28px;
+    color: #888888;
+    font-size: 14px;
+  }
+  .returnmap {
+    cursor: pointer;
+  }
+  .tagbtn{
+    width: 100px;
+    height:150px;
+    position: absolute;
+    top: 30px;
+    left: 10px;
+    cursor: pointer;
+    .el-tag.el-tag--success{
+      font-weight: bold;
+      background: none;
+      border:0px solid #45d8e2;
+      color: #45d8e2;
+      
+      
+    }
+    .el-tag.el-tag--info
+   {
+      background: none;
+      color: #5791c7;
+      border: 0px;
+    }
+  }
+</style>

@@ -1,0 +1,2091 @@
+<template>
+    <div>
+        <syscreen>
+            <tzgkheader :wz='"网运成本"'></tzgkheader>
+            <div class="content" style="width:1920px;height:1080px">
+                <el-row style="width:1920px;height:1080px">
+                    <el-col :span="6" style="height:1080px">
+                        <el-row style="height:330px">
+                            <hengxian class="hengxtu" :text="'成本概况'"></hengxian>
+                            <zwzyhx :wz='""' :wzyi='"网运成本"' style="margin-top:10px"></zwzyhx>
+                            <div class="zuoyi">
+                                <swztxw :sz=cbgkyscb></swztxw>
+                                <swztxw :sz=cbgkljcb :srcdz='"/wycb/ljcb.png"' :wz='"累计成本"'></swztxw>
+                                <swztxw :sz=cbgkyswclv :szwz='"%"' :srcdz='"/wycb/yswcl.png"' :wz='"预算完成率"'></swztxw>
+                                <swztxw  :sz=cbgkzsb :szwz='"%"'  :srcdz='"/wycb/cbzsb.png"' :wz='"成本占收比"'></swztxw>
+                            </div>
+                        </el-row>
+                        <el-row style="height:170px">
+                            <div class="qiehuan">
+                                <p class="wenziyi" @click="qhyi" ref="zqstyle">5G成本</p>
+                                <p class="wenzier" @click="qher" ref="gzstyle">非5G成本</p>
+                            </div>
+                            <zwzyhx :wz='""' :wzyi='"5G成本"'></zwzyhx>
+                            <div class="zuoer" style="margin-top:10px" v-show="zqshow">
+                                <swztxw :sz=cbgkwugyscb :szwz='"亿"' :srcdz='"/wycb/yswcl.png"' :wz='"预算成本"'></swztxw>
+                                <swztxw :sz=cbgkwugljcb :szwz='"亿"' :srcdz='"/wycb/ljcb.png"' :wz='"累计成本"'></swztxw>
+                                <!-- <swztxw :srcdz='"/wycb/ljcb.png"' :wz='"累计成本"'></swztxw> -->
+                                <swztxw :sz=cbgkwugyswclv :szwz='"%"' :srcdz='"/wycb/yswcl.png"' :wz='"预算完成率"'></swztxw>
+                                <swztxw  :sz=cbgkwugzsb :szwz='"%"'  :srcdz='"/wycb/cbzsb.png"' :wz='"成本占收比"'></swztxw>
+                            </div>
+                            <div class="zuoer" style="margin-top:10px" v-show="gzshow">
+                                <swztxw :sz=cbgkfwugyscb :szwz='"亿"' :srcdz='"/wycb/yswcl.png"' :wz='"预算成本"'></swztxw>
+                                <swztxw :sz=cbgkfwugljcb :szwz='"亿"' :srcdz='"/wycb/ljcb.png"' :wz='"累计成本"'></swztxw>
+                                <!-- <swztxw :srcdz='"/wycb/ljcb.png"' :wz='"累计成本"'></swztxw> -->
+                                <swztxw :sz=cbgkfwugyswclv :szwz='"%"' :srcdz='"/wycb/yswcl.png"' :wz='"预算完成率"'></swztxw>
+                                <swztxw  :sz=cbgkfwugzsb :szwz='"%"'  :srcdz='"/wycb/cbzsb.png"' :wz='"成本占收比"'></swztxw>
+                            </div>
+                        </el-row>
+                        <el-row style="height:350px">
+                            <zwzyhx></zwzyhx>
+                            <div class="zuoeryiechart" ref="mgtzuoeryi"></div>
+                        </el-row>
+                        <el-row style="height:270px">
+                            <zwzyhx :wz='""' :wzyi='"数据中心"'></zwzyhx>
+                            <div class="zuowu" style="margin-top:10px">
+                                <ztywxw :sz=sjzxzs></ztywxw>
+                                <ztywxw :srcdz='"/wycb/scnpjpue.png"' :sz=sjzxscpj :szwz='""' :wz='"实测年平均PUE"'></ztywxw>
+                                <ztywxw :srcdz='"/wycb/puesjzx.png"' :sz=sjzxpuedy :szwz='"个"' :wz='"PUE>1.5数据中心"'></ztywxw>
+                            </div>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="12" style="height:1080px">
+                        <el-row class="zjbj" style="height:1080px">
+                            <div class="zsrpdt">
+                                <div class="zsrdt" ref="zrsmap"></div>
+                            </div>
+                            <div class="zztsgchart">
+                                <p class="zztsgchartp">预算成本趋势</p>
+                                <div  class="zztsange" ref="zhuztusange"></div>
+                            </div>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="6" style="height:1080px">
+                        <el-row style="height:400px">
+                            <hengxian class="youyihx" :text="'降本增效'"></hengxian>
+                            <div class="youyipjdt">
+                                <p>计划节省&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;实际节省</p>
+                                <div class="youyijdt">
+                                    <czzywssj :sz=dljhjs :szyi=dlsjjs :qgzxbdmbwclv=dljd style="margin-top:10px"></czzywssj>
+                                    <czzywssj :wz='"无线"' :sz=wxjhjs :szyi=wxsjjs :qgzxbdmbwclv=wxjd style="margin:10px 0"></czzywssj>
+                                    <czzywssj :wz='"网优"' :sz=wyjhjs :szyi=wysjjs :qgzxbdmbwclv=wyjd></czzywssj>
+                                    <czzywssj :wz='"传输"' :sz=csjhjs :szyi=cssjjs :qgzxbdmbwclv=csjd style="margin:10px 0"></czzywssj>
+                                    <czzywssj :wz='"装维"' :sz=zwjhjs :szyi=zwsjjs :qgzxbdmbwclv=zwjd></czzywssj>
+                                    <czzywssj :wz='"核心网"' :sz=hxjhjs :szyi=hxsjjs :qgzxbdmbwclv=hxjd style="margin:10px 0"></czzywssj>
+                                    <czzywssj :wz='"业务平台"' :sz=ywjhjs :szyi=ywsjjs :qgzxbdmbwclv=ywjd></czzywssj>
+                                </div>
+                            </div>
+
+                        </el-row>
+                        <el-row style="height:230px">
+                            <hengxian class="youerhx" :text="'降本措施'"></hengxian>
+                            <div class="youer">
+                                <div class="youeryi">
+                                <!-- <swztxwfhyb :srcdz='"/wycb/twjd.png"' :sz=jbcsergtw :szwz='""' :wz='"2G退网进度"'></swztxwfhyb>-->
+                                <!-- <swztxwfhyb :srcdz='"/wycb/ljsbtws.png"' :wz='"老旧设备退网金额"' :sz=jbcsljsbt :szwz='""'></swztxwfhyb>-->
+                                <!-- <swztxwfhyb :sz=jbcslsdfq :szwz='""' :srcdz='"/wycb/lsdfqljd.png"' :wz='"历史电费清理金额"'></swztxwfhyb>-->
+                                <!-- <swztxwfhyb  :sz=jbcsaiznj :szwz='""'  :srcdz='"/wycb/aiznjdzb.png"' :wz='"AI智能节电金额"'></swztxwfhyb>-->
+                                  <swztxwfhyb :srcdz='"/wycb/twjd.png"' :sz=jbcsergtw :szwz='""' :wz='"2G退网进度"'></swztxwfhyb>
+                                  <swztxwfhyb :srcdz='"/wycb/twjd.png"' :wz='"老旧设备退网金额"' :sz=jbcsljsbt :szwz='""'></swztxwfhyb>
+                                  <swztxwfhyb :sz=jbcslsdfq :szwz='""' :srcdz='"/wycb/twjd.png"' :wz='"历史电费清理金额"'></swztxwfhyb>
+                                  <swztxwfhyb  :sz=jbcsaiznj :szwz='""'  :srcdz='"/wycb/twjd.png"' :wz='"AI智能节电金额"'></swztxwfhyb>
+                                </div>
+                                <div class="youerer">
+                                    <swztxwfhyb :srcdz='"/wycb/twjd.png"' :sz=jbcstazyj :szwz='""' :wz='"塔租压降"'></swztxwfhyb>
+                                    <swztxwfhyb :sz=jbcszxfyy :szwz='""' :srcdz='"/wycb/twjd.png"' :wz='"装修费用压降金额"'></swztxwfhyb>
+                                    <swztxwfhyb  :sz=jbcswbyjj :szwz='""'  :srcdz='"/wycb/twjd.png"' :wz='"维保费压金额"'></swztxwfhyb>
+                                </div>
+
+                            </div>
+                        </el-row>
+                        <el-row style="height:420px">
+                            <hengxian class="yousanhx" :text="'迁改增效'"></hengxian>
+                            <div class="yousan">
+                                <div class="yousanyi">
+                                    <tulisxw :sz=qgzxxqljdz :dw='"万"' :wz='"新签累计到账额"' :srcdz='"/wycb/gqzx.png"'></tulisxw>
+                                    <tulisxw :sz=qgzxqnhkbd :dw='"万"' :wz='"回款目标"' :srcdz='"/wycb/gqzx.png"'></tulisxw>
+                                    <tulisxw :sz=qgzxclhthk :dw='"万"' :wz='"存量累计到账额"' :srcdz='"/wycb/gqzx.png"'></tulisxw>
+                                    <tulisxw :sz=qgzxxqhthk :dw='"万"' :wz='"新签累计合同额"' :srcdz='"/wycb/gqzx.png"'></tulisxw>
+                                </div>
+                                <div class="yousaner">
+                                    <div class="yousanerjdt">
+                                        <p class="yousanerjdtp">回款到账完成率</p>
+                                        <el-progress :stroke-width="18" :percentage="qgzxbdmbwclv > 100 ? 100 : qgzxbdmbwclv" :format="_format(qgzxbdmbwclv)"></el-progress>
+                                    </div>
+                                    <div class="yousanerx">
+                                        <div class="yousanerz">
+                                            <p class="yousanerp">回款目标</p>
+                                            <dmqsdw style="margin-top:10px"></dmqsdw>
+                                            <dmqsdw :wz='"温州:"' :sz=44501 style="margin:15px 0"></dmqsdw>
+                                            <dmqsdw :wz='"宁波:"' :sz=12238></dmqsdw>
+                                            <dmqsdw :wz='"金华:"' :sz=35664 style="margin:15px 0"></dmqsdw>
+                                        </div>
+                                        <div class="yousanery">
+                                            <div class="qiuwzqb">
+                                                <div class="yuanqiu">
+                                                    <p class="huikui">回款到账</p>
+                                                    <p class="wclv">完成率</p>
+                                                </div>
+                                            </div>
+                                            <div class="yousanerychart" ref="yuanhuan"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </el-row>
+                    </el-col>
+                </el-row>
+            </div>
+        </syscreen>
+    </div>
+</template>
+
+<script>
+import syscreen from '@/components/resource_visual/syscreen'
+import tzgkheader from '@/components/resource_visual/tzgkheader'
+import hengxian from '@/components/resource_visual/hengxian'
+import shuwentu from '@/components/resource_visual/shuwentu'
+import stwxsw from '@/components/resource_visual/stwxsw'
+import wtww from '@/components/resource_visual/wtww'
+import wtwww from '@/components/resource_visual/wtwww'
+import swxwsj from '@/components/resource_visual/swxwsj'
+
+import swztxw from '@/components/resource_visual/swztxw'
+import ztywxw from '@/components/resource_visual/ztywxw'
+import tulisxw from '@/components/resource_visual/tulisxw'
+import czzywssj from '@/components/resource_visual/czzywssj'
+import dmqsdw from '@/components/resource_visual/dmqsdw'
+import zwzyhx from '@/components/resource_visual/zwzyhx'
+import swztxwfhyb from '@/components/resource_visual/swztxwfhyb'
+
+import echarts from 'echarts'
+import zrsmapdata from '@/assets/js/map/zhejiang.json'
+import axios from 'axios'
+export default {
+    data() {
+        return {
+            zqshow: true,
+            gzshow: false,
+            tableData: [{
+                date: '1',
+                name: '项目名称项目名称项目名称项目名称项目名称',
+                address: '待揭榜'
+            }, {
+                date: '2',
+                name: '项目名称项目名称项目名称项目名称项目名称',
+                address: '已揭榜'
+            }],
+            chartInstance: null,
+            zrssdtdata:[
+                {
+                    name: "非5G预算完成率",
+                    value: [119.5,30, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [121.549792,29.868388, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [120.672111,28.000575, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [120.750865,30.762653, 80]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [120.102398,30.867198, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [120.582112,29.997117, 90]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [119.649506,29.089524, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [118.87263,28.941708, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [122.106863,30.016028, 50]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [121.428599,28.661378, 70]
+                },
+                {
+                    name: "非5G预算完成率",
+                    value: [119.921786,28.451993, 70]
+                },
+            ],
+            zwrcsdtdata:[
+                {
+                    name: "5G预算完成率",
+                    value: [119.5,30, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [121.549792,29.868388, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [120.672111,28.000575, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [120.750865,30.762653, 80]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [120.102398,30.867198, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [120.582112,29.997117, 90]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [119.649506,29.089524, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [118.87263,28.941708, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [122.106863,30.016028, 50]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [121.428599,28.661378, 70]
+                },
+                {
+                    name: "5G预算完成率",
+                    value: [119.921786,28.451993, 70]
+                },
+            ],
+            szhrcsdtdata:[
+                {
+                    name: "数据中心PUE",
+                    value: [119.5,30, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [121.549792,29.868388, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [120.672111,28.000575, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [120.750865,30.762653, 80]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [120.102398,30.867198, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [120.582112,29.997117, 90]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [119.649506,29.089524, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [118.87263,28.941708, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [122.106863,30.016028, 50]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [121.428599,28.661378, 70]
+                },
+                {
+                    name: "数据中心PUE",
+                    value: [119.921786,28.451993, 70]
+                },
+            ],
+            // sdttldata:['非5G预算完成率','5G预算完成率','数据中心PUE'],
+            zztchartInstance: null,
+            zztxaxisdata:['2018','2019','2020','2021','2022'],
+            zztyaxisdata:[80,100,130,150,30],
+            zztsgchartInstance: null,
+            zztsgxaxisdata:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+            zztsgyaxiszrsdata:[8500,6500,8500,6500,8500,6500,8500,6500,8500,6500,8500,6500],
+            zztsgyaxiszrsxjrsdata:[150,150,150,150,150,150],
+            zztsgyaxiszrsscrsdata:[100,100,100,100,100,100],
+            zerzztInstance: null,
+            zerzztxaxisd:[16.8,38.5],
+            zerzztyaxisd:['研究生及以上','本科及以上'],
+            zeryzztInstance: null,
+            zeryzztxaxisd:['20-29','30-39','40-49','30-39'],
+            zeryzztyaxisd:[14.74,39.31,32.92,13.03],
+            zerymgtInstance: null,
+            mgtdata:[
+                { value: 2346, name: '运维成本',itemStyle: {color: 'rgb(80,110,204)'} },
+                { value: 2000, name: '修理维护费',itemStyle: {color: 'rgb(255,199,58)'} },
+                { value: 2000, name: '客户接入成本',itemStyle: {color: 'rgb(255,90,97)'} },
+                { value: 2000, name: '租赁费',itemStyle: {color: 'rgb(89,194,226)'} },
+                { value: 1800, name: '紧密型外包',itemStyle: {color: 'rgb(0,165,110)'} },
+                { value: 1400, name: '频占费',itemStyle: {color: 'rgb(255,124,67)'} },
+                { value: 1200, name: '其他成本',itemStyle: {color: 'rgb(164,90,185)'} },
+            ],
+            // 圆环图
+            zeryyhtInstance: null,
+            yhtdata:[
+                { value: 400, name: '金华',itemStyle: {color: 'rgb(0,116,230)'},bfb:'24%' },
+                { value: 360, name: '宁波',itemStyle: {color: 'rgb(0,178,0)'},bfb:'16%'  },
+                { value: 600, name: '杭州',itemStyle: {color: 'rgb(255,96,0)'},bfb:'48%'  },
+                { value: 300, name: '温州',itemStyle: {color: 'rgb(0,203,247)'},bfb:'12%'  },
+            ],
+            // 请求数据
+            // 地图假数据
+            // sdttldata:['投资预算','资本性支出','预算完成率','目标投资占收比','倒挂站'],
+            sdttldata:['非5G预算完成率','5G预算完成率','数据中心PUE'],
+            mapdtzb:{
+                // 湖州: [120.102398,30.867198],
+                湖州: [120,30.8],
+                // 台州: [121.428599,28.661378],
+                台州: [121.4,28.6],
+                // 嘉兴: [120.750865,30.762653],
+                嘉兴: [120.7,30.5],
+                // 杭州: [120.153576,30.287459],
+                杭州: [119.3,29.8],
+                宁波: [121.549792,29.868388],
+                // 丽水: [119.921786,28.451993],
+                丽水: [119.5,28.2],
+                // 金华: [119.649506,29.089524],
+                金华: [119.9,29.1],
+                // 绍兴: [120.582112,29.997117],
+                绍兴: [120.5,29.6],
+                // 舟山: [122.106863,30.016028],
+                舟山: [122.2,30.3],
+                // 衢州: [118.87263,28.941708],
+                衢州: [118.87263,28.8],
+                温州: [120.672111,28.000575]
+            },
+            maprows: [
+            {
+                year: null,
+                num: 10, //资本性支出
+                total: 71, //投资预算
+                xiaoNeng: null,
+                rate: null,
+                name: '湖州市分公司',
+                patentTrends: null,
+                num2: 25,  //预算完成率
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 24,
+                total: 128,
+                xiaoNeng: null,
+                rate: null,
+                name: '台州市分公司',
+                patentTrends: null,
+                num2: 78,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 10,
+                total: 81,
+                xiaoNeng: null,
+                rate: null,
+                name: '嘉兴市分公司',
+                patentTrends: null,
+                num2: 27,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 39,
+                total: 241,
+                xiaoNeng: null,
+                rate: null,
+                name: '杭州市分公司',
+                patentTrends: null,
+                num2: 107,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 35,
+                total: 179,
+                xiaoNeng: null,
+                rate: null,
+                name: '宁波市分公司',
+                patentTrends: null,
+                num2: 86,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 6,
+                total: 57,
+                xiaoNeng: null,
+                rate: null,
+                name: '丽水市分公司',
+                patentTrends: null,
+                num2: 20,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 14,
+                total: 99,
+                xiaoNeng: null,
+                rate: null,
+                name: '金华市分公司',
+                patentTrends: null,
+                num2: 32,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 192,
+                total: 1152,
+                xiaoNeng: null,
+                rate: null,
+                name: '总人数',
+                patentTrends: null,
+                num2: 500,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 13,
+                total: 76,
+                xiaoNeng: null,
+                rate: null,
+                name: '绍兴市分公司',
+                patentTrends: null,
+                num2: 36,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 6,
+                total: 42,
+                xiaoNeng: null,
+                rate: null,
+                name: '舟山市分公司',
+                patentTrends: null,
+                num2: 12,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 10,
+                total: 44,
+                xiaoNeng: null,
+                rate: null,
+                name: '衢州市分公司',
+                patentTrends: null,
+                num2: 20,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            },
+            {
+                year: null,
+                num: 25,
+                total: 134,
+                xiaoNeng: null,
+                rate: null,
+                name: '温州市分公司',
+                patentTrends: null,
+                num2: 57,
+                num3: 5,//目标投资占收比
+                num4: 15,//倒挂站
+                renZhenRate: null
+            }
+            ],
+
+            // 地图总数据
+            dtresult:null,
+            dttzys:[],//地图 投资预算
+            dtzbxzc:[],//地图 资本性支出
+            dtyswllv:[],//地图 预算完成率
+            dtmbtzzsb:[],//地图 目标投资占收比
+            dtdgz:[],//地图 倒挂站
+
+
+            // 成本概况总数据
+            cbgkresult:null,
+            cbgkpieresult:null,//饼图 总数据
+            cbgkyscb:null,//网运成本预算成本
+            cbgkljcb:null,//网运成本累计成本
+            cbgkyswclv:null,//网运成本预算完成率
+            cbgkzsb:null,//网运成本占收比
+
+            cbgkwugyscb:null,//5G预算成本
+            cbgkwugljcb:null,//5G 累计成本
+            cbgkwugyswclv:null,//5G预算完成率
+            cbgkwugzsb:null,//5G 占收比
+
+            cbgkfwugyscb:null,//非5G预算成本
+            cbgkfwugljcb:null,//非5G 累计成本
+            cbgkfwugyswclv:null,//非5G预算完成率
+            cbgkfwugzsb:null,//非5G 占收比
+
+            // 数据中心总数据
+            sjzxresult:null,
+            sjzxzs:null,//数据中心
+            sjzxscpj:null,//实测平均PUE
+            sjzxpuedy:null,//1.5数据
+
+            // 迁改增效总数据
+            qgzxresult:null,
+            qgzxxqljdz:null,//新签累计到账
+            qgzxqnhkbd:null,//全年回款保底目标
+            qgzxclhthk:null,//存量合同回款金额
+            qgzxxqhthk:null,//新签合同回款
+            qgzxbdmbwclv:0,//保底目标完成率
+
+            // 降本增效总数据
+            jbzxresult:null,
+            dljhjs:null,//动力 计划节省
+            wxjhjs:null,//无线 计划节省
+            wyjhjs:null,//网优 计划节省
+            csjhjs:null,//传输 计划节省
+            zwjhjs:null,//装维 计划节省
+            hxjhjs:null,//核心网 计划节省
+            ywjhjs:null,//业务平台 计划节省
+
+            dlsjjs:null,//动力 实际节省
+            wxsjjs:null,//无线 实际节省
+            wysjjs:null,//网优 实际节省
+            cssjjs:null,//传输 实际节省
+            zwsjjs:null,//装维 实际节省
+            hxsjjs:null,//核心网 实际节省
+            ywsjjs:null,//业务平台 实际节省
+
+            dljd:'0',//动力 进度
+            wxjd:'0',//无线 进度
+            wyjd:'0',//网优 进度
+            csjd:'0',//传输 进度
+            zwjd:'0',//装维 进度
+            hxjd:'0',//核心网 进度
+            ywjd:'0',//业务平台 进度
+
+            // 地图和预算成本趋势
+            maphqsresult:null,//总数据
+            fwgyswcl:[],//非5G预算完成率
+            wgyswcl:[],//5G预算完成率
+            shujzx:[],//数据中心
+            // 预算成本趋势
+            yscbmryaxis:null,
+            zxtyaxisdata:null,
+
+
+            // 降本措施总数据
+            jbcsresult:null,
+            jbcsergtw:null,//2G退网进度
+            jbcsljsbt:null,//老旧设备退网金额
+            jbcslsdfq:null,//历史电费清理金额
+            jbcsaiznj:null,//AI智能节电金额
+            jbcstazyj:null,//塔租压降
+            jbcszxfyy:null,//装维费用压降金额
+            jbcswbyjj:null,//维保压降金额
+
+            // 实验
+            budgetTotalFinishRate:[
+                {
+                    "cityName": "浙江",
+                    "wangYunQuShiDtos": [
+                        {
+                            "id": 1,
+                            "type": "省内口径合计",
+                            "cityName": "浙江",
+                            "areaName": null,
+                            "jan": 20457,
+                        }
+                    ],
+                },
+                {
+                    "cityName": "杭州",
+                    "wangYunQuShiDtos": [
+                        {
+                            "id": 3,
+                            "type": "省内口径合计",
+                            "cityName": "杭州",
+                            "areaName": null,
+                            "jan": 5664,
+                            "feb": 5250,
+                        }
+                    ],
+                },
+            ]
+            // 实验
+        }
+    },
+    components: {
+        syscreen,tzgkheader,hengxian,shuwentu,stwxsw,wtww,wtwww,swxwsj,swztxw,ztywxw,tulisxw,czzywssj,dmqsdw,zwzyhx,swztxwfhyb
+    },
+    mounted () {
+        this.zztsginitCharts();
+        this.zerymgtinit();
+        this.zeryyhtinit();
+        // 成本概况
+        this.getcbgkData()
+        // 数据中心
+        this.getsjzxData()
+        // 迁改增效
+        this.getqgzxData()
+        // 降本增效
+        this.getjbzxData()
+        // 先获取地图数据  真数据
+        this.getmaphqsData()
+        //再执行地图  真数据
+        this.initCharts();
+        // 降本措施
+        this.getjbcsData()
+    },
+    methods: {
+        _format(value) {
+            return () => {
+                return value + '%'
+            }
+        },
+        qhyi() {
+            this.zqshow=true
+            this.gzshow=false
+            this.$refs.zqstyle.style.color='#03e5f5'//改变颜色
+            this.$refs.gzstyle.style.color='#fff'
+        },
+        qher() {
+            this.gzshow=true
+            this.zqshow=false
+            this.$refs.zqstyle.style.color='#fff'
+            this.$refs.gzstyle.style.color='#03e5f5'
+        },
+        cellstyle() {
+            return{
+                padding:'6px 0',
+                color: 'red',
+            }
+        },
+        headerstyle() {
+            return{
+                padding:'6px 0',
+                color: 'rgb(152, 247, 247)',
+            }
+        },
+        initCharts() {
+        this.chartInstance=echarts.init(this.$refs.zrsmap)
+        echarts.registerMap('zrenshu',zrsmapdata)
+            let resmaptzys = [];
+            for (let i = 0; i < this.fwgyswcl.length; i++) {
+                let geoCoord = this.mapdtzb[this.fwgyswcl[i].name];
+                if (geoCoord) {
+                    resmaptzys.push({
+                        name: this.fwgyswcl[i].name,
+                        value: geoCoord.concat(this.fwgyswcl[i].value)
+                    });
+                }
+            }
+            let resmapzbxzc = [];
+            for (let i = 0; i < this.wgyswcl.length; i++) {
+                let geoCoord = this.mapdtzb[this.wgyswcl[i].name];
+                if (geoCoord) {
+                resmapzbxzc.push({
+                    name: this.wgyswcl[i].name,
+                    value: geoCoord.concat(this.wgyswcl[i].value)
+                });
+                }
+            }
+            let resmapyswllv = [];
+            for (let i = 0; i < this.shujzx.length; i++) {
+                let geoCoord = this.mapdtzb[this.shujzx[i].name];
+                if (geoCoord) {
+                resmapyswllv.push({
+                    name: this.shujzx[i].name,
+                    value: geoCoord.concat(this.shujzx[i].value)
+                });
+                }
+            }
+            let resmapmbtzzsb = [];
+            for (let i = 0; i < this.dtmbtzzsb.length; i++) {
+                let geoCoord = this.mapdtzb[this.dtmbtzzsb[i].name];
+                if (geoCoord) {
+                resmapmbtzzsb.push({
+                    name: this.dtmbtzzsb[i].name,
+                    value: geoCoord.concat(this.dtmbtzzsb[i].value)
+                });
+                }
+            }
+            let resmapdgz = [];
+            for (let i = 0; i < this.dtdgz.length; i++) {
+                let geoCoord = this.mapdtzb[this.dtdgz[i].name];
+                if (geoCoord) {
+                resmapdgz.push({
+                    name: this.dtdgz[i].name,
+                    value: geoCoord.concat(this.dtdgz[i].value)
+                });
+                }
+            }
+            //数字化人才 合并地图坐标和请求回来的数据
+
+            const initOption={
+                geo:{
+                    type:'map',
+                    map:'zrenshu',
+                    layoutCenter: ['50%', '50%'], //地图位置 代表在最中间
+                    layoutSize: '100%', //地图大小，此处设置为100%
+                    emphasis:{	//鼠标放到每块地图上 地图的颜色
+                        itemStyle:{
+                            color:'#00ffff'
+                        }
+                    },
+                    regions: [      //对不同的区块进行着色
+                {
+                name: '杭州市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#ffffff'
+                    }
+                }
+                        },
+                {
+                name: '宁波市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#d3eaff'
+                    }
+                }
+                        },
+                {
+                name: '温州市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#d3eaff'
+                    }
+                }
+                        },
+                {
+                name: '嘉兴市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#d3eaff'
+                    }
+                }
+                        },
+                {
+                name: '湖州市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#42a4fe'
+                    }
+                }
+                        },
+                {
+                name: '绍兴市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#0385fe'
+                    }
+                }
+                        },
+                {
+                name: '金华市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#d3eaff'
+                    }
+                }
+                        },
+                {
+                name: '衢州市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#62b3fe'
+                    }
+                }
+                        },
+                {
+                name: '舟山市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#62b3fe'
+                    }
+                }
+                        },
+                {
+                name: '台州市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#d3eaff'
+                    }
+                }
+                        },
+                {
+                name: '丽水市', //区块名称
+                itemStyle: {
+                    normal: {
+                        areaColor: '#359dfe'
+                    }
+                }
+                        },
+                    ]
+
+                },
+
+                legend:{
+                    orient: 'vertical',
+            selectedMode: 'single',
+                    selected: {
+                        '5G预算完成率': false,
+                        '数据中心PUE': false,
+                    },
+                    data:this.sdttldata,
+                    left:0,
+                    top:0,
+                    icon:'image:@/assets/zj/navigation/tzgk/maptlmr.png',
+                    textStyle:{
+                        color:'#fff',
+                        fontSize:16,
+                    }
+                },
+                series: [
+                    {
+
+                        name:'非5G预算完成率',
+                        // geoIndex: 0,
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        // data:this.zrssdtdata,
+                        data:resmaptzys,
+                        symbolSize:3,//红点大小 默认 10
+                        label: {
+                            normal: {
+                                formatter:function(item){//散点图上面的文字样式
+                                    let a = item.value[2];
+                                    let c = '%';
+                                    return '{a|'+a+'}'+'{a|'+c+'}';
+                                },
+                                rich: {
+                                    a: {
+                                        color: '#a7e7ff',
+                                        fontSize:16,
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        fontSize:16,
+                                    }
+                                },
+                                position:'top',
+                                show: true,
+                                backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                width:108,//红点上面文字整体宽度
+                                height:26,//红点上面文字整体高度
+                                lineHeight:26,//红点上面文字整体垂直居中
+                                // verticalAlign:'middle',
+                                align:'center'//红点上面文字整体水平居中
+                            },
+                        },
+
+                    },
+                    {
+
+                        name:'5G预算完成率',
+                        // geoIndex: 0,
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        // data:this.zrssdtdata,
+                        data:resmapzbxzc,
+                        symbolSize:3,//红点大小 默认 10
+                        label: {
+                            normal: {
+                                formatter:function(item){//散点图上面的文字样式
+                                    let a = item.value[2];
+                                    let c = '%';
+                                    return '{a|'+a+'}'+'{a|'+c+'}';
+                                },
+                                rich: {
+                                    a: {
+                                        color: '#a7e7ff',
+                                        fontSize:16,
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        fontSize:16,
+                                    }
+                                },
+                                position:'top',
+                                show: true,
+                                backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                width:108,//红点上面文字整体宽度
+                                height:26,//红点上面文字整体高度
+                                lineHeight:26,//红点上面文字整体垂直居中
+                                // verticalAlign:'middle',
+                                align:'center'//红点上面文字整体水平居中
+                            },
+                        },
+
+                    },
+                    {
+                        name:'数据中心PUE',
+                        // geoIndex: 0,
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        // data:this.zrssdtdata,
+                        data:resmapyswllv,
+                        symbolSize:3,//红点大小 默认 10
+                        label: {
+                            normal: {
+                                formatter:function(item){//散点图上面的文字样式
+                                    let a = item.value[2];
+                                    let c = '%';
+                                    return '{a|'+a+'}'+'{a|'+c+'}';
+                                },
+                                rich: {
+                                    a: {
+                                        color: '#a7e7ff',
+                                        fontSize:16,
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        fontSize:16,
+                                    }
+                                },
+                                position:'top',
+                                show: true,
+                                backgroundColor:'#4a6d97',//红点上面文字整体背景色
+                                width:108,//红点上面文字整体宽度
+                                height:26,//红点上面文字整体高度
+                                lineHeight:26,//红点上面文字整体垂直居中
+                                // verticalAlign:'middle',
+                                align:'center'//红点上面文字整体水平居中
+                            },
+                        },
+
+                    },
+                ],
+            }
+            this.chartInstance.setOption(initOption)
+
+            // 地图和预算成本趋势柱状图联动
+            this.chartInstance.on('click',arg=>{
+            const clickcity=arg.name.substring(0,2)
+            console.log('点击城市',clickcity)
+            // 预算成本趋势
+            const shiyancity= this.maphqsresult.budgetTotalFinishRate.map(item=>{
+                return item.cityName
+            })
+            console.log('实验城市',shiyancity)
+            const shiyanitem= this.maphqsresult.budgetTotalFinishRate.filter(item=>{
+                return item.cityName==clickcity
+            })
+            console.log('实验item',shiyanitem)
+            const shiyanarray = shiyanitem[0].wangYunQuShiDtos//得到需要的数组
+            // const pjyaxia=[shiyanarray.jan,shiyanarray.feb]
+            console.log('拼接Y轴',shiyanarray[0].jan)//最终需要的其中一个
+            const zuizhongarray = [shiyanarray[0].jan,shiyanarray[0].feb,shiyanarray[0].mar,shiyanarray[0].apr,shiyanarray[0].may,shiyanarray[0].june,shiyanarray[0].july,shiyanarray[0].august,shiyanarray[0].september,shiyanarray[0].october,shiyanarray[0].november,shiyanarray[0].december]
+            console.log('最终结果',zuizhongarray)//最终结果
+            // 折线图Y轴数据
+            const zxtydata=zuizhongarray.map(item=>{
+                return item/1000
+            })
+            const changeOption={
+                series:[
+                    {
+                        data:zuizhongarray,
+                    },
+                    {
+                        yAxisIndex: 1,//使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+                        // 对应 右边的 y轴，数据是zztsgyaxiszrsdata/100 得到的
+                        data: zxtydata
+                    }
+                ],
+            }
+            this.zztsgchartInstance.setOption(changeOption)
+            })
+
+        },
+        zztinitCharts() {
+            this.zztchartInstance=echarts.init(this.$refs.youerzhuztu)
+            this.zztupdateChart()
+        },
+        zztupdateChart() {
+            const zztoption={
+                grid:{
+                    left:'0',
+                    top:'20px',
+                    right:'0',
+                    bottom:'0',
+                    containLabel:true
+                },
+                xAxis:{
+                    type:'category',
+                    data:this.zztxaxisdata,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:"#fff"
+                        }
+                    }
+                },
+                yAxis:{
+                    "splitLine": {
+                        "show": false
+                    },
+                    type:'value',
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+                series:[
+                    {
+                        type:'bar',
+                        data:this.zztyaxisdata,
+                        barWidth:25,
+                        itemStyle:{
+                            barBorderRadius:[33,33,0,0],
+                            color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                offset: 0,
+                                color: "#01EAED"
+                                },
+                                {
+                                offset: 0.5,
+                                color: "#02C4DD"
+                                },
+                                {
+                                offset: 1,
+                                color: "#029ED9"
+                                }
+                            ])
+                        }
+                    }
+                ],
+            }
+            this.zztchartInstance.setOption(zztoption)
+        },
+        zztsginitCharts() {
+            this.zztsgchartInstance=echarts.init(this.$refs.zhuztusange)
+            this.zztsgupdateChart()
+        },
+        // 出现两个y轴，只需将yAxis变成数组，写上两个对象  series 同理
+        zztsgupdateChart() {
+            const zztsgoption={
+                tooltip: {
+                    trigger: 'axis',
+                },
+                grid:{
+                    left:'0',
+                    top:'20px',
+                    right:'0',
+                    bottom:'0',
+                    containLabel:true
+                },
+                legend: {
+                    data: ['预算成本'],
+                    left:760,
+                    top:0,
+                    icon:'circle',
+                    textStyle:{
+                        color:'#fff'
+                    }
+                },
+                xAxis:{
+                    type:'category',
+                    data:this.zztsgxaxisdata,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+
+                },
+                yAxis:[
+                    {
+                        name:'万',//Y轴 顶部 文字
+                        nameGap:5,//距离Y轴顶部距离
+                        nameTextStyle: {//文字样式
+                            padding: [0, 20, 0, 0],    // 四个数字分别为上右下左
+                            color:'white',//颜色
+                        },
+                        "splitLine": {
+                            "show": false
+                        },
+                        type:'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    {
+                        name:'%',//Y轴 顶部 文字
+                        nameGap:5,//距离Y轴顶部距离
+                        nameTextStyle: {//文字样式
+                            padding: [0, -20, 0, 0],    // 四个数字分别为上右下左
+                            color:'white',//颜色
+                        },
+                        "splitLine": {
+                            "show": false
+                        },
+                        type: 'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        // min: 0,//从 0 开始
+                        // max: 100,//100 结束
+                        // interval: 20,//中间间隔20 最终显示 0 20 40 等
+                    }
+                ],
+
+                series:[
+                    {
+                        name: '预算成本',
+                        type:'bar',
+                        // data:this.zztsgyaxiszrsdata,
+                        data:this.yscbmryaxis,
+                        barWidth:15,
+                        itemStyle:{
+                            // barBorderRadius:[33,33,0,0],
+                            color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                offset: 0,
+                                color: "#01EAED"
+                                },
+                                {
+                                offset: 0.5,
+                                color: "#02C4DD"
+                                },
+                                {
+                                offset: 1,
+                                color: "#029ED9"
+                                }
+                            ])
+                        }
+                    },
+                    {
+                        name: '百分比',
+                        type: 'line',
+                        yAxisIndex: 1,//使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+                        // 对应 右边的 y轴，数据是zztsgyaxiszrsdata/100 得到的
+                        // data: [85, 65,85, 65,85, 65,85, 65,85, 65,85, 65]
+                        data:this.zxtyaxisdata,
+                        // data:this.zztsgyaxiszrsdata,
+                        color:"#707070"
+                    }
+                ],
+            }
+            this.zztsgchartInstance.setOption(zztsgoption)
+        },
+        zerzztinit() {
+            this.zerzztInstance=echarts.init(this.$refs.zhuztuzererz)
+            this.zerzztupdate()
+        },
+        zerzztupdate() {
+            const zerzztoption={
+                grid:{
+                    left:'0',
+                    top:'20px',
+                    right:'0',
+                    bottom:'0',
+                    containLabel:true
+                },
+                xAxis:{
+                    "splitLine": {
+                        "show": false
+                    },
+                    type:'value',
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        },
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:"#fff"
+                        }
+                    }
+                },
+                yAxis:{
+                    type:'category',
+                    axisLine:{
+                        lineStyle:{
+                            color:"#fff"
+                        }
+                    },
+                    data:this.zerzztyaxisd,
+                },
+                series:[
+                    {
+                        type:'bar',
+                        data:this.zerzztxaxisd,
+                        barWidth:25,
+                        itemStyle:{
+                            barBorderRadius:[0,33,33,0],
+                            color:new echarts.graphic.LinearGradient(0,0,1,0,[{
+                                offset: 0,
+                                color: "#01EAED"
+                                },
+                                {
+                                offset: 0.5,
+                                color: "#02C4DD"
+                                },
+                                {
+                                offset: 1,
+                                color: "#029ED9"
+                                }
+                            ])
+                        },
+                        label: {
+                            show: true,
+                            position: 'right',
+                        },
+                    }
+                ],
+            }
+            this.zerzztInstance.setOption(zerzztoption)
+        },
+        zeryzztinit() {
+            this.zeryzztInstance=echarts.init(this.$refs.zhuztuzerery)
+            this.zeryzztupdate()
+        },
+        zeryzztupdate() {
+            const zyztoption={
+                grid:{
+                    left:'0',
+                    top:'20px',
+                    right:'0',
+                    bottom:'0',
+                    containLabel:true
+                },
+                xAxis:{
+                    type:'category',
+                    data:this.zeryzztxaxisd,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+                    axisLine:{
+                        lineStyle:{
+                            color:"#fff"
+                        }
+                    }
+                },
+                yAxis:{
+                    "splitLine": {
+                        "show": false
+                    },
+                    type:'value',
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    }
+                },
+                series:[
+                    {
+                        type:'bar',
+                        data:this.zeryzztyaxisd,
+                        barWidth:25,
+                        itemStyle:{
+                            barBorderRadius:[33,33,0,0],
+                            color:new echarts.graphic.LinearGradient(0,0,0,1,[{
+                                offset: 0,
+                                color: "#01EAED"
+                                },
+                                {
+                                offset: 0.5,
+                                color: "#02C4DD"
+                                },
+                                {
+                                offset: 1,
+                                color: "#029ED9"
+                                }
+                            ])
+                        },
+                        label: {
+                            show: true,
+                            position: 'top',
+                        },
+                    }
+                ],
+            }
+            this.zeryzztInstance.setOption(zyztoption)
+        },
+        zerymgtinit() {
+            this.zerymgtInstance=echarts.init(this.$refs.mgtzuoeryi)
+            this.zerymgtupdate()
+        },
+        zerymgtupdate() {
+            const zymgtoption={
+                tooltip: {
+                    position: [330, 50],
+                    trigger: 'item',
+                    // formatter: "{b} <br/>累计：{e} <br/>同比：{c}%<br/>预算完成率{d}%",
+                    formatter:(params)=>{
+                        return '<div style="width:160px;height:130px;background:#022c59;padding:10px;border-radius: 5px;"><p style="text-align:center;margin:0;padding:0;font-size:16px">'+params.data.name+'</p><br/><p style="margin:0;padding:0;color:#fff;font-size:16px;margin-top:-10px;">累计:&nbsp'+params.data.value+'万</p><br/><p style="margin:0;padding:0;color:#fff;font-size:16px;;margin-top:-10px;">同比:&nbsp'+params.data.tonb+'%</p><br/><p style="margin:0;padding:0;color:#fff;font-size:16px;;margin-top:-10px;">预算完成率:&nbsp'+params.data.yuswclv+'%</p></div>'
+                    },
+                    backgroundColor:'transparent'
+                },
+                series: [
+                    {
+                        name: 'mgt',
+                        type: 'pie',
+                        radius: [2, 110],
+                        roseType: 'area',
+                        // center: ['50%', '50%'],
+                        center: ['150', '150'],
+                        itemStyle: {
+                            borderRadius: 4
+                        },
+                    color:["#5b68cc","#82d267","#f9c942","#f75764","#6ac1e1","#29a96c","#f77c48","#a354b9"],
+
+                    // data: this.mgtdata,
+                        data: this.cbgkpieresult,
+                        label: {
+                                    padding: [0,-30,0, -10],
+                            // normal: {
+                                formatter:function(item){//散点图上面的文字样式
+                                    // let a = 'xxx万元\n';// \n 换行
+                                    let a = item.value+'万元\n';// \n 换行
+                                    let c = item.name;
+                                    return '{a|'+a+'}'+'{a|'+c+'}';
+                                },
+                                rich: {
+                                    a: {
+                                        color: '#fff',
+                                        fontSize:12,
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        fontSize:12,
+                                    }
+                                },
+                        },
+                        labelLine: {//指向文字的触手
+                            show: false,//让触手消失
+                        lineStyle: {//触手颜色
+                            color: '#fff'
+                        }
+                        },
+                    }
+                ]
+            }
+            this.zerymgtInstance.setOption(zymgtoption)
+            //页面加载完 默认出现提示框
+            this.zerymgtInstance.dispatchAction({
+                type: 'showTip',//提示框出现
+                seriesIndex: 0,//哪一个 series
+                dataIndex: 0,//哪一个 data
+            });
+            //页面加载完 默认出现触手
+            this.zerymgtInstance.dispatchAction({
+                type: 'highlight',//触手出现
+                seriesIndex: 0,//哪一个 series
+                dataIndex: 0,//哪一个 data
+            });
+            var jztzpie=this.zerymgtInstance//此行 必有  否则 下面函数里面拿不到
+            this.zerymgtInstance.on('mouseover', function(e) {//鼠标放上去事件
+                //当检测到鼠标悬停事件，默认的提示框消失
+                jztzpie.dispatchAction({
+                    type: 'hideTip',
+                    seriesIndex: 0,
+                    dataIndex: 0,
+                });
+                //当检测到鼠标悬停事件，默认的触手消失
+                jztzpie.dispatchAction({
+                    type: 'downplay',
+                    seriesIndex: 0,
+                    dataIndex: 0,
+                });
+            })
+            //检测鼠标移出整个图表后显示之前默认的那块  因为mouseout 对showTip没有生效，所以改成了globalout
+            this.zerymgtInstance.on('globalout', function(e) {
+                //当检测到鼠标移出后，默认的提示框出现
+                jztzpie.dispatchAction({
+                    type: 'showTip',
+                    seriesIndex: 0,
+                    dataIndex: 0,
+                });
+                //当检测到鼠标移出后，默认的触手出现
+                jztzpie.dispatchAction({
+                    type: 'highlight',
+                    seriesIndex: 0,
+                    dataIndex: 0,
+                });
+            });
+        },
+        zeryyhtinit() {
+            this.zeryyhtInstance=echarts.init(this.$refs.yuanhuan)
+            this.zeryyhtupdate()
+        },
+        zeryyhtupdate() {
+            const zyyhtoption={
+                tooltip: {
+                    // position: [250, 100],
+                    trigger: 'item',
+                },
+                series: [
+                    {
+                        name: 'yht',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: { //label 和 emphasis 都是鼠标放上去 中间出现内容
+                            padding:[0,-20],//文字距离图形
+                            formatter:function(item){
+                                //  console.log('每个',item)
+                                    let a = item.name+'\n';
+                                    let c = item.data.bfb;
+                                    return '{a|'+a+'}'+'{a|'+c+'}';
+                                },
+                                rich: {
+                                    a: {
+                                        color: '#00a9ce',
+                                        fontSize:16,
+                                    },
+                                    b: {
+                                        color: '#fff',
+                                        fontSize:16,
+                                    }
+                                },
+                        },
+                        labelLine: {//指向文字的触手
+                            show: true,
+                            lineStyle: {//触手颜色
+                                color: '#fff'
+                            }
+                        },
+                        data: this.yhtdata,
+                    }
+                ]
+            }
+            this.zeryyhtInstance.setOption(zyyhtoption)
+        },
+        // 获取地图数据
+        async getdtData() {
+            const dtname=this.maprows.map((item)=>{
+                return item.name
+            })
+            const dtdyil=this.maprows.map((item)=>{
+                return item.total
+            })
+            const dtdyilpjsz=dtname.map((item,index)=>{
+                return {//投资预算
+                    name: item,
+                    value:dtdyil[index]
+                }
+            })
+            const dtderl=this.maprows.map((item)=>{
+                return item.num2
+            })
+            const dtderlpjsz=dtname.map((item,index)=>{
+                return {// 资本性支出
+                    name: item,
+                    value:dtderl[index]
+                }
+            })
+
+            const dtdsanl=this.maprows.map((item)=>{
+                return item.num
+            })
+            const dtdsanlpjsz=dtname.map((item,index)=>{
+                return {//预算完成率
+                    name: item,
+                    value:dtdsanl[index]
+                }
+            })
+
+            const dtdsil=this.maprows.map((item)=>{
+                return item.num3
+            })
+            const dtdsilpjsz=dtname.map((item,index)=>{
+                return {//目标投资占收比
+                    name: item,
+                    value:dtdsil[index]
+                }
+            })
+
+            const dtdwul=this.maprows.map((item)=>{
+                return item.num4
+            })
+            const dtdwulpjsz=dtname.map((item,index)=>{
+                return {//倒挂站
+                    name: item,
+                    value:dtdwul[index]
+                }
+            })
+
+            this.dttzys=dtdyilpjsz
+            this.dtzbxzc=dtderlpjsz
+            this.dtyswllv=dtdsanlpjsz
+            this.dtmbtzzsb=dtdsilpjsz
+            this.dtdgz=dtdwulpjsz
+            // console.log('拼接22',this.dttzys)
+            this.initCharts()//必须执行
+        },
+        // 成本概况
+        async getcbgkData() {
+            const {data:axcbgk}=await axios.get('/api/transportPrice/getWangYunChengBen')
+            this.cbgkresult=axcbgk.data//成本概况总数据
+            // console.log('成本概况总数据',this.cbgkresult)
+            this.cbgkpieresult=axcbgk.data.chengBenFenXi.map(item=>{//成本概况 饼图 总数据
+                return {
+                    // value:item.num,
+                    value:item.total,//累计（亿）
+                    name:item.itemName,//名称
+                    tonb:item.tongBi,//同比（%）
+                    yuswclv:item.budgetFinishRate,//预算完成率（%）
+                }
+            })
+            // console.log('饼图拼接',this.cbgkpieresult)
+            this.zerymgtupdate()
+
+            // console.log('人才队伍',axcbgk)
+            this.cbgkyscb=this.cbgkresult.wBudgetCost//网运成本预算成本
+            this.cbgkljcb=this.cbgkresult.wTotalCost//网运成本累计成本
+            this.cbgkyswclv=this.cbgkresult.wBudgetFinishRate//网运成本预算完成率
+            this.cbgkzsb=this.cbgkresult.wZhanShouBi//网运成本占收比
+
+            this.cbgkwugyscb=this.cbgkresult.wBudgetCost//5G预算成本
+            this.cbgkwugljcb=this.cbgkresult.TotalCost5g//5G 累计成本
+            this.cbgkwugyswclv=this.cbgkresult.wBudgetFinishRate//5G预算完成率
+            this.cbgkwugzsb=this.cbgkresult.wZhanShouBi//5G 占收比
+
+            this.cbgkfwugyscb=this.cbgkresult.no5gBudgetCost//非5G预算成本
+            this.cbgkfwugljcb=this.cbgkresult.no5gTotalCost//非5G 累计成本
+            this.cbgkfwugyswclv=this.cbgkresult.no5gBudgetFinishRate//非5G预算完成率
+            this.cbgkfwugzsb=this.cbgkresult.no5gZhanShouBi//非5G 占收比
+        },
+        // 数据中心
+        async getsjzxData() {
+            const {data:axsjzx}=await axios.get('/api/transportPrice/getDataCenter')
+            this.sjzxresult=axsjzx.data//总数据
+            // console.log('人才队伍',axsjzx)
+            this.sjzxzs=this.sjzxresult.total//数据中心
+            this.sjzxscpj=this.sjzxresult.avg//实测平均PUE
+            this.sjzxpuedy=this.sjzxresult.num//PUE>1.5数据
+        },
+        // 迁改增效
+        async getqgzxData() {
+            const {data:axqgzx}=await axios.get('/api/transportPrice/getZengGaiQianXiao',{
+                params: {
+                    city:''
+                },
+            })
+            this.qgzxresult=axqgzx.data//总数据
+            // console.log('人才队伍',axqgzx)
+            this.qgzxxqljdz=this.qgzxresult.newTotalMoney//新签累计到账
+            this.qgzxqnhkbd=this.qgzxresult.huiBaoDiMoney//全年回款保底目标
+            this.qgzxclhthk=this.qgzxresult.oldHuiMoney//存量合同回款金额
+            this.qgzxxqhthk=this.qgzxresult.newHuiMoney//新签合同回款
+            this.qgzxbdmbwclv=this.qgzxresult.baoDiFinshRate//保底目标完成率
+        },
+        // 降本增效
+        async getjbzxData() {
+            const {data:axjbzx}=await axios.get('/api/transportPrice/getJiangBenZengXiao',{
+                params: {
+                    city:''
+                },
+            })
+            this.jbzxresult=axjbzx.data//总数据
+            // console.log('网运成本降本增效',this.jbzxresult)
+            const jihuajs=this.jbzxresult.map((item)=>{//计划节省
+                return item.planCost
+            })
+            const shijijs=this.jbzxresult.map((item)=>{//实际节省
+                return item.finishCost
+            })
+            const jind=this.jbzxresult.map((item)=>{//进度
+                return item.jinDuLiao
+            })
+            this.dljhjs=jihuajs[0]//动力 计划节省
+            this.wxjhjs=jihuajs[1]//无线 计划节省
+            this.wyjhjs=jihuajs[2]//网优 计划节省
+            this.csjhjs=jihuajs[3]//传输 计划节省
+            this.zwjhjs=jihuajs[4]//装维 计划节省
+            this.hxjhjs=jihuajs[5]//核心网 计划节省
+            this.ywjhjs=jihuajs[6]//业务平台 计划节省
+
+            this.dlsjjs=shijijs[0]//动力 实际节省
+            this.wxsjjs=shijijs[1]//无线 实际节省
+            this.wysjjs=shijijs[2]//网优 实际节省
+            this.cssjjs=shijijs[3]//传输 实际节省
+            this.zwsjjs=shijijs[4]//装维 实际节省
+            this.hxsjjs=shijijs[5]//核心网 实际节省
+            this.ywsjjs=shijijs[6]//业务平台 实际节省
+
+            this.dljd=jind[0]//动力 进度
+            this.wxjd=jind[1]//无线 进度
+            this.wyjd=jind[2]//网优 进度
+            this.csjd=jind[3]//传输 进度
+            this.zwjd=jind[4]//装维 进度
+            this.hxjd=jind[5]//核心网 进度
+            this.ywjd=jind[6]//业务平台 进度
+        },
+        // 地图和预算成本趋势
+        async getmaphqsData() {
+            const {data:axmaphqs}=await axios.get('/api/transportPrice/getMapAndTend',{
+                params: {
+                    city:''
+                },
+            })
+            console.log('地图',axmaphqs)
+            this.maphqsresult=axmaphqs.data//总数据
+            // this.fwgyswcl=this.maphqsresult.budgetNo5GFinishRate//非5G预算完成率
+            const feiwugzdata=this.maphqsresult.budgetNo5GFinishRate.splice(1)
+            console.log('去掉浙江后的非5G预算完成率数组',feiwugzdata)
+            this.fwgyswcl=feiwugzdata.map((item)=>{
+                return {//非5G预算完成率
+                    name: item.cityName,
+                    value:item.finishRate
+                }
+            })
+            // this.wgyswcl=this.maphqsresult.budget5gFinishRate//5G预算完成率
+            const wugzdata=this.maphqsresult.budget5gFinishRate.splice(1)
+            console.log('去掉浙江后的5G预算完成率数组',wugzdata)
+            this.wgyswcl=wugzdata.map((item)=>{
+                return {//5G预算完成率
+                    name: item.cityName,
+                    value:item.finishRate
+                }
+            })
+            // this.shujzx=this.maphqsresult.budgetDaoGuaZhan//数据中心
+            const sjzxpue=this.maphqsresult.budgetDaoGuaZhan
+            console.log('数据中心PUE',sjzxpue)
+            this.shujzx=sjzxpue.map((item)=>{
+                return {//5G预算完成率
+                    name: item.cityName,
+                    value:item.finishRate
+                }
+            })
+
+            // 预算成本趋势Y轴默认数据
+            const yscbmrdata=this.maphqsresult.budgetTotalFinishRate.splice(0,1)
+            console.log('只保留浙江的5G预算完成率数组',yscbmrdata)
+            // const yscbmrjieg = yscbmrdata[0].wangYunQuShiDtos//得到需要的数组
+            const yscbmrjieg = yscbmrdata[0].wangYunTrends.reverse();
+            console.log('只保留5',yscbmrjieg)
+            // this.yscbmryaxis= [yscbmrjieg[0].jan,yscbmrjieg[0].feb,yscbmrjieg[0].mar,yscbmrjieg[0].apr,yscbmrjieg[0].may,yscbmrjieg[0].june,yscbmrjieg[0].july,yscbmrjieg[0].august,yscbmrjieg[0].september,yscbmrjieg[0].october,yscbmrjieg[0].november,yscbmrjieg[0].december]
+            this.yscbmryaxis = yscbmrjieg.map(item=>{
+            // console.log('item',item);
+            return item.amount
+            });
+            console.log('----------',this.yscbmryaxis);
+
+            // 折线图Y轴默认数据
+            this.zxtyaxisdata=yscbmrjieg.map(item=>{
+                // return item/1000
+                return item.amount/1000
+            })
+            // 折线图x轴数据
+        this.zztsgxaxisdata = yscbmrjieg.map(item=>{
+            return item.dateRi
+        })
+            this.zztsginitCharts();//柱状图
+
+            // 地图
+            this.initCharts();
+        },
+        // 降本措施
+        async getjbcsData() {
+            const {data:axjbcs}=await axios.get('/api/transportPrice/getJiangBenCuoShi')
+            this.jbcsresult=axjbcs.data//降本措施总数据
+            console.log('降本措施总数据',this.jbcsresult)
+
+            // console.log('人才队伍',axjbcs)
+            this.jbcsergtw=this.jbcsresult.tuiWangJinDu//2G退网进度
+            this.jbcsljsbt=this.jbcsresult.OldTerminal//老旧设备退网金额
+            this.jbcslsdfq=this.jbcsresult.dianFeiQinLi//历史电费清理金额
+            this.jbcsaiznj=this.jbcsresult.AiJieDian//AI智能节电金额
+            this.jbcstazyj=this.jbcsresult.taZuYaJiang//塔租压降
+            this.jbcszxfyy=this.jbcsresult.zhuangWeiYaJiang//装维费用压降金额
+            this.jbcswbyjj=this.jbcsresult.weiBaoYaJiang//维保压降金额
+        },
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+p{
+    margin: 0;
+}
+.content{
+    background: url('~@/assets/zj/bg_zj1.png') no-repeat 100% 100%;
+    z-index: -1;
+}
+.hengxtu,.youyihx{
+    margin-top: 125px;
+}
+.zuoyi{
+    width: 460px;
+    height:260px ;
+    // background:olive ;
+    display: flex;
+    justify-content: space-around;
+}
+.zuoer,.zuosan,.zuowu{
+    display: flex;
+    justify-content: space-around;
+}
+.zuosan{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+.youer{
+    width: 465px;
+    height: 250px;
+    margin-left: 10px;
+    // display: flex;
+    // justify-content: space-around;
+}
+.youeryi,.youerer{
+    display: flex;
+    justify-content: space-between;
+    // flex-wrap: wrap;
+    // background:olive ;
+    margin: 10px 0;
+}
+.youerer{
+    width: 360px;
+    height: 100px;
+    // background:red ;
+}
+.yousan{
+    margin-left: 10px;
+    margin-top: 5px;
+}
+.yousanyi{
+    width: 460px;
+    height:80px ;
+    // background: green;
+    display: flex;
+    justify-content: space-around;
+}
+.yousaner{
+    width: 460px;
+    height:330px ;
+    // background: yellowgreen;
+}
+.yousanerjdt{
+    width: 460px;
+    height:18px ;
+    // background: red;
+    // margin-top: 10px;
+    // margin-bottom: 5px;
+    margin: 5px 0;
+}
+.yousanerjdt>.el-progress{
+    position: relative;
+    width: 460px;
+    height:18px ;
+    // background: gold;
+}
+.yousanerjdt>.yousanerjdtp{
+    position: absolute;
+    color: #fff;
+    font-size: 16px;
+    line-height: 18px;
+    z-index: 1;
+    margin-left: 30px;
+}
+/* 渐变进度条 */
+/deep/ .el-progress-bar__inner{
+    background-image: linear-gradient(to right, #22425e , #00d5fc);
+}
+// 进度条百分比颜色 大小
+/deep/ .el-progress__text {
+    color: #00f1ff;
+    font-size: 12px !important;
+}
+.yousanerx{
+    width: 460px;
+    height:180px ;
+    display: flex;
+    justify-content: space-around;
+    // background: bisque;
+}
+.yousanerz{
+    width: 225px;
+    height:180px ;
+    // background: orchid;
+}
+.yousanerz>.yousanerp{
+    width: 80px;
+    height:20px ;
+    background: url('~@/assets/zj/navigation/wycb/hkmb.png') no-repeat;
+    background-size: 80px 20px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+}
+.yousanery{
+    width: 225px;
+    height:180px ;
+    // background: orangered;
+    position: relative;
+    margin-top: 20px;
+}
+.qiuwzqb{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    // background: blueviolet;
+}
+.yuanqiu{
+    position: relative;
+    width: 80px;
+    height:80px ;
+    background: url('~@/assets/zj/navigation/wycb/qiu.png') no-repeat;
+    background-size: 80px 80px;
+    // z-index: 1;
+    // margin-left: 50px;
+    // margin-top: 50px;
+}
+.huikui{
+    position: absolute;
+    left: 50%;
+    top: 42%;
+    transform: translate(-50%,-50%);
+    width: 60px;
+    height: 14px;
+    // background: hotpink;
+    color: #a4f0fb;
+    font-size: 14px;
+    font-weight: bold;
+}
+.wclv{
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%,-50%);
+    width: 42px;
+    height: 14px;
+    // background: khaki;
+    color: #a4f0fb;
+    font-size: 14px;
+    font-weight: bold;
+}
+.yousanerychart{
+
+    width: 225px;
+    height:180px ;
+    // background: blueviolet;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    // z-index: 2;
+    // margin-top: 18px;
+}
+.youyipjdt{
+    width: 460px;
+    height: 230px;
+    // margin: 10px;
+    // color: rgb(152, 247, 247);
+    // background: gold;
+    margin-left: 10px;
+
+}
+.youyipjdt>p{
+    color: #fff;
+    font-size: 12px;
+    margin-left: 90px;
+}
+/deep/ .el-table__body{
+    border-collapse: separate;
+    border-spacing:0 2px;
+}
+/deep/ .el-table tr {
+background-color: transparent !important;
+}
+/deep/ .el-table th {
+background-color: transparent !important;
+border-bottom: 1px solid #5078fc;
+color: #fefefe;
+}
+/deep/ .el-table,
+.el-table__expanded-cell {
+background-color: transparent;
+}
+/deep/ .el-table--enable-row-transition .el-table__body td,
+/deep/.el-table .cell {
+background-color: transparent;
+color: rgba(255,255,255,0.7);
+border: none;
+padding-left: 0 !important;
+padding-right: 0 !important;
+}
+/deep/.el-table th>.cell {
+color:rgba(254,254,254,1);
+font-weight: 700;
+}
+.el-table::before {
+left: 0;
+bottom: 0;
+width: 100%;
+height: 0px;
+}
+.zjbj{
+    margin-top: 180px;
+    margin-left: 30px;
+    background: url('~@/assets/zj/navigation/kcrc/zhongbj.png') no-repeat;
+    background-size: 900px 800px;
+}
+.zsrpdt{
+width: 880px;
+height: 540px;
+margin: 10px;
+}
+.zsrdt{
+width: 880px;
+height: 480px;
+margin-top: 40px;
+}
+.zztsgchart{
+width: 600px;
+height: 200px;
+margin: 10px;
+margin-top: 40px;
+}
+.zztsgchart>.zztsgchartp{
+    width: 280px;
+    height: 24px;
+    color:#fff;
+    font-size: 18px;
+    margin-top: -30px;
+}
+// .zztsgchartp>span{
+//     color: rgb(152, 247, 247);
+// }
+.zztsgchart>.zztsange{
+    width: 880px;
+    height: 170px;
+    // background: orangered;
+}
+.zuoeryiechart{
+width: 466px;
+height: 270px;
+margin-left: 10px;
+margin-top: 10px;
+}
+.zuoererechart{
+width: 466px;
+height: 195px;
+margin-left: 10px;
+margin-top: 10px;
+display: flex;
+justify-content: space-around;
+}
+.zuoererzuo{
+width: 230px;
+height: 190px;
+}
+.zuoereryou{
+width: 230px;
+height: 190px;
+}
+.zuoererzuo>.zererz{
+    width: 230px;
+    height: 140px;
+}
+.zuoereryou>.zerery{
+    width: 230px;
+    height: 140px;
+}
+.qiehuan{
+    width: 150px;
+    height: 25px;
+    margin-bottom: -5px; //有时候设置margin-top 会导致cursor: pointer;异常
+    margin-left: 330px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // background: red;
+}
+.wenziyi{
+    width: 60px;
+    height: 20px;
+    // background: orchid;
+    color: #03e5f5;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.wenzier{
+    width: 80px;
+    height: 20px;
+    // background: orchid;
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+/deep/ .youyijdt .czzywssj:nth-child(2n+1) .outer-bg{
+/*border:1px solid #01f6ff;*/
+background: rgba(1,244,255,0.3);
+position: relative;
+}
+/deep/ .youyijdt .czzywssj:nth-child(2n+1) .outer-bg::after{
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+width:200%;
+height: 200%;
+border:1px solid #01f6ff;
+border-radius: 6px;
+transform: scale(.5);
+transform-origin: 0 0;
+box-sizing: border-box;
+}
+</style>

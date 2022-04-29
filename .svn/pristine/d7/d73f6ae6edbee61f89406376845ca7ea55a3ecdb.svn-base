@@ -1,0 +1,385 @@
+<template>
+  <div >
+    <el-row>
+      <div style="padding: 0 15px;">
+        <el-table :data="tableList" style="width: 100%" height="560" @sort-change='tableSortChange' size = "small">
+           <el-table-column
+             prop="eparchyName"
+             label="地区"
+           >
+             <template slot-scope="scope">
+               <span v-if="userInfo.eparchyCode === '0000'">
+                  <span v-if="scope.row.eparchyCode === '0000'">
+                      {{ scope.row.areaCode ==='00' ? scope.row.eparchyName : scope.row.areaName}}
+                  </span>
+                  <a @click="cancelDialog(scope.row)" style="cursor:pointer" v-else>
+                    {{ scope.row.areaCode ==='00' ? scope.row.eparchyName : scope.row.areaName}}
+                  </a>
+               </span>
+               <span v-else>
+                  <span v-if="scope.row.eparchyCode !== userInfo.eparchyCode">
+                      {{ scope.row.areaCode ==='00' ? scope.row.eparchyName : scope.row.areaName}}
+                  </span>
+                  <a @click="cancelDialog(scope.row)" style="cursor:pointer" v-else>
+                    {{ scope.row.areaCode ==='00' ? scope.row.eparchyName : scope.row.areaName}}
+                  </a>
+               </span>
+             </template>
+           </el-table-column>
+          <el-table-column
+            prop="eparchyName"
+            label="营服名称"
+            v-if="isGrid"
+          >
+            <template slot-scope="scope">
+              <a  class="titleSpan1" v-if="scope.row.areaCode !=='00'&&scope.row.gridId!=='00'"
+                 style="cursor:pointer">{{scope.row.gridName}}</a>
+            </template>
+          </el-table-column>
+           <el-table-column
+             prop="dayNew"
+             label="日发展"
+           >
+         <template slot-scope="scope">
+           <span class="titleSpan1">{{scope.row.dayNew}}</span>
+         </template>
+       </el-table-column>
+           <el-table-column
+             prop="dayAchive"
+             label="日完成率"
+             sortable='日完成率'
+           >
+            <template slot-scope="scope">
+                <a v-if="scope.row.dayStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.dayAchive }}%</a>
+                <a v-else-if="scope.row.dayStatus  == 1" style="color: #00B050 !important"
+                   class="titleSpan1"
+                  >{{ scope.row.dayAchive }}%</a>
+                <a v-else class="titleSpan1">{{ scope.row.dayAchive }}%</a>
+              </template>
+           </el-table-column>
+           <el-table-column
+             prop="weekNew"
+             label="周发展"
+           >
+             <template slot-scope="scope">
+               <span class="titleSpan1">{{scope.row.weekNew}}</span>
+             </template>
+           </el-table-column>
+
+           <el-table-column
+             prop="weekAchive"
+             label="周完成率"
+             sortable='周完成率'
+           >
+            <template slot-scope="scope">
+                <a v-if="scope.row.weekStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.weekAchive }}%</a>
+                <a v-else-if="scope.row.weekStatus  == 1" class="titleSpan1" style="color: #00B050 !important"
+                  >{{ scope.row.weekAchive }}%</a>
+                <a v-else class="titleSpan1">{{ scope.row.weekAchive }}%</a>
+              </template>
+           </el-table-column>
+           <el-table-column
+             prop="weekHb"
+             label="周环比"
+           >
+             <template slot-scope="scope">
+               <span class="titleSpan1">{{scope.row.weekHb}}%</span>
+             </template>
+           </el-table-column>
+           <el-table-column
+             prop="monNew"
+             label="月发展"
+           >
+             <template slot-scope="scope">
+               <span class="titleSpan1">{{scope.row.monNew}}</span>
+             </template>
+           </el-table-column>
+           <el-table-column
+             prop="monAchive"
+             label="月完成率"
+             sortable='月完成率'
+           >
+                <template slot-scope="scope">
+                  <a v-if="scope.row.monStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.monAchive }}%</a>
+                  <a v-else-if="scope.row.monStatus  == 1" class="titleSpan1" style="color: #00B050 !important"
+                    >{{ scope.row.monAchive }}%</a>
+                  <a v-else class="titleSpan1">{{ scope.row.monAchive }}%</a>
+                </template>
+           </el-table-column>
+           <el-table-column
+             prop="qthAchive"
+             label="季度序时完成率"
+             sortable='季度序时完成率'
+           >
+            <template slot-scope="scope">
+                <a v-if="scope.row.qthStatus == 2" class="titleSpan1" style="color: #C00000 !important">{{ scope.row.qthAchive }}%</a>
+                <a v-else-if="scope.row.qthStatus  == 1" class="titleSpan1" style="color: #00B050 !important"
+                  >{{ scope.row.qthAchive }}%</a>
+                <a v-else class="titleSpan1">{{ scope.row.qthAchive }}%</a>
+              </template>
+           </el-table-column>
+         </el-table>
+      </div>
+    </el-row>
+  </div>
+</template>
+
+<script>
+  import store from 'store'
+  export default {
+    props:{
+      middleList:Array
+    },
+    name: 'AroundTheCity',
+    data(){
+      return{
+        num:'50',
+        allData:{},
+        tableList:[],
+        AroundTheCity:[
+        ],
+        goodCity:{
+          fristCity:'菏泽',
+          nextCity:'济南',
+          lastCity:'聊城'
+        },
+        badCity:{
+          fristCity:'菏泽',
+          nextCity:'济南',
+          lastCity:'聊城'
+        },
+        GoodQuarter:{
+          fristCity:'菏泽',
+          nextCity:'济南',
+          lastCity:'聊城'
+        },
+        badQuarter:{
+          fristCity:'菏泽',
+          nextCity:'济南',
+          lastCity:'聊城'
+        },
+        isGrid:false,
+        userInfo: []
+      }
+    },
+    watch:{
+      middleList(){
+        this.tableList = this.middleList
+        this.tableList.forEach(obj => {
+          obj.dayNew = parseInt(obj.dayNew)
+          obj.weekNew = parseInt(obj.weekNew)
+          obj.monNew = parseInt(obj.monNew)
+          if (obj.gridId !== '00'){
+            this.isGrid = true
+          }else {
+            this.isGrid = false
+          }
+        })
+      }
+    },
+    mounted(){
+      this.tableList = this.middleList
+      this.userInfo = store.get('userInfo');
+    },
+    methods:{
+      cancelDialog(row){
+        //console.log(row)
+        if (this.$parent.$parent.flag === '5'){
+          return  false
+        }
+        
+        if (row.areaCode !== '00'){
+
+          this.$parent.$parent.areaCode = row.areaCode
+
+          if (row.gridId !== '00'){
+            // this.$parent.$parent.gridId=row.gridId
+            // this.$parent.$parent.getTrendList2(row.areaCode,row.gridId)
+          }else {
+            var dillFlag = false;
+            var userLevel =  this.$store.state.userLevel;
+            if (userLevel == '1' || userLevel == '2') {
+              dillFlag = true;
+            } else if (userLevel == '3') {
+              if (row.areaCode == store.get('userInfo').areaCode) {
+                dillFlag = true;
+              }
+            };
+            if (dillFlag) {
+              this.$parent.$parent.getTrendList2(row.areaCode,'',row.areaName)
+            } else {
+              this.$notify({
+                title: '提示',
+                message: '您当前账号无权限访问！',
+                type: 'warning'
+              });
+            }
+            
+          }
+          // this.$parent.$parent.getTrendList()
+          // this.$parent.$parent.getContentData()
+        }else {
+          row.flag = this.$parent.$parent.flag
+          row.time = this.$parent.$parent.getChildValue
+          if(row.eparchyName === '全省'){
+            //alert(row.eparchyName)
+            this.$router.push(
+
+              {
+                path: '../Evaluate/fifth-city',query:
+                  {
+                    eparchyName:row
+                  }
+              }
+            );
+          }else{
+            //alert(row.eparchyName)
+            this.$router.push(
+              {
+                path: '../Evaluate/fifth-OperationCenter',query:
+                  {
+                    eparchyName:row
+                  }
+              }
+            );
+          }
+        }
+
+
+
+      },
+      //监听顺序方法
+      tableSortChange(column){
+        const self = this
+        let index = 0
+        let tmpList = []
+        this.allData = this.tableList[0]
+        let string = column.prop
+        this.tableList.forEach(obj => {
+          if (index !== 0){
+            obj[string] = parseFloat(obj[string])
+            tmpList.push(obj)
+          }
+          index = index + 1
+        })
+
+        let tmplist2 = []
+        if (column.order === 'descending'){
+          // console.log(JSON.stringify(self.sortByKey(tmpList, column.prop)))
+          // this.tableList = self.sortByKey(tmpList, column.prop)
+          this.sortA(tmpList,column.prop)
+        }else {
+          // this.tableList = self.sort(tmpList, column.prop)
+          this.sortB(tmpList,column.prop)
+        }
+
+        this.tableList.forEach(obj => {
+          console.log(obj[column.prop])
+        })
+        this.tableList.unshift(this.allData)
+      },
+      // 顺序
+      sortByKey(array,key){
+        return array.sort(function(a,b){
+          let x = a[key];
+          let y = b[key];
+          console.log(JSON.stringify(array))
+          return x >= y;
+        })
+      },
+
+      sortA(arr,name){
+        //外层循环，控制趟数，每一次找到一个最大值
+        for (var i = 0; i < arr.length - 1; i++) {
+          // 内层循环,控制比较的次数，并且判断两个数的大小
+          for (var j = 0; j < arr.length - 1 - i; j++) {
+            // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+            if (arr[j][name] > arr[j + 1][name]) {
+              var temp = arr[j];
+              arr[j] = arr[j + 1];
+              arr[j + 1] = temp;
+            }
+          }
+
+        }
+        this.tableList = arr
+      },
+      sortB(arr,name){
+        //外层循环，控制趟数，每一次找到一个最大值
+        for (var i = 0; i < arr.length - 1; i++) {
+          // 内层循环,控制比较的次数，并且判断两个数的大小
+          for (var j = 0; j < arr.length - 1 - i; j++) {
+            // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+            if (arr[j][name] < arr[j + 1][name]) {
+              var temp = arr[j];
+              arr[j] = arr[j + 1];
+              arr[j + 1] = temp;
+            }
+          }
+        }
+        this.tableList = arr
+      },
+
+      //倒叙
+      sort(array,key){
+        return array.sort(function(a,b){
+          let x = a[key];
+          let y = b[key];
+          return x < y;
+        })
+      },
+    }
+  }
+</script>
+
+<style scoped>
+/deep/ .el-table--border th{
+  border-bottom: 0px solid #dfe6ec;
+}
+/deep/ .el-table--group, .el-table--border{
+  border: 0px solid #dfe6ec;
+}
+/deep/ .el-table{
+   background: none !important;
+   font-size: 18px !important;
+   font-family: Microsoft YaHei !important;
+   font-weight: 400 !important;
+ }
+ /deep/.el-table th{
+   background: none !important;
+   background: url("../../assets/images/bigScreen/fullService/597bcdc505fa3.png") 50% 18px !important;
+   text-align: center !important;
+   color: #02F6FF !important;
+   font-size: 12px !important;
+   background-repeat: no-repeat;
+   background-size: cover;
+   background-position: bottom center ;
+ }
+ /deep/ .el-table tr{
+   background: none !important;
+ }
+ /deep/.el-table td{
+   background: none !important;
+   border: none !important;
+   text-align: center !important;
+   color: #FFFFFF;
+   border-right: 0.5px solid #0A3D75 !important;
+ }
+ /deep/ .el-table th.is-leaf, .el-table td{
+   border: none !important;
+   color: #FFFFFF ;
+ }
+ /deep/.el-table::before{
+   height: 0 !important;
+ }
+ /deep/.el-table th > .cell{
+   display: contents !important;
+ }
+
+ .titleSpan1{
+   font-size: 14px;
+   font-family: 'DigifaceWide';
+   src: url('../../assets/fonts/digifaw.ttf');
+   display: block;
+ }
+</style>

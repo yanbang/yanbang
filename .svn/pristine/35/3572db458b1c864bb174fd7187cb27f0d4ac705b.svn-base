@@ -1,0 +1,125 @@
+<template>
+<div>
+  <div class="worst">{{ ((type && type == 1) && '月费30元以上档位占比较低地市') || '三无占比较高地市' }}</div>
+ <div class="worstBox">
+   <div class="worst-top">
+     <img width="134" height="115"  src="../../assets/images/bigScreen/fullService/pingjia_bad.png" />
+   </div>
+   <div class='worst-bottom'>
+     <div  v-for="(item,index) in badderWeekData" :key="index">
+       <!-- <a  v-if="item.areaCode==='00'">{{item.eparchyName}}</a>
+       <a  v-if="item.areaCode!=='00'&&item.gridId==='00'">{{item.areaName}}</a>
+       <a  v-if="item.gridId!=='00'">{{item.gridName}}</a> -->
+      <span v-if="item.newWeekRateGt30_status == 2">
+          {{item.areaCode == '00' ? item.eparchyName : (item.gridId!=='00' ? item.gridName : item.areaName)}}
+      </span>
+      <span v-if="item.newWeekSwRate_status == 2">
+          {{item.areaCode == '00' ? item.eparchyName : (item.gridId!=='00' ? item.gridName : item.areaName)}}
+      </span>
+      <span v-if="item.clMonSwRate_status == 2">
+          {{item.areaCode == '00' ? item.eparchyName : (item.gridId!=='00' ? item.gridName : item.areaName)}}
+      </span>
+     </div>
+   </div>
+
+ </div>
+</div>
+</template>
+
+<script>
+export default {
+  props:{
+    type: Number,
+    TheWorst:Array
+  },
+  name: 'TheWorst',
+  data(){
+    return{
+      beaterQuaData:[],
+      badderWeekData:[]
+    }
+  },watch:{
+    TheWorst(val){
+      this.badderWeekData = val
+      // this.initData(val)
+    }
+  },
+  methods:{
+
+    initData(val){
+      //较好周数据
+      //let tempBeaterData = []
+      //较好的季度数据
+      //let tempBeaterQuaData = []
+      //较差的季度数据
+      let tempBadderWeekData = []
+      //较好的季度数据
+      //let tempBadderQuaData = []
+      //获取记
+
+      val.forEach(obj => {
+          obj.newWeekLt30 = parseFloat(obj.newWeekLt30)
+          tempBadderWeekData.push(obj)
+      })
+     // alert (tempBadderWeekData.length)
+      tempBadderWeekData.splice(0,1)
+
+      this.badderWeekData = this.sort(tempBadderWeekData,'newWeekLt30')
+      if (this.badderWeekData.length > 3){
+        this.badderWeekData.splice(2,this.badderWeekData.length - 3)
+        //alert(this.beaterWeekData)
+      }
+      //alert (this.badderWeekData.length)
+
+    },
+    // 顺序
+    sortByKey(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+        return x > y;
+      })
+    },
+    //倒叙
+    sort(array,key){
+      return array.sort(function(a,b){
+        let x = a[key];
+        let y = b[key];
+        return x < y;
+      })
+    },
+  }
+}
+</script>
+
+<style scoped>
+.worst{
+  font-size: 20px;
+  font-family: MFBanHei;
+  line-height: 22px;
+  color: #02F6FF;
+}
+.worstBox{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;   
+  height: calc(100% - 25px);
+}
+.worst-top{
+    width: 150px;
+}
+.worst-top img{
+  /* display: block; */
+}
+.worst-bottom{
+  flex: 1;
+}
+.worst-bottom span{
+  margin-top: 12px;
+  font-size: 16px;
+  width: 100%;
+  display: block;
+  color: rgb(192, 0, 0) !important;
+}
+</style>

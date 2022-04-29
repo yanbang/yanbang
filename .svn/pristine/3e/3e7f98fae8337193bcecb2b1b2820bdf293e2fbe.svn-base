@@ -1,0 +1,318 @@
+<template>
+  <div class="container">
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">评价</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+
+        <!-- 中间 -->
+        <div class="center">
+          <div class="fivegCity">< < < {{citys}}</div>
+          <div class="weekday">周日期:<span class="#ffffff">{{weekStart}}~{{weekEnd}}</span></div>
+          <img src="../../assets/images/bigScreen/fullService/biankuang01.png" alt="" style="position: absolute;height: 100%;width: 100%;left: 0; top: 0;z-index: 0">
+          <div class="center-content" style="z-index: 2;position: absolute;width: 100%;height: 100%">
+            <div class="center-title">
+              济南5G发展通报
+              <img src="../../assets/images/bigScreen/fullService/biaoti.png" alt=""/>
+            </div>
+
+            <div style="padding: 0 15%">
+              <performance></performance>
+            </div>
+            <AroundTheCity></AroundTheCity>
+          </div>
+          <!-- <div class="centerTop"></div> -->
+
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <div class="fiveG-title" style="font-size: 26px;">近七天发展趋势</div>
+          <div>
+            <trend :trendList="trendList"></trend>
+          </div>
+          <div style="position: relative;height: calc(100% - 40%);overflow: hidden;">
+            <AroundFinishCity></AroundFinishCity>
+          </div>
+          <div>
+            <child :fatherMethod="fatherMethod"></child>
+          </div>
+        </div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import AroundFinishCity from'../../components/FifthGeneration/AroundFinishCity'
+import AroundTheCity from'../../components/FifthGeneration/AroundTheCity'
+import development from'../../components/FifthGeneration/development'
+import trend from '../../components/FifthGeneration/trend'
+import performance from '../../components/FifthGeneration/performance'
+import { getTrendList } from '@/views/Evaluate/service/service'
+export default {
+  name:'fifth-city',
+  components: {
+    Header,
+    FlexBox,
+    AroundFinishCity,
+    AroundTheCity,
+    development,
+    trend,
+    performance
+  },
+  data() {
+    return {
+      trendList:[],
+      middleList:[],
+      provinceCpList:[],
+      rightList:[],
+      weekStart:'',
+      weekEnd:'',
+      flag:'1',
+      provinceData:{},
+      getChildValue:'',
+      bottomList:[
+        {
+          name: '5G发展',
+          url: '../Evaluate/fifth-generation',
+        },
+        {
+          name: '移网发展',
+          url: '../Evaluate/MoveNet',
+        },{
+          name: '宽带发展',
+          url: '../Evaluate/broadband',
+        },
+        {
+          name: '单宽转融',
+          url: '../Financial/singleWidth',
+        },
+        {
+          name: '单移转融',
+          url: '../Financial/singleShift',
+        },
+        {
+          name: '金融发展',
+          url: '../Financial/Financial',
+        },
+      ],
+      citys:'全省',
+      weekday:'2021-02-01~2021-02-07'
+    }
+  },
+  mounted() {
+
+    if (window.sessionStorage.getItem('selectTime')){
+      this.getChildValue = window.sessionStorage.getItem('selectTime')
+      console.log( this.getChildValue)
+    }else {
+      this.getChildValue = this.$route.query.eparchyName.getChildValue
+    }
+    //this.getDate(this.getChildValue)
+    // this.getTrendList()
+    this.init()
+  },
+  methods: {
+    init() {},
+
+
+    getDate(date){
+      this.getChildValue = date
+      this.getTrendList()
+      this.getContentData()
+      this.getTableRightList()
+      let y = date.substring(0,4)
+      let m = date.substring(4,6)
+      let d = date.substring(6)
+      this.weekEnd = y + '-' + m + '-' + d
+      this.weekStart = this.getBeforeDate(7,this.weekEnd )
+    },
+    getTrendList(){
+      this.trendList = []
+      getTrendList({
+        "timest": this.getChildValue,
+        "eparchyCode": "0000",
+        "areaCode": "",
+        "gridId": "",
+        "flag": "2"
+      }).then(res => {
+        if(res){
+          this.provinceData.weekStatus  = res.result.weekStatus
+          this.provinceData.quarterStatus = res.result.quarterStatus
+          res.result.tblList.forEach(datas=>{
+            this.trendList.push(datas);
+          })
+        }
+      })
+        .catch(() => {
+          //console.log(123)
+        })
+    },
+    fatherMethod(val){
+      this.getChildValue = val
+    },
+    getBeforeDate(num, time) {
+      let n = num;
+      let d = '';
+      if(time) {
+        d = new Date(time);
+      } else {
+        d = new Date();
+      }
+      let year = d.getFullYear();
+      let mon = d.getMonth() + 1;
+      let day = d.getDate();
+      if(day <= n) {
+        if(mon > 1) {
+          mon = mon - 1;
+        } else {
+          year = year - 1;
+          mon = 12;
+        }
+      }
+      d.setDate(d.getDate() - n);
+      year = d.getFullYear();
+      mon = d.getMonth() + 1;
+      day = d.getDate();
+      let s = year + "-" + (mon < 10 ? ('0' + mon) : mon) + "-" + (day < 10 ? ('0' + day) : day);
+      return s;
+    },
+    getToday(){
+      let d = new Date();
+      let year = d.getFullYear()
+      let Mos = d.getMonth() + 1
+      let Dates =  d.getDate() - 2
+      let youWant = year + '-' + this.addZero(Mos) + '-' + this.addZero(Dates)
+      this.getChildValue = youWant.split('-').join('')
+      this.weekEnd = parseInt(this.getChildValue)
+      this.weekStart = this.getBeforeDate(6,this.weekEnd )
+    },
+    addZero(s) {
+      return s < 10 ? '0' + s : s
+    },
+    getWeekDay(day){
+      let today = new Date();
+      let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+      today.setTime(targetday_milliseconds); //注意，这行是关键代码
+      let tYear = today.getFullYear();
+      let tMonth = today.getMonth();
+      let tDate = today.getDate();
+      tMonth = this.addZero(tMonth + 1);
+      tDate = this.addZero(tDate);
+      return tYear + "-" + tMonth + "-" + tDate;
+
+    },
+    // doHandleMonth(month){
+    //   let m = month;
+    //   if(month.toString().length == 1){
+    //     m = "0" + month;
+    //   }
+    //   return m;
+    // },
+
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image:url("../../assets/images/bgImage.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  // background-image: image-set(
+  //     url("~@/assets/images/bigScreen/bg.jpg") 1x,
+  //     url("~@/assets/images/bigScreen/bg@2x.jpg") 2x
+  // );
+  // background-repeat: no-repeat;
+  // background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle{
+    font-size: 36px;
+    font-family:MFBanHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-top: -7px;
+  }
+}
+.content{
+  .left{
+    width: 24%;
+    position: relative;
+
+  }
+  .center{
+    flex: 1;
+    margin: 0 20px;
+    position: relative;
+    height: calc(93.5%);
+    overflow: hidden;
+    .center-title{
+      margin: 40px 0 25px 40px;
+      color: #02F6FF;
+      font-size: 24px;
+    }
+    .fivegCity{
+      position: absolute;
+      left: 100px;
+      color: #02F6FF;
+    }
+    .weekday{
+      position: absolute;
+      right: 100px;
+      color: #02F6FF;
+      span{
+        color: #FFFFFF;
+      }
+    }
+    .centerTop{
+      width: 100%;
+      height: 245px;
+      background-image: image-set(
+        url("~@/assets/images/bigScreen/fullService/center-top.png") 1x,
+        url("~@/assets/images/bigScreen/fullService/center-top@2x.png") 2x
+      );
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+  .right{
+    width: 24%;
+    height: 100%;
+    position: relative;
+  }
+  .fiveG-title{
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+    background-image: url("../../assets/images/bigScreen/fullService/title.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-indent: 23px;
+    color: #02F6FF;
+    font-family: PangMenZhengDao-3;
+  }
+  /deep/ .bottom{
+    width: 43% !important;
+    left: 28.6% !important;
+  }
+  .center-title {
+    margin: 40px 0 0 40px;
+    color: #02f6ff;
+    font-size: 24px;
+    font-family: MFBanHei;
+  }
+}
+</style>

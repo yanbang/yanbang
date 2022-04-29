@@ -1,0 +1,306 @@
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+  ::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+    background-color: #F5F5F5;
+  }
+
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+    background-color: #979595;
+  }
+
+/* 大屏数字字体 */
+.nfont {
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+.numfont {
+  font-family:DigifaceWide;
+}
+
+.titlefont {
+  font-family:MFBanHei;
+}
+.addcolor {
+  color: #F3DC1F;
+}
+.addcolor::after{
+  content: ' ↑';
+  font-size: 13px;
+  font-weight: 600;
+}
+.header-smallTitle {
+  font-size: 36px;
+  font-family: MFBanHei;
+  font-weight: 400;
+  color: #FFFFFF;
+  margin-top: -7px;
+}
+.subcolor {
+  color: #45FE99;
+}
+
+.subcolor::after{
+  content: ' ↓';
+}
+.bodyfont {
+  font-family:YouSheBiaoTiHei;
+}
+.flex {
+  display: flex;
+}
+.container{
+  position: relative;
+  display: flex;
+  z-index:1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  overflow: hidden;
+  background: url("~@/assets/images/bigScreen/resource/sbj.png") left no-repeat;
+  background-size: 100% 100%;
+  font-size: 14px;
+}
+.pointer {
+  cursor: pointer;
+}
+.flexcol {
+  flex-direction: column;
+}
+.bcolor {
+  color: #02F6FF;
+}
+.bwwith {
+  max-width: 440px;
+}
+.clearfix:after{visibility:hidden;display:block;font-size:0;content: " ";clear:both;height:0;}
+.clearfix{*zoom:1}
+
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+
+ol, ul, dl {
+  margin: 0;
+  padding: 0;
+}
+.bsdialog .el-dialog {
+
+    background-image: url("~@/assets/images/bigScreen/fullService/fixDataBg.png");
+    background-size: 100% 100%;
+    background-color:rgba(220,38,38,0);
+    height: auto;
+}
+.bsdialog  .el-dialog__header {
+  padding: 30px 40px 10px 40px;
+}
+.bsdialog  .el-dialog__title {
+  font-size: 24px;
+  color: #02F6FF;
+  margin-left: 20px;
+}
+.bsdialog  .el-dialog__title::after{
+  content: '';
+  display: inline-block;
+  height: 20px;
+  width: 120px;
+  background: url('~@/assets/images/bigScreen/fullService/biaoti.png') no-repeat;
+  background-size: 100% 100%;
+  margin-left: 15px;
+}
+.bsdialog .el-dialog__headerbtn{
+  position: absolute;
+    top: 24px;
+    right: 60px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+.bsdialog .el-dialog__headerbtn .el-dialog__close{
+  color: #fff !important;
+}
+
+
+.bsdialog  .el-dialog__body {
+    padding: 10px 50px;
+    color: #fff;
+    font-size: 14px;
+    word-break: break-all;
+    padding-bottom: 40px;
+}
+
+.bstable.el-table, .bstable.el-table tr, .bstable.el-table th, .bstable.el-table td{
+  background: transparent !important;
+  color: #fff;
+  font-size: 16px;
+}
+.bstable.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background: #20458a;
+  color: #fff;
+}
+.bstable.el-table::before {
+ left: 0;
+ bottom: 0;
+ width: 100%;
+ height: 0px;
+ }
+
+.bstable.el-table th.is-leaf, .bstable.el-table td {
+    border-bottom: 1px solid #486e9c;
+}
+.bstable.el-table th .cell {
+  padding-bottom: 3px;
+  color: #02F6FF;
+}
+.bstable.el-table th .cell::after{
+  content: '';
+  width: 100%;
+  height: 4px;
+  background: url('~@/assets/images/bigScreen/ligtdian.png') no-repeat;
+  background-position: 38%;
+  background-size: 60%;
+  display: block;
+  position: absolute;
+  bottom: 0px;
+}
+.bstable .status1 {
+  color: #02F6FF;
+}
+.bstable .status2 {
+  color: #eeeb40;
+}
+.bstable.el-table .cell {
+   font-family:DigifaceWide;
+}
+.bstable.el-table th {
+  text-align: center;
+}
+.subtitle .stitle {
+  line-height: 60px !important;
+  font-size: 26px !important;
+}
+
+@media screen and (min-width:1600px){
+	.bigTitlem {
+    font-size: 38px !important;
+    font-family:MFBanHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 9px #01153B;
+    letter-spacing: 2px;
+    height: 60px !important;
+    line-height: 60px !important;
+  }
+  .subhtitle {
+    height: 34px;
+    line-height: 34px;
+    font-size: 24px;
+  }
+  .bwwith {
+    max-width: 440px;
+  }
+}
+
+@media screen and (min-width:1900px){
+  .bwwith {
+    max-width: 540px;
+  }
+	.bigTitlem {
+    font-size: 48px !important;
+    font-family:MFBanHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 9px #01153B;
+    letter-spacing: 2px;
+    height: 62px !important;
+    line-height: 62px !important;
+  }
+  .subhtitle {
+    height: 55px;
+    line-height: 55px;
+    font-size: 28px;
+  }
+  .container{
+    font-size: 16px;
+  }
+  .subtitle {
+    height: 60px !important;
+
+  }
+  .subtitle .stitle {
+    line-height: 60px !important;
+    font-size: 26px !important;
+  }
+  .tabfon {
+    font-size: 20px !important;
+  }
+  .tjitem .tjnf {
+    font-size: 18px !important;
+  }
+  .tjitem .numfont {
+    font-size: 20px !important;
+  }
+  .ltbomf dt,  .ltbomf dd{
+    font-size: 20px !important;
+  }
+  .stateinfo {
+    font-size: 16px !important;
+    line-height: 32px !important;
+  }
+  .statename_right .rstitle{
+    font-size: 20px !important;
+    height: 34px !important;
+     line-height: 34px !important;
+  }
+  .ybpchartbox .nfont, .liqechartbox .nfont {
+    font-size: 16px !important;
+  }
+  .liqleft img {
+    width: 40px !important;
+  }
+  .stateinfo4l {
+    margin-top: 16px !important;
+  }
+  .statety .flex1{
+    font-size:  18px !important;
+  }
+  .bodyleft, .bodyright {
+    width: 25% !important;
+  }
+  .morediv {
+    font-size: 20px !important;
+  }
+  .rywclbox img {
+    width: 80px !important;
+  }
+  .rywclbox .flex1 {
+    font-size: 20px !important;
+  }
+  .statename .tagitem {
+    font-size: 16px !important;
+  }
+};
+
+
+

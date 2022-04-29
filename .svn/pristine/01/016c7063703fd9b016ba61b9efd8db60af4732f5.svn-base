@@ -1,0 +1,731 @@
+<template>
+
+  <syscreen>
+
+    <div class="contentbox">
+      <!-- navigation政企移网弹窗没提交toastr -->
+
+      <div class="dbwuge">
+        <!-- <div class="diyige ydwluo " @click="yidwlshow"> -->
+        <!-- 先加上提示弹窗 -->
+
+        <el-dialog title="提示"
+                   :append-to-body="true"
+                   :show-close="false"
+                   :top="'0vh'"
+                   :visible.sync="dialogVisible"
+                   width="30%"
+                   :before-close="handleClose">
+          <span>正在接入...</span>
+          <!-- <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </span> -->
+        </el-dialog>
+
+        <!-- <div class="diyige ydwluo " @click="dialogVisible = true"> -->
+        <div class="diyige ydwluo "
+             @click="dialogshow">
+
+          <el-dropdown @click.native="changeydwl">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="ydwltp"
+                   style="width:163.2px;height:126.4px" />
+              <p>移动网络</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <div class="diyige GMEC "
+             @click="wugmecshow">
+          <el-dropdown @click.native="changegmec">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="gmectp"
+                   style="width:163.2px;height:126.4px" />
+              <p>5G MEC</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <div class="diyige"
+             @click="yuanxiaoshi">
+          <!-- <div class="diyige" @click="dialogshow"> -->
+          <el-dropdown @click.native="changezhyy"
+                       @dblclick.native="goToPage('/navigation/znyw')">
+            <!-- <el-dropdown @click.native="changezhyy"> -->
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="zhyytp"
+                   style="width:163.2px;height:126.4px" />
+              <p>智能运维</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <!-- <div class="diyige GMEC" @click="yuanxiaoshi"> -->
+        <div class="diyige GMEC"
+             @click="dialogshow">
+          <!-- <el-dropdown @click.native="changejztz" @dblclick.native="goToPage('/navigation/tzgk')"> -->
+          <el-dropdown @click.native="changejztz">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="jztztp"
+                   style="width:163.2px;height:126.4px" />
+              <p>投资管控</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <!-- <div class="diyige ydwluo" @click="yuanxiaoshi"> -->
+        <div class="diyige ydwluo"
+             @click="dialogshow">
+          <!-- <el-dropdown @click.native="changejdst"  @dblclick.native="goToPage('/navigation/wycb')"> -->
+          <el-dropdown @click.native="changejdst">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="jdsttp"
+                   style="width:163.2px;height:126.4px" />
+              <p>网运成本</p>
+            </span>
+          </el-dropdown>
+        </div>
+      </div>
+
+      <div class="zblge">
+        <!-- <div class="diyige " @click="zqsxianshow"> -->
+        <!-- <div class="diyige " @click="dialogVisible = true"> -->
+        <div class="diyige "
+             @click="dialogshow">
+          <el-dropdown @click.native="changezqsx">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="zqsxtp"
+                   style="width:163.2px;height:126.4px" />
+              <p>政企双线</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <!-- <div class="diyige" @click="yuanxiaoshi"> -->
+        <div class="diyige"
+             @click="dialogshow">
+          <!-- <el-dropdown @click.native="changerckc"  @dblclick.native="goToPage('/navigation/kcrc')"> -->
+          <el-dropdown @click.native="changerckc">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="rckctp"
+                   style="width:163.2px;height:126.4px" />
+              <p>科创人才</p>
+            </span>
+          </el-dropdown>
+        </div>
+      </div>
+
+      <div class="dbliangg">
+        <div class="diyige "
+             @click="kdwluoshow">
+          <el-dropdown @click.native="changekdwl">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="kdwltp"
+                   style="width:163.2px;height:126.4px" />
+              <p>宽带网络</p>
+            </span>
+          </el-dropdown>
+        </div>
+        <div class="diyige"
+             @click="zdabaozshow">
+          <!-- <div class="diyige" @click="dialogshow"> -->
+          <el-dropdown @click.native="changezdbz">
+            <el-dropdown-menu></el-dropdown-menu>
+            <span class="el-dropdown-link">
+              <img :src="zdbztp"
+                   style="width:163.2px;height:126.4px" />
+              <p>重大保障</p>
+            </span>
+          </el-dropdown>
+        </div>
+      </div>
+
+      <div class="qbyxing">
+
+        <div @click="goToPage('/kd_ghjs')"
+             class="yuanxingyi"
+             v-show="kdwlshow">
+          <p>规划建设</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/kd_kdjf')"
+             class="yuanxingyi"
+             v-show="kdwlshow"
+             style="margin:0 80px 0 80px">
+          <p>宽带交付</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/kd_kdyy')"
+             class="yuanxingyi"
+             v-show="kdwlshow"
+             style="margin:0 80px 0 0">
+          <p>宽带运营</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <!-- <div  @click="goToPage('/navigation/kd_wyxt')" class="yuanxingyi" v-show="kdwlshow"> -->
+        <div @click="dialogshow"
+             class="yuanxingyi"
+             v-show="kdwlshow">
+          <p>网业协同</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+
+        <div @click="goToPage('/zq_wlnl')"
+             class="yuanxingyi"
+             v-show="zqsxshow">
+          <p>网络能力</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/zq_zqjf')"
+             class="yuanxingyi"
+             v-show="zqsxshow"
+             style="margin:0 80px 0 80px">
+          <p>政企交付</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/zq_zqyy')"
+             class="yuanxingyi"
+             v-show="zqsxshow">
+          <p>政企运营</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/zq_lycj')"
+             class="yuanxingyi"
+             v-show="zqsxshow"
+             style="margin:0 80px 0 80px">
+          <p>楼宇场景</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/zq_zdkh')"
+             class="yuanxingyi"
+             v-show="zqsxshow">
+          <p>重点客户</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+
+        <div @click="goToPage('/navigation/ydwl_ghjs')"
+             class="yuanxingyi"
+             v-show="ydwlshow">
+          <p>规划建设</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/navigation/ydwl_ywyy')"
+             class="yuanxingyi"
+             v-show="ydwlshow"
+             style="margin:0 80px 0 80px">
+          <p>移网运营</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToPage('/navigation/ydwl_wyxt')"
+             class="yuanxingyi"
+             v-show="ydwlshow"
+             style="margin:0 80px 0 0">
+          <p>网业协同</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="wutzpage"
+             class="yuanxingyi"
+             v-show="ydwlshow">
+          <p>重点场景</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+
+        <div @click="goToiframePage('/navigation/gmec','zwyy')"
+             class="yuanxingyi"
+             v-show="gmecshow">
+          <p>专网运营</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToiframePage('/navigation/gmec','zfw')"
+             class="yuanxingyi"
+             v-show="gmecshow"
+             style="margin:0 80px 0 80px">
+          <p>自服务</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToiframePage('/navigation/gmec','zzkzt')"
+             class="yuanxingyi"
+             v-show="gmecshow">
+          <p>自助控制台</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="goToiframePage('/navigation/gmec','qpnlkf')"
+             class="yuanxingyi"
+             v-show="gmecshow"
+             style="margin:0 0 0 80px">
+          <p>切片能力开放</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+
+        <div @click="gozzbziframe('/navigation/zdbz','ssyzb')"
+             class="yuanxingyi"
+             v-show="zdbzshow">
+          <p>双11重保</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="gozzbziframe('/navigation/zdbz','wlddzx')"
+             class="yuanxingyi"
+             v-show="zdbzshow"
+             style="margin:0 80px 0 80px">
+          <p>网络调度中心</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+        <div @click="gozzbziframe('/navigation/zdbz','wlzhzx')"
+             class="yuanxingyi"
+             v-show="zdbzshow">
+          <p>网络指挥中心</p>
+          <img src="@/assets/zj/navigation/yxing.png" />
+        </div>
+      </div>
+
+      <div class="dipan"
+           v-show="dipanshow">
+        <img src="@/assets/zj/navigation/dzuo.png" />
+      </div>
+    </div>
+
+  </syscreen>
+</template>
+
+<script>
+import syscreen from '@/components/resource_visual/syscreen'
+
+import ydwlmr from '@/assets/zj/navigation/ydwluo.png'
+import gmecmr from '@/assets/zj/navigation/5GMEC.png'
+import zhyymr from '@/assets/zj/navigation/zhyying.png'
+import jztzmr from '@/assets/zj/navigation/jztzi.png'
+import jdstmr from '@/assets/zj/navigation/jdctan.png'
+import zqsxmr from '@/assets/zj/navigation/zqsxian.png'
+import rckcmr from '@/assets/zj/navigation/rckchuang.png'
+import kdwlmr from '@/assets/zj/navigation/kdwluo.png'
+import zdbzmr from '@/assets/zj/navigation/zdbzhang.png'
+
+import ydwlgl from '@/assets/zj/navigation/ydwluogl.png'
+import gmecgl from '@/assets/zj/navigation/5GMECgl.png'
+import zhyygl from '@/assets/zj/navigation/zhyyinggl.png'
+import jztzgl from '@/assets/zj/navigation/jztzigl.png'
+import jdstgl from '@/assets/zj/navigation/jdctangl.png'
+import zqsxgl from '@/assets/zj/navigation/zqsxiangl.png'
+import rckcgl from '@/assets/zj/navigation/rckchuanggl.png'
+import kdwlgl from '@/assets/zj/navigation/kdwluogl.png'
+import zdbzgl from '@/assets/zj/navigation/zdbzhanggl.png'
+
+export default {
+  data() {
+    return {
+      ydwltp: ydwlmr,
+      gmectp: gmecmr,
+      zhyytp: zhyymr,
+      jztztp: jztzmr,
+      jdsttp: jdstmr,
+      zqsxtp: zqsxmr,
+      rckctp: rckcmr,
+      kdwltp: kdwlmr,
+      zdbztp: zdbzmr,
+
+      kdwlshow: false,
+      zqsxshow: false,
+      ydwlshow: false,
+      gmecshow: false,
+      zdbzshow: false,
+      dipanshow: false,
+      dialogVisible: false,
+
+      timerId: null
+    }
+  },
+  components: {
+    syscreen
+  },
+  mounted() {
+    toastr.options = {
+      positionClass: 'toast-top-center',
+      timeOut: '1000'
+      // showDuration: "3000",
+    }
+    this.startInterval()
+  },
+  destroyed() {
+    clearInterval(this.timerId)
+  },
+  methods: {
+    goToPage(url) {
+      if (!url) return
+      this.$router.push(url)
+    },
+
+    goToiframePage(url, type) {
+      if (!url) return
+      this.$router.push({
+        name: 'gmec',
+        path: url,
+        params: { gmec_iframe: type }
+      })
+    },
+    gozzbziframe(url, type) {
+      if (!url) return
+      this.$router.push({
+        name: 'zdbz',
+        path: url,
+        params: { zdbz_iframe: type }
+      })
+    },
+
+    changeydwl() {
+      if (this.ydwltp == ydwlmr) {
+        this.ydwltp = ydwlgl
+
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.ydwltp = ydwlmr
+      }
+    },
+    changegmec() {
+      if (this.gmectp == gmecmr) {
+        this.gmectp = gmecgl
+
+        this.ydwltp = ydwlmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.gmectp = gmecmr
+      }
+    },
+    changezhyy() {
+      if (this.zhyytp == zhyymr) {
+        this.zhyytp = zhyygl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.zhyytp = zhyymr
+      }
+    },
+    changejztz() {
+      if (this.jztztp == jztzmr) {
+        this.jztztp = jztzgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.jztztp = jztzmr
+      }
+    },
+    changejdst() {
+      if (this.jdsttp == jdstmr) {
+        this.jdsttp = jdstgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.jdsttp = jdstmr
+      }
+    },
+    changezqsx() {
+      if (this.zqsxtp == zqsxmr) {
+        this.zqsxtp = zqsxgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.zqsxtp = zqsxmr
+      }
+    },
+    changerckc() {
+      if (this.rckctp == rckcmr) {
+        this.rckctp = rckcgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.kdwltp = kdwlmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.rckctp = rckcmr
+      }
+    },
+    changekdwl() {
+      if (this.kdwltp == kdwlmr) {
+        this.kdwltp = kdwlgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.zdbztp = zdbzmr
+      } else {
+        this.kdwltp = kdwlmr
+      }
+    },
+    changezdbz() {
+      if (this.zdbztp == zdbzmr) {
+        this.zdbztp = zdbzgl
+
+        this.ydwltp = ydwlmr
+        this.gmectp = gmecmr
+        this.zhyytp = zhyymr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.zqsxtp = zqsxmr
+        this.rckctp = rckcmr
+        this.kdwltp = kdwlmr
+      } else {
+        this.zdbztp = zdbzmr
+      }
+    },
+
+    kdwluoshow() {
+      if (this.kdwlshow == false) {
+        this.kdwlshow = true
+        this.dipanshow = true
+
+        ;(this.zqsxshow = false), (this.ydwlshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      } else {
+        this.kdwlshow = false
+        this.dipanshow = false
+
+        ;(this.zqsxshow = false), (this.ydwlshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      }
+    },
+    zqsxianshow() {
+      if (this.zqsxshow == false) {
+        this.zqsxshow = true
+        this.dipanshow = true
+
+        ;(this.kdwlshow = false), (this.ydwlshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      } else {
+        this.zqsxshow = false
+        this.dipanshow = false
+
+        ;(this.kdwlshow = false), (this.ydwlshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      }
+    },
+    yidwlshow() {
+      if (this.ydwlshow == false) {
+        this.ydwlshow = true
+        this.dipanshow = true
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      } else {
+        this.ydwlshow = false
+        this.dipanshow = false
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.gmecshow = false)
+        this.zdbzshow = false
+      }
+    },
+    wugmecshow() {
+      if (this.gmecshow == false) {
+        this.gmecshow = true
+        this.dipanshow = true
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+        this.zdbzshow = false
+      } else {
+        this.gmecshow = false
+        this.dipanshow = false
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+        this.zdbzshow = false
+      }
+    },
+    zdabaozshow() {
+      if (this.zdbzshow == false) {
+        this.zdbzshow = true
+        this.dipanshow = true
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+        this.gmecshow = false
+      } else {
+        this.zdbzshow = false
+        this.dipanshow = false
+
+        ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+        this.gmecshow = false
+      }
+    },
+    yuanxiaoshi() {
+      this.gmecshow = false
+      this.dipanshow = false
+      ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+      this.zdbzshow = false
+    },
+    bottomqbshow() {
+      this.gmecshow = false
+      this.dipanshow = false
+      ;(this.kdwlshow = false), (this.zqsxshow = false), (this.ydwlshow = false)
+    },
+    wutzpage() {
+      alert('正在接入...')
+    },
+    dialogshow() {
+      toastr.info('正在开发中...')
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
+    // startInterval(){
+    //   if(this.timerId){
+    //       clearInterval(this.timerId)
+    //   }
+    //   this.timerId=setInterval(()=>{
+    //     this.dialogVisible=false
+    //     this.ydwltp=ydwlmr
+    //     this.zqsxtp=zqsxmr
+    //   },3500)
+    // },
+    startInterval() {
+      if (this.timerId) {
+        clearInterval(this.timerId)
+      }
+      this.timerId = setInterval(() => {
+        // this.dialogVisible=false
+        this.ydwltp = ydwlmr
+        this.zqsxtp = zqsxmr
+        // this.zhyytp=zhyymr
+        // this.zdbztp=zdbzmr
+        this.jztztp = jztzmr
+        this.jdsttp = jdstmr
+        this.rckctp = rckcmr
+      }, 2000)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.contentbox {
+  width: 100%;
+  height: 100%;
+  background: url('~@/assets/zj/navigation/bg.gif') no-repeat;
+  background-size: 100% 100%;
+}
+.dbwuge {
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 8.5%;
+  margin-left: 19.5%;
+}
+.zblge {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5%;
+  margin-left: 15%;
+}
+.dbliangg {
+  width: 98%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 0.5%;
+  margin-left: 1%;
+}
+.GMEC {
+  margin-top: 40px;
+}
+.ydwluo {
+  margin-top: 100px;
+}
+.diyige {
+  cursor: pointer;
+}
+.diyige p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: rgb(152, 247, 247);
+  font-size: 24px;
+}
+.qbyxing {
+  width: 100%;
+  height: 67px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  bottom: 15%;
+  transform: translate(-50%, -10%);
+  z-index: 10;
+}
+.yuanxingyi {
+  width: 109.8px;
+  height: 120.6px;
+  position: relative;
+  cursor: pointer;
+}
+.yuanxingyi img {
+  width: 109.8px;
+  height: 120.6px;
+}
+.yuanxingyi p {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  white-space: nowrap;
+}
+.dipan {
+  position: absolute;
+  left: 50%;
+  bottom: 4%;
+  transform: translate(-50%, -80%);
+  z-index: 0;
+}
+</style>

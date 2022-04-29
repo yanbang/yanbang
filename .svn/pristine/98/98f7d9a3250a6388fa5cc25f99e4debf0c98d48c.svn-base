@@ -1,0 +1,138 @@
+<template>
+  <div class="app">
+    <div class="Gsum">5G</div>
+    <div style="width: 400px; height: 400px" class="echarts" ref="Theside"></div>
+    <div>
+      <!-- 总数，定位到这里 -->
+    </div>
+  </div>
+</template>
+
+<script>
+import * as echarts from 'echarts'
+export default {
+  name: 'R1s',
+  data() {
+    return {
+      myChart: null,
+    }
+  },
+  props: ['sourceData'],
+  watch: {
+    sourceData() {
+      this.myChart.clear()
+      this.initR1s()
+    },
+  },
+  created() {
+    console.log(this.sourceData)
+  },
+  mounted() {
+    this.initR1s()
+  },
+
+  methods: {
+    initR1s() {
+      let data = [],
+        typs = [],
+        sourceData = this.sourceData
+
+      //- 数据格式化
+      sourceData.forEach((o) => {
+        if (o.count > 0) {
+          data.push(o.count)
+          typs.push(o.source_name)
+        }
+      })
+
+      let count = data.reduce(function (prev, curr) {
+          return prev + curr
+        }),
+        label = {
+          normal: {
+            show: true,
+          },
+        },
+        itemStyle = {
+          barBorderRadius: 0,
+        },
+        formatSeries = () => {
+          let arr = []
+          typs.forEach((o, i) => {
+            arr.push({
+              name: o,
+              type: 'bar',
+              stack: 'income',
+              barWidth: 15,
+              label: label,
+              labelLine: {
+                normal: {
+                  show: true,
+                  length: 90,
+                  length2: 45,
+                  smooth: true,
+                },
+              },
+              itemStyle: itemStyle,
+              data: [
+                {
+                  value: data[i],
+                  label: {},
+                },
+              ],
+            })
+          })
+
+          return arr
+        }
+
+      this.myChart = echarts.init(this.$refs.Theside)
+      this.myChart.setOption({
+        tooltip: {
+          trigger: 'item',
+        },
+        xAxis: [
+          {
+            type: 'value',
+            show: false,
+            max: count, // 居中显示
+          },
+        ],
+        yAxis: [
+          {
+            type: 'category',
+            show: false,
+          },
+        ],
+        legend: {
+          show: false,
+        },
+        color: ['#999', '#1B67A7', '#248BF5'],
+        series: formatSeries(),
+        grid: {
+          top: 143,
+          x: 50,
+          x2: 90,
+          y2: 135,
+        },
+      })
+    },
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.app {
+  position: relative;
+  font-weight: 700;
+  .Gsum {
+    position: absolute;
+    top: 189px;
+    left: 2px;
+    width: 68px;
+    height: 200px;
+    color: #a5abaf;
+    font-size: 12px;
+  }
+}
+</style>

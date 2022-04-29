@@ -1,0 +1,275 @@
+<template>
+  <div class="progress">
+    <!-- <topbackground class="back1"></topbackground>
+    <backgrounds class="back2"></backgrounds>
+    <backgrounds class="back3"></backgrounds>
+    <backgrounds class="back4"></backgrounds> -->
+    <div class="top">
+      <div class="flag">目标规模</div>
+      <div class="prog">当前进度</div>
+      <div class="complete">完成比例</div>
+    </div>
+    <div class="centertop">
+      <div class="tops1">
+        规模
+        <div>9333</div>
+      </div>
+      <div class="tops2">
+        安装量
+        <div>7666</div>
+      </div>
+      <div class="tops3">
+        安装率
+        <div>82.14%</div>
+      </div>
+    </div>
+    <div class="center">
+      <div class="tops1">
+        规模
+        <div>9333</div>
+      </div>
+      <div class="tops2">
+        NR安装量
+        <div>7444</div>
+      </div>
+      <div class="tops3">
+        NR开通率
+        <div>79.76%</div>
+      </div>
+    </div>
+    <div class="centerbotton">
+      <div class="tops1">
+        规模
+        <div>9333</div>
+      </div>
+      <div class="tops2">
+        单验量
+        <div>4399</div>
+      </div>
+      <div class="tops3">
+        单验率
+        <div>47.13%</div>
+      </div>
+    </div>
+    <div class="red">安装率</div>
+    <div class="blue">开通率</div>
+    <div class="yellow">单验率</div>
+    <div class="redimg">
+      <img :src="imgSrc" width="70px" height="40px" />
+    </div>
+    <div class="redimgcenter">
+      <img :src="imgSrc" width="70px" height="40px" />
+    </div>
+    <div class="redimgright">
+      <img :src="imgSrc" width="70px" height="40px" />
+    </div>
+    <div class="blueimg">
+      <img :src="imgSrcblue" width="70px" height="40px" />
+    </div>
+    <div class="blueimgcenter">
+      <img :src="imgSrcblue" width="70px" height="40px" />
+    </div>
+    <div class="blueimgright">
+      <img :src="imgSrcblue" width="70px" height="40px" />
+    </div>
+    <div class="yellowimg">
+      <img :src="imgSrcyellow" width="70px" height="40px" />
+    </div>
+    <div class="yellowimgcenter">
+      <img :src="imgSrcyellow" width="70px" height="40px" />
+    </div>
+    <div class="yellowimgright">
+      <img :src="imgSrcyellow" width="70px" height="40px" />
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      imgSrc: require("../../assets/img/安装率.png"),
+      imgSrcblue: require("../../assets/img/开通率.png"),
+      imgSrcyellow: require("../../assets/img/单验率.png"),
+    };
+  },
+
+  mounted() {},
+
+  methods: {},
+};
+</script>
+
+<style lang="less" scoped>
+.progress {
+  width: 390px;
+  height: 260px;
+  position: relative;
+  //   top: 600px;
+  //   left: 1280px;
+  background-size: 100% 100%;
+
+  .back1 {
+    position: absolute;
+    top: 54px;
+    left: 20px;
+  }
+  .back2 {
+    position: absolute;
+    left: 20px;
+    top: 109px;
+  }
+  .back3 {
+    position: absolute;
+    left: 20px;
+    top: 156px;
+  }
+  .back4 {
+    position: absolute;
+    left: 20px;
+    top: 202px;
+  }
+  .top {
+    display: flex;
+    justify-content: center;
+
+    div {
+      color: #fff;
+
+      font-size: 16px;
+      margin-top: 63px;
+      z-index: 1;
+      margin-left: 20px;
+    }
+  }
+  .red {
+    font-size: 16px;
+    font-weight: 700;
+    color: #c2165f;
+    position: absolute;
+    top: 117px;
+    left: 30px;
+  }
+  .blue {
+    font-size: 16px;
+    font-weight: 700;
+    color: #00b8b9;
+    position: absolute;
+    top: 164px;
+    left: 30px;
+  }
+  .yellow {
+    font-size: 16px;
+    font-weight: 700;
+    color: yellow;
+    position: absolute;
+    top: 212px;
+    left: 30px;
+  }
+  .redimg {
+    position: absolute;
+    top: 110px;
+    left: 90px;
+  }
+  .redimgcenter {
+    position: absolute;
+    top: 110px;
+    left: 175px;
+  }
+  .redimgright {
+    position: absolute;
+    top: 110px;
+    left: 260px;
+  }
+  .blueimg {
+    position: absolute;
+    top: 160px;
+    left: 90px;
+  }
+  .blueimgcenter {
+    position: absolute;
+    top: 160px;
+    left: 175px;
+  }
+  .blueimgright {
+    position: absolute;
+    top: 160px;
+    left: 260px;
+  }
+  .yellowimg {
+    position: absolute;
+    top: 210px;
+    left: 90px;
+  }
+  .yellowimgcenter {
+    position: absolute;
+    top: 210px;
+    left: 175px;
+  }
+  .yellowimgright {
+    position: absolute;
+    top: 210px;
+    left: 260px;
+  }
+  .centertop {
+    color: #fff;
+    font-size: 15px;
+
+    display: flex;
+    z-index: 999;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    z-index: 99;
+    .tops1 {
+      margin-left: 10px;
+    }
+    .tops2 {
+      margin-left: 40px;
+    }
+    .tops3 {
+      margin-left: 40px;
+    }
+  }
+  .center {
+    color: #fff;
+    font-size: 15px;
+
+    display: flex;
+    z-index: 999;
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    z-index: 99;
+    .tops1 {
+      margin-left: 10px;
+    }
+    .tops2 {
+      margin-left: 40px;
+    }
+    .tops3 {
+      margin-left: 20px;
+    }
+  }
+  .centerbotton {
+    color: #fff;
+    font-size: 14px;
+
+    display: flex;
+    z-index: 999;
+    position: absolute;
+    top: 200px;
+    left: -200px;
+    z-index: 99;
+    .tops1 {
+      margin-left: 306px;
+    }
+    .tops2 {
+      margin-left: 47px;
+    }
+    .tops3 {
+      margin-left: 42px;
+    }
+  }
+}
+</style>

@@ -1,0 +1,917 @@
+<!--应急通信 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络智慧眼-宽带" subtitle="存量经营"></Header>
+    <div class="contentbody">
+      <div class="leftbox flex colflex">
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>热点应用CP名单级行为</span>
+          </div>
+           <div class="rowttabs">
+            <span class="rowttabs-item" :class="{'active': tstatus == '1'}" @click="tstatus = 1">省内</span>
+            <span class="rowttabs-item" :class="{'active': tstatus == '2'}" @click="tstatus = 2">省外</span>
+          </div>
+          <div class="flex1">
+            <el-table
+              id = "initTable1"
+              class="custom_table grouptable groupheadtable"
+              :data="leftTable1"
+              style="width: 100%" height="250" size="mini" :span-method="objectSpanMethod" >
+              <el-table-column
+                prop="f1"
+                label="大类"
+                width="80"
+                show-overflow-tooltip>
+              </el-table-column>
+               <el-table-column
+                prop="f2"
+                label="子类"
+                 width="120"
+                show-overflow-tooltip>
+              </el-table-column>
+               <el-table-column
+                prop="f3"
+                label="应用会话(万次)"
+                width="110"
+                show-overflow-tooltip>
+              </el-table-column>
+               <el-table-column   label="质量感知数据">
+                  <el-table-column  prop="f4" label="平均延时(ms)">
+                  </el-table-column>
+                   <el-table-column  prop="f5" label="平均丢包(个)">
+                  </el-table-column>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>热点应用CP名单级质量</span>
+          </div>
+
+          <div class="flex1">
+             <el-table
+              id = "initTable2"
+              class="custom_table"
+              :data="leftTable1"
+              style="width: 100%" height="250" size="mini">
+               <el-table-column
+                prop="f1"
+                label="分公司"
+                width="100"
+                show-overflow-tooltip>
+              </el-table-column>
+
+              <el-table-column
+                prop="f2"
+                label="用户数量"
+                width="80"
+                show-overflow-tooltip>
+              </el-table-column>
+
+               <el-table-column
+                prop="f3"
+                label="平均首包时延(ms)"
+                width="120"
+                show-overflow-tooltip>
+              </el-table-column>
+               <el-table-column
+                prop="f4"
+                label="平均时延(ms)"
+                width="auto"
+                show-overflow-tooltip>
+              </el-table-column>
+               <el-table-column
+                prop="f5"
+                label="平均丢包(个)"
+                width="auto"
+                show-overflow-tooltip>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>视屏类省内应用分析</span>
+          </div>
+          <div class="flex1">
+            <div class="flex1">
+                <el-table
+                  id = "initTable3"
+                  class="custom_table grouptable groupheadtable"
+                  :data="leftTable1"
+                  style="width: 100%" height="250" size="mini">
+                  <el-table-column
+                    prop="f1"
+                    label="分公司"
+                    width="100" fixed
+                    show-overflow-tooltip>
+                  </el-table-column>
+
+                  <el-table-column
+                    label="爱奇艺">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+
+                 <el-table-column
+                    label="爱奇艺2s">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)" 
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 <el-table-column
+                    label="爱奇艺3">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 
+                </el-table>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="centerbox flex colflex">
+        <div class="gistitle">
+          <span class="titlefont">{{gisTitle}}</span>
+        </div>
+        <iframe ref="gisiframe" id="gisiframe" :src="iframeSrc" style="widh: 100%; height: 100%" frameborder="0"></iframe>
+      </div>
+      <div class="rightbox flex colflex">
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>手游行为分析</span>
+          </div>
+          <div class="flex1">
+            <div class="flex1">
+                <el-table
+                  id = "initTable3"
+                  class="custom_table grouptable groupheadtable"
+                  :data="leftTable1"
+                  style="width: 100%" height="250" size="mini">
+                  <el-table-column
+                    prop="f1"
+                    label="分公司"
+                    width="100" fixed
+                    show-overflow-tooltip>
+                  </el-table-column>
+
+                  <el-table-column
+                    label="爱奇艺">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+
+                 <el-table-column
+                    label="爱奇艺2s">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)" 
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 <el-table-column
+                    label="爱奇艺3">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 
+                </el-table>
+              </div>
+          </div>
+        </div>
+         <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>短视屏类省内应用分析</span>
+          </div>
+          <div class="flex1">
+            <div class="flex1">
+                <el-table
+                  id = "initTable3"
+                  class="custom_table grouptable groupheadtable"
+                  :data="leftTable1"
+                  style="width: 100%" height="250" size="mini">
+                  <el-table-column
+                    prop="f1"
+                    label="分公司"
+                    width="100" fixed
+                    show-overflow-tooltip>
+                  </el-table-column>
+
+                  <el-table-column
+                    label="爱奇艺">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+
+                 <el-table-column
+                    label="爱奇艺2s">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)" 
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 <el-table-column
+                    label="爱奇艺3">
+                    <el-table-column
+                      prop="f3"
+                      label="用户数(万户)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                    <el-table-column
+                      prop="f3"
+                      label="会话次数(万次)"
+                      width="100"
+                      show-overflow-tooltip>
+                    </el-table-column>
+                  </el-table-column>
+                 
+                </el-table>
+              </div>
+          </div>
+        </div>
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>宽带单用户上下行流量分析</span>
+          </div>
+
+          <div class="flex1">
+             <el-table
+              id = "initTable2"
+              class="custom_table"
+              :data="leftTable1"
+              style="width: 100%" height="250" size="mini">
+               <el-table-column
+                prop="f1"
+                label="分公司"
+                width="auto"
+                show-overflow-tooltip>
+              </el-table-column>
+
+              <el-table-column
+                prop="f2"
+                label="上行峰值率大于10M用户数量"
+                width="120"
+                show-overflow-tooltip>
+              </el-table-column>
+
+               <el-table-column
+                prop="f3"
+                width="180"
+                label="下行峰值率大于10M且小于100M用户数量"
+                show-overflow-tooltip>
+              </el-table-column>
+             
+            </el-table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <Footer :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+  import Header from '@/components/resource_visual/header';
+  import Footer from '@/components/resource_visual/footer';
+  import {warnList} from "@/api/broadband/warn";
+  import store from 'store'
+  import {mapState} from 'vuex'
+  var _ = require('@/utils/lodash.js')
+  var Qs = require('@/utils/qs.js')
+
+  var self = null
+  export default {
+    data() {
+      return {
+        tstatus: 1,
+        tdloading: false,
+        dialogTitle: '',
+        isDialogShow: false,
+        gisTitle: '山东省',
+        cityCode: '370000',
+        iframeSrc: '',
+        gisQueryParams: {},
+        queryParams: {},
+        gisMapData: {},
+        mapLevel: 1,
+        areaCode: '',
+        tabdata: [
+          {title: '网络能力',href: '/resource_visual/broadband_wlnl'},
+          {title: '综合预警', active: false, href: '/resource_visual/broadband_ceo'},
+          {title: '综合效能', active: false, href: '/resource_visual/broadband_zhxn'},
+          {title: '宽带赋能', active: false, href: '/resource_visual/jsc_kdfn'},
+          {title: '存量经营', active: true, href: '/resource_visual/broadband_cljy'},
+        ],
+        leftTable1: [],
+
+      }
+    },
+    components: {
+      Header,
+      Footer,
+      
+    },
+    created() {
+      self = this;
+    },
+    mounted() {
+      var initArea_id = '370000'
+      if (store.get('userInfo')) {
+         if (store.get('userInfo').gridId) {
+          this.mapLevel = 4;
+          initArea_id = store.get('userInfo').gridId
+        } else if (store.get('userInfo').areaCode) {
+          this.mapLevel = 3;
+          initArea_id = store.get('userInfo').areaCode
+        } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+          this.mapLevel = 2;
+          initArea_id = store.get('userInfo').eparchyCode
+        } else {
+          this.mapLevel = 1;
+          initArea_id = '370000'
+        };
+        this.cityCode = initArea_id;
+      }
+     
+      this.initGisMap(initArea_id);
+      // 注册地图事件
+      window.addEventListener('message', self.gismapListener, true)
+      this.initService();
+    },
+    watch: {
+
+    },
+    computed: {
+      ...mapState({
+        searchDate: state => state.resource.searchDate,
+      }),
+
+      
+    },
+    methods: {
+
+      initService () {
+        var self = this
+        var table1data = []
+        for (let i = 0; i < 10; i++) {
+          let item = {}
+          if (i <= 5) {
+            item = {
+              f1: '视屏',
+              f2: '视屏' + i,
+              f3: '1900' + i,
+              f4: '10' + i,
+              f5: '10' + i
+            }
+          } else  {
+            item = {
+              f1: '游戏',
+              f2: '游戏' + i,
+              f3: '10' + i,
+              f4: '10' + i,
+              f5: '10' + i
+            }
+          }
+          
+          table1data.push(item)
+        }
+        var groupData = _.groupBy(table1data, function (sitem) {
+          return sitem.f1
+        })
+        _.keys(groupData).forEach(key => {
+          if (groupData[key].length > 1) {
+            groupData[key][0].init_rowspan = {
+              rowspan: groupData[key].length,
+              colspan: 1
+            }
+          }
+          groupData[key].forEach(row => {
+            self.leftTable1.push(row)
+          })
+        });
+
+
+
+       
+      },
+      objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
+
+        if (columnIndex === 0) {
+          if (row.init_rowspan) {
+            return row.init_rowspan
+          } else {
+            return {
+              rowspan: 0,
+              colspan: 0
+            };
+          }
+        }
+      },
+      gismapListener(e) {
+        if (e.data.message == 'levelSwitch') {
+          self.gisTitle = e.data.area_name || '山东省',
+          self.mapLevel = e.data.level
+          self.areaCode = e.data.area_id;
+          self.gisMapData = e.data;
+          self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+          self.gisQueryParams.area_name = '';
+          console.log('message', e.data)
+          self.cityCode = (e.data.area_id || '370000');
+          self.initService()
+        }
+      },
+     //  初始化地图参数
+      initGisMap(initArea_id) {
+        this.gisQueryParams = {
+          level: this.mapLevel,
+          sceneid: 3,
+          gis_sceneid: '020101',
+          area_id: initArea_id,
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no: store.get('staffId') || '',
+          timest: this.$store.state.resource.searchDate
+        };
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+        this.iframeSrc =  window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+
+      },
+    },
+    destroyed() { // 在组件生命周期结束的时候销毁。
+      window.removeEventListener('message', this.gismapListener, true)
+    }
+  }
+</script>
+
+<style lang='scss' scoped>
+  @import url('../comtable.scss');
+  .box-item {
+    position: relative;
+  }
+  /deep/ .bottom-tab {
+    width: 60%;
+  }
+
+  /deep/ .bottom-tab .bottom-item {
+    padding: 4px 10px !important;
+  }
+
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: -30px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+
+  .leftbox, .rightbox {
+    width: 520px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    padding-bottom: 30px;
+  }
+  .centerbox {
+    flex: 1;
+    background: url('~@/assets/images/images_zy/centerborder.png') no-repeat;
+    background-size: 100% 100%;
+    margin-top: 10px;
+    margin-bottom: 80px;
+    box-sizing: border-box;
+    position: relative;
+    padding: 100px 20px 20px 20px;
+    position: relative;
+
+  }
+
+  // .item-title {
+  //   font-size: 22px;
+  //   color: aqua;
+  //   background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat;
+  //   background-size: 100% 100%;
+  //   line-height: 38px;
+  //   padding-left: 58px;
+  // }
+  .item-title {
+  font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+  .chartbox {
+    width: 100%;
+    height: 100%;
+  }
+
+  .gdjkitem {
+    height: 68px;
+    width: 72px;
+    margin: 0 auto;
+    background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+    background-size: 100% 100%;
+    line-height: 68px;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bolder;
+
+  }
+
+  .gdjkitembox {
+    text-align: center;
+    position: relative;
+    margin-top: 12px;
+
+    &:not(:last-child)::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      right: -8px;
+      top: 26px;
+    }
+  }
+
+
+  .mtheader {
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+  }
+
+  .mtbody {
+    height: 100%;
+    margin: 6px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mtbody .scrollitem {
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 5px;
+  }
+
+  .mtbody .scrollitem:nth-child(odd) {
+    background: rgba(4, 54, 108, 0.7);
+  }
+
+  .centTab {
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    top: 30px;
+    text-align: center;
+
+   .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 120px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+    }
+  }
+
+  .rowttabs {
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .rowttabs-item {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid #5b7bc9;
+      margin-left: 10px;
+      color: #698bdf;
+      cursor: pointer;
+    }
+
+    .rowttabs-item.active {
+      border: 1px solid #45d8e2;
+      color: #45d8e2;
+    }
+  }
+  .substTab {
+    text-align: center;
+    position: relative;
+    .el-radio {
+      color: #ddd;
+      margin-right: 20px;
+    }
+    /deep/ .el-radio__input .el-radio__inner {
+        border-color: #ddd;
+        background: #ddd;
+    }
+    /deep/ .el-radio__input.is-checked + .el-radio__label {
+        color: #f3c911;
+    } 
+    /deep/ .el-radio__input.is-checked .el-radio__inner {
+        order-color: #ede90f;
+       background: #e4ac47;
+    }
+  }
+  .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+  }
+  .pull-rightdetail {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    .alink {
+      cursor: pointer;
+      color: #27b5ee;
+      text-decoration: underline;
+      margin-right: 15px;
+    }
+  }
+
+
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn {
+z-index: 9999;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+  
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 13px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 14px !important;
+}
+
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  padding: 6px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+  max-height: 45px;
+  overflow-y: hidden;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    border-bottom: 1px dashed #404e77;
+    padding: 5px 0;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 20px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+
+.pmdetalibox {
+  display: flex;
+  min-height: 520px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 30px;
+}
+.left_pmtb {
+  width: 400px;
+}
+.right_pmtb {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 2px dashed #404e77;
+  .rpmtitle {
+    position: absolute;
+    color: aqua;
+    font-size: 20px;
+    top: -34px;
+    text-align: center;
+    width: 100%;
+    .subtagtab {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      .rowttabs {
+        height: 30px;
+        line-height: 30px;
+        .rowttabs-item {
+          padding: 3px 6px;
+        }
+      }
+    }
+
+  }
+}
+/deep/ .el-loading-mask {
+  background-color: rgba(6,26,58, 0.7);
+}
+ /deep/ .grouptable.el-table tbody td {
+   border-right: 1px dashed rgb(45, 61, 94) !important
+ }
+ /deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.el-table__fixed{
+  background: #00133e !important;
+}
+
+/deep/.el-table__fixed::before, /deep/ .el-table__fixed-right::before  {
+   background: transparent !important;
+}
+/deep/ .el-table th.is-leaf{
+  font-size: 12px !important;
+}
+</style>

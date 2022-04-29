@@ -1,0 +1,395 @@
+<template>
+  <div class="container">
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">评价-质</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="back" @click="toBack"><<< {{backIp}}</div>
+          <div class="weekday" style="margin-right: 5rem">周日期: <span class="#ffffff">{{weekStart}}~{{weekEnd}}</span></div>
+          <img src="../../assets/images/bigScreen/fullService/biankuang01.png" alt="" style="position: absolute;height: 100%;width: 100%;left: 0; top: 0;z-index: 0">
+          <div class="center-content" style="z-index: 2;position: absolute;width: 100%;height: 100%">
+            <div class="center-title">
+              {{cityDetail}}近30天移网存量用户三无质态
+              <img src="../../assets/images/bigScreen/fullService/biaoti.png" alt=""/>
+            </div>
+            <div class="massChart">
+              <div class="massChart-top">
+                <div class='massChart-top-left'>
+                  <AdvanceDeposit :AdvanceDeposit='AdvanceDeposit'></AdvanceDeposit>
+                </div>
+                <div class='massChart-top-right'>
+                  <TheWorst :TheWorst="TheWorst" style="height: 100%"></TheWorst>
+                </div>
+              </div>
+              <div class="massChart-bottom">
+                <div class="fiveG-title" style="font-size: 26px;text-indent: 3.5rem">{{cityDetail}}详细情况</div>
+                <AroundFinishCity  v-if="isRouterAlive" :rightList="rightList"></AroundFinishCity>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </FlexBox>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import AroundFinishCity from '@/components/mass/newmassTable'
+import AdvanceDeposit from '@/components/mass/deposit'
+import stackChart from '@/components/mass/StackingChart'
+import TheWorst from  '@/components/mass/TheWorst'
+import { getDepositData } from '@/views/mass/service/service'
+export default {
+  name:'goIn-Area',
+  provide(){
+    return {
+      reload : this.reload
+    }
+  },
+  components: {
+    Header,
+    FlexBox,
+    AroundFinishCity,
+    AdvanceDeposit,
+    stackChart,
+    TheWorst
+  },
+  data() {
+    return {
+      isRouterAlive:true,
+      weekStart:'',
+      cityDetail:'',
+      weekEnd:'',
+      rightList:[],
+      provinceData:{},
+      newWeekGt:[],
+      AdvanceDeposit: [],
+      TheWorst:[],
+      backIp:'',
+      getChildValue:'',
+      flag:'3',
+      bottomList:[
+        {
+          name: '新发展用户套餐分档',
+          url: '/mass/index',
+        }, {
+          name: '新发展用户三无',
+          url: '/mass/massAdvanceDeposit',
+        }, {
+          name: '存量用户三无',
+          url: '/mass/newmass',
+          active:true
+        },{
+          name: '新发展用户首次预存',
+          url: '/bigscreen/evaluateNewUser',
+        }, {
+          name: '新发展8元卡',
+          url: '/bigscreen/evaluateNew8Card',
+        }, {
+          name: '单宽转融活跃度',
+          url: '/bigscreen/evaluateActivity',
+        }],
+      pickerOptions2: {
+        // 今天，昨天，这个月，上个月
+        shortcuts: [
+          {
+            text: '今天',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              picker.$emit('pick', [start, end])
+            }
+          },
+
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+        ]
+      },
+    }
+  },
+  mounted() {
+    if (window.sessionStorage.getItem('selectTime')){
+      this.getChildValue = window.sessionStorage.getItem('selectTime')
+      // console.log( this.getChildValue)
+
+    }else {
+      this.getToday()
+      this.weekStart = this.getWeekDay(-6)
+      this.weekEnd  = this.getWeekDay(0)
+    }
+    //console.log(this.rightList)
+    this.init()
+  },
+  methods: {
+    init() {
+    },
+    toBack(){
+      this.$router.push({ path:'/mass/newmassGoIn', query: { rowData:this.$route.query.rowData}})
+    },
+    getBeforeDate(num, time) {
+      let n = num;
+      let d = '';
+      if(time) {
+        d = new Date(time);
+      } else {
+        d = new Date();
+      }
+      let year = d.getFullYear();
+      let mon = d.getMonth() + 1;
+      let day = d.getDate();
+      if(day <= n) {
+        if(mon > 1) {
+          mon = mon - 1;
+        } else {
+          year = year - 1;
+          mon = 12;
+        }
+      }
+      d.setDate(d.getDate() - n);
+      year = d.getFullYear();
+      mon = d.getMonth() + 1;
+      day = d.getDate();
+      let s = year + "-" + (mon < 10 ? ('0' + mon) : mon) + "-" + (day < 10 ? ('0' + day) : day);
+      return s;
+    },
+    getDate(date) {
+      if(date){
+        this.getChildValue = date
+        this.getDepositData()
+        date.split('-').join('')
+        let y = date.substring(0,4)
+        let m = date.substring(4,6)
+        let d = date.substring(6)
+        this.weekEnd = y + '-' + m + '-' + d
+        this.weekStart = this.getBeforeDate(6,this.weekEnd )
+      }else{
+        this.getToday()
+        this.getDepositData()
+      }
+
+    },
+    getDepositData() {
+      this.rightList = []
+      getDepositData({
+        timest: this.getChildValue,
+        eparchyCode: this.$route.query.rowData.eparchyCode,
+        areaCode:this.$route.query.rowData.areaCode === '00' ? '' : this.$route.query.rowData.areaCode,
+        gridId:this.$route.query.rowData.gridId === '00' ? '' : this.$route.query.rowData.gridId,
+
+      }).then(res => {
+        if (res) {
+          this.TheWorst = res.result.listRes
+          this.rightList = res.result.listRes
+          this.stackChart = res.result.listRes
+          this.AdvanceDeposit = res.result.listRes
+          this.cityDetail = res.result.listRes[0].areaName
+          this.backIp = res.result.listRes[0].eparchyName
+        }
+      })
+        .catch(() => {
+
+        })
+
+    },
+    getToday() {
+      let d = new Date();
+      let year = d.getFullYear()
+      let Mos = d.getMonth() + 1
+      let Dates = d.getDate() - 2
+      let youWant = year + '-' + this.addZero(Mos) + '-' + this.addZero(Dates)
+      this.getChildValue = youWant.split('-').join('')
+
+    },
+    addZero(s) {
+      return s < 10 ? '0' + s : s
+    },
+    getWeekDay(day) {
+      let today = new Date();
+      let targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+      today.setTime(targetday_milliseconds); //注意，这行是关键代码
+      let tYear = today.getFullYear();
+      let tMonth = today.getMonth();
+      let tDate = today.getDate();
+      tMonth = this.doHandleMonth(tMonth + 1);
+      tDate = this.doHandleMonth(tDate);
+      return tYear + "-" + tMonth + "-" + tDate;
+
+    },
+    doHandleMonth(month) {
+      let m = month;
+      if (month.toString().length == 1) {
+        m = "0" + month;
+      }
+      return m;
+    },
+    reload(){
+      this.isRouterAlive = false
+      this.$nextTick(function(){
+        this.isRouterAlive = true
+      })
+    },
+
+    created() {
+
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image:url("../../assets/images/bgImage.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  .header-smallTitle{
+    font-size: 36px;
+    font-family:MFBanHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    margin-top: -7px;
+  }
+}
+.content{
+  background-image: url("../../assets/images/dakuang.png");
+  background-size: 100% 105%;
+  background-repeat: no-repeat;
+  background-position: 0px -40px;
+  z-index: 0;
+  .center{
+    flex: 1;
+    margin: 1.5rem 20px;
+    position: relative;
+    height: calc(88.5%);
+    overflow: hidden;
+    .center-title{
+      margin: 51px 0 0 40px;
+      color: #02F6FF;
+      font-size: 24px;
+    }
+    .back{
+      position: absolute;
+      left: 120px;
+      color: #02F6FF;
+      font-size: 14px;
+      z-index: 99;
+      cursor: pointer;
+    }
+    .weekday{
+      position: absolute;
+      right: 80px;
+      color: #02F6FF;
+      span{
+        color: #FFFFFF;
+      }
+    }
+    .massChart{
+      width: 97%;
+      margin: 0 auto;
+      height:calc(100% - 6.8rem) ;
+      position: relative;
+      display: flex;
+      .massChart-top{
+        flex: 35% 0 0;
+        flex-direction:column;
+        .massChart-top-left{
+          width: 100%;
+          padding: 30px;
+          background-image: url("../../assets/images/bigScreen/fullService/kuang1.png");
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          margin-right: 0.2rem;
+          height: 50%;
+          flex: 100% 0 0;
+
+        }
+        .massChart-top-right{
+          padding: 30px;
+          flex-direction:column;
+          background-image: url("../../assets/images/bigScreen/fullService/kuang1.png");
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          height: 48%;
+        }
+      }
+      .massChart-bottom{
+        position: relative;
+        flex: 0 0 65%;
+      }
+    }
+    .centerTop{
+      width: 100%;
+      height: 245px;
+      background-image: image-set(
+        url("~@/assets/images/bigScreen/fullService/center-top.png") 1x,
+        url("~@/assets/images/bigScreen/fullService/center-top@2x.png") 2x
+      );
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+  .right{
+    width: 48%;
+    height: 88.5%;
+    top: 1.5rem;
+    position: relative;
+  }
+  .fiveG-title{
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+    background-image: url("../../assets/images/bigScreen/fullService/title.png");
+    background-repeat: no-repeat;
+    text-indent: 23px;
+    color: #02F6FF;
+    font-size: 26px;
+    font-family: MFBanHei;
+  }
+  /deep/ .bottom{
+    width: 82% !important;
+    left: 9% !important;
+  }
+  ///deep/.bottom div{
+  //  background-image:url("../../assets/images/bigScreen/btn_tab.png")!important; ;
+  //  background-repeat: no-repeat;
+  //  background-size:100% 100% ;
+  //  height: 61px;
+  //}
+  ///deep/.bottom div:nth-of-type(3){
+  //  background-image:url("../../assets/images/bigScreen/bg-bottom.png") !important;
+  //  color: #FFFFFF !important;
+  //}
+  .center-title {
+    margin: 51px 0 0 40px;
+    color: #02f6ff;
+    font-size: 24px;
+    font-family: MFBanHei;
+  }
+  /deep/.el-table th{
+    background-size: 100% 100% !important;
+  }
+}
+
+</style>

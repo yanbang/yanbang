@@ -1,0 +1,524 @@
+<template>
+  <div class="main">
+    <div class="column">
+      <div class="leftpanel1">
+        <h3 class="title">规划资源概览</h3>
+        <div>
+          <GhjsL1></GhjsL1>
+        </div>
+      </div>
+      <div class="leftpanel2">
+        <h3 class="title">精准规划统计</h3>
+        <div>
+          <GhjsL2 class="mycolumnar"></GhjsL2>
+        </div>
+      </div>
+      <div class="leftpanel3">
+        <h3 class="title">规划覆盖场景统计</h3>
+        <GhjsL3></GhjsL3>
+      </div>
+    </div>
+    <div class="column">
+      <div class="cneterpanel1">
+        <div>
+          <GhjsMap class="map" :mapData="mapData" />
+        </div>
+        <div class="buttons">
+          <div class="button1" :class="{ active: mapflag1 }" @click="changeMapDate(1)">浙江</div>
+          <div class="button2" :class="{ active: mapflag2 }" @click="changeMapDate(2)">联通自有</div>
+          <div class="button3" :class="{ active: mapflag3 }" @click="changeMapDate(3)">电信共享</div>
+        </div>
+
+        <div class="mytitle">当前地图 :</div>
+        <div class="mybutton">浙江省<i class="iconfont icon-xiajiantou"></i></div>
+      </div>
+      <div class="cneterpanel2">
+        <h3 class="title">新增变化渠点</h3>
+        <div class="lineC2">
+          <GhjsC2 :mydate1="mydate1" :mydate2="mydate2" :flag="flag"></GhjsC2>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="rightpanel1">
+        <h3 class="title">网络规模</h3>
+        <div class="botton">
+          <div class="buttonLeft" :class="{ active: isActive }" @click="r1schange(1)">
+            <div class="fss" @click="r1sdata(1)">物理基站</div>
+          </div>
+          <div class="buttonCenter" :class="{ active: ischange }" @click="r1schange(2)">
+            <div class="fss" @click="r1sdata(2)">逻辑基站</div>
+          </div>
+          <div class="buttonRight" :class="{ active: iscolor }" @click="r1schange(3)">
+            <div class="fss" @click="r1sdata(3)">载频载扇</div>
+          </div>
+        </div>
+        <div class="count">{{ fiveGcount }}</div>
+        <div class="r1">
+          <div class="r1s"><R1s :sourceData="sourceData" /></div>
+          <div class="r1x"><R1x :mylist="mylist" /></div>
+        </div>
+      </div>
+      <div class="rightpanel2">
+        <h3 class="title">业务量</h3>
+        <div class="lineandpie">
+          <GhjsR2 />
+        </div>
+      </div>
+      <div class="rightpanel3">
+        <h3 class="title">5G整体交付进展</h3>
+        <GhjsR3 />
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import Map from '@/components/Ghjs/Map.vue'
+import GhjsMap from '@/components/Ghjs/GhjsMap.vue'
+import GhjsL1 from '@/components/Ghjs/GhjsL1.vue'
+import GhjsL2 from '@/components/Ghjs/GhjsL2.vue'
+import GhjsL3 from '@/components/Ghjs/GhjsL3.vue'
+import GhjsC2 from '@/components/Ghjs/GhjsC2.vue'
+// import GhjsR1 from '@/components/Ghjs/GhjsR1.vue'
+import GhjsR2 from '@/components/Ghjs/GhjsR2.vue'
+import GhjsR3 from '@/components/Ghjs/GhjsR3.vue'
+import R1s from '@/components/Ghjs/componets/R1s.vue'
+import R1x from '@/components/Ghjs/componets/R1x.vue'
+export default {
+  components: { Map, GhjsL1, GhjsL2, GhjsL3, GhjsC2, GhjsR2, GhjsR3, R1s, R1x, GhjsMap },
+  data() {
+    return {
+      sourceData: [],
+      fiveGcount: 0,
+      mylist: [],
+      isActive: true,
+      ischange: false,
+      iscolor: false,
+      mapData: 1,
+      mapflag1: true,
+      mapflag2: false,
+      mapflag3: false,
+      mydate1: [1000, 3440, 5440, 1200, 3999, 5600, 5444],
+      mydate2: [6000, 5000, 4000, 2000, 1000, 3000, 6000],
+      flag: 1,
+      i: 1
+    }
+  },
+  created() {
+    this.r1sdata(1)
+
+    this.timer = setInterval(() => {
+      this.changeMapDate(this.i)
+      this.i++
+      if (this.i > 3) {
+        this.i = 1
+      }
+    }, 10000)
+  },
+  beforeDestory() {
+    clearInterval(this.timer)
+  },
+
+  mounted() {},
+  computed: {},
+  methods: {
+    r1sdata(value) {
+      if (value == 1) {
+        this.sourceData = [
+          {
+            source: 0,
+            source_name: '联通',
+            count: 888,
+            percent: null,
+            value
+          },
+          {
+            source: 1,
+            source_name: '电信',
+            count: 888,
+            percent: null
+          },
+          {
+            source: 2,
+            source_name: '移动',
+            count: 888,
+            percent: null
+          }
+        ]
+
+        this.fiveGcount = this.sourceData.reduce((totalPrice, item) => {
+          return totalPrice + item.count
+        }, 0)
+      } else if (value == 2) {
+        this.sourceData = [
+          {
+            source: 0,
+            source_name: '联通',
+            count: 12573,
+            percent: null,
+            value
+          },
+          {
+            source: 1,
+            source_name: '电信',
+            count: 11942,
+            percent: null
+          }
+        ]
+        this.fiveGcount = this.sourceData.reduce((totalPrice, item) => {
+          return totalPrice + item.count
+        }, 0)
+      } else {
+        this.sourceData = [
+          {
+            flag: 3,
+            source: 0,
+            source_name: '联通',
+            count: 888,
+            percent: null,
+            value
+          },
+          {
+            source: 1,
+            source_name: '电信',
+            count: 888,
+            percent: null
+          }
+        ]
+        this.fiveGcount = this.sourceData.reduce((totalPrice, item) => {
+          return totalPrice + item.count
+        }, 0)
+      }
+      if (value == 1) {
+        this.mylist = [
+          { code: '4G', stock: '888', fundPost: '888' },
+          { code: '3G', stock: '888', fundPost: '888' }
+        ]
+      } else if (value == 2) {
+        this.mylist = [
+          { code: '4G', stock: '48030', fundPost: '48030' },
+          { code: '3G', stock: '44334', fundPost: '44334' }
+        ]
+      } else {
+        this.mylist = [
+          { code: '4G', stock: '888', fundPost: '888' },
+          { code: '3G', stock: '888', fundPost: '888' }
+        ]
+      }
+    },
+    r1schange(value) {
+      if (value == 1) {
+        this.isActive = true
+        this.ischange = false
+        this.iscolor = false
+      } else if (value == 2) {
+        this.isActive = false
+        this.ischange = true
+        this.iscolor = false
+      } else {
+        this.ischange = false
+        this.iscolor = true
+        this.isActive = false
+      }
+    },
+    changeMapDate(value) {
+      this.mapData = value
+
+      if (value == 1) {
+        ;(this.mapflag1 = true), (this.mapflag2 = false), (this.mapflag3 = false)
+        this.i = 1
+      } else if (value == 2) {
+        ;(this.mapflag1 = false), (this.mapflag2 = true), (this.mapflag3 = false)
+        this.i = 2
+      } else {
+        ;(this.mapflag1 = false), (this.mapflag2 = false), (this.mapflag3 = true)
+        this.i = 3
+      }
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.main {
+  //   background-color: red;
+  display: flex;
+  .column {
+    flex: 3;
+  }
+  .column:nth-child(2) {
+    flex: 5;
+    margin: 0 10px 10px;
+    overflow: hidden;
+  }
+  // 左
+  .leftpanel1 {
+    height:230px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+
+    .title {
+      position: absolute;
+      top: -3px;
+      left: 20px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+  .leftpanel2 {
+    height: 280px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+
+      left: 20px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .mycolumnar {
+      position: absolute;
+      top: -80px;
+      left: -10px;
+    }
+  }
+  .leftpanel3 {
+    height: 240px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    .title {
+      position: absolute;
+      left: 30px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+  }
+  //中
+  .cneterpanel1 {
+    height: 490px;
+    background: url('~@/assets/img/地图.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .map {
+      position: absolute;
+      left: 60px;
+    }
+    .buttons {
+      display: flex;
+      // justify-content: space-evenly;
+      align-items: center;
+      width: 290px;
+      height: 70px;
+      margin-left: 20px;
+      .button1 {
+        width: 80px;
+        height: 25px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        line-height: 25px;
+        color: #fff;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 13.8px;
+        z-index: 888;
+      }
+      .button2 {
+        width: 80px;
+        height: 25px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        line-height: 25px;
+        color: #fff;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 13.8px;
+        z-index: 888;
+      }
+      .button3 {
+        width: 80px;
+        height: 25px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        line-height: 25px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 13.8px;
+        z-index: 888;
+      }
+      .active {
+        background: url('~@/assets/img/按钮.png') no-repeat;
+        background-size: 100% 100%;
+
+        color: #00b8b9;
+      }
+    }
+    .mytitle {
+      position: absolute;
+      color: #fff;
+      left: 480px;
+      top: 35px;
+    }
+    .mybutton {
+      width: 90px;
+      height: 30px;
+      background: url('~@/assets/img/按钮.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      line-height: 30px;
+      color: #00b8b9;
+      position: absolute;
+      left: 550px;
+      top: 30px;
+      z-index: 888;
+    }
+  }
+  .cneterpanel2 {
+    margin: 23px 0 0 0;
+    height: 230px;
+    background: url('~@/assets/img/新增站点变化趋势图.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .lineC2 {
+      position: absolute;
+      top: 20px;
+    }
+  }
+  //   右
+  .rightpanel1 {
+    height: 280px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .botton {
+      position: absolute;
+      top: 20px;
+      cursor: pointer;
+      .buttonLeft {
+        position: absolute;
+        top: 45px;
+        left: 60px;
+        width: 90px;
+        height: 30px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: contain;
+        z-index: 10;
+        .fss {
+          color: #fff;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+      .buttonCenter {
+        position: absolute;
+        top: 45px;
+        left: 160px;
+        width: 90px;
+        height: 30px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: contain;
+        z-index: 10;
+        .fss {
+          color: #fff;
+
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+      .buttonRight {
+        position: absolute;
+        top: 45px;
+        left: 259px;
+        width: 90px;
+        height: 30px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: contain;
+        z-index: 10;
+        .fss {
+          color: #fff;
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+      .active {
+        background: url('~@/assets/img/按钮.png') no-repeat;
+        background-size: contain;
+        .fss {
+          color: #00b8b9;
+        }
+      }
+    }
+    .count {
+      color: #fff;
+      position: absolute;
+      top: 125px;
+      left: 350px;
+    }
+    .r1 {
+      position: relative;
+
+      .r1s {
+        position: absolute;
+        top: -70px;
+        left: 30px;
+      }
+      .r1x {
+        position: absolute;
+        top: 140px;
+        left: 53px;
+      }
+    }
+  }
+  .rightpanel2 {
+    height: 230px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      color: #00b8b9;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .lineandpie {
+      position: absolute;
+      top: -150px;
+      left: -105px;
+    }
+  }
+  .rightpanel3 {
+    height: 240px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+  }
+  .title {
+    position: absolute;
+    left: 20px;
+    color: #00b8b9;
+    font-weight: 600;
+    font-size: 16px;
+  }
+}
+</style>

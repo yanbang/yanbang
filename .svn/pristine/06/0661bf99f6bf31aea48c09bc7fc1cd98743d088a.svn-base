@@ -1,0 +1,1618 @@
+<!--应急通信 -->
+<template>
+  <div class="contentbox">
+    <Header title="山东联通网络洞察-卓越度"></Header>
+    <div class="contentbody">
+      <div class="rightbox flex colflex">
+        <div class="box-item flex colflex" style="height: 260px">
+          <div class="item-title titlefont clearfix">
+            <span>工信部满意度排名</span>
+            <span class="zdmore pull-right" @click="showmydisDialog">
+              <span class="el-icon-more"></span>
+            </span>
+          </div>
+          <div style="font-size: 18px; padding-left: 20px; line-height: 36px">
+            全国排名:
+            <span style="color: #3ad81e; font-weight: 600; font-size: 22px;">
+              {{ mydDatalist.array_wzs | formatVal }}
+            </span>
+          </div>
+          <div class="flex1 flex">
+            <div class="flex1">
+              <div class="lgwbox lgwbox1">
+                <div class="lgwnum">{{ mydDatalist.array_yw | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/移动网络.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">移网排名</div>
+              </div>
+            </div>
+
+            <!-- <div class="flex1" style="margin-right: 10px; padding-right: 10px; border-right: 1px solid rgb(10 64 99)"> -->
+            <div class="flex1">
+              <div class="lgwbox lgwbox1">
+                <div class="lgwnum">{{ mydDatalist.array_kg | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/宽带行业.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">宽固排名</div>
+              </div>
+            </div>
+
+            <div class="flex1">
+              <div class="lgwbox lgwbox1">
+                <div class="lgwnum">{{ mydDatalist.array_gw | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/宽带网络.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">固网上网</div>
+              </div>
+            </div>
+
+            <div class="flex1">
+              <div class="lgwbox lgwbox1">
+                <div class="lgwnum">{{ mydDatalist.array_gy | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="@/assets/images/语音.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">固网语音</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1 ">
+          <div class="item-title titlefont">
+            <span>宽带客户体验下载速率</span>
+            <span class="unit">(MB/s)</span>
+            <!-- <span class="zdmore pull-right" @click="isDialogShow = true"><span class="el-icon-more"></span></span> -->
+          </div>
+          <div style="font-size: 18px; padding-left: 20px; line-height: 36px">
+            山东联通宽带体验下载速率全国排名:
+            <span style="color: #3ad81e; font-weight: 600; font-size: 22px;">
+              {{ zydData.array_lt | formatVal }}
+            </span>
+          </div>
+          <div class="flex1 flex selectbox">
+            <div class="chartbox" id="chartbox3" style="max-height: 260px"></div>
+          </div>
+        </div>
+        <div class="box-item flex colflex flex1 ">
+          <div class="item-title titlefont">
+            <span>宽带规模</span>
+            <span class="unit">(户)</span>
+            <span class="zdmore pull-right" @click="kdgm_isDialogShow = true"><span class="el-icon-more"></span></span>
+          </div>
+          <div class="flex1 flex selectbox">
+            <div class="chartbox" id="chartbox2" style="height: 280px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="centerbox flex colflex">
+        <div class="cbottom-box">
+          <div class="tjbtn" @click="getEyesInfo"><img src="../zhyeys.png" alt="" srcset="" /></div>
+          <div class="gistitle">
+            <span class="titlefont">{{ gisTitle }}</span>
+          </div>
+          <iframe
+            ref="gisiframe"
+            id="gisiframe"
+            :src="iframeSrc"
+            style="width: 100%; height: 100%"
+            frameborder="0"
+          ></iframe>
+        </div>
+      </div>
+      <div class="leftbox flex colflex">
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont clearfix">
+            <span>基站规模</span>
+            <span class="zdmore pull-right" @click="detailComFn('基站规模', '1')">
+              <span class="el-icon-more"></span>
+            </span>
+          </div>
+          <div class="flex1 flex selectbox">
+            <div class="flex1 " style="margin-right: 10px; padding-right: 10px; border-right: 1px solid rgb(10 64 99)">
+              <div class="chartbox" id="chartbox1"></div>
+            </div>
+            <div class="flex1 ">
+              <div class="chartbox" id="chartbox4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-item flex colflex flex1">
+          <div class="item-title titlefont">
+            <span>室分规模</span>
+            <span class="zdmore pull-right" @click="sfgmDetailFn"><span class="el-icon-more"></span></span>
+          </div>
+          <div class="flex" style="padding-left: 20px; margin:5px 0; font-size: 15px">
+            <div class="flex1">
+              <span>移动/联通比例(5G):</span>
+              <span style="color: #f7e027; margin-left: 5px; font-size: 18px">{{ sfgmData.ydld_5g | formatVal }}</span>
+            </div>
+            <div class="flex1">
+              <span>移动/联通比例(4G):</span>
+              <span style="color: #f7e027; margin-left: 5px; font-size: 18px">{{ sfgmData.ydld_4g | formatVal }}</span>
+            </div>
+          </div>
+          <div class="flex1 flex selectbox">
+            <div class="flex1 " style="margin-right: 10px; padding-right: 10px; border-right: 1px solid rgb(10 64 99)">
+              <div class="chartbox" id="chartbox12"></div>
+            </div>
+            <div class="flex1 ">
+              <div class="chartbox" id="chartbox13"></div>
+            </div>
+          </div>
+        </div>
+        <div class="box-item flex colflex" style="height: 300px">
+          <div class="item-title titlefont">
+            <span>TOP10 视频网站卡顿率最优个数</span>
+            <!-- <span class="zdmore pull-right" @click="isDialogShow = true"><span class="el-icon-more"></span></span> -->
+          </div>
+          <div style="font-size: 18px; padding-left: 20px; line-height: 36px; margin-top: 10px">
+            山东联通全国排名:
+            <span style="color: #3ad81e; font-weight: 600; font-size: 22px;">
+              {{ zydData.array_wk | formatVal }}
+            </span>
+          </div>
+
+          <div class="flex1 flex selectbox">
+            <div class="flex1">
+              <div class="lgwbox">
+                <div class="lgwnum">{{ spkdListin.length ? spkdListin[2].num_lt : '' | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="../home/img/bg_sd41-2.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">山东联通</div>
+              </div>
+            </div>
+
+            <div class="flex1">
+              <div class="lgwbox">
+                <div class="lgwnum">{{ spkdListin.length ? spkdListin[2].num_dx : '' | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="../home/img/bg_sd41-1.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">山东电信</div>
+              </div>
+            </div>
+            <div class="flex1">
+              <div class="lgwbox">
+                <div class="lgwnum">{{ spkdListin.length ? spkdListin[2].num_yd : '' | formatVal }}</div>
+                <div class="lgwimg">
+                  <img src="../home/img/bg_sd41-3.png" alt="" srcset="" />
+                </div>
+                <div class="lgwfont">山东移动</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <el-dialog :visible.sync="isDialogShow" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">智慧眼详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+          <div class="eyesmodelbox" v-html="zhy_content"></div>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="kdgm_isDialogShow" width="65%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">宽带规模详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+          <el-table :data="kdgmDetailData" size="mini" height="670px">
+            <el-table-column prop="name" label="地市"> </el-table-column>
+
+            <el-table-column prop="gm_100" label="100M及以下" sortable> </el-table-column>
+            <el-table-column prop="gm_200" label="200M" sortable> </el-table-column>
+            <el-table-column prop="gm_300" label="300M" sortable> </el-table-column>
+            <el-table-column prop="gm_500" label="500M" sortable> </el-table-column>
+            <el-table-column prop="gm_1000" label="1000M及以上" sortable> </el-table-column>
+            <el-table-column prop="heji" label="合计" sortable> </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="myd_isDialogShow" width="80%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">工信部满意度</div>
+        </div>
+        <div class="centTab">
+          <div class="centtabitem titlefont" :class="{ active: tabstatus == '0202' }" @click="tabStatusFn('0202')">
+            <span>全国得分</span>
+          </div>
+          <div class="centtabitem titlefont" :class="{ active: tabstatus == '0201' }" @click="tabStatusFn('0201')">
+            <span>CES</span>
+          </div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px;margin-top:15px;">
+          <el-table :data="mydDetailData" size="mini" height="670px" v-show="tabstatus == '0201'">
+            <el-table-column prop="name" label="地市"> </el-table-column>
+            <el-table-column prop="score_gw" label="固网CES" sortable> </el-table-column>
+            <el-table-column prop="score_yw" label="移网CES" sortable> </el-table-column>
+          </el-table>
+          <el-table
+            :data="mydDetailData1"
+            size="mini"
+            height="670px"
+            :row-class-name="tableRowClassName"
+            v-show="tabstatus == '0202'"
+          >
+            <el-table-column prop="name" label="省份"> </el-table-column>
+            <el-table-column prop="score_yw" label="移网分值" sortable> </el-table-column>
+            <el-table-column prop="score_kg" label="宽固分值" sortable> </el-table-column>
+            <el-table-column prop="score_gy" label="固定语音分值" sortable> </el-table-column>
+            <el-table-column prop="score_gw" label="固定上网分值" sortable> </el-table-column>
+            <el-table-column prop="score_wz" label="网络总体分值" sortable> </el-table-column>
+            <el-table-column prop="array_yw" label="移网排名" sortable> </el-table-column>
+            <el-table-column prop="array_kg" label="宽固排名" sortable> </el-table-column>
+            <el-table-column prop="array_gy" label="固定语音排名" sortable> </el-table-column>
+            <el-table-column prop="array_gw" label="固定上网排名" sortable> </el-table-column>
+            <el-table-column prop="array_wz" label="网络总体排名" sortable> </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="sfgm_isDialogShow" width="65%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">室分规模详情</div>
+        </div>
+        <div class="dialogTableBg" style="min-height: 400px">
+          <el-table :data="sfgmDetailData" size="mini" height="670px">
+            <el-table-column prop="name" label="地市" width="100px"> </el-table-column>
+            <el-table-column prop="ltdx_5g" label="5G联通(含共享电信)" sortable width="190px"> </el-table-column>
+            <el-table-column prop="yidong_5g" label="5G移动" sortable> </el-table-column>
+            <el-table-column prop="ydld_5g" label="移动/联通比例(5G)" sortable>
+              <template slot-scope="scope">
+                <span>{{ scope.row['ydld_5g'] }} </span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="ltdx_4g" label="4G联通(含共享电信)" sortable width="190px"> </el-table-column>
+            <el-table-column prop="yidong_4g" label="4G移动" sortable> </el-table-column>
+            <el-table-column prop="ydld_4g" label="移动/联通比例(4G)" sortable>
+              <template slot-scope="scope">
+                <span>{{ scope.row['ydld_4g'] }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="comisDialogShow" width="60%" :modal-append-to-body="false">
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{ cometitle }}详情</div>
+        </div>
+        <div class="dialogTableBg">
+          <el-table :data="comDataList" size="mini" height="670px">
+            <el-table-column
+              v-for="(col, index) in teamCol"
+              :key="index"
+              :prop="col.filed"
+              :label="col.title"
+              :sortable="col.sortable"
+            >
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+
+    <Footer :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+var self = null
+import Header from '@/components/resource_visual/header2'
+import Footer from '@/components/resource_visual/footer'
+import store from 'store'
+import { mapState } from 'vuex'
+import echartInit from './initechart'
+import serviceApi from '@/api/wisdomeyes'
+import echarts from 'echarts'
+var _ = require('@/utils/lodash.js')
+
+var Qs = require('@/utils/qs.js')
+export default {
+  data() {
+    return {
+      gisTitle: '山东省',
+
+      isDialogShow: false,
+      kdgm_isDialogShow: false,
+      myd_isDialogShow: false,
+      sfgm_isDialogShow: false,
+      comisDialogShow: false,
+      cometitle: false,
+      rowttabStatus: '1',
+      rowttabStatus2: '1',
+      bzhd_checkList: ['00', '01', '02'],
+      cityCode: '370000',
+      iframeSrc: '',
+      tabstatus: '0202',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tabdata: [
+        { title: '网络能力', active: false, href: '/unicomwisdomeyes/networkCapab' },
+        { title: '健康度', active: false, href: '/unicomwisdomeyes/health' },
+        { title: '效能指数', active: false, href: '/unicomwisdomeyes/efficiency_cb' },
+        { title: '卓越度', active: true, href: '/unicomwisdomeyes/excellent' },
+        { title: '匹配度', active: false, href: '/unicomwisdomeyes/matchin' },
+        { title: '队伍建设', active: false, href: '/unicomwisdomeyes/teambuilding' }
+      ],
+      tabdata2: [
+        { title: '卓越度', active: true, href: '/unicomwisdomeyes/excellent' },
+        { title: '满意度', active: false, href: '/unicomwisdomeyes/manyidu?pagesource=wldc' },
+        { title: '投申诉', active: false, href: '/unicomwisdomeyes/toushensu?pagesource=wldc' }
+      ],
+      control: [],
+      zydData: {},
+      kdgmDetailData: [],
+      mydDetailData: [],
+      mydDetailData1: [],
+      comDataList: [],
+      teamCol: [],
+      spkdListin: [],
+      sfgmData: {},
+      sfgmDetailData: [],
+      zhy_content: '',
+      mydDatalist: {} //满意度
+    }
+  },
+  components: {
+    Header,
+    Footer
+  },
+  created() {
+    self = this
+  },
+  mounted() {
+    var self = this
+    var initArea_id = '370000'
+    this.mapLevel = '0'
+    if (store.get('userInfo')) {
+      var userInfo = store.get('userInfo')
+      var mapLevel = userInfo.levelAreaLevel
+      if (mapLevel == '1') {
+        // 全省
+        initArea_id = '370000'
+        self.gisTitle = '山东省'
+        self.mapLevel = '0'
+        self.control = ['370000']
+      } else if (mapLevel == '2') {
+        // 地市
+        initArea_id = '370000'
+        self.gisTitle = '山东省'
+        self.mapLevel = '0'
+        self.control = ['370000', userInfo.levelAreaCode]
+      } else if (mapLevel >= '3') {
+        // 区县
+        initArea_id = '370000'
+        self.mapLevel = '0'
+        self.gisTitle = userInfo.levelAreaName
+        self.control = ['370000', userInfo.levelAreaCode, userInfo.levelCityCode]
+      }
+    }
+    this.cityCode = initArea_id
+    this.initGisMap(initArea_id)
+    // 注册地图事件
+    this.initgisTitle = this.gisTitle + ''
+    window.addEventListener('message', self.gismapListener, true)
+    this.initService()
+  },
+  watch: {},
+  computed: {
+    ...mapState({
+      searchDate: state => state.resource.searchDate
+    })
+  },
+  methods: {
+    initService() {
+      this.servicejkdMydpxlist() //满意度山东
+      this.servicejkdMydXq() //  2工信部满意度详情
+      this.servicejkdSnzb()
+      this.servicejkdSfzb()
+      this.servicejkdKdgmXq()
+
+      this.servicejkdWdkd()
+      this.servicejkdSfgm()
+
+      this.servicejkdMydpxlist2() //全国满意度排名
+    },
+    showmydisDialog() {
+      //满意度弹框
+      let that = this
+      that.myd_isDialogShow = true
+      that.tabstatus = '0202'
+    },
+    tabStatusFn(type) {
+      this.tabstatus = type
+    },
+    servicejkdMydpxlist2() {
+      let that = this
+      let params = {
+        cityCode: '' //'370000',
+      }
+      serviceApi.servicejkdMydpx2(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          datal = this.initSortTabledata(datal)
+          datal = this.orderDataFn(datal, 'score_wz')
+          this.mydDetailData1 = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    servicejkdMydpxlist() {
+      let that = this
+      let params = {
+        cityCode: '' //'370000',
+      }
+      serviceApi.servicejkdMydpx(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          that.mydDatalist = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    orderDataFn(datas, key) {
+      datas.forEach(item => {
+        item.orderIndex = item[key]
+      })
+      return _.orderBy(
+        datas,
+        function(item) {
+          return Number(item[key]) || Number(item[key]) == 0 ? Number(item[key]) : '-'
+        },
+        ['desc']
+      )
+    },
+    tableRowClassName({ row, rowIndex }) {
+      if (row.name == '山东') {
+        return 'light-row'
+      }
+      return ''
+    },
+    getEyesInfo() {
+      this.isDialogShow = true
+      this.getEyesConten()
+    },
+    getEyesConten() {
+      var params = {
+        code: 'zhy-zyd',
+        area_code: this.cityCode
+      }
+      serviceApi.servicejkdTc(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.zhy_content = datal.zhy_content
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    sfgmDetailFn() {
+      this.sfgm_isDialogShow = true
+      this.servicejkdSfgmXq()
+    },
+
+    servicejkdSfgmXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdSfgmXq(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.sfgmDetailData = this.initSortTabledata(datal)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    detailComFn(title, type) {
+      this.comisDialogShow = true
+      this.cometitle = title
+      if (type == '1') {
+        this.teamCol = [
+          { filed: 'name', title: '地市' },
+          { filed: 'ltdx_5g', title: '	基站5G联通(含共享电信)', sortable: true },
+          { filed: 'yd_5g', title: '基站5G移动', sortable: true },
+          { filed: 'ltdx_4g', title: '基站4G联通(含共享电信)', sortable: true },
+          { filed: 'yd_4g', title: '基站4G移动', sortable: true }
+        ]
+        this.servicejkdJzgmXq()
+      }
+    },
+    servicejkdSfzb() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdSfzb(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.zydData = datal
+
+          var params3 = {
+            domId: 'chartbox3',
+            uni: 'MB/s',
+            xfont: 16,
+            xData: ['山东联通', '山东电信', '山东移动'],
+            barData: [datal.liantong, datal.dianxin, datal.yidong]
+          }
+          echartInit.initEchart_sbar(params3)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    servicejkdSfgm() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdSfgm(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.initEchart2(datal)
+          this.sfgmData = datal
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    servicejkdSnzb() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdSnzb(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.initEchart(datal)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    initSortTabledata(datas) {
+      var datal = _.cloneDeep(datas)
+      datal.forEach(item => {
+        Object.keys(item).forEach(key => {
+          Number(item[key]) || Number(item[key]) === 0 ? (item[key] = Number(item[key])) : item[key]
+        })
+      })
+
+      return datal
+    },
+    servicejkdJzgmXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdJzgmXq(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.comDataList = this.initSortTabledata(datal)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    servicejkdKdgmXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdKdgmXq(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.kdgmDetailData = this.initSortTabledata(datal)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    servicejkdJxwlXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdJxwlXq(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    servicejkdSnzbXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdSnzbXq(params).then(res => {
+        // //debugger
+        if (res.rspCode == '0000') {
+        } else {
+        }
+      })
+    },
+    servicejkdWdkd() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdWdkd(params).then(res => {
+        if (res.rspCode == '0000') {
+          this.spkdListin = res.result.data || []
+        } else {
+        }
+      })
+    },
+
+    servicejkdMydXq() {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdMydXq(params).then(res => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.mydDetailData = this.initSortTabledata(datal)
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+    initEchart(datal) {
+      var barData = [
+        {
+          name: '5G联通',
+          value: datal.ltdx_5g,
+          itemStyle: {
+            color: 'rgba(15,197,243,0.8)',
+            borderColor: 'rgba(180,240,255,1)',
+            borderWidth: 1
+          }
+        },
+        {
+          name: '5G移动',
+          value: datal.yd_5g,
+          itemStyle: {
+            color: 'rgba(227,161,96,0.8)',
+            borderColor: 'rgba(227,161,96,0.8)',
+            borderWidth: 1
+          }
+        }
+      ]
+      var barData2 = [
+        {
+          name: '4G联通',
+          value: datal.ltdx_4g,
+          itemStyle: {
+            color: 'rgba(15,197,243,0.8)',
+            borderColor: 'rgba(180,240,255,1)',
+            borderWidth: 1
+          }
+        },
+        {
+          name: '4G移动',
+          value: datal.yd_4g,
+          itemStyle: {
+            color: 'rgba(227,161,96,0.8)',
+            borderColor: 'rgba(227,161,96,0.8)',
+            borderWidth: 1
+          }
+        }
+      ]
+      var params1 = {
+        domId: 'chartbox1',
+        xData: ['5G联通', '5G移动'],
+        barData: barData
+      }
+      var params3 = {
+        domId: 'chartbox4',
+        xData: ['4G联通', '4G移动'],
+        barData: barData2
+      }
+
+      echartInit.initEchart_sbar1(params1)
+      echartInit.initEchart_sbar1(params3)
+      var params2 = {
+        domId: 'chartbox2',
+        unit: '户',
+        total: datal.heji,
+        data: [
+          {
+            name: '100M及以下',
+            value: datal.gm_100 || 0
+          },
+          {
+            name: '200M',
+            value: datal.gm_200 || 0
+          },
+          {
+            name: '300M',
+            value: datal.gm_300 || 0
+          },
+          {
+            name: '500M',
+            value: datal.gm_500 || 0
+          },
+          {
+            name: '1000M及以上',
+            value: datal.gm_1000 || 0
+          }
+        ]
+      }
+      echartInit.initpieca(params2)
+    },
+    initEchart2(datal) {
+      var barData = [
+        {
+          name: '5G联通',
+          value: datal.ltdx_5g,
+          itemStyle: {
+            color: 'rgba(15,197,243,0.8)',
+            borderColor: 'rgba(180,240,255,1)',
+            borderWidth: 1
+          }
+        },
+        {
+          name: '5G移动',
+          value: datal.yidong_5g,
+          itemStyle: {
+            color: 'rgba(227,161,96,0.8)',
+            borderColor: 'rgba(227,161,96,0.8)',
+            borderWidth: 1
+          }
+        }
+      ]
+
+      var params1 = {
+        domId: 'chartbox12',
+        xData: ['5G联通', '5G移动'],
+        barData: barData
+      }
+      echartInit.initEchart_sbar1(params1)
+      var barData1 = [
+        {
+          name: '4G联通',
+          value: datal.ltdx_4g,
+          itemStyle: {
+            color: 'rgba(15,197,243,0.8)',
+            borderColor: 'rgba(180,240,255,1)',
+            borderWidth: 1
+          }
+        },
+        {
+          name: '4G移动',
+          value: datal.yidong_4g,
+          itemStyle: {
+            color: 'rgba(227,161,96,0.8)',
+            borderColor: 'rgba(227,161,96,0.8)',
+            borderWidth: 1
+          }
+        }
+      ]
+      var params2 = {
+        domId: 'chartbox13',
+        xData: ['4G联通', '4G移动'],
+        barData: barData1
+      }
+      echartInit.initEchart_sbar1(params2)
+    },
+
+    gismapListener(e) {
+      var self = this
+
+      if (e.data.message == 'levelSwitch') {
+        self.gisTitle = e.data.area_name || this.initgisTitle
+        self.mapLevel = e.data.level
+        self.areaCode = e.data.area_id
+        self.gisMapData = e.data
+        self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+        self.gisQueryParams.area_name = ''
+        console.log('message', e.data)
+        self.cityCode = e.data.area_id || '370000'
+        this.serverInit()
+      } else if (e.data.message == 'clickSD') {
+        this.$router.push({ path: '/unicomwisdomeyes/manyidu', query: { pagesource: 'wldc' } })
+      }
+    },
+    initGisMap(initArea_id) {
+      // 初始化地图参数
+      this.gisQueryParams = {
+        control: this.control.join(','),
+        level: '0',
+        sceneid: '04',
+        gis_sceneid: '04',
+        area_id: initArea_id || '370000',
+        poi_city_id: '',
+        system_type: 'C40',
+        login_no: store.get('staffId') || '',
+        timest: this.$store.state.resource.searchDate
+      }
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.iframeSrc = window.gis_iframeSrc + `/smartEyes?${Qs.stringify(gisQueryParams)}`
+    }
+  },
+  destroyed() {
+    // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('../comtable.scss');
+/deep/ .bottom-tab .bottom-item {
+  padding: 4px 15px;
+}
+/deep/.initfoot2.bottom-tab {
+  top: 110px;
+  min-width: 500px;
+  width: 500px;
+}
+.zanbox {
+  text-align: center;
+  padding-top: 20px;
+  .zannum {
+    font-size: 28px;
+    line-height: 48px;
+  }
+  .zanimg {
+    width: 48px;
+  }
+  .zanfont {
+    font-size: 22px;
+    margin-top: 12px;
+  }
+}
+.contentbody {
+  height: 100%;
+  background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat,
+    url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+  background-size: auto 100%;
+  margin: 15px 15px 10px 15px;
+  position: relative;
+  display: flex;
+}
+.leftbox,
+.rightbox {
+  width: 450px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  padding-bottom: 30px;
+}
+
+.centerbox {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: url('~@/assets/images/images_zy/中框线@2x.png') no-repeat;
+  background-size: 100% 100%;
+  margin-top: 10px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 40px 20px 20px 20px;
+  margin-bottom: 80px;
+  position: relative;
+}
+.cbottom-box {
+  flex: 1;
+  margin-top: 10px;
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 50px;
+  position: relative;
+}
+
+//  .item-title {
+//    font-size: 22px;
+//    color: aqua;
+//    background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat ;
+//    background-size: 100% 100%;
+//    line-height: 38px;
+//     padding-left: 58px;
+//     position: relative;
+//  }
+
+.item-title {
+  font-size: 18px;
+  color: aqua;
+  background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 46px;
+  padding-left: 36px;
+  margin-bottom: 5px;
+  font-weight: bolder;
+}
+.chartbox {
+  width: 100%;
+  height: 100%;
+}
+
+.gdjkitem {
+  height: 68px;
+  width: 72px;
+  margin: 0 auto;
+  background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.gdjkitembox {
+  text-align: center;
+  position: relative;
+  margin-top: 12px;
+  &:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    right: -8px;
+    top: 26px;
+  }
+}
+
+.mtheader {
+  text-align: center;
+  line-height: 40px;
+  font-size: 16px;
+  color: #51d1ee;
+  border-bottom: 1px solid #308497;
+}
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4, 54, 108, 0.7);
+}
+.centTab {
+  position: absolute;
+  z-index: 10;
+  width: 40%;
+  top: 20px;
+  left: 30%;
+  text-align: center;
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 140px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+    background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+  }
+  .centtabitem.active {
+    opacity: 1;
+  }
+}
+.tunit {
+  font-size: 16px;
+}
+
+.cardetailbox {
+  display: flex;
+  padding: 15px 0;
+  .imgbox {
+    margin-right: 30px;
+    width: 380px;
+    img {
+      width: 380px;
+      height: 250px;
+    }
+  }
+  .fontbox {
+    color: #fff;
+    font-size: 16px;
+  }
+}
+/deep/.el-table tbody tr.rowclassname_00 td {
+  color: rgb(243, 198, 101) !important;
+}
+/deep/.el-table tbody tr.rowclassname_01 td {
+  color: rgb(92, 235, 74) !important;
+}
+/deep/.el-table tbody tr.rowclassname_02 td {
+  color: rgb(86, 212, 243) !important;
+}
+
+.checkgroupbox {
+  position: absolute;
+  right: 10px;
+  top: 0;
+}
+.checkgroupbox .el-checkbox {
+  margin-right: 15px;
+  .el-checkbox__label {
+    margin-left: 6px;
+  }
+}
+/deep/ .checkstate01 .el-checkbox__label {
+  color: rgb(92, 235, 74) !important;
+}
+/deep/ .checkstate00 .el-checkbox__label {
+  color: rgb(243, 198, 101) !important;
+}
+/deep/ .checkstate02 .el-checkbox__label {
+  color: rgb(86, 212, 243) !important;
+}
+
+/deep/ #bzhdTable tbody tr {
+  cursor: pointer !important;
+}
+
+.box-item {
+  position: relative;
+}
+.rowttabs {
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+    color: #45d8e2;
+  }
+}
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+.hddetali {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  overflow: auto;
+  height: 320px;
+  h3 {
+    color: #fff;
+  }
+}
+.swiperClass {
+  width: 80%;
+  height: 280px;
+  margin: 0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background: #19daec;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+
+.gistitle {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  font-size: 24px;
+  color: aqua;
+}
+.anpiebox {
+  padding: 10px;
+  box-sizing: border-box;
+}
+.piefont {
+  font-size: 15px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.rightTable {
+  width: 100%;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #02f6ff;
+
+  .tHead,
+  .tBody {
+    display: flex;
+    .wid19 {
+      background-image: none;
+    }
+  }
+  .tHead {
+    line-height: 50px;
+    font-size: 15px;
+    div {
+      flex: 1;
+      text-align: center;
+      background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: center 18px;
+      font-weight: bolder;
+    }
+    .wid19 {
+      background-image: none;
+    }
+    .emptyth {
+      background-image: none;
+    }
+  }
+  .tBody {
+    .td {
+      flex: 1;
+      text-align: center;
+      font-size: 18px;
+      div {
+        line-height: 60px;
+        border-bottom: 1px dashed #134192;
+      }
+    }
+
+    .bg {
+      background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+      background-repeat: no-repeat;
+      background-position: center left;
+      background-size: 1px 100%;
+      div {
+        font-size: 18px;
+        color: #bbebf3;
+      }
+    }
+    .bg:first-child {
+      background-image: none;
+    }
+    .titlecell {
+      font-size: 16px;
+      line-height: 68px;
+      min-width: 92px;
+    }
+  }
+}
+.piefont2 {
+  position: relative;
+  top: -10px;
+  text-align: center;
+  font-size: 15px;
+  .sudubox {
+    font-size: 22px;
+    color: rgb(240, 161, 15);
+  }
+}
+.bitembox {
+  margin: 0 auto;
+  text-align: center;
+  .bimg {
+    margin: 10px 0;
+    width: 68px;
+    height: 60px;
+  }
+  .numfont {
+    font-size: 22px;
+    color: aqua;
+  }
+  .infofont {
+    font-size: 16px;
+  }
+}
+/deep/.border-box-content {
+  padding: 15px 10px;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+.rowtitem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .sub_rowtitem {
+    display: flex;
+    margin-bottom: 10px;
+    .inconbox {
+      margin-right: 40px;
+      width: 42px;
+      height: 42px;
+      background: #031962;
+      text-align: center;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(53, 98, 233, 0.8);
+      margin-bottom: 10px;
+      position: relative;
+      top: 5px;
+      img {
+        width: 40px;
+      }
+    }
+    .flex1 {
+      text-align: center;
+    }
+    .numfont {
+      color: rgb(241, 169, 13);
+      font-size: 20px;
+    }
+    .titlefont {
+      font-size: 16px;
+    }
+  }
+}
+.rowtitem1 {
+  flex: 1.2;
+}
+.rtitembox {
+  position: relative;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  .waterfont {
+    height: 30px;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  }
+}
+.zdmore {
+  float: right;
+  font-size: 16px;
+  cursor: pointer;
+  color: #57b4f1;
+  margin-right: 0px;
+  text-decoration: underline;
+  position: relative;
+  z-index: 999;
+}
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.tjbtn {
+  position: absolute;
+  right: 30px;
+  top: 0px;
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 10px rgb(56, 148, 235);
+  cursor: pointer;
+  animation: turn 8s linear infinite;
+  z-index: 99;
+  img {
+    width: 44px;
+    z-index: 99;
+  }
+}
+.matbox {
+  margin-top: 10px;
+  .matfont {
+    font-size: 24px;
+    color: #eae6ab;
+    font-weight: bold;
+    line-height: 46px;
+  }
+  .matimg {
+    img {
+      width: 40px;
+    }
+  }
+}
+.mattitle {
+  font-size: 18px;
+  margin-top: 15px;
+}
+.matitembox {
+  text-align: center;
+  padding-top: 40px;
+}
+.piechartbox {
+  height: 140px;
+  // width: 140px;
+}
+.selectbox {
+  margin: 10px 0;
+}
+.selectbox.active {
+  box-shadow: 0px 0px 80px rgba(18, 153, 193, 0.8) inset;
+  border-radius: 5px;
+  border: 1px solid #5bf0f7;
+}
+
+.lgwbox {
+  text-align: center;
+  padding-top: 40px;
+  .lgwnum {
+    font-size: 32px;
+    color: #f7e713;
+  }
+  .lgwimg {
+    margin: 12px 0;
+    img {
+      height: 42px;
+    }
+  }
+  .lgwfont {
+    font-size: 18px;
+    line-height: 34px;
+  }
+}
+.lgwbox1 {
+  text-align: center;
+  padding-top: 20px;
+  .lgwnum {
+    font-size: 32px;
+    color: #f7e713;
+  }
+  .lgwimg {
+    margin: 12px 0;
+    img {
+      height: 42px;
+    }
+  }
+  .lgwfont {
+    font-size: 18px;
+    line-height: 34px;
+  }
+}
+.unit {
+  font-size: 15px;
+  margin-left: 4px;
+}
+.lgwnum2 {
+  font-size: 16px;
+  color: #fff;
+  padding: 0 22px;
+  .num {
+    font-size: 22px;
+    color: rgb(75, 223, 236);
+  }
+}
+
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 18px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 16px !important;
+}
+
+/deep/.dialogTableBg .el-table tr {
+  background: none !important;
+}
+
+/deep/.dialogTableBg .el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-size: 16px !important;
+}
+/deep/ .inittable2.el-table td {
+  padding: 5px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+/deep/.el-table td:first-child {
+  background: none !important;
+}
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4, 54, 108, 0.4) !important;
+}
+.tbdetalpenl {
+  position: absolute;
+  top: -20px;
+  width: 600px;
+  left: 180px;
+  text-align: center;
+  .kbdetalitem {
+    display: inline-block;
+    height: 64px;
+    line-height: 60px;
+    width: 150px;
+    line-height: 78px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+    background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    opacity: 0.5;
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+.linkbox {
+  .flex1 {
+    margin: 0 30px;
+    padding: 30px 15px;
+    text-align: center;
+    cursor: pointer;
+
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+  }
+  .flex1:hover {
+    box-shadow: 0px 0px 10px #77f1f7, 0px 0px 30px #0b5d94 inset;
+  }
+}
+/deep/.el-table__footer-wrapper {
+  border-top: 1px dashed #1d569c;
+}
+/deep/.el-table__footer-wrapper .cell {
+  font-size: 16px;
+  color: #a1ecfd;
+}
+/deep/.inittabs .el-tabs__item {
+  font-size: 16px;
+  color: #5680cf;
+}
+/deep/.inittabs .el-tabs__item.is-active {
+  color: #25eae1;
+}
+
+/deep/.inittabs.el-tabs--card > .el-tabs__header {
+  border-bottom: 1px solid #6088d0;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  border-bottom: 1px solid #6088d0;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__nav {
+  border: 1px solid #6088d0;
+  border-bottom: none;
+}
+/deep/.inittabs.el-tabs--card > .el-tabs__header .el-tabs__item {
+  border-left: 1px solid #6088d0;
+}
+/deep/.el-dialog {
+  margin-top: 10vh !important;
+}
+/deep/.dialogTableBg .el-table .light-row td {
+  background: #0d9c38a8 !important;
+}
+</style>

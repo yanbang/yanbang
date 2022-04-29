@@ -1,0 +1,447 @@
+<template>
+  <!--  小微商户-->
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <!-- 页头 -->
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">渠道</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="titleLeft">{{mapData.label}}发展量</div>
+          <div class="center-content" style="z-index: 2; position: absolute; width: 100%; height: 100%;">
+            <div class='centerBottom'>
+              <div class="titleRight">
+                <span @click="isDialog2=true">
+                  详细数据 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+              </div>
+              <iframe ref="iframe" :src="iframeSrc" frameborder="0" style="width: 100%; height: 100%"></iframe>
+            </div>
+
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <div class='rightBox'>
+            <div class='rightBoxfrist'>
+              <smallChart></smallChart>
+            </div>
+            <div class='rightBoxmiddle'>
+              <classificationTable @click.native="clickMode('1')" :class="[selectMode === '1'?'backgroundImage3':'backgroundImage2' ]"></classificationTable>
+            </div>
+            <div class='rightBoxlast'>
+              <BusinessTable :ywfzlArr="ywfzlArr"></BusinessTable>
+            </div>
+          </div>
+        </div>
+      </template>
+    </FlexBox>
+    <el-dialog :visible.sync="isDialog2" width="60%" :before-close="handleClose">
+      <div class="dialogCon">
+        <div class="dialogTitle">发展明细</div>
+        <div class="dialogTableBg">
+          <el-table :data="dialogTable" style="width: 100%; height: 730px; overflow: auto">
+            <el-table-column prop="name" label="地区"> </el-table-column>
+            <el-table-column prop="tradeNum" label="目标商户"> </el-table-column>
+            <el-table-column prop="actNum" label="已走访商户"> </el-table-column>
+            <el-table-column prop="actRate" label="已走访商户占比" sortable="aa">
+              <template slot-scope="scope">
+                <span v-if="scope.row._actRateStatus == 1" style="color: #00c000 !important">{{ scope.row.actRate }}%</span>
+                <span v-else-if="scope.row._actRateStatus == 2" style="color: #c00000 !important">{{ scope.row.actRate }}%</span>
+                <span v-else>{{ scope.row.actRate }}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="trade50Num" label="已收集商户"> </el-table-column>
+            <el-table-column prop="trade50Rate" label="已收集商户占比" sortable="bb">
+              <template slot-scope="scope">
+                <span v-if="scope.row._trade50RateStatus == 1" style="color: #00c000 !important">{{ scope.row.trade50Rate }}%</span>
+                <span v-else-if="scope.row._trade50RateStatus == 2" style="color: #c00000 !important">{{ scope.row.trade50Rate }}%</span>
+                <span v-else>{{ scope.row.trade50Rate }}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="tradeGdNum" label="业务渗透商户"> </el-table-column>
+            <el-table-column prop="tradeGdRate" label="业务渗透商户占比" sortable="cc">
+              <template slot-scope="scope">
+                <span v-if="scope.row._tradeGdRateStatus == 1" style="color: #00c000 !important">{{ scope.row.tradeGdRate }}%</span>
+                <span v-else-if="scope.row._tradeGdRateStatus == 2" style="color: #c00000 !important">{{ scope.row.tradeGdRate }}%</span>
+                <span v-else>{{ scope.row.tradeGdRate }}%</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import classificationTable from '@/components/SmallBusinesses/classificationTable'
+import BusinessTable from '@/components/SmallBusinesses/BusinessTable'
+import smallChart from '@/components/SmallBusinesses/smallChart'
+import store from "store";
+import { chnl_xw_ywfzl } from '@/api/chanel.js'
+import charts from '@/views/channel/businessHall/components/charts'
+export default {
+  components: {
+    charts,
+    Header,
+    FlexBox,
+    smallChart,
+    BusinessTable,
+    classificationTable
+  },
+  name: 'index',
+  data() {
+    return {
+      isDialog2: false,
+      dialogVisible: false,
+      dialogTable: [],
+      //map地址
+      iframeSrc: '',
+      //选中的模块
+      selectMode: '1',
+      bottomList: [{
+        name: '营业厅',
+        url: '/channel/businessHall/index',
+      },
+      {
+        name: '渠道门店',
+        url: '/channelShop/index',
+      }, {
+        name: '卖场',
+        url: '/channel/sale/index',
+
+      }, {
+        name: '轻触点',
+        url: '/channel/touchPoint/index',
+
+      },
+      {
+        name: '小微商户',
+        url: '/SmallBusinesses/index',
+        active: true
+      },
+      {
+        name: '农村',
+        url: '/rural/index',
+
+      },
+      ],
+      timest: '',
+      mapData: {},
+      userInfo: {},
+      params: {},
+      gisQueryParams: {
+
+      },
+      ywfzlArr: []
+    }
+  },
+  async mounted() {
+    //获取时间
+    this.timest = window.sessionStorage.getItem('selectTime')
+    var initArea_id = ''
+    if (store.get('userInfo').gridId) {
+      this.mapData.level = 4;
+      initArea_id = store.get('userInfo').gridId
+    } else if (store.get('userInfo').areaCode) {
+      this.mapData.level = 3;
+      initArea_id = store.get('userInfo').areaCode
+    } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+      this.mapData.level = 2;
+      initArea_id = store.get('userInfo').eparchyCode
+    } else {
+      this.mapData.level = 1;
+      initArea_id = '0000'
+    };
+    this.mapData.area_id = initArea_id;
+    //初始查询参数
+    this.initParam()
+    //初始化地图
+    this.initGisMap(initArea_id)
+    window.addEventListener('message', this.mapInit, true)
+  },
+  methods: {
+    //获取时间
+    async getDate(date) {
+      this.timest = date
+      this.params.timest = date
+      this.$nextTick(() => {
+        this.init()
+      })
+      this.gisQueryParams.timest = date
+      this.gisQueryParams.message = "changeTime";
+      var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+      this.$refs['iframe'].contentWindow.postMessage(gisQueryParams, '*')
+      this.$forceUpdate()
+    },
+    //初始化地图参数
+    mapInit(e) {
+      let that = this
+      if (e.data.message == 'levelSwitch') {
+        that.mapData = e.data;
+        that.gisQueryParams = Object.assign({}, that.gisQueryParams, e.data)
+        that.params.timest = that.timest
+      }
+    },
+    //初始化地图
+    initGisMap(initArea_id) {
+      let level = this.mapData.level
+      let timest = this.timest
+      let se_type = this.params.se_type
+      let type = '08'
+      // 初始化地图参数
+      this.gisQueryParams = {
+        level: level,
+        se_type: se_type,
+        sceneid: '3',
+        gis_sceneid: '5',
+        area_id: initArea_id,
+        poi_city_id: '',
+        login_no: store.get('staffId'),
+        timest: timest
+      };
+      this.iframeSrc = `http://134.32.115.253:18080/sdresview/?type=${type}&se_type=${se_type}&level=${level}&sceneid=3&gis_sceneid=6&area_id=${initArea_id}&poi_city_id=370100&timest=${timest}`
+    },
+    //初始化参数
+    initParam() {
+      this.userInfo = store.get('userInfo');
+      Object.assign(this.mapData, { label: store.get('userInfo').dataAreaName || '各地市' })
+      if (store.get('userInfo').gridId) {
+        this.mapData.level = 4;
+      } else if (store.get('userInfo').areaCode) {
+        this.mapData.level = 3;
+      } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+        this.mapData.level = 2;
+      } else {
+        this.mapData.level = 1;
+      };
+      // 默认参数
+      this.params = {
+        timest: this.timest,
+        eparchyCode: this.userInfo.eparchyCode || '',
+        areaCode: this.userInfo.areaCode || '',
+        gridId: this.userInfo.gridId || '',
+        mLevel: this.mapData.level,
+        chnlKindId: '',
+      }
+    },
+    async init() {
+      this.ywfzl()
+    },
+    //业务发展量
+    ywfzl() {
+      //   let arr = '政企日发展量'
+      //   console.log(arr.replace(/日发展量/, ""))
+      this.params.timeVeidoo = 'd'
+      chnl_xw_ywfzl(this.params).then((res) => {
+        res.result.data
+          .map((re) => {
+            re.dayNewName = re.dayNewName.replace(/当日发展量/, "")
+          })
+        this.ywfzlArr = res.result.data
+      })
+    },
+    handleClose() {
+      this.isDialog2 = false
+    },
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message', this.mapInit, true)
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import url('../bigscreen/5Gdevelop/components/common.scss');
+/deep/ .bottom {
+  width: 40% !important;
+  left: 30% !important;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background-image: url('../../assets/images/bgImage.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+.content {
+  position: relative;
+  z-index: 100;
+  .left {
+    width: 24%;
+    position: relative;
+  }
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    position: relative;
+    height: calc(93.5%);
+    overflow: hidden;
+    .titleLeft {
+      width: 250px;
+      font-size: 22px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      margin: 0 0 0 40%;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .titleRight {
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+      margin: 50px 0 0 90%;
+    }
+    .centerBottom {
+      flex: 1;
+      position: relative;
+      height: calc(96%);
+      overflow: hidden;
+      width: 100%;
+      background-image: -webkit-image-set(url(/img/mapBg.6a03860f.png) 1x, url(/img/mapBg@2x.b1314878.png) 2x);
+      background-image: image-set(url(/img/mapBg.6a03860f.png) 1x, url(/img/mapBg@2x.b1314878.png) 2x);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .center-title {
+      margin: 51px 0 0 40px;
+      color: #02f6ff;
+      font-size: 24px;
+      font-family: MFBanHei;
+    }
+    .weekday {
+      position: absolute;
+      right: 80px;
+      color: #02f6ff;
+      span {
+        color: #ffffff;
+      }
+    }
+    .centerTop {
+      width: 100%;
+      height: 245px;
+      background-image: image-set(
+        url('~@/assets/images/bigScreen/fullService/center-top.png') 1x,
+        url('~@/assets/images/bigScreen/fullService/center-top@2x.png') 2x
+      );
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+  .right {
+    width: 44%;
+    height: 100%;
+    position: relative;
+    .rightBox {
+      position: absolute;
+      width: 100%;
+      .rightBoxfrist {
+        // height: 18vh;
+      }
+      .rightBoxmiddle {
+        // margin-top: 10px;
+        // height: 32vh;
+      }
+      .rightBoxlast {
+        // margin-top: 10px;
+        // height: 23.5vh;
+      }
+    }
+  }
+  .fiveG-title {
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+    background-image: url('../../assets/images/bigScreen/fullService/title.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-indent: 23px;
+    color: #02f6ff;
+    font-size: 26px;
+    font-family: MFBanHei;
+  }
+  /deep/ .bottom {
+    width: 43% !important;
+    left: 28.6% !important;
+  }
+  .center-title {
+    margin: 40px 0 0 40px;
+    color: #02f6ff;
+    font-size: 24px;
+    font-family: MFBanHei;
+  }
+}
+.dialogCon {
+  padding: 0 40px;
+  .title-right {
+    margin-left: 80%;
+    color: #218cc8;
+    div {
+      width: 38px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      display: inline-block;
+      cursor: pointer;
+      background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .active {
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+    }
+  }
+  .dialogTitle {
+    display: inline-block;
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .dialogSmallTitle {
+    margin-left: 50px;
+    display: inline-block;
+    padding-right: 110px;
+    font-size: 16px;
+    // font-family: MFBanHei;
+    font-weight: 400;
+    color: #fff;
+  }
+  .dialogChart {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+  }
+}
+</style>

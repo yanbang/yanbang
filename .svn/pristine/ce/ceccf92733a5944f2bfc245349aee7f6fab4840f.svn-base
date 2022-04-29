@@ -1,0 +1,1292 @@
+<!--应急通信 -->
+<template>
+  <div class = "contentbox">
+     <Header title = "山东联通网络洞察-队伍建设" explaincode = "team_build"></Header>
+    <div class = "contentbody">
+      <div class = "leftbox flex colflex">
+        <div class = "box-item flex colflex flex1" style="flex: 1.2">
+           <div class = "item-title titlefont clearfix">
+             <span>人员构成</span>
+              <span v-show="mapLevel == 1" class="zdmore pull-right" @click="isDialogShow2 = true"><span class="el-icon-more"></span></span>
+           </div>
+           <div class = "rowttabs">
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '1'}" @click="rowttabsClick('1')">年龄</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '2'}" @click="rowttabsClick('2')">学历</span>
+             <span class="rowttabs-item" :class="{'active': rowttabStatus == '3'}" @click="rowttabsClick('3')">用工性质</span>
+
+           </div>
+           <div style="height: 350px">
+                <div class="chartbox"  id = "chart_rygc" ></div>
+           </div>
+    
+        </div>
+              <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont clearfix">
+             <span>能力培养</span>
+              <span v-show="mapLevel == 1" class="zdmore pull-right" @click="teamDetailFn(1, '能力培养')"><span class="el-icon-more"></span></span>
+           </div>
+           <div  class = "flex1 flex" >
+              
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.zw_rz | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/renzheng1.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">智网工程师认证</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum" style="color: #2bd02b">{{teamData.rate_rzzw | formatVal}}%</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/占比.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">占比</div>
+                        </div>
+                   </div>
+  
+           </div>
+           <div  class = "flex1 flex" >
+                <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.szh_rz | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/renzheng1.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">数字化能力认证</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum" style="color: #2bd02b">{{teamData.rate_rzszh| formatVal}}%</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/占比.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">占比</div>
+                        </div>
+                   </div>
+  
+           </div>
+        </div>  
+      </div>
+      <div class = "centerbox flex colflex">
+
+        <div class = "cbottom-box">
+             <div class="tjbtn"  @click="getEyesInfo" ><img src="../zhyeys.png" alt="" srcset=""></div>
+            <div class="gistitle">
+              <span class="titlefont">{{gisTitle}}</span>
+            </div>
+            <iframe  ref="gisiframe" id="gisiframe" :src="iframeSrc"  style="width: 100%; height: 100%" frameborder="0"></iframe>
+         </div>
+      </div>
+      <div class = "rightbox flex colflex">
+            <div class = "box-item flex colflex flex1" >
+           <div class = "item-title titlefont">
+             <span>专业队伍</span>
+               <span v-show="mapLevel == 1" class="zdmore pull-right" @click="teamDetailFn(2, '专业队伍')"><span class="el-icon-more"></span></span>
+           </div>
+           
+            <div  class = "flex1 " style="margin-top: 20px">
+              <div class="temuserrow flex">
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum flex"  style="padding: 0 15px;">
+                              <div class="flex1">{{teamData.zw_num | formatVal}}</div>
+                               <div class="flex1" style="color: #2bd02b">{{teamData.zw_rate | formatVal}}%</div>
+                            </div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/images_zy/khindex2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">智网工程师</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                             <div class="lgwnum flex"  style="padding: 0 15px;">
+                              <div class="flex1">{{teamData.yw_num | formatVal}}</div>
+                               <div class="flex1" style="color: #2bd02b">{{teamData.yw_rate | formatVal}}%</div>
+                            </div>
+                           
+                            <div class="lgwimg">
+                                <img src="@/assets/images/images_zy/khindex2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">云网工程师</div>
+                        </div>
+                   </div>
+              </div>
+
+                <div class="temuserrow flex" style="margin-top: 15px">
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum flex"  style="padding: 0 15px;">
+                              <div class="flex1">{{teamData.wc_num | formatVal}}</div>
+                               <div class="flex1" style="color: #2bd02b">{{teamData.wc_rate | formatVal}}%</div>
+                            </div>
+                           
+                            <div class="lgwimg">
+                                <img src="@/assets/images/images_zy/khindex2.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">创新工程师</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum flex" style="padding: 0 15px;">
+                               <div class="flex1">{{teamData.wz_num | formatVal}}</div>
+                               <div class="flex1" style="color: #2bd02b">{{teamData.wz_rate | formatVal}}%</div>
+                            </div>
+                            <!-- <div class="lgwnum">{{teamData.wz_num | formatVal}}</div> -->
+                            <div class="lgwimg">
+                                <img src="@/assets/images/images_zy/iconr4.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">网络支撑队伍</div>
+                        </div>
+                   </div>
+                </div>
+           </div>
+        </div>
+  
+
+         <div class = "box-item flex colflex flex1">
+           <div class = "item-title titlefont">
+             <span>战略人才</span>
+               <span v-show="mapLevel == 1" class="zdmore pull-right" @click="teamDetailFn(3, '战略人才')"><span class="el-icon-more"></span></span>
+           </div>
+             <div  class = " flex" >
+              
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.b_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/B级.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">B 级</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.c_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/C级.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">C 级</div>
+                        </div>
+                   </div>
+
+                    <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.d_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/D级.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">D 级</div>
+                        </div>
+                   </div>
+  
+             </div>
+              <div  class = " flex" v-show="mapLevel == 1">
+                  <div class="flex1">
+                       <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.e_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/E.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">E 级</div>
+                        </div>
+                  </div>
+                   <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.f_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/F.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">F 级</div>
+                        </div>
+                   </div>
+
+                    <div class="flex1">
+                         <div class="lgwbox">
+                            <div class="lgwnum">{{teamData.g_num | formatVal}}</div>
+                            <div class="lgwimg">
+                                <img src="@/assets/images/G.png" alt="" srcset="">
+                            </div>
+                            <div class="lgwfont">G 级</div>
+                        </div>
+                   </div>
+  
+             </div>
+        </div>
+      </div>
+    </div>
+      <el-dialog :visible.sync="isDialogShow1" width="60%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">详情</div>
+          </div>
+           <div class="dialogTableBg" style="min-height: 400px; max-height: 650px; overflow: auto">
+            <div class="eyesmodelbox" v-html="zhy_content">
+            </div>
+        </div>
+        </div>
+      </el-dialog>
+
+
+       <el-dialog :visible.sync="isDialogShow" width="88%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{teamtitle}}详情</div>
+          </div>
+          <div class="dialogTableBg" >
+                <el-table :data="teamDataList"  size = "mini" height="670px" v-loading = "detailloading">
+                       <el-table-column v-for="(col, index) in teamCol" :key="index"  :prop="col.filed" :label="col.title" :sortable = "col.sortable">
+                                <template slot-scope="scope">
+                                  <span v-if="col.rate">{{scope.row[col.filed]}}%</span>
+                                  <span v-else >{{scope.row[col.filed]}}</span>
+                                </template>
+                      </el-table-column>
+                    
+                </el-table>       
+          </div>
+        </div>
+      </el-dialog>
+
+         <el-dialog :visible.sync="isDialogShow2" width="95%" :modal-append-to-body='false'>
+        <div class="dialogCon">
+          <div class="dialogTitle">
+            <div class="left">{{teamtitle}}详情</div>
+          </div>
+          <div class="dialogTableBg" style="padding: 15px 0">
+
+                <el-table :data="cateTeamDataDetail" height="670px" class="custom_table grouptable groupheadtable"  size = "mini" max-height="680px" >
+                  <el-table-column  prop="name" label="地市">
+                  </el-table-column>
+                   <el-table-column  prop="boy" label="男">
+                  </el-table-column>
+                   <el-table-column  prop="girl" label="女">
+                  </el-table-column>
+                   <el-table-column  label="年龄">
+                     <el-table-column  prop="agezhong" label="35及以下" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="age35" label="35～50" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="age50" label="50以上" sortable>
+                     </el-table-column>
+                  </el-table-column>
+                   <el-table-column  prop="name" label="学历">
+                     <el-table-column  prop="chuzhong" label="初中及以下" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="gaozhong" label="高中" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="zhuanke" label="专科" sortable>
+                     </el-table-column>
+                       <el-table-column  prop="benke" label="本科" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="shuoshi" label="硕士研究生" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="qita" label="其它" sortable>
+                     </el-table-column>
+                  </el-table-column>
+                  <el-table-column  label="用工性质">
+                     <el-table-column  prop="num_ht" label="合同工人数" sortable>
+                     </el-table-column>
+                     <el-table-column  prop="num_wb" label="外包工人数" sortable>
+                     </el-table-column>
+                  </el-table-column> 
+                </el-table>       
+          </div>
+        </div>
+      </el-dialog>
+       <Footer :tabdata="tabdata" class="initfoot"></Footer>
+  </div>
+</template>
+
+<script>
+var self = null
+import Header from '@/components/resource_visual/header2';
+import Footer from '@/components/resource_visual/footer';
+import store from 'store'
+import { mapState } from 'vuex'
+import echartInit from './initechart'
+var _ = require('@/utils/lodash.js')
+import serviceApi from '@/api/wisdomeyes'
+var Qs = require('@/utils/qs.js')
+export default {
+  data () {
+    return {
+      gisTitle: '山东省',
+      detailloading: false,
+      isDialogShow: false,
+      isDialogShow1: false,
+      isDialogShow2: false,
+      rowttabStatus: '1',
+      rowttabStatus2: '1',
+      bzhd_checkList: ['00', '01', '02'],
+      cityCode: '370000',
+      iframeSrc: '',
+      tabstatus: '0201',
+      gisQueryParams: {},
+      queryParams: {},
+      gisMapData: {},
+      mapLevel: 1,
+      areaCode: '',
+      tabdata: [
+        { title: '网络能力', active: false, href: '/unicomwisdomeyes/networkCapab' },
+        {title: '健康度', active: false, href: '/unicomwisdomeyes/health'},
+       { title: '效能指数', active: false, href: '/unicomwisdomeyes/efficiency_cb' },
+        {title: '卓越度', active: false, href: '/unicomwisdomeyes/excellent'},
+        {title: '匹配度', active: false, href: '/unicomwisdomeyes/matchin'},
+        {title: '队伍建设', active: true, href: '/unicomwisdomeyes/teambuilding'},
+      ],
+      control: [],
+      teamData: {},
+      teamDataList: [],
+      teamCol: [],
+      teamtitle: '',
+      cateTeamData: {},
+      cateTeamDataDetail: [],
+      zhy_content: ''
+      
+    }
+  },
+  components: {
+    Header,
+    Footer,
+   
+  },
+  created() {
+    self = this;
+  },
+  mounted () {
+       var self = this;
+      var initArea_id = '370000'
+      this.mapLevel = 1;
+     if (store.get('userInfo')) {
+      var userInfo = store.get('userInfo')
+      var mapLevel = userInfo.levelAreaLevel
+      if (mapLevel == '1') {
+          // 省级用户
+          this.control = ['370000']
+        } else if (mapLevel >= '2') {
+          this.control = ['370000', userInfo.levelAreaCode]
+        }
+     }
+      this.cityCode = initArea_id;
+      this.initGisMap(initArea_id);
+      // 注册地图事件
+      this.initgisTitle = this.gisTitle + '';
+      window.addEventListener('message', self.gismapListener, true)
+     this.initService()
+    
+  },
+  watch: {
+    
+  },
+  computed: {
+    ...mapState({
+       searchDate: state => state.resource.searchDate,
+    }),
+   
+    
+  },
+  methods: {
+    initService () {
+     
+      this.servicejkdRysl()
+      this.servicejkdRygc()
+      this.servicejkdRygcXq()
+    }, 
+    getEyesInfo () {
+      this.isDialogShow1 = true;
+      this.getEyesConten()
+    },
+     getEyesConten () {
+       var params = {
+        code: 'zhy-dwjs',
+        "area_code":this.cityCode,
+      }
+      serviceApi.servicejkdTc(params).then(res => {
+        
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {};
+          this.zhy_content = datal.zhy_content
+        } else {
+          this.$message.error(res.rspMsg)
+        }
+      })
+    },
+
+    teamDetailFn (type, title) {
+      var colTeam = []
+      this.teamtitle = title
+      if (type == 1) {
+       colTeam = [
+         {'filed': 'name', title: '地市'},
+        {'filed': 'nlpy_num', title: '能力培养人数', sortable: true},
+         {'filed': 'zw_rz', title: '智网工程师认证人数', sortable: true},
+         {'filed': 'rate_rzzw', title: '智网工程师认证比例', sortable: true, rate: true},
+         {'filed': 'szh_rz', title: '数字化能力认证人数', sortable: true},
+         {'filed': 'rate_rzszh', title: '数字化能力认证比例', sortable: true, rate: true},
+       ]
+       this.servicejkdRyslXq('servicejkdNlpyXq')
+      } else if (type == 2) {
+         colTeam = [
+         {'filed': 'name', title: '地市'},
+         {'filed': 'zydw_num', title: '专业队伍人数', sortable: true},
+         {'filed': 'wc_num', title: '创新工程师人数', sortable: true},
+         {'filed': 'wc_rate', title: '创新工程师占比', sortable: true, rate: true},
+         {'filed': 'wz_num', title: '网络支撑队伍人数', sortable: true},
+         {'filed': 'wz_rate', title: '网络支撑队伍占比', sortable: true, rate: true},
+         {'filed': 'yw_num', title: '云网工程师人数', sortable: true},
+         {'filed': 'yw_rate', title: '云网工程师占比', sortable: true, rate: true},
+         {'filed': 'zw_num', title: '智网工程师人数', sortable: true},
+         {'filed': 'zw_rate', title: '智网工程师占比', sortable: true, rate: true},
+       ]
+       this.servicejkdRyslXq('servicejkdZydwXq')
+      }  else if (type == 3) {
+         colTeam = [
+         {'filed': 'name', title: '地市'},
+         {'filed': 'zlrc_num', title: '战略人才人数', sortable: true},
+         {'filed': 'b_num', title: 'B级人数', sortable: true},
+         {'filed': 'c_num', title: 'C级人数', sortable: true},
+         {'filed': 'd_num', title: 'D级人数', sortable: true},
+        //  {'filed': 'e_num', title: 'E级人数', sortable: true},
+        //  {'filed': 'f_num', title: 'F级人数', sortable: true},
+        //  {'filed': 'g_num', title: 'G级人数', sortable: true},
+       ]
+       this.servicejkdRyslXq('servicejkdZlrcXq')
+      }
+      this.teamCol = colTeam;
+      this.isDialogShow = true
+    },
+    renderRygcChart () {
+      var datal = this.cateTeamData
+      var chartParams = {
+        domId: 'chart_rygc',
+        manval: datal.boy,
+        womanval:  datal.girl,
+        legend: [],
+        data: []
+      }
+      if (this.rowttabStatus == '1') {
+        // 年龄
+        chartParams.legend = ['35及以下', '35～50', '50以上'],
+        chartParams.data = [
+           {value: datal.agezhong, name: '35及以下'},
+           {value: datal.age35, name: '35～50'},
+           {value: datal.age50, name: '50以上'},
+        ]
+      } else if (this.rowttabStatus == '2') {
+          chartParams.legend = ['初中及以下', '高中', '专科', '本科','硕士研究生', '其它'],
+          chartParams.data = [
+            {value: datal.chuzhong, name: '初中及以下'},
+            {value: datal.gaozhong, name: '高中'},
+            {value: datal.zhuanke, name: '专科'},
+            {value: datal.benke, name: '本科'},
+            {value: datal.shuoshi, name: '硕士研究生'},
+            {value: datal.qita, name: '其它'},
+          ]
+      }  else if (this.rowttabStatus == '3') {
+          chartParams.legend = ['合同工人数', '外包工人数'],
+          chartParams.data = [
+            {value: datal.num_ht, name: '合同工人数'},
+            {value: datal.num_wb, name: '外包工人数'},
+          ]
+      }
+       echartInit.initPieCat(chartParams)
+
+     
+    },
+     rowttabsClick (type) {
+      this.rowttabStatus = type;
+      this.renderRygcChart()
+    },
+    initSortTabledata (datas) {
+      var datal= _.cloneDeep(datas);
+       datal.forEach(item => {
+        Object.keys(item).forEach(key => {
+            Number(item[key]) || Number(item[key]) === 0 ? item[key] =  Number(item[key]) : item[key];
+        })
+      });
+    
+      return datal
+    }, 
+    servicejkdRygc () {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdRygc(params).then((res) => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.cateTeamData = datal;
+           this.renderRygcChart()
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+     servicejkdRygcXq () {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdRygcXq(params).then((res) => {
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.cateTeamDataDetail = this.initSortTabledata(datal);
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+     servicejkdRysl () {
+      var params = {
+        cityCode: this.cityCode
+      }
+      serviceApi.servicejkdRysl(params).then((res) => {
+        
+        if (res.rspCode == '0000') {
+          var datal = res.result.data[0] || {}
+          this.teamData = datal
+         
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      })
+    },
+    servicejkdRyslXq (service) {
+      var params = {
+        cityCode: this.cityCode
+      }
+      this.detailloading = true
+      serviceApi[service](params).then((res) => {
+         this.detailloading = false
+        if (res.rspCode == '0000') {
+          var datal = res.result.data || []
+          this.teamDataList =  this.initSortTabledata(datal);
+         } else {
+           this.$message.error(res.rspMsg)
+         }
+      }).catch(err => {
+         this.detailloading = false
+      })
+    },
+   gismapListener(e) {
+        var self = this;
+        if (e.data.message == 'levelSwitch') {
+          self.gisTitle = e.data.area_name ||  this.initgisTitle;
+          self.mapLevel = e.data.level
+          self.areaCode = e.data.area_id;
+          self.gisMapData = e.data;
+          self.gisQueryParams = Object.assign({}, self.gisQueryParams, e.data)
+          self.gisQueryParams.area_name = '';
+          console.log('message', e.data)
+          self.cityCode = (e.data.area_id || '370000')
+          this.initService()
+        }  else if (e.data.message == 'changeCity') {
+         
+         self.gisTitle = e.data.area_name || '山东省'
+         self.mapLevel = e.data.level
+         self.areaCode = e.data.area_id;
+         self.gisMapData = e.data;
+         self.gisQueryParams = Object.assign({},  self.gisQueryParams, e.data)
+         self.gisQueryParams.area_name = '';
+         self.cityCode = e.data.area_id;
+         this.initService()
+      } 
+      },
+      initGisMap(initArea_id) {
+        // 初始化地图参数
+        this.gisQueryParams = {
+          control: this.control.join(','),
+          level: this.mapLevel,
+          sceneid: '06',
+          gis_sceneid: '06',
+          area_id: initArea_id || '370000',
+          poi_city_id: '',
+          system_type: 'C40',
+          login_no: store.get('staffId') || '',
+          timest: this.$store.state.resource.searchDate
+        };
+        var gisQueryParams = JSON.parse(JSON.stringify(this.gisQueryParams))
+        this.iframeSrc = window.gis_iframeSrc +  `/smartEyes?${Qs.stringify(gisQueryParams)}`;
+
+      },
+   
+  },
+  destroyed() { // 在组件生命周期结束的时候销毁。
+    window.removeEventListener('message',this.gismapListener, true)
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+  @import url('../comtable.scss');
+  /deep/ .bottom-tab .bottom-item {
+      padding: 4px 15px;
+  }
+  .zanbox {
+      text-align: center;
+      padding-top: 20px;
+    .zannum {
+        font-size: 28px;
+        line-height: 48px;
+    }
+    .zanimg {
+        width: 48px;
+    }
+    .zanfont {
+        font-size: 22px;
+        margin-top: 12px;
+    }
+  }
+  .contentbody {
+    height: 100%;
+    background: url('~@/assets/images/bigScreen/bg-left.png') left no-repeat, url('~@/assets/images/bigScreen/bg-right.png') right no-repeat;
+    background-size: auto 100%;
+    margin: 15px 15px 10px 15px;
+    position: relative;
+    display: flex;
+  }
+ .leftbox,  .rightbox {
+   width: 450px;
+   height: 100%;
+   box-sizing: border-box;
+   padding: 15px;
+   padding-bottom: 30px;
+ }
+
+ .centerbox {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: url('~@/assets/images/images_zy/中框线@2x.png') no-repeat;
+   background-size: 100% 100%;
+   margin-top: 10px;
+   box-sizing: border-box;
+   position: relative;
+   padding: 40px 20px 20px 20px;
+   margin-bottom: 80px;
+  position: relative;
+
+ }
+.cbottom-box {
+   flex: 1;
+   margin-top: 10px;
+   box-sizing: border-box;
+   position: relative;
+   padding-top: 50px;
+   position: relative;
+}
+
+//  .item-title {
+//    font-size: 22px;
+//    color: aqua;
+//    background: url('~@/assets/images/images_zy/itemtitle.png') no-repeat ;
+//    background-size: 100% 100%;
+//    line-height: 38px;
+//     padding-left: 58px;
+//     position: relative;
+//  }
+
+  .item-title {
+  font-size: 18px;
+   color: aqua;
+   background: url('~@/assets/images/bigScreen/titlebg.png') no-repeat;
+   background-size: 100% 100%;
+   line-height: 46px;
+   padding-left: 36px;
+   margin-bottom: 5px;
+   font-weight: bolder;
+ }
+ .chartbox {
+   width: 100%;
+   height: 100%;
+ }
+
+ .gdjkitem {
+   height: 68px;
+   width: 72px;
+   margin: 0 auto;
+   background: url('~@/assets/images/images_zy/cire.png') no-repeat;
+  background-size: 100% 100%;
+  line-height: 68px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+  
+ }
+
+ .gdjkitembox {
+   text-align: center;
+   position: relative;
+   margin-top: 12px;
+   &:not(:last-child)::after{
+     content: '';
+     display: block;
+     width: 18px;
+     height: 18px;
+     background: url('~@/assets/images/images_zy/jiantou.png') no-repeat;
+     background-size: 100% 100%;
+     position: absolute;
+     right: -8px;
+     top: 26px;
+   }
+ }
+
+
+.mtheader {
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    color: #51d1ee;
+    border-bottom: 1px solid #308497;
+   
+}
+.mtbody {
+  height: 100%;
+  margin: 6px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.mtbody .scrollitem {
+  text-align: center;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 5px;
+}
+
+.mtbody .scrollitem:nth-child(odd) {
+  background: rgba(4,54,108,0.7);
+}
+ .centTab {
+   position: absolute;
+   z-index: 10;
+   width: 100%;
+   top: 30px;
+   text-align: center;
+  .centtabitem {
+    display: inline-block;
+    height: 56px;
+    width: 140px;
+    line-height: 66px;
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: rgb(2, 252, 252);
+     background: url('~@/assets/images/images_zy/WechatIMG431.png') no-repeat;
+    background-size: 100% 120%;
+    margin-right: -15px;
+    opacity: 0.5;
+    
+   }
+    .centtabitem.active {
+       opacity: 1;
+    }
+ }
+ .tunit {
+   font-size: 16px;
+ }
+
+
+ .cardetailbox {
+   display: flex;
+   padding: 15px 0;
+   .imgbox {
+     margin-right: 30px;
+     width: 380px;
+     img {
+       width: 380px;
+       height: 250px; 
+     }
+   }
+   .fontbox {
+     color: #fff;
+     font-size: 16px;
+   }
+ }
+ /deep/.el-table tbody tr.rowclassname_00  td{
+   color: rgb(243, 198, 101)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_01  td{
+   color: rgb(92, 235, 74)!important;
+ }
+  /deep/.el-table tbody tr.rowclassname_02  td{
+   color: rgb(86, 212, 243)!important;
+ }
+
+ .checkgroupbox {
+   position: absolute;
+   right: 10px;
+   top: 0;
+ }
+ .checkgroupbox .el-checkbox {
+   margin-right: 15px;
+   .el-checkbox__label {
+     margin-left: 6px;
+   }
+ }
+  /deep/ .checkstate01 .el-checkbox__label {
+     color: rgb(92, 235, 74)!important;
+  }
+   /deep/ .checkstate00 .el-checkbox__label {
+     color: rgb(243, 198, 101)!important;
+  }
+  /deep/ .checkstate02 .el-checkbox__label {
+    color: rgb(86, 212, 243)!important;
+  }
+
+  /deep/ #bzhdTable tbody tr {
+    cursor: pointer !important;
+  }
+
+  .box-item {
+  position: relative;
+}
+  .rowttabs {
+   height: 40px;
+   line-height: 40px;
+   text-align: right;
+  .rowttabs-item {
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #5b7bc9;
+    margin-left: 10px;
+    color: #698bdf;
+    cursor: pointer;
+  }
+  .rowttabs-item.active {
+    border: 1px solid #45d8e2;
+     color: #45d8e2;
+  }
+ }
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+ .dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+}
+.hddetali {
+  padding: 10px;
+  color: #fff;
+  font-size: 14px;
+  overflow: auto;
+  height: 320px;
+  h3 {
+     color: #fff;
+  }
+}
+.swiperClass {
+  width: 80%;
+  height: 280px;
+  margin:  0 auto;
+  .swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #19daec;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+
+.gistitle {
+ position: absolute;
+  left: 20px;
+  top: 10px;
+  font-size: 24px;
+  color: aqua;
+
+}
+.anpiebox {
+  padding: 10px;
+  box-sizing: border-box;
+}
+.piefont {
+  font-size: 15px;
+  line-height: 38px;
+  text-align: center;
+}
+
+
+.rightTable {
+      width: 100%;
+      font-size: 14px;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #02f6ff;
+      .tHead,.tBody {
+        display: flex;
+        .wid19 {
+          width: 18% !important;
+          text-align: left;
+        }
+      }
+      .tHead {
+        line-height: 38px;
+        div {
+          width: 27%;
+          text-align: center;
+          background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          background-position: center 12px;
+           font-weight: bolder;
+        }
+        .wid19 {
+          background-image: none;
+        }
+      }
+      .tBody {
+        .td {
+          width: 27%;
+          text-align: center;
+          div {
+            // padding: 10px 0;
+            line-height: 40px;
+            border-bottom: 1px dashed #134192;
+          }
+        }
+        .bg {
+          background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+          background-repeat: no-repeat;
+          background-position: center left;
+          background-size: 1px 100%;
+          div {
+            font-size: 15px;
+            font-family: DigifaceWide;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    .piefont2 {
+      position: relative;
+      top: -10px;
+      text-align: center;
+      font-size: 15px;
+      .sudubox {
+        font-size: 22px;
+        color: rgb(240, 161, 15);
+      }
+
+    }
+    .bitembox {
+      margin: 0 auto;
+      text-align: center;
+      .bimg {
+        margin: 10px 0;
+        width: 68px;
+        height: 60px;
+      }
+      .numfont {
+        font-size: 22px;
+        color: aqua;
+      }
+      .infofont {
+        font-size: 16px;
+      }
+    }
+   /deep/.border-box-content {
+      padding: 15px 10px;
+      display: flex;
+      align-items: center;
+      justify-self: center;
+    }
+    .rowtitem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .sub_rowtitem {
+        display: flex;
+        margin-bottom: 10px;
+        .inconbox {
+          margin-right: 40px;
+          width: 42px;
+          height: 42px;
+          background: #031962;
+          text-align: center;
+          border-radius: 50%;
+          box-shadow: 0 0 10px rgba(53, 98, 233, 0.8);
+          margin-bottom: 10px;
+          position: relative;
+          top: 5px;
+          img {
+            width: 40px;
+          }
+        }
+        .flex1 {
+          text-align: center;
+        }
+        .numfont {
+          color: rgb(241, 169, 13);
+          font-size: 20px;
+        }
+        .titlefont {
+          font-size: 16px;
+        }
+
+      }
+    }
+    .rowtitem1 {
+      flex: 1.2;
+    }
+    .rtitembox {
+        position: relative;
+        padding-bottom: 30px;
+        box-sizing: border-box;
+        .waterfont {
+            height: 30px;
+            font-size: 20px;
+            line-height: 30px;
+            text-align: center;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+        }
+    }
+ .zdmore {
+  float: right;
+  font-size: 16px;
+  cursor: pointer;
+  color: #57b4f1;
+  margin-right: 0px;
+  text-decoration: underline;
+  position:relative;
+  z-index: 999
+}
+ @keyframes turn{
+      0%{-webkit-transform:rotate(0deg);}
+      25%{-webkit-transform:rotate(90deg);}
+      50%{-webkit-transform:rotate(180deg);}
+      75%{-webkit-transform:rotate(270deg);}
+      100%{-webkit-transform:rotate(360deg);}
+  }
+  .tjbtn {
+     position: absolute;
+    right: 30px;
+    top: 0px;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 10px rgb(56, 148, 235);
+    cursor: pointer;
+    animation:turn 8s linear infinite; 
+    z-index: 99;
+    img {
+      width: 44px;
+      z-index: 99;
+    }
+  }
+  .matbox {
+      margin-top: 10px;
+      .matfont {
+          font-size: 24px;
+          color: #eae6ab;
+          font-weight: bold;
+          line-height: 46px;
+      }
+      .matimg {
+          img {
+              width: 40px;
+          }
+      }
+  }
+  .mattitle {
+       font-size: 18px;
+       margin-top: 15px;
+  }
+  .matitembox {
+      text-align: center;
+      padding-top: 40px;
+  }
+  .piechartbox {
+    height: 140px;
+    // width: 140px;
+  }
+    .lgwbox {
+      text-align: center;
+      padding-top: 40px;
+      .lgwnum {
+          font-size: 24px;
+          color: #f7e713;
+      }
+      .lgwimg {
+          margin: 12px 0;
+          img {
+              width: 42px;
+          }
+      }
+      .lgwfont {
+         font-size: 20px; 
+      }
+  }
+  .rightbox .lgwbox{
+      padding-top: 40px;
+  }
+
+  .infobox {
+    padding: 10px 20px;
+    background: #063c56;
+    margin-top: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    .inforow {
+      line-height: 40px;
+      font-size: 20px;
+      .infot {
+        margin-right: 10px;
+        color: rgb(128, 186, 233);
+      }
+    }
+  }
+
+  
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 18px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 16px !important;
+}
+
+/deep/.dialogTableBg .el-table tr {
+  background: none !important;
+}
+
+/deep/.dialogTableBg .el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-size: 16px  !important;
+}
+/deep/ .inittable2.el-table td {
+  padding: 5px 0;
+}
+/deep/.el-table td.is-left {
+  text-align: left !important;
+}
+
+
+/deep/.el-table td:first-child {
+  background: none !important;
+}
+
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0 6px;
+}
+/deep/ .dialogTableBg .el-table tr:nth-child(even) {
+  background: rgba(4,54,108,0.4) !important;
+}
+/deep/.el-table__footer-wrapper {
+  border-top: 1px dashed #1d569c;
+}
+/deep/.el-table__footer-wrapper .cell {
+  font-size: 16px;
+    color: #a1ecfd;
+}
+/deep/.el-dialog {
+  margin-top: 10vh !important;
+}
+
+/deep/ .el-loading-mask {
+  background-color: rgba(6,26,58, 0.7);
+}
+ /deep/ .grouptable.el-table tbody td {
+   border-right: 1px dashed rgb(45, 61, 94) !important
+ }
+ /deep/.groupheadtable.custom_table  thead th:not(:last-child) {
+    border-right: 1px solid rgb(45, 61, 94) !important;  
+}
+/deep/.el-table__fixed{
+  background: #00133e !important;
+}
+
+/deep/.el-table__fixed::before, /deep/ .el-table__fixed-right::before  {
+   background: transparent !important;
+}
+
+</style>

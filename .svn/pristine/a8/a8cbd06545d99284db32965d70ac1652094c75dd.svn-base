@@ -1,0 +1,1090 @@
+import echarts from 'echarts'
+var _ = require('@/utils/lodash.js')
+export default {
+  initechart_lines(charts) {
+    var color = ['rgba(23, 255, 243', 'rgba(237,161,54', 'rgb(85,202,85', 'rgba(225,70,228',]
+    var lineY = []
+    var yAxisIndex2 = []
+    for (var i = 0; i < charts.names.length; i++) {
+      let x = i
+      if (x > color.length - 1) {
+        x = color.length - 1
+      }
+      var data = {
+        name: charts.names[i],
+        type: 'line',
+        color: color[x] + ')',
+        smooth: true,
+        yAxisIndex: yAxisIndex2.indexOf(charts.names[i]) > -1 ? 1 : 0,
+        lineStyle: {
+          type: yAxisIndex2.indexOf(charts.names[i]) > -1 ? 'dotted' : 'solid',
+        },
+        areaStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: color[x] + ', 0.3)'
+            }, {
+              offset: 0.8,
+              color: color[x] + ', 0)'
+            }], false),
+            shadowColor: 'rgba(0, 0, 0, 0.1)',
+            shadowBlur: 10
+          }
+        },
+        symbol: 'circle',
+        symbolSize: 5,
+        data: charts.value[i]
+      }
+      lineY.push(data)
+    };
+    var option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        data: charts.names,
+        textStyle: {
+          fontSize: 12,
+          color: '#fff'
+        },
+        right: '0%',
+        top: 10,
+      },
+      grid: {
+        top: '15%',
+        left: '2%',
+        right: '2%',
+        bottom: '2%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: true,
+        data: charts.lineX,
+        axisLabel: {
+          textStyle: {
+            color: '#fff',
+            fontSize: 12,
+          },
+          interval: 0,
+          rotate: 40,
+          margin: 12
+        },
+        axisLine: {
+          show: true, //隐藏X轴轴线
+          lineStyle: {
+            color: "#3d5269",
+            width: 1
+          }
+        },
+      },
+      yAxis: [
+        {
+          name: charts.unit,
+          type: 'value',
+          splitNumber: 4,
+          axisLabel: {
+            formatter: '{value}',
+            textStyle: {
+              color: 'rgb(0,253,255,0.6)'
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#3d5269'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#3d5269'
+            }
+          }
+        },
+        {
+          name: '%',
+          type: 'value',
+          splitNumber: 4,
+          axisLabel: {
+            formatter: '{value}',
+            textStyle: {
+              color: 'rgb(0,253,255,0.6)'
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#3d5269'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#3d5269'
+            }
+          }
+        }
+      ],
+      series: lineY
+    }
+    if (charts.lineX.length > 12) {
+      option.dataZoom = [{
+        show: true,
+        start: 0,
+        end: 50,
+        textStyle: {
+          color: "rgba(204,187,225,0)",
+        },
+        fillerColor: "rgba(67,55,160,0.3)",
+        borderColor: "rgba(204,187,225,0.1)"
+      }]
+    }
+    var echart = echarts.init(document.getElementById(charts.domId));
+    echart.setOption(option, true);
+  },
+  initEchart_barLine(data) {
+    var echart = echarts.init(document.getElementById(data.domId))
+    var option = {
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+          label: {
+            show: true
+          }
+        }
+      },
+      grid: {
+        left: "10",
+        top: "40",
+        right: "10",
+        bottom: "10",
+        containLabel: true
+      },
+      legend: {
+        data: data.legend,
+        top: 5,
+        textStyle: {
+          color: "#fff",
+          fontSize: 12
+        }
+      },
+      xAxis: {
+        data: data.xData,
+        axisLine: {
+          show: true, //隐藏X轴轴线
+          lineStyle: {
+            color: "#3d5269",
+            width: 1
+          }
+        },
+        axisTick: {
+          show: true, //隐藏X轴刻度
+          alignWithLabel: true
+        },
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: "#fff", //X轴文字颜色
+            fontSize: 12
+          },
+          margin: 12,
+          interval: 0,
+          rotate: 40
+        }
+      },
+      yAxis: [{
+        type: "value",
+        position: "top",
+        name: data.uni ? data.uni : "(数量)",
+        nameTextStyle: {
+          color: "#ddd",
+          fontSize: 12
+        },
+        splitNumber: 3,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            width: 1,
+            color: "#3d5269"
+          }
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: "#ddd",
+            fontSize: 12
+          }
+        }
+      },
+      {
+        type: "value",
+        name: data.lineData && data.lineData.length ? (data.unit || "(%)") : '',
+        splitNumber: 3,
+        nameTextStyle: {
+          color: "#ddd",
+          fontSize: 12
+        },
+        position: "top",
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: "#396A87",
+            width: 1
+          }
+        },
+        axisLabel: {
+          show: true,
+          formatter: "{value}", //右侧Y轴文字显示
+          textStyle: {
+            color: "#ddd",
+            fontSize: 12
+          }
+        }
+      }
+      ],
+      series: [{
+        name: data.legend[0],
+        type: "bar",
+        barMaxWidth: 18,
+        itemStyle: {
+          normal: {
+            label: {
+              show: true, //开启显示
+              position: 'top', //在上方显示
+              textStyle: { //数值样式
+                color: "rgba(250,250,250,0.8)",
+                fontSize: 13,
+                fontWeight: 600
+              },
+              formatter: ('{c}' + (data.uni || ''))
+            },
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(15,197,243,0.8)'
+            }, {
+              offset: 1,
+              color: 'rgba(15,197,243,0)'
+            }]),
+            borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(180,240,255,1)'
+            }, {
+              offset: 1,
+              color: 'rgba(15,197,243,0.3)'
+            }]),
+            borderWidth: 1
+          }
+        },
+        data: data.barData
+      },
+
+      {
+        name: data.legend[1],
+        type: "line",
+        smooth: true, //是否平滑
+        yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+        showAllSymbol: true, //显示所有图形。
+        symbol: "circle", //标记的图形为实心圆
+        symbolSize: 5, //标记的大小
+        itemStyle: {
+          //折线拐点标志的样式
+          color: "#e6701f",
+          borderColor: "#e6701f",
+          width: 2,
+          shadowColor: "#26D9FF",
+          shadowBlur: 2
+        },
+        lineStyle: {
+          color: "#e6701f",
+          width: 2,
+          shadowBlur: 2
+        },
+        data: data.lineData
+      }
+      ]
+    }
+    if (data.xData.length > 12) {
+      option.dataZoom = [{
+        show: true,
+        start: 0,
+        end: 50,
+        bottom: 16,
+        textStyle: {
+          color: "rgba(204,187,225,0)",
+        },
+        fillerColor: "rgba(67,55,160,0.3)",
+        borderColor: "rgba(204,187,225,0.1)"
+      }]
+    };
+    echart.setOption(option, true);
+  },
+
+  initEchart_pm(params, callbk) {
+    var echart = echarts.init(document.getElementById(params.domId))
+
+    var attackSourcesColor = [
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#EB3B5A" },
+        { offset: 1, color: "#FE9C5A" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#FA8231" },
+        { offset: 1, color: "#FFD14C" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#F7B731" },
+        { offset: 1, color: "#FFEE96" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#395CFE" },
+        { offset: 1, color: "#2EC7CF" }
+      ])
+    ];
+    var attackSourcesColor1 = [
+      "#EB3B5A",
+      "#FA8231",
+      "#F7B731",
+      "#3860FC",
+      "#1089E7",
+      "#F57474",
+      "#56D0E3",
+      "#1089E7",
+      "#F57474",
+      "#1089E7",
+      "#F57474",
+      "#F57474"
+    ];
+    var attaData = [];
+    var attaName = [];
+    params.data.forEach((it, index) => {
+      attaData[index] = it.val;
+      attaName[index] = it.name;
+    });
+    var salvProMax = []; //背景按最大值
+    for (let i = 0; i < attaData.length; i++) {
+      salvProMax.push(attaData[0]);
+    }
+    function attackSourcesDataFmt(sData) {
+      var arr = [];
+      sData.forEach(function (item, i) {
+        let itemStyle = {
+          color: i > 3 ? attackSourcesColor[3] : attackSourcesColor[i]
+        };
+        arr.push({
+          value: item,
+          itemStyle: itemStyle
+        });
+      });
+      return arr;
+    }
+
+    var option = {
+      tooltip: {
+        show: true,
+        textStyle: {
+          fontSize: 14
+        }
+      },
+      color: ["#F7B731"],
+      grid: {
+        left: "5%",
+        right: "5%",
+        width: "80%",
+        bottom: "10",
+        top: "10",
+        containLabel: true
+      },
+
+      xAxis: {
+        type: "value",
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        }
+      },
+      yAxis: [
+        {
+          type: "category",
+          triggerEvent: true,
+          inverse: true,
+          axisTick: "none",
+          axisLine: "none",
+          show: true,
+          interval: 0,
+          axisLabel: {
+            textStyle: {
+              color: "#fff",
+              fontSize: "14"
+            }
+          },
+          data: attackSourcesDataFmt(attaName)
+        },
+      ],
+      series: [
+        {
+          zlevel: 1,
+          type: "bar",
+          barWidth: 14,
+          data: attackSourcesDataFmt(attaData),
+
+          itemStyle: {
+            normal: {
+              barBorderRadius: 10
+            }
+          },
+          label: {
+            show: true,
+            fontSize: 14,
+            color: "#fff",
+            position: "right",
+            textBorderWidth: 1,
+            padding: [2, 0, 0, 0],
+            formatter: '{c} ' + (params.uni || '')
+          }
+        },
+
+        {
+          type: "bar",
+          barWidth: 15,
+          barGap: "-100%",
+          margin: "20",
+          data: salvProMax,
+          tooltip: {
+            show: false
+          },
+          textStyle: {
+            fontSize: 12,
+            color: "#fff"
+          },
+          itemStyle: {
+            normal: {
+              color: "#05325F",
+              fontSize: 10,
+              barBorderRadius: 30
+            },
+          }
+        }
+      ]
+    };
+    if (params.data.length > 10) {
+      option.dataZoom = [
+        {
+          type: 'slider',
+          show: true,
+          yAxisIndex: [0],
+          right: 0,
+          start: 0, //数据窗口范围的起始百分比
+          end: 50,
+          width: 15,
+          fillerColor: "rgba(67,55,160,0.4)",
+          borderColor: "rgba(204,187,225,0.5)"
+        },
+      ]
+
+    }
+    echart.setOption(option, true);
+
+    echart.on("click", function (param) {
+      if (param.componentType == "yAxis") {
+        callbk && callbk(param)
+      }
+    })
+  },
+  initEchart_barLine2(data) {
+    var echart = echarts.init(document.getElementById(data.domId))
+    var option = {
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+          label: {
+            show: true
+          }
+        }
+      },
+      grid: {
+        left: "10",
+        top: "40",
+        right: "10",
+        bottom: "10",
+        containLabel: true
+      },
+      legend: {
+        data: data.legend,
+        top: 2,
+
+        textStyle: {
+          color: "#fff",
+          fontSize: 12,
+          lineHeight: 14,
+        }
+      },
+      xAxis: {
+        data: data.xData,
+        axisLine: {
+          show: true, //隐藏X轴轴线
+          lineStyle: {
+            color: "#3d5269",
+            width: 1
+          }
+        },
+        axisTick: {
+          show: true, //隐藏X轴刻度
+          alignWithLabel: true
+        },
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: "#fff", //X轴文字颜色
+            fontSize: 12
+          },
+          margin: 12,
+          interval: 0,
+          rotate: 40
+        }
+      },
+      yAxis: [{
+        type: "value",
+        position: "top",
+        name: data.uni ? data.uni : "(数量)",
+        nameTextStyle: {
+          color: "#ddd",
+          fontSize: 12
+        },
+        splitNumber: 3,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            width: 1,
+            color: "#3d5269"
+          }
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: "#ddd",
+            fontSize: 12
+          }
+        }
+      },
+      {
+        type: "value",
+        name: data.lineData && data.lineData.length ? (data.unit || "(%)") : '',
+        splitNumber: 3,
+        nameTextStyle: {
+          color: "#ddd",
+          fontSize: 12
+        },
+        position: "top",
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: "#396A87",
+            width: 1
+          }
+        },
+        axisLabel: {
+          show: true,
+          formatter: "{value}", //右侧Y轴文字显示
+          textStyle: {
+            color: "#ddd",
+            fontSize: 12
+          }
+        }
+      }
+      ],
+      series: [{
+        name: data.legend[0],
+        type: "bar",
+        barMaxWidth: 14,
+        itemStyle: {
+          normal: {
+            label: {
+              show: true, //开启显示
+              position: 'top', //在上方显示
+              textStyle: { //数值样式
+                color: "rgba(250,250,250,0.8)",
+                fontSize: 12,
+                fontWeight: 600
+              },
+              formatter: ('{c}' + (data.uni || ''))
+            },
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(15,197,243,0.8)'
+            }, {
+              offset: 1,
+              color: 'rgba(15,197,243,0)'
+            }]),
+            borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(180,240,255,1)'
+            }, {
+              offset: 1,
+              color: 'rgba(15,197,243,0.3)'
+            }]),
+            borderWidth: 1
+          }
+        },
+        data: data.barData[0]
+      },
+
+      {
+        name: data.legend[1],
+        type: "bar",
+        barGap: "50%",
+        barMaxWidth: 14,
+        itemStyle: {
+          normal: {
+            label: {
+              show: true, //开启显示
+              position: 'top', //在上方显示
+              textStyle: { //数值样式
+                color: "rgba(250,250,250,0.8)",
+                fontSize: 12,
+                fontWeight: 600
+              },
+              formatter: ('{c}' + (data.uni || ''))
+            },
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(227,161,96,0.8)'
+            }, {
+              offset: 1,
+              color: 'rgba(227,161,96,0)'
+            }]),
+            borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(227,161,96, 1)'
+            }, {
+              offset: 1,
+              color: 'rgba(227,161,96,0.3)'
+            }]),
+            borderWidth: 1
+          }
+        },
+        data: data.barData[1]
+      },
+
+      {
+        name: data.legend[2],
+        type: "line",
+        smooth: true, //是否平滑
+        yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+        showAllSymbol: true, //显示所有图形。
+        symbol: "circle", //标记的图形为实心圆
+        symbolSize: 5, //标记的大小
+        itemStyle: {
+          //折线拐点标志的样式
+          color: "#e6701f",
+          borderColor: "#e6701f",
+          width: 2,
+          shadowColor: "#26D9FF",
+          shadowBlur: 2
+        },
+        lineStyle: {
+          color: "#e6701f",
+          width: 2,
+          shadowBlur: 2
+        },
+        data: data.lineData
+      }
+      ]
+    }
+    if (data.xData.length > 12) {
+      option.dataZoom = [{
+        show: true,
+        start: 0,
+        end: 50,
+        bottom: 16,
+        textStyle: {
+          color: "rgba(204,187,225,0)",
+        },
+        fillerColor: "rgba(67,55,160,0.3)",
+        borderColor: "rgba(204,187,225,0.1)"
+      }]
+    };
+    echart.setOption(option, true);
+  },
+
+  initEchart_sckbar(params) {
+    var echart = echarts.init(document.getElementById(params.domId))
+    var data = {
+      area: params.xData,
+      legend: params.legend,
+      data: params.data
+    }
+    var colors = ['#4C98FB', '#13d957', '#e89011', '#26cde6']
+    var option = {
+       tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      color: colors,
+      legend: {
+        textStyle: {
+          fontSize: 13,
+          color: '#fff',
+          padding: [3, 0, 0, 0]
+        },
+        data: data.legend
+      },
+      grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '15%',
+        top: '15%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        axisLabel: {
+          color: '#96A4F4'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#96A4F4'
+          },
+          
+        },
+        axisTick: {
+          show: false,
+        },
+        data: data.area
+      },
+      yAxis: {
+        splitNumber: 4,
+        type: 'value',
+        axisLabel: {
+          color: '#96A4F4'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#96A4F4'
+          },
+          
+        },
+        axisTick: {
+          show: false,
+        },
+        splitLine: {
+          lineStyle: {
+            color: 'rgba(150, 164, 244, 0.3)'
+          }
+        },
+      },
+      series: [
+
+      ]
+    };
+    for (var i = 0; i < data.legend.length; i++) {
+      option.series.push({
+        name: data.legend[i],
+        type: 'bar',
+        stack: '总量',
+        barMaxWidth : '30',
+        label: {
+          show: false,
+          position: 'top'
+        },
+        data: data.data[i]
+      })
+    };
+    var sumtotal = _.zipWith(data.data[0], data.data[1], data.data[2], function(a, b, c) {
+      return a + b + c;
+    });
+    
+    var totalItem = {
+        name: '总量',
+        type: 'bar',
+        barGap: '-100%',
+        barMaxWidth : '30',
+        itemStyle: {
+          color: 'transparent',
+        },
+        label: {
+          show: true,
+          color: '#fff',
+          fontSize: 14,
+          position: 'top'
+        },
+        z: -1,
+        data: sumtotal
+    };
+    option.series.unshift(totalItem)
+    echart.setOption(option, true);
+
+  },
+  initEcahrt_Sgauge (params) {
+    var echart = echarts.init(document.getElementById(params.domId))
+      var option = {
+        title:{
+            x: 'center',
+            bottom: 0,
+            text: params.name,
+            textStyle: {
+                fontWeight: '800',
+                fontSize: 18,
+                color: "#fff"
+            },
+        },
+        series : [
+            {
+                name:'速度',
+                type:'gauge',
+                min:0,
+                max:100,
+                center: ['50%', '50%'], // 默认全局居中
+                splitNumber: 4,
+                radius: '90%',
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: [[0.2, 'lime'],[0.8, '#4EE3FF'],[1, ' #ff4500']],
+                        width: 2,
+                        shadowColor : '#fff', //默认透明
+                        shadowBlur: 4
+                    }
+                },
+                axisLabel: {    
+                    show: false,        // 坐标轴小标记
+                    textStyle: {       // 属性lineStyle控制线条样式
+                        color: '#fff',
+                        fontSize: 10
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    length : 8,        // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: 'auto',
+                        width:1,
+                        shadowBlur: 2
+                    }
+                },
+                splitLine:{//橙色分割线
+                    length: 12,
+                    lineStyle:{
+                        width:1,
+                        color:'#FCD209',
+                    }
+                },
+                itemStyle:{//指针颜色
+                    color:'#1e90ff',
+                },
+                pointer:{
+                  show:false,
+                  length:0
+                },
+                detail: {
+                    formatter:'{value}%',
+                    fontSize: 20,
+                    fontWeight: '600',
+                    offsetCenter: [0, 0]
+                },
+                data:[{value: params.value}]
+            }
+        ]
+    };
+    echart.setOption(option, true);
+  },
+
+  initEcahrt_TXCire (params) {
+      var echart = echarts.init(document.getElementById(params.domId))
+      let color = ['#FF8700', '#ffc300', '#00e473', '#009DFF', '#0034ff'];
+      let chartData = [{
+              name: "早1发",
+              value: 40083,
+              unit: '列'
+          },
+          {
+              name: "正点发",
+              value: 33974,
+              unit: '列'
+          },
+          {
+              name: "晚2发",
+              value: 15400,
+              unit: '列'
+          }
+      ];
+      let arrName = [];
+      let arrValue = [];
+      let sum = 0;
+      let pieSeries = [],
+          lineYAxis = [];
+
+      // 数据处理
+      chartData.forEach((v, i) => {
+          arrName.push(v.name);
+          arrValue.push(v.value);
+          sum = sum + v.value;
+      })
+
+      // 图表option整理
+      chartData.forEach((v, i) => {
+          pieSeries.push({
+              name: '沪昆线到达晚点情况',
+              type: 'pie',
+              clockWise: false,
+              hoverAnimation: false,
+              radius: [90 - i * 15 + '%', 80 - i * 15 + '%'],
+              center: ["20%", "50%"],
+              label: {
+                  show: false
+              },
+              data: [{
+                  value: v.value,
+                  name: v.name
+              }, {
+                  value: sum - v.value,
+                  name: '',
+                  itemStyle: {
+                      color: "rgba(0,0,0,0)"
+                  }
+              }]
+          });
+          pieSeries.push({
+              name: '',
+              type: 'pie',
+              silent: true,
+              z: 1,
+              clockWise: false, //顺时加载
+              hoverAnimation: false, //鼠标移入变大
+              radius:[90 - i * 15 + '%', 80 - i * 15 + '%'],
+              center: ["20%", "50%"],
+              label: {
+                  show: false
+              },
+              data: [{
+                  value: 7.5,
+                  itemStyle: {
+                      color: "#E3F0FF"
+                  }
+              }, {
+                  value: 2.5,
+                  name: '',
+                  itemStyle: {
+                      color: "rgba(0,0,0,0)"
+                  }
+              }]
+          });
+          v.percent = (v.value / sum * 100).toFixed(1) + "%";
+          lineYAxis.push({
+              value: i,
+              textStyle: {
+                  rich: {
+                      circle: {
+                          color: color[i],
+                          padding: [0, 5]
+                      }
+                  }
+              }
+          });
+      })
+
+      var option = {
+          color: color,
+          grid: {
+            top: '12%',
+            bottom: '12%',
+            left: "12%",
+            containLabel: false
+          },
+          yAxis: [{
+              type: 'category',
+              inverse: true,
+              axisLine: {
+                  show: false
+              },
+              axisTick: {
+                  show: false
+              },
+              axisLabel: {
+                  formatter: function(params) {
+                      let item = chartData[params];
+                      console.log(item)
+                      return '{line|}{circle|●}{name|'+ item.name +'}{bd||}{percent|'+item.percent+'}{value|'+ item.value+'}{unit|列}'
+                  },
+                  interval: 0,
+                  inside: true,
+                  textStyle: {
+                      color: "#333",
+                      fontSize: 14,
+                      rich: {
+                          line: {
+                              width: 10,
+                              height: 10,
+                            
+                          },
+                          name: {
+                              color: '#666',
+                              fontSize: 14,
+                          },
+                          bd: {
+                              color: '#ccc',
+                              padding: [0, 5],
+                              fontSize: 14,
+                          },
+                          percent:{
+                              color: '#333',
+                              fontSize: 14,
+                          },
+                          value: {
+                              color: '#333',
+                              fontSize: 16,
+                              fontWeight: 500,
+                              padding: [0, 0, 0, 20]
+                          },
+                          unit: {
+                              fontSize: 14
+                          }
+                      }
+                  },
+                  show: true
+              },
+              data: lineYAxis
+          }],
+          xAxis: [{
+              show: false
+          }],
+          series: pieSeries
+      };
+       echart.setOption(option, true);
+  }
+  
+}

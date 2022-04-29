@@ -1,0 +1,888 @@
+import echarts from 'echarts'
+import 'echarts-liquidfill'
+export default {
+  initAnipie(params) {
+    var myChart = echarts.init(document.getElementById(params.domId))
+    let angle = 0;//角度，用来做简单的动画效果的
+    let value = params.value
+    var option = {
+      title: {
+        text: '{a|' + value + '}{c|%}',
+        x: 'center',
+        y: 'center',
+        textStyle: {
+          rich: {
+            a: {
+              fontSize: 16,
+              color: '#29EEF3',
+              fontWeight: '800'
+            },
+
+            c: {
+              fontSize: 16,
+              color: '#29EEF3',
+            }
+          }
+        }
+      },
+      series: [
+        {
+          name: "ring5",
+          type: 'custom',
+          coordinateSystem: "none",
+          renderItem: function (params, api) {
+            return {
+              type: 'arc',
+              shape: {
+                cx: api.getWidth() / 2,
+                cy: api.getHeight() / 2,
+                r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.8,
+                startAngle: (270 + -angle) * Math.PI / 180,
+                endAngle: (40 + -angle) * Math.PI / 180
+              },
+              style: {
+                stroke: "#0CD3DB",
+                fill: "transparent",
+                lineWidth: 1.5
+              },
+              silent: true
+            };
+          },
+          data: [0]
+        }, {
+          name: "ring5",
+          type: 'custom',
+          coordinateSystem: "none",
+          renderItem: function (params, api) {
+            return {
+              type: 'arc',
+              shape: {
+                cx: api.getWidth() / 2,
+                cy: api.getHeight() / 2,
+                r: Math.min(api.getWidth(), api.getHeight()) / 2 * 0.8,
+                startAngle: (90 + -angle) * Math.PI / 180,
+                endAngle: (220 + -angle) * Math.PI / 180
+              },
+              style: {
+                stroke: "#0CD3DB",
+                fill: "transparent",
+                lineWidth: 1.5
+              },
+              silent: true
+            };
+          },
+          data: [0]
+        }, {
+          name: "ring5",
+          type: 'custom',
+          coordinateSystem: "none",
+          renderItem: function (params, api) {
+            let x0 = api.getWidth() / 2;
+            let y0 = api.getHeight() / 2;
+            let r = Math.min(api.getWidth(), api.getHeight()) / 2 * 0.8;
+            let point = getCirlPoint(x0, y0, r, (90 + -angle))
+            return {
+              type: 'circle',
+              shape: {
+                cx: point.x,
+                cy: point.y,
+                r: 4
+              },
+              style: {
+                stroke: "#0CD3DB",//粉
+                fill: "#0CD3DB"
+              },
+              silent: true
+            };
+          },
+          data: [0]
+        }, {
+          name: "ring5",  //绿点
+          type: 'custom',
+          coordinateSystem: "none",
+          renderItem: function (params, api) {
+            let x0 = api.getWidth() / 2;
+            let y0 = api.getHeight() / 2;
+            let r = Math.min(api.getWidth(), api.getHeight()) / 2 * 0.8;
+            let point = getCirlPoint(x0, y0, r, (270 + -angle))
+            return {
+              type: 'circle',
+              shape: {
+                cx: point.x,
+                cy: point.y,
+                r: 4
+              },
+              style: {
+                stroke: "#0CD3DB",      //绿
+                fill: "#0CD3DB"
+              },
+              silent: true
+            };
+          },
+          data: [0]
+        }, {
+          name: '',
+          type: 'pie',
+          radius: ['70%', '55%'],
+          silent: true,
+          clockwise: true,
+          startAngle: 90,
+          z: 0,
+          zlevel: 0,
+          label: {
+            normal: {
+              position: "center",
+
+            }
+          },
+          data: [{
+            value: value,
+            name: "",
+            itemStyle: {
+              normal: {
+                color: { // 完成的圆环的颜色
+                  colorStops: [{
+                    offset: 0,
+                    color: '#4FADFD' // 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#28E8FA' // 100% 处的颜色
+                  }]
+                },
+              }
+            }
+          },
+          {
+            value: 100 - value,
+            name: "",
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: "#173164"
+              }
+            }
+          }
+          ]
+        },
+
+
+
+      ]
+    };
+
+    //获取圆上面某点的坐标(x0,y0表示坐标，r半径，angle角度)
+    function getCirlPoint(x0, y0, r, angle) {
+      let x1 = x0 + r * Math.cos(angle * Math.PI / 180)
+      let y1 = y0 + r * Math.sin(angle * Math.PI / 180)
+      return {
+        x: x1,
+        y: y1
+      }
+    }
+
+    function draw() {
+      angle = angle + 3
+      myChart.setOption(option, true)
+      //window.requestAnimationFrame(draw);
+    }
+    if (window[params.domId]) {
+      clearInterval(window[params.domId])
+    };
+    window[params.domId] = setInterval(function () {
+      //用setInterval做动画感觉有问题
+      draw()
+    }, 100);
+
+  },
+  initCompareBar(params) {
+    var myChart = echarts.init(document.getElementById(params.domId))
+    var salvProName = ["3G用户量", "4G用户量", "5G用户量"];
+    var salvProValue = [239, 181, 154];
+    var salvProMax = [];//背景按最大值
+    for (let i = 0; i < salvProValue.length; i++) {
+      salvProMax.push(salvProValue[0])
+    }
+    var option = {
+      grid: {
+        left: '2%',
+        right: '2%',
+        bottom: '2%',
+        top: '20',
+        containLabel: true
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'none'
+        },
+        formatter: function (params) {
+          return params[0].name + ' : ' + params[0].value
+        }
+      },
+      xAxis: {
+        show: false,
+        type: 'value'
+      },
+      yAxis: [{
+        type: 'category',
+        inverse: true,
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: '#fff',
+             fontSize: '14'
+          },
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        },
+        data: salvProName
+      }, {
+        type: 'category',
+        inverse: true,
+        axisTick: 'none',
+        axisLine: 'none',
+        show: true,
+        axisLabel: {
+          textStyle: {
+            color: '#ffffff',
+            fontSize: '14'
+          },
+        },
+        data: salvProValue
+      }],
+      series: [{
+        name: '数量',
+        type: 'bar',
+        zlevel: 1,
+        itemStyle: {
+          normal: {
+            barBorderRadius: 20,
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+              offset: 0,
+              color: 'rgb(57,89,255,1)'
+            }, {
+              offset: 1,
+              color: 'rgb(46,200,207,1)'
+            }]),
+          },
+        },
+        barWidth: 15,
+        data: salvProValue
+      },
+      {
+        name: '背景',
+        type: 'bar',
+        barWidth: 16,
+        barGap: '-100%',
+        data: salvProMax,
+        itemStyle: {
+          normal: {
+            color: 'rgba(24,31,68, 0.6)',
+            barBorderRadius: 20,
+          }
+        },
+      },
+      ]
+    };
+
+    myChart.setOption(option, true)
+  },
+  initEchart_barLine(data) {
+    var echart = echarts.init(document.getElementById(data.domId))
+    var option = {
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "shadow",
+          label: {
+            show: true
+          }
+        }
+      },
+      grid: {
+        left: "20",
+        top: "40",
+        right: "20",
+        bottom: "10",
+        containLabel: true
+      },
+      legend: {
+        top: 10,
+        data: data.legend,
+        textStyle: {
+          color: "#fff",
+          fontSize: 12
+        }
+      },
+      xAxis: {
+        data: data.xData,
+        axisLine: {
+          show: true, //隐藏X轴轴线
+          lineStyle: {
+            color: "#3d5269",
+            width: 1
+          }
+        },
+        axisTick: {
+          show: true, //隐藏X轴刻度
+          alignWithLabel: true
+        },
+        axisLabel: {
+          show: true,
+          textStyle: {
+            color: "#fff", //X轴文字颜色
+            fontSize: 12
+          },
+          margin: 12,
+          interval: 0,
+          // rotate: 40
+        }
+      },
+      yAxis: [{
+          type: "value",
+          position: "top",
+          name: "T",
+          nameTextStyle: {
+            color: "#ddd",
+            fontSize: 12
+          },
+          splitNumber: 3,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              width: 1,
+              color: "#3d5269"
+            }
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: "#ddd",
+              fontSize: 12
+            }
+          }
+        }
+      ],
+      series: [
+        {
+          name: "3G流量",
+          type: "line",
+           smooth: true, //是否平滑
+          showAllSymbol: true, //显示所有图形。
+          symbol: "circle", //标记的图形为实心圆
+          symbolSize: 5, //标记的大小
+     
+        itemStyle: {
+          color: "#eb6f19",
+          borderColor: "#fff",
+          borderWidth: 1,
+          shadowColor: 'rgba(0, 0, 0, .3)',
+          shadowBlur: 0,
+          shadowOffsetY: 2,
+          shadowOffsetX: 2,
+        },
+        areaStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: 'rgba(235,111,25, 0.5)'
+            },
+            {
+              offset: 1,
+              color: 'rgba(235,111,25,0)'
+            }
+            ], false),
+          }
+        },
+          data: data.lineData[0]
+        },
+        {
+          name: "4G流量",
+          type: "line",
+          showAllSymbol: true, //显示所有图形。
+          symbol: "circle", //标记的图形为实心圆
+          symbolSize: 5, //标记的大小
+          itemStyle: {
+           normal: {
+            label: {
+              show: false, //开启显示
+              position: 'top', //在上方显示
+              textStyle: { //数值样式
+                color: "rgba(250,250,250,1)",
+                fontSize: 12,
+                fontWeight: 600
+              }
+            },
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+              color: 'rgba(37,230,60,1)'
+            }, {
+              offset: 1,
+             color: 'rgba(37,230,60,1)'
+            }]),
+            borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+              offset: 0,
+               color: 'rgba(37,230,60,1)'
+            }, {
+              offset: 1,
+              color: 'rgba(37,230,60,1)'
+            }]),
+            borderWidth: 1
+          }
+        },
+        areaStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+             color: 'rgba(37,230,60,0.3)'
+            },
+            {
+              offset: 1,
+               color: 'rgba(37,230,60, 0)'
+            }
+            ], false),
+          }
+        },
+          data: data.lineData[1]
+        },
+        {
+          name: '5G流量',
+          type: "bar",
+           smooth: true, //是否平滑
+          barMaxWidth: 18,
+          itemStyle: {
+            normal: {
+              label: {
+                show: true, //开启显示
+                position: 'top', //在上方显示
+                textStyle: { //数值样式
+                  color: "rgba(250,250,250,0.8)",
+                  fontSize: 13,
+                  fontWeight: 600
+                },
+                formatter: ('{c}' + (data.uni || ''))
+              },
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+                offset: 0,
+                color: 'rgba(15,197,243,0.8)'
+              }, {
+                offset: 1,
+                color: 'rgba(15,197,243,0)'
+              }]),
+              borderColor: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{
+                offset: 0,
+                color: 'rgba(180,240,255,1)'
+              }, {
+                offset: 1,
+                color: 'rgba(15,197,243,0.3)'
+              }]),
+              borderWidth: 1
+            }
+          },
+          data: data.barData
+        },
+
+      
+      ]
+    }
+    if (data.xData.length > 12) {
+      option.dataZoom = [{
+        show: true,
+        start: 0,
+        end: 50,
+        bottom: 16,
+        textStyle: {
+          color: "rgba(204,187,225,0)",
+        },
+        fillerColor: "rgba(67,55,160,0.3)",
+        borderColor: "rgba(204,187,225,0.1)"
+      }]
+    };
+    echart.setOption(option, true);
+  },
+  initEchart_pm(params, callbk) {
+    var echart = echarts.init(document.getElementById(params.domId))
+
+    var attackSourcesColor = [
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#EB3B5A" },
+        { offset: 1, color: "#FE9C5A" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#FA8231" },
+        { offset: 1, color: "#FFD14C" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#F7B731" },
+        { offset: 1, color: "#FFEE96" }
+      ]),
+      new echarts.graphic.LinearGradient(0, 1, 1, 1, [
+        { offset: 0, color: "#395CFE" },
+        { offset: 1, color: "#2EC7CF" }
+      ])
+    ];
+    var attackSourcesColor1 = [
+      "#EB3B5A",
+      "#FA8231",
+      "#F7B731",
+      "#3860FC",
+      "#1089E7",
+      "#F57474",
+      "#56D0E3",
+      "#1089E7",
+      "#F57474",
+      "#1089E7",
+      "#F57474",
+      "#F57474"
+    ];
+    var attaData = [];
+    var attaName = [];
+    params.data.forEach((it, index) => {
+      attaData[index] = it.val;
+      attaName[index] = it.name;
+    });
+    var salvProMax = []; //背景按最大值
+    for (let i = 0; i < attaData.length; i++) {
+      salvProMax.push(attaData[0]);
+    }
+    function attackSourcesDataFmt(sData) {
+      var arr = [];
+      sData.forEach(function (item, i) {
+        let itemStyle = {
+          color: i > 3 ? attackSourcesColor[3] : attackSourcesColor[i]
+        };
+        arr.push({
+          value: item,
+          itemStyle: itemStyle
+        });
+      });
+      return arr;
+    }
+
+    var option = {
+      tooltip: {
+        show: true,
+        textStyle: {
+          fontSize: 14
+        }
+      },
+      color: ["#F7B731"],
+      grid: {
+        left: "5%",
+        right: "5%",
+        width: "86%",
+        bottom: "10",
+        top: "10",
+        containLabel: true
+      },
+      
+      xAxis: {
+        type: "value",
+        splitLine: {
+          show: false
+        },
+        axisLabel: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLine: {
+          show: false
+        }
+      },
+      yAxis: [
+        {
+          type: "category",
+          triggerEvent: true,
+          inverse: true,
+          axisTick: "none",
+          axisLine: "none",
+          show: true,
+          interval: 0,
+          axisLabel: {
+            textStyle: {
+              color: "#fff",
+              fontSize: "14"
+            }
+          },
+          data: attackSourcesDataFmt(attaName)
+        },
+      ],
+      series: [
+        {
+          zlevel: 1,
+          type: "bar",
+          barWidth: 14,
+          data: attackSourcesDataFmt(attaData),
+
+          itemStyle: {
+            normal: {
+              barBorderRadius: 10
+            }
+          },
+          label: {
+            show: true,
+            fontSize: 14,
+            color: "#fff",
+            position: "right",
+            textBorderWidth: 1,
+            padding: [2, 0, 0, 0],
+            formatter: '{c}' + (params.uni || '')
+          }
+        },
+
+        {
+          type: "bar",
+          barWidth: 15,
+          barGap: "-100%",
+          margin: "20",
+          data: salvProMax,
+          tooltip: {
+            show: false
+          },
+          textStyle: {
+            fontSize: 12,
+            color: "#fff"
+          },
+          itemStyle: {
+            normal: {
+              color: "#05325F",
+              fontSize: 10,
+              barBorderRadius: 30
+            },
+          }
+        }
+      ]
+    };
+    if (params.data.length > 10) {
+       option.dataZoom = [
+          {
+              type: 'slider',
+              show: true,
+              yAxisIndex: [0],
+              right: 0,
+              start: 0, //数据窗口范围的起始百分比
+              end: 50,
+              width: 15,
+              fillerColor: "rgba(67,55,160,0.4)",
+              borderColor: "rgba(204,187,225,0.5)"
+          },
+      ]
+      
+    }
+    echart.setOption(option, true);
+
+    echart.on("click", function (param) { 
+       if (param.componentType == "yAxis") {
+          callbk && callbk(param)
+       }
+    })
+  },
+  initecahrt_gauge (params) {
+     var myChart = echarts.init(document.getElementById(params.domId))
+     var option = {
+        series: [
+            {
+                name:'速度',
+                type:'gauge',
+                min:0,
+                max:100,
+                center: ['50%', '50%'], // 默认全局居中
+                splitNumber: 10,
+                radius: '90%',
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: [[0.2, '#ff4500'],[0.8, '#4EE3FF'],[1, 'lime']],
+                        width: 2,
+                        shadowBlur: 10
+                    }
+                },
+                axisLabel: {    
+                    show: false,        // 坐标轴小标记
+                    textStyle: {       // 属性lineStyle控制线条样式
+                        fontWeight: 'bolder',
+                        color: '#fff',
+                        shadowBlur: 10
+                    }
+                },
+                axisTick: {            // 坐标轴小标记
+                    length :10,        // 属性length控制线长
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: 'auto',
+                        width:2,
+                        shadowBlur: 10
+                    }
+                },
+                splitLine:{//橙色分割线
+                    length:15,
+                    lineStyle:{
+                        width:2,
+                        color:'#FCD209',
+                    }
+                },
+                itemStyle:{//指针颜色
+                    color:'#1e90ff',
+                },
+                pointer:{//指针长短
+                    length: 50,
+                    width: 6,
+                    
+                },
+                itemStyle: {
+                  color: {
+                      type: 'linear',
+                      x: 0,
+                      y: 0,
+                      x2: 1,
+                      y2: 1,
+                      colorStops: [{
+                          offset: 0, color: '#2bb9c6' // 0% 处的颜色
+                      }, {
+                          offset: 1, color: '#2a5dee' // 100% 处的颜色
+                      }],
+                      global: false // 缺省为 false
+                  }
+                },
+                detail: {
+                  show: false,
+                  formatter:'{value}%'
+                },
+                data:[{value: 35}]
+            }
+        ]
+      };
+     myChart.setOption(option, true);
+
+  },
+
+  initChart_water(data) {
+        const echart = echarts.init(document.getElementById(data.domId));
+        const ratio = data.value;
+        const ratioLength = 3;
+        let ratioArr = [];
+        for (var ratioIndex = 0; ratioIndex < ratioLength; ratioIndex++) {
+            ratioArr.push(ratio / 100)
+        }
+        var option = {
+            series: [{
+                type: 'liquidFill',
+                radius: '80%',
+                center: ['50%', '50%'],
+                color: [{
+                    type: 'linear',
+                    x: 0,
+                    y: 1,
+                    x2: 0,
+                    y2: 0,
+                    colorStops: [{
+                        offset: 1,
+                        color: ['rgba(52, 255, 186, .1)'], // 0% 处的颜色
+                    }, {
+                        offset: 0.5,
+                        color: ['rgba(52, 255, 186, .5)'], // 50% 处的颜色
+                    }, {
+                        offset: 0,
+                        color: ['rgba(52, 255, 186, .1)'], // 100% 处的颜色
+                    }],
+                    global: false // 缺省为 false
+                }],
+                data: ratioArr,
+                backgroundStyle: {
+                    color: 'rgba(134, 228, 245, .2)'
+                },
+                label: {
+                    normal: {
+                        formatter: ratio + '%',
+                        fontSize: 15,
+                        color: 'rgba(134, 228, 245, 1)'
+                    }
+                },
+                outline: {
+                    show: false,
+                }
+            },
+            { //细的外圈
+                type: "pie",
+                center: ["50%", "50%"],
+                radius: ["84%", "85%"],
+                hoverAnimation: false,
+                data: [{
+                    name: "",
+                    value: ratio,
+                    labelLine: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: 'transparent'
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            color: 'transparent'
+                        },
+                    }
+                }]
+            },
+            { //粗的外圈
+                type: "pie",
+                center: ["50%", "50%"],
+                radius: ["83%", "86%"],
+                hoverAnimation: false,
+                zlevel: 2,
+                data: [{
+                    name: "",
+                    value: ratio,
+                    labelLine: {
+                        show: false
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(52, 255, 186, .3)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(65, 124, 214, 1)'
+                        }]),
+                    },
+                    emphasis: {
+                        labelLine: {
+                            show: false
+                        },
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: 'rgba(52, 255, 186, .3)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(65, 124, 214, 1)'
+                            }]),
+                        },
+                    }
+                }]
+            }
+            ]
+        }
+        echart.setOption(option);
+  }
+  
+}

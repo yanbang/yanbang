@@ -1,0 +1,84 @@
+<template>
+  <div>
+    <div class="worst">移网新发展用户三无占比情况</div>
+    <div style="display: flex;">
+      <div class="worst-top">
+        <img width="134" height="115"  src="../../assets/images/bigScreen/fullService/zhanbi.png" />
+      </div>
+      <ul class='worst-bottom' >
+        <li>本周全省新发展用户量<span style="margin-left: 25px;color:#FFFFFF;font-size: 21px">{{moveNet}} <b>万户</b></span></li>
+        <li>开户以来三无状态用户量<span style="margin-left: 25px;color:#FFFFFF;font-size: 21px">{{status}} <b>万户</b></span></li>
+        <li>开户以来为三无状态用户占比<span style="margin-left: 25px;color:#FFFFFF;font-size: 21px">{{noStatus}} <b>%</b></span></li>
+        <li>三无且未出账总量<span style="margin-left: 25px;color:#FFFFFF;font-size: 21px">{{total}} <b>万户</b></span></li>
+        <li>三无且未出账用户占比<span style="margin-left: 25px;color:#FFFFFF;font-size: 21px">{{zhanbi}} <b>%</b></span></li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props:{
+    AdvanceDeposit:Array
+  },
+  name: 'AdvanceDeposit',
+  data(){
+    return{
+      city:'全省',
+      moveNet:'',
+      status:'',
+      noStatus:'',
+      total:'',
+      zhanbi:''
+    }
+  },
+  watch:{
+    AdvanceDeposit(){
+      //console.log(JSON.stringify(this.AdvanceDeposit[0]))
+      this.city = this.AdvanceDeposit[0].areaName
+      this.moveNet = (parseFloat(this.AdvanceDeposit[0].newWeekCnt)/10000).toFixed(2)
+      this.status = (parseFloat(this.AdvanceDeposit[0].newWeekSw)/10000).toFixed(2)
+      this.noStatus = this.AdvanceDeposit[0].newWeekSwRate
+      this.total = (parseFloat(this.AdvanceDeposit[0].newWeekSwYcz)/10000).toFixed(2)
+      this.zhanbi = this.AdvanceDeposit[0].newWeekSwWczRate
+    }
+  }
+}
+</script>
+
+<style scoped>
+.worst{
+  font-size: 20px;
+  font-family: MFBanHei;
+  line-height: 22px;
+  color: #02F6FF;
+}
+.worst-top{
+  margin-top: 2.5rem;
+  padding-left: 0.5rem;
+}
+.worst-top img{
+  display: block;
+  /* margin-left: 2.5rem; */
+}
+.worst-bottom{
+  width: 70%;
+  margin-top: 2.5rem;
+
+}
+.worst-bottom li{
+  font-size: 14px;
+  color: #02F6FF;
+  font-weight: normal;
+}
+
+.worst-bottom li span{
+  font-family: 'DigifaceWide';
+}
+
+.worst-bottom li b{
+  font-size: 14px;
+  font-family: Microsoft YaHei;
+  font-weight: initial;
+}
+</style>

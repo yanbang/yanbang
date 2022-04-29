@@ -1,0 +1,979 @@
+<template>
+    <div class="pointcustomer">
+        <div class="title"></div> 
+        <!-- <div class="testBtn"></div> -->
+        <div class="body">
+            <div class="left">
+                <div class="lf-section1">
+                    <div class="lf-subtitle1">
+                        <span>业务现状</span>
+                    </div>
+                    <div class="lf-body1">
+                        <div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>电路总数</div>
+                                </div>
+                                <div>
+                                    <span>300</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>新增电路数</div>
+                                </div>
+                                <div>
+                                    <span>12</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>退租电路数</div>
+                                </div>
+                                <div>
+                                    <span>1</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>国际电路数</div>
+                                </div>
+                                <div>
+                                    <span>40</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>省际电路数</div>
+                                </div>
+                                <div>
+                                    <span>80</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                            <div class="label">
+                                <div>
+                                    <img src="../assets/pointcustomer/icon1.png" alt="">
+                                    <div>省内电路数</div>
+                                </div>
+                                <div>
+                                    <span>180</span>
+                                    <span>个</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <bar-chart></bar-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="lf-section2">
+                    <div class="lf-subtitle2">
+                        <span>流量趋势</span>
+                        <div></div>
+                    </div>
+                    <div class="lf-body2">
+                        <line-chart></line-chart>
+                    </div>
+                </div>
+                <div class="lf-section3">
+                    <div class="lf-subtitle3">
+                        <span>网络保障队伍</span>
+                    </div>
+                    <div class="lf-body3">
+                        <div><img src="../assets/pointcustomer/img.png" alt=""></div>
+                        <div class="lf-table">
+                            <div>   
+                                <div>专业</div>
+                                <div>姓名</div>
+                                <div>部门</div>
+                                <div>电话</div>   
+                            </div>
+                            <div>
+                                <div>网络服务经理</div>
+                                <div>宋国屿</div>
+                                <div>交付中心</div>
+                                <div>15657170787</div>
+                            </div>
+                            <div>                                <div>网络服务经理</div>
+                                <div>胡乾勘</div>
+                                <div>交付中心</div>
+                                <div>15657171850</div>   
+                            </div>
+                            <div>
+                                <div>169网</div>
+                                <div>杨星宇</div>
+                                <div>云网运营中心</div>
+                                <div>15657171851</div>   
+                            </div>
+                            <div>
+                                <div>DNS</div>
+                                <div>马骏</div>
+                                <div>云网运营中心</div>
+                                <div>15657171851</div>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="middle">
+                <div class="mid1">
+                    <div>政企交付</div>
+                    <div>网络能力</div>
+                    <div>重点客户</div>
+                    <div>政企运营</div>
+                    <div>楼宇场景</div>
+                </div>
+                <div class="mid2">
+                    <img src="../assets/pointcustomer/internet.png" alt="">
+                    <div class="mid2_title">大宽带专线网络拓扑</div>
+                </div>
+                <div class="mid3">
+                    <div class="mid3_title">IDC机房内至全国联通各方向出口网络质量</div>
+                    <div class="map">
+                        <div class="mid3_1">
+                            <div>时延<span>(ms)</span></div>
+                            <div class="time">
+                                <div>10</div>
+                                <div>20</div>
+                                <div>30</div>
+                                <div>40</div>
+                                <div>50</div>
+                            </div>
+                            <!-- <div>
+                                <cross-chart1></cross-chart1>
+                            </div> -->
+                            <div class="province">
+                                <div>安徽</div>
+                                <div class="level1 score4"></div>
+                            </div>
+                            <div class="province">
+                                <div>北京</div>
+                                <div class="level1 score2"></div>
+                            </div>
+                            <div class="province">
+                                <div>福建</div>
+                                <div class="level1 score3"></div>
+                            </div>
+                            <div class="province">
+                                <div>甘肃</div>
+                                <div class="level1 score2"></div>
+                            </div>
+                            <div class="province">
+                                <div>广东</div>
+                                <div class="level1 score5"></div>
+                            </div>
+                            <div class="province">
+                                <div>贵州</div>
+                                <div class="level1 score4"></div>
+                            </div>
+                            <div class="province">
+                                <div>海南</div>
+                                <div class="level1 score3"></div>
+                            </div>
+                            <div class="province">
+                                <div>河北</div>
+                                <div class="level1 score2"></div>
+                            </div>
+                            <div class="province">
+                                <div>黑龙江</div>
+                                <div class="level1 score5"></div>
+                            </div>
+                            <div class="province">
+                                <div>湖北</div>
+                                <div class="level1 score4"></div>
+                            </div>
+                        </div>
+                        <div class="mid3_2">
+                            <map-chart></map-chart>
+                        </div>
+                        <div class="mid3_3">
+                            <div>丢包率</div>
+                            <div class="time">
+                                <div>20%</div>
+                                <div>40%</div>
+                                <div>60%</div>
+                                <div>80%</div>
+                                <div>100%</div>
+                            </div>
+                            <!-- <div>
+                                <cross-chart2></cross-chart2>
+                            </div> -->
+                            <div class="province">
+                                <div>吉林</div>
+                                <div class="level1 score2"></div>
+                            </div>
+                            <div class="province">
+                                <div>宁夏</div>
+                                <div class="level1 score2"></div>
+                            </div>
+                            <div class="province">
+                                <div>福建</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>甘肃</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>广东</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>贵州</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>海南</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>河北</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>黑龙江</div>
+                                <div class="level1"></div>
+                            </div>
+                            <div class="province">
+                                <div>湖北</div>
+                                <div class="level1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="rg-section1">
+                    <div class="rg-subtitle1">
+                        <span>业务运营</span>
+                        <div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="rg-body1">
+                        <div class="rg1">
+                            <div class="rg-table">
+                                <div>   
+                                    <div>电路名称</div>
+                                    <div>级别</div>
+                                    <div>状态</div>  
+                                </div>
+                                <div>
+                                    <div>杭州萧山NE0211NP</div>
+                                    <div>A级重保</div>
+                                    <div>正常</div>
+                                </div>
+                                <div>
+                                    <div>广州杭州ANE0018NP</div>
+                                    <div>A级重保</div>
+                                    <div>正常</div>
+                                </div>
+                                <div>
+                                    <div>上海杭州ANE0147NP</div>
+                                    <div>A级重保</div>
+                                    <div>正常</div>
+                                </div>
+                                <div>
+                                    <div>上海杭州ANE0310NP</div>
+                                    <div>A级重保</div>
+                                    <div>正常</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg2">
+                            <div class="btn">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div class="data">
+                                <div>
+                                    <div>全国故障<br>
+                                        总数</div>
+                                    <div>
+                                        <div>70</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>当前全国未处理<br>
+                                        故障数</div>
+                                    <div>
+                                        <div>1</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>受影响<br>
+                                        电路数</div>
+                                    <div>
+                                        <div>22</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>省内故障<br>
+                                        总数</div>
+                                    <div>
+                                        <div>10</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>当前省内未处理<br>
+                                        故障数</div>
+                                    <div>
+                                        <div>0</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>受影响<br>
+                                        电路数</div>
+                                    <div>
+                                        <div>7</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg3">
+                            <div class="btn">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div class="data">
+                                <div>
+                                    <div>重保<br>
+                                        电路数</div>
+                                    <div>
+                                        <div>888</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>重保电路<br>
+                                        故障数</div>
+                                    <div>
+                                        <div>888</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>重要时<br>
+                                        点保障</div>
+                                    <div>
+                                        <div>888</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rg4">
+                            <div class="btn">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div class="data">
+                                <div>
+                                    <div>巡检<br>
+                                        次数</div>
+                                    <div>
+                                        <div>6</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>发现<br>
+                                        问题数</div>
+                                    <div>
+                                        <div>888</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>问题<br>
+                                        已处理数</div>
+                                    <div>
+                                        <div>888</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import BarChart from '../components/BarChart.vue'
+import LineChart from '../components/LineChart.vue'
+import MapChart from '../components/MapChart.vue'
+import CrossChart1 from '../components/CrossChart1.vue'
+import CrossChart2 from '../components/CrossChart2.vue'
+export default {
+  components: { BarChart, LineChart, MapChart, CrossChart1, CrossChart2 },
+
+}
+</script>
+<style scoped>
+
+    /* 最外层的大盒子 */
+    .pointcustomer{
+        /* background-color: aqua; */
+        width: 100%;
+        height: 1080px;
+        background: url("../assets/pointcustomer/bg.png") no-repeat;
+        background-size: 100% 100%;
+    }
+    /* 大标题部分 */
+    .title{
+        width: 100%;
+        height: 5.648%;
+        background-image: url("../assets/pointcustomer/title.png");
+        background-repeat: no-repeat;
+    }
+    /* 主体部分 */
+    .body{
+        display: flex;
+        justify-content: space-evenly;
+        align-content: space-around;
+        width: 100%;
+        /* height: 1019px; */
+        height: 94.351;
+        box-sizing: border-box;
+    }
+
+    /* 左侧部分 */
+    .left{
+        /* width: 460px; */
+        width: 23.958%;
+        height: 100%;
+        padding-top: 50px;
+        box-sizing: border-box;
+    }
+    /* 左侧第一部分 */
+    .left .lf-section1 {
+        width: 100%;
+        /* height: 408px; */
+        height: 40.039%;
+    }
+    /* 左侧副标题 */
+    .lf-subtitle1,
+    .lf-subtitle2,
+    .lf-subtitle3 {
+        font-size: 18px;
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        color: cyan;
+        background-image: url("../assets/pointcustomer/subtitlebg.png");
+        background-repeat: no-repeat;
+        padding-left: 15px;
+        box-sizing: border-box;
+    }
+    /* 左侧第一部分主体样式 */
+    .lf-body1 {
+        width: 100%;
+        /* height: 368px; */
+        height: 90.19%;
+        margin-top: 10px;
+    }
+   .lf-body1>div:first-child {
+       display: flex;
+       flex-flow: wrap;
+       width: 100%;
+       height: 156px;
+   }
+   .lf-body1>div:first-child>div {
+       width: 32.82%;
+       height: 78px;
+   }
+   .label>div:first-child {
+       display: flex;
+       align-items: center;
+       font-size: 16px;
+       color: rgb(130, 224, 255);
+   }
+   .label>div:first-child img {
+       width: 23px;
+       height: 24px;
+   }
+   .label>div:first-child div {
+       height: 24px;
+       line-height: 24px;
+       margin-left: 10px;
+   }
+    .label>div:last-child {
+        width: 100%;
+        height: 41px;
+        line-height: 41px;
+        text-align: center;
+        background: url(../assets/pointcustomer/label.png);
+    }
+    .label>div:last-child>span:nth-child(1) {
+        font-size: 28px;
+        font-family: "Microsoft YaHei";
+        color: rgb(252, 220, 0);
+        font-weight: bold;
+    }
+    .label>div:last-child>span:nth-child(2) {
+        font-size: 16px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(38, 176, 255);
+        margin-left: 10px;
+    }
+
+    .lf-body1>div:last-child {
+        width: 100%;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        color: rgb(252, 220, 0);
+    }
+
+    /* 左侧第二部分样式 */
+    .left .lf-section2 {
+        width: 100%;
+        height: 265px;
+    }
+    .lf-subtitle2 {
+        display: flex;
+        justify-content: space-between;
+    }
+    .lf-subtitle2 div {
+        width: 84px;
+        height: 29px;
+        background: url(../assets/pointcustomer/day.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    /* 左侧第二部分主体 */
+    .lf-body2 {
+        width: 100%;;
+        height: 225px;
+    }
+    /* 左侧第三部分 */
+    .left .lf-section3{
+        width: 100%;
+        height: 265px;
+    }
+    /* 左侧第三部分主体 */
+    .lf-body3 {
+        display: flex;
+        width: 100%;
+        height: 225px;
+    }
+    .lf-body3>div:first-child {
+        width: 25%;
+        height: 176px;
+        margin-top: 50px;
+        margin-right: 6px;
+    }
+    .lf-body3>div:first-child img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .lf-body3 .lf-table {
+        width: 78%;
+        height: 225px;
+    }
+    .lf-body3>div:last-child>div {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 39px;
+        line-height: 39px;
+        text-align: center;
+        background: url(../assets/pointcustomer/protect.png) no-repeat;
+        background-size: 100% 100%;
+        font-size: 12px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(37, 227, 255);
+        margin-bottom: 12px;
+    }
+    .lf-body3>div:last-child>div:nth-child(1) {
+        background: none;
+        font-size: 16px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(37, 227, 255);
+        margin-bottom: 0;
+    }
+    .lf-table>div {
+        width: 100%;
+        color: #fff !important;
+    }
+    .lf-table>div:first-child {
+        font-size: 16px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(37, 227, 255) !important;
+    }
+
+    .lf-table>div>div:nth-child(1) {
+        width: 22.64%;
+    }
+    .lf-table>div>div:nth-child(2) {
+        width: 11.32%;
+    }
+    .lf-table>div>div:nth-child(3) {
+        width: 22.64%;
+    }
+    .lf-table>div>div:nth-child(4) {
+        width: 23.89%;
+    }
+
+    /* 中间部分 */
+    .middle{
+        width: 45.781%;
+        height: 100%;
+        padding-top: 20px;
+        box-sizing: border-box;
+    }   
+    .middle .mid1 { 
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        width: 100%;
+        height: 44px;
+        background: url(../assets/pointcustomer/mid1.png) no-repeat;
+        background-size: 100% 100%;
+        line-height: 44px;
+        text-align: center;
+        font-size: 30px;
+        color: cyan;
+    } 
+    .mid1 div {
+        height: 44px;
+    }
+    .mid1 div:nth-child(1),
+    .mid1 div:nth-child(5) {
+        font-size: 16px;
+        font-family: "PangMenZhengDao";
+        color: rgba(0, 255, 255, 0.302);
+    }
+    .mid1 div:nth-child(2),
+    .mid1 div:nth-child(4) {
+        font-size: 20px;
+        font-family: "PangMenZhengDao";
+        color: rgba(0, 255, 255, 0.4);
+    }
+    .mid1 div:nth-child(3) {
+        font-size: 24px;
+        font-family: "PangMenZhengDao";
+        color: rgb(0, 255, 255);
+    }
+    .middle .mid2{
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 543px;
+        background: url(../assets/pointcustomer/mid2.png) no-repeat;
+        background-size: 100% 100%;
+        margin: 15px 0 18px 0;
+    }
+    .mid2 img {
+        display: block;
+        width: 90.784%;
+        height: 479px;
+        margin: auto;
+    }
+    .mid2_title {
+        position: absolute;
+        top: 6%;
+        left: 8%;
+        font-size: 18px;
+        font-family: "Microsoft YaHei";
+        color: rgb(0, 255, 255);
+    }
+    .middle .mid3 { 
+        width: 100%;
+        height: 349px;
+        background: url(../assets/pointcustomer/mid3.png) no-repeat;
+        background-size: 100% 100%;
+        padding-top: 7px;
+        box-sizing: border-box;
+    }
+    .mid3_title {
+        width: 100%;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        font-family: "Microsoft YaHei";
+        color: rgb(0, 255, 255);
+        padding-left: 28px;
+        box-sizing: border-box;
+    }
+    .map {
+        display: flex;
+        width: 100%;
+        height: 308px;
+    }
+    .mid3_1 {
+        width: 26.734%;
+        height: 272px;
+        background: url(../assets/pointcustomer/mid3_1.png) no-repeat;
+        background-size: 100% 100%;
+        padding-top: 10px;
+        box-sizing: border-box;
+    }
+    .mid3_1>div:first-child,
+    .mid3_3>div:first-child {
+        padding-left: 19px;
+        font-size: 14px;
+        font-family: "Microsoft YaHei";
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+    }
+    .mid3_1>div:first-child span {
+        margin-left: 10px;
+    }
+    .time {
+        display: flex;
+        padding-left: 64px;
+    }
+    .time>div {
+        width: 30px;
+        font-size: 12px;
+        font-family: "Microsoft YaHei";
+        color: rgb(255, 255, 255);
+    }
+    .province {
+        display: flex;
+        align-items: center;
+    }
+    .province>div:nth-child(1) {
+        width: 64px;
+        height: 22px;
+        line-height: 22px;
+        /* text-align: center; */
+        font-size: 12px;
+        font-family: "Microsoft YaHei";
+        color: rgba(255, 255, 255, 0.4);
+        padding-left: 20px;
+        box-sizing: border-box;
+    }
+    .level1 {
+        width: 117px;
+        height: 7px;
+        background: url(../assets/pointcustomer/4.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .score2 {
+        width: 53px;
+        height: 7px;
+        background: url(../assets/pointcustomer/2.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .score3 {
+        width: 84px;
+        height: 7px;
+        background: url(../assets/pointcustomer/3.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .score4 {
+        width: 114px;
+        height: 7px;
+        background: url(../assets/pointcustomer/4.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .score5 {
+        width: 144px;
+        height: 7px;
+        background: url(../assets/pointcustomer/5.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .mid3_2 {
+        width: 47.554%;
+        height: 308px;
+    }
+    .mid3_3 {
+        width: 26.166%;
+        height: 272px;
+        background: url(../assets/pointcustomer/mid3_3.png) no-repeat;
+        background-size: 100% 100%;
+        padding-top: 10px;
+        box-sizing: border-box;
+    }
+
+    /* 右侧部分 */
+    .right{
+        width: 23.958%;
+        height: 100%;
+        padding-top: 50px;
+        box-sizing: border-box;
+    }
+    .right .rg-section1{
+        width: 100%;
+        height: 440px;
+        /* background-color: darkkhaki; */
+    }
+    .rg-subtitle1 {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        color: cyan;
+        background: url("../assets/pointcustomer/subtitlebg.png") no-repeat;
+        background-size: 100% 100%;
+        padding-left: 15px;
+        box-sizing: border-box;
+    }
+    .rg-subtitle1>div {
+        display: flex;
+    }
+    .rg-subtitle1>div>div {
+        width: 94px;
+        height: 29px;
+    }
+    .rg-subtitle1>div>div:first-child {
+        background: url(../assets/pointcustomer/month.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .rg-subtitle1>div>div:last-child {
+        background: url(../assets/pointcustomer/day_w.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .rg1 {
+        width: 100%;
+        height: 252px;
+    }
+    .rg-table {
+        width: 96.30%;
+        height: 100%;
+        margin: auto;
+    }
+    .rg-table>div {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 43px;
+        line-height: 43px;
+        text-align: center;
+        background: url(../assets/pointcustomer/label2.png) no-repeat;
+        background-size: 100% 100%;
+        font-size: 12px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(37, 227, 255);
+        margin-bottom: 12px;
+    }
+    .rg-table>div:nth-child(1) {
+        background: none;
+        font-size: 16px;
+        font-family: "AlibabaPuHuiTiR";
+        color: rgb(37, 227, 255);
+    }
+    .rg-table>div {
+        width: 100%;
+    }
+    .rg-table>div>div:nth-child(1) {
+        width: 37.47%;
+    }
+    .rg-table>div>div:nth-child(2) {
+        width: 33.18%;
+    }
+    .rg-table>div>div:nth-child(3) {
+        width: 28.66%;
+    }
+    .rg2 {
+        width: 100%;
+        height: 246px;
+        background: url("../assets/pointcustomer/rg2.png") no-repeat;
+        background-size: 100% 100%;
+        margin-top: 28px;
+    }
+    .btn {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 37px;
+        padding: 0 14px;
+        box-sizing: border-box;
+    }
+    .btn>div {
+        width: 124px;
+        height: 26px;
+    }
+    .btn>div:first-child {
+        background: url(../assets/pointcustomer/fault.png) no-repeat;
+        background-size: 100% 1005;
+    }
+    .btn>div:last-child {
+        background: url(../assets/pointcustomer/cutover.png) no-repeat;
+        background-size: 100% 1005;
+    }
+    .data {
+        width: 100%;
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-around;
+    }
+    .data>div {
+        width: 28.478%;
+        height: 88px;
+    }
+    .data>div>div:nth-child(1) {
+        margin-left: 34px;
+        width: 74.045%;
+        height: 30px;
+        line-height: 15px;
+        text-align: center;
+        font-size: 13px;
+        font-family: "Microsoft YaHei";
+        color: rgb(255, 255, 255);
+    }
+    .data>div>div:nth-child(2) {
+        width: 100%;
+        height: 40px;
+        background: url(../assets/pointcustomer/net.png) no-repeat;
+        background-size: 100% 100%;
+    }
+    .data>div>div:nth-child(2) div{
+        margin-left: 25.954%;
+        width: 74.045%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 26px;
+        font-family: "Adobe Heiti Std";
+        color: rgb(252, 220, 0);
+    }
+
+    .rg3 {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-around;
+        width: 100%;
+        height: 158px;
+        background: url("../assets/pointcustomer/rg3.png") no-repeat;
+        background-size: 100% 100%;
+        margin: 28px 0;
+    }
+    .rg3 .btn>div:first-child {
+        background: url(../assets/pointcustomer/insurance.png) no-repeat;
+        background-size: 100% 1005;
+    }
+    .rg3 .btn>div:last-child {
+        background: url(../assets/pointcustomer/renovate.png) no-repeat;
+        background-size: 100% 1005;
+    }
+    .rg4 {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: space-around;
+        width: 100%;
+        height: 158px;
+        background: url("../assets/pointcustomer/rg4.png") no-repeat;
+        background-size: 100% 100%;
+    }
+    .rg4 .btn>div:first-child {
+        background: url(../assets/pointcustomer/check.png) no-repeat;
+        background-size: 100% 1005;
+    }
+    .rg4 .btn>div:last-child {
+        background: url(../assets/pointcustomer/run.png) no-repeat;
+        background-size: 100% 1005;
+    }
+
+</style>

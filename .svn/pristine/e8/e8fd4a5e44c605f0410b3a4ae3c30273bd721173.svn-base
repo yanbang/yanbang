@@ -1,0 +1,2023 @@
+<template>
+  <div class="container">
+    <div id="markWater">
+      <canvas id="water_mark" width="500" height="200"></canvas>
+    </div>
+    <Header>
+      <template v-slot:smallTitle>
+        <div class="header-smallTitle">业务</div>
+      </template>
+    </Header>
+    <!-- 内容 -->
+    <FlexBox :list="bottomList">
+      <template slot>
+        <!-- 左边 -->
+
+        <div class="left">
+          <!-- 按产品 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                构-新发展按产品
+              </div>
+              <div class="title-right">
+                <div :class="{'active': cptagactive == 'curDay'}" @click="cptagactiveFn('curDay')">当日</div>
+                <div :class="{'active': cptagactive == 'curMon'}" @click="cptagactiveFn('curMon')">月累</div>
+                <div :class="{'active': cptagactive == 'curYear'}" @click="cptagactiveFn('curYear')">年累</div>
+              </div>
+            </div>
+            <div class="left-top">
+              <div class="con">
+                <div class="bigText color1">{{data5g_cp.g5tc_p}}<span>%</span></div>
+                <div class="smallText" style="color:#fff">5G套餐：{{data5g_cp.g5tc_n}}户</div>
+              </div>
+              <div class="chart" id="leftTopChart">
+                <div class="bg"></div>
+              </div>
+              <div class="con">
+                <div class="bigText color2">{{data5g_cp.sjb_p}} <span>%</span></div>
+                <div class="smallText">升级包：{{data5g_cp.sjb_n}}户</div>
+              </div>
+            </div>
+            <div class="left-lineChart">
+              <div style="display:flex">
+                <div class="chartTitle">近7日发展量趋势
+                </div>
+                <div class="more" @click="showDialog(4)">
+                  更多 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </div>
+              </div>
+              <div class="lineChart" id="leftLineChart"></div>
+            </div>
+          </div>
+          <!-- 按融合 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                构-新发展按融合
+              </div>
+
+              <div class="title-right">
+                <div :class="{'active': rhtagactive == 'curDay'}" @click="rhtagactive = 'curDay'">当日</div>
+                <div :class="{'active': rhtagactive == 'curMon'}" @click="rhtagactive = 'curMon'">月累</div>
+                <div :class="{'active': rhtagactive == 'curYear'}" @click="rhtagactive = 'curYear'">年累</div>
+              </div>
+            </div>
+            <div class="left-waterPoloChart">
+              <div class="left-item" v-for="(i,index) in data5g_rh" :key="index">
+                <div class="waterPoloChart" :id="`waterPoloChart${index}`"></div>
+                <div class="itemName">{{i.name}}</div>
+                <div class="itemNum">{{i.num}}<span>户</span></div>
+              </div>
+            </div>
+          </div>
+          <!-- 按渠道 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                效-新发展按渠道
+
+              </div>
+              <div class="title-right">
+                <div :class="{'active': qdtagactive == 'd'}" @click="qdtagactive1('d') ">当日</div>
+                <div :class="{'active': qdtagactive == 'm'}" @click="qdtagactive1('m') ">月累</div>
+                <div :class="{'active': qdtagactive == 'y'}" @click="qdtagactive1('y')">年累</div>
+              </div>
+            </div>
+            <div class="leftBarChart" id="leftBarChart"></div>
+          </div>
+          <!-- 5G终端销量 -->
+          <!--          <div class="leftContent">-->
+          <!--            <div class="title">-->
+          <!--&lt;!&ndash;              <div class="title-left">5G终端销量</div>&ndash;&gt;-->
+          <!--            </div>-->
+          <!--            <div class="rightTable">-->
+          <!--              <div class="tHead">-->
+          <!--                <div class="wid19"></div>-->
+          <!--                <div>当日</div>-->
+          <!--                <div>月累</div>-->
+          <!--                <div>年累</div>-->
+          <!--                &lt;!&ndash; <div>营业厅</div>-->
+          <!--                <div>合作厅</div>-->
+          <!--                <div>合计</div> &ndash;&gt;-->
+          <!--              </div>-->
+          <!--              <div class="tBody">-->
+          <!--                <div class="td wid19">-->
+          <!--                  &lt;!&ndash; <div>当日</div>-->
+          <!--                  <div>月累</div>-->
+          <!--                  <div>年累</div> &ndash;&gt;-->
+          <!--                  <div>营业厅</div>-->
+          <!--                </div>-->
+          <!--                <div class="td bg" v-for="(item, idnex) in data5g_zdxl" :key="idnex">-->
+          <!--                  <div>{{item}}</div>-->
+          <!--                </div>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+        </div>
+        <!-- 中间 -->
+        <div class="center">
+          <div class="centerTop">
+            <div class="centerTop-title">
+              <div class="titleLeft">量-5G发展</div>
+              <div class="titleRight" @click="showDialog(1)">
+                发展趋势 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+              </div>
+            </div>
+            <div class="centerTop-con">
+              <div class="centerItem">
+                <div class="centerItem-top">
+                  <div class="itemBg"></div>
+                  <div class="itemText">
+                    <div>日完成率</div>
+                    <div class="color" :style="{'color':color[percent]}">{{data5g_center_fzl.IC5G0039.curDay}} <span :style="{'color':color[percent]}">%</span></div>
+                  </div>
+                </div>
+                <div class="centerItem-center marginB">
+                  <div class="itemTitle">当日发展</div>
+                  <div class="itemText">{{data5g_center_fzl.IC5G0001.curDay}} <span>户</span></div>
+                </div>
+                <div class="centerItem-center">
+                  <div class="itemTitle">日发展目标</div>
+                  <div class="itemText">{{ data5g_center_fzl.IC5G0038.curDay}} <span>户</span></div>
+                </div>
+              </div>
+              <div class="centerItem">
+                <div class="centerItem-top">
+                  <div class="itemBg month"></div>
+                  <div class="itemText">
+                    <div>月完成率</div>
+                    <div class="color" :style="{'color':color[percent1]}">{{data5g_center_fzl.IC5G0039.curMon}} <span :style="{'color':color[percent1]}">%</span></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="centerItem-center marginB">
+                    <div class="itemTitle">当月发展</div>
+                    <div class="itemText">{{data5g_center_fzl.IC5G0001.curMon}} <span>户</span></div>
+
+                  </div>
+                  <div class="centerItem-center">
+                    <div class="itemTitle"></div>
+                    <div class="itemText1">
+                      <!-- 环比<span class="margin green">{{}}</span> -->
+                      <!-- 同比<span class="yellow">+2.23%</span> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="centerItem-center">
+                  <div class="itemTitle">月累目标</div>
+
+                  <div class="itemText">{{data5g_center_fzl.IC5G0038.curMon}} <span>户</span></div>
+                </div>
+              </div>
+              <div class="centerItem">
+                <div class="centerItem-top">
+                  <div class="itemBg year"></div>
+                  <div class="itemText">
+                    <div>年完成率</div>
+                    <div class="color" :style="{'color':color[percent2]}">{{data5g_center_fzl.IC5G0039.curYear}} <span :style="{'color':color[percent2]}">%</span></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="centerItem-center marginB">
+                    <div class="itemTitle">当年发展</div>
+                    <div class="itemText">{{data5g_center_fzl.IC5G0001.curYear}} <span>户</span></div>
+                  </div>
+                  <div class="centerItem-center">
+                    <div class="itemTitle"></div>
+                    <div class="itemText1">
+                      <!-- 环比<span class="margin green">-2.12%</span> -->
+                      <!-- 同比<span class="yellow">+2.23%</span> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="centerItem-center">
+                  <div class="itemTitle">年累目标</div>
+                  <!-- <div class="itemText">600000 <span>户</span></div> -->
+                  <div class="itemText">{{data5g_center_fzl.IC5G0038.curYear}} <span>户</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="centerBottom centerBottom-map">
+            <div class="centerTop-title">
+              <div class="titleLeft">{{gisTitle}}发展量</div>
+              <div class="titleRight">
+                <span class="margin" @click="showDialog(2)" v-if="forthLevel!=4">
+                  详细数据 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+                <span @click="showDialog(3)" v-if="forthLevel!=3 && forthLevel!=4">
+                  营服排行榜 <img width="9px" height="13px" src="~@/assets/images/bigScreen/resource/dleft.png" />
+                </span>
+              </div>
+            </div>
+            <div class="centerBottom-map">
+              <iframe ref="iframe" :src="url" style="width:100%;height:100%;border:none">
+                <!-- <iframe ref="iframe" src="http://134.32.115.253:18080/sdresview/" style="width:100%;height:100%;border:none"> -->
+
+              </iframe>
+            </div>
+          </div>
+        </div>
+        <!-- 右边 -->
+        <div class="right">
+          <!-- 5G流失 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                质-按流失
+              </div>
+            </div>
+            <div class="rightTable">
+              <div class="tHead">
+                <div class="wid19"></div>
+                <div>当日流失</div>
+                <div>月累流失</div>
+                <div>年累流失</div>
+              </div>
+              <div class="tBody">
+                <div class="td wid19">
+                  <div>新发展</div>
+                  <div>拍照用户</div>
+                </div>
+                <div class="td bg" v-for="(item, index) in data5g_right_ls" :key="index">
+                  <div v-for="(sitem, sindex) in item" :key="sindex">{{sitem}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 5G携入携出 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">质-携入携出</div>
+            </div>
+            <div class="rightTable">
+              <div class="tHead">
+                <div class="wid19"></div>
+                <div>携入</div>
+                <div>携出</div>
+                <div>净携入</div>
+              </div>
+              <div class="tBody">
+                <div class="td wid19">
+                  <div>当日</div>
+                  <div>月累</div>
+                  <div>年累</div>
+                </div>
+                <div class="td bg" v-for="(item, idnex) in data5g_right_xrxc" :key="idnex">
+                  <div v-for="(sitem, sindex) in item" :key="sindex">{{sitem}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 5G端网协同 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                质-端网协同
+              </div>
+            </div>
+            <div class="rightTable">
+              <div class="tHead">
+                <div>5G终端</div>
+                <div>5G套餐</div>
+                <div>5G登网</div>
+                <div>用户数</div>
+              </div>
+              <div class="tBody">
+                <div class="td" style="color: #ffffff;font-size:18px">
+                  <div>有</div>
+                  <div>有</div>
+                  <div>有</div>
+                  <div>有</div>
+                  <div class="green">无</div>
+                </div>
+                <div class="td bg">
+                  <div>有</div>
+                  <div>有</div>
+                  <div class="green">无</div>
+                  <div class="green">无</div>
+                  <div>有</div>
+                </div>
+                <div class="td bg">
+                  <div>有</div>
+                  <div class="green">无</div>
+                  <div class="green">无</div>
+                  <div>有</div>
+                  <div class="green">无</div>
+                </div>
+                <div class="td bg">
+                  <div>{{right_dwxt.val1}}</div>
+                  <div>{{right_dwxt.val2}}</div>
+                  <div>{{right_dwxt.val3}}</div>
+                  <div>{{right_dwxt.val4}}</div>
+                  <div>{{right_dwxt.val5}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 5G存量 -->
+          <div class="leftContent">
+            <div class="title">
+              <div class="title-left">
+                构-存量融合
+              </div>
+              <!-- <div class="title-right">
+                <div :class="{'active': clrhtagactive == 'curMon'}" @click="clrhtagactive = 'curMon'">月累</div>
+                <div :class="{'active': clrhtagactive == 'curYear'}" @click="clrhtagactive = 'curYear'">年累</div>
+              </div> -->
+            </div>
+            <div class="left-waterPoloChart">
+              <div class="left-item" v-for="(i,index) in data5g_right_clrh" :key="index">
+                <div class="waterPoloChart" :id="`rightPieChart${index}`"></div>
+                <div class="itemName">{{i.name}}</div>
+                <div class="itemNum">{{params.mLevel == 1 ? (i.num / 10000).toFixed(2) : i.num}}</div>
+                <div class="itemNum" v-if="params.mLevel == 1"><span>万户</span></div>
+                <div class="itemNum" v-else><span>户</span></div>
+
+              </div>
+            </div>
+          </div>
+
+          <!--          <div style="display:flex">-->
+          <!--            <div class="bottom-title">-->
+          <!--              <div class="numfont">{{right_dwxt.valb1}}</div>-->
+          <!--&lt;!&ndash;              <div style="transform: scale(0.8);color:#02F6FF;margin-top:-5px">全省合作厅日均产能</div>&ndash;&gt;-->
+          <!--            </div>-->
+          <!--            <div class="bottom-title">-->
+          <!--              <div class="numfont">{{right_dwxt.valb2}}</div>-->
+          <!--&lt;!&ndash;              <div style="transform: scale(0.8);color:#02F6FF;margin-top:-5px">大于全省日均产能合作厅数</div>&ndash;&gt;-->
+          <!--            </div>-->
+          <!--            <div class="bottom-title">-->
+          <!--              <div class="numfont">-</div>-->
+          <!--              <div style="transform: scale(0.8);color:#02F6FF;margin-top:-5px">有产能无基站覆盖合作厅数</div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+        </div>
+      </template>
+    </FlexBox>
+    <!-- 发展趋势 -->
+    <el-dialog :visible.sync="isDialog1" width="60%" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{mapDate.area_name||'全省'}}5G发展趋势</div>
+        </div>
+        <div class="dialogChart" id="dialogMouthChart"></div>
+        <!-- <div class="dialogChart" id="dialogYearChart"></div> -->
+      </div>
+    </el-dialog>
+    <!-- 全省5G发展明细 -->
+    <el-dialog :visible.sync="isDialog2" width="60%" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{mapDate.area_name||'全省'}}5G发展明细</div>
+        </div>
+        <div class="dialogTableBg">
+
+          <el-table :data="dialogTable" @sort-change='tableSortChange' style="width: 100%; height:730px;overflow: auto;">
+            <el-table-column prop="regionName" label="地区"> </el-table-column>
+            <el-table-column prop="dayTarget" label="日目标"> </el-table-column>
+            <el-table-column prop="dayDevelop" label="当日发展"> </el-table-column>
+            <el-table-column prop="dayRate" label="日完成率" sortable='aa'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._dayStatus == 1" style="color: #00B050 !important">{{scope.row.dayRate}}%</span>
+                <span v-else-if="scope.row._dayStatus == 2" style="color: #C00000 !important">{{scope.row.dayRate}}%</span>
+                <span v-else>{{scope.row.dayRate}}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="monTarget" label="月目标"> </el-table-column>
+            <el-table-column prop="monDevelop" label="月累发展"> </el-table-column>
+            <el-table-column prop="monRate" label="月完成率" sortable='bb'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._monStatus == 1" style="color: #00B050 !important">{{scope.row.monRate}}%</span>
+                <span v-else-if="scope.row._monStatus == 2" style="color: #C00000 !important">{{scope.row.monRate}}%</span>
+                <span v-else>{{scope.row.monRate}}%</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="yearTarget" label="年目标"> </el-table-column>
+            <el-table-column prop="yearDevelop" label="年累发展"> </el-table-column>
+            <el-table-column prop="yearRate" label="年完成率" sortable='cc'>
+              <template slot-scope="scope">
+                <span v-if="scope.row._yearStatus == 1" style="color: #00B050 !important">{{scope.row.yearRate}}%</span>
+                <span v-else-if="scope.row._yearStatus == 2" style="color: #C00000 !important">{{scope.row.yearRate}}%</span>
+                <span v-else>{{scope.row.yearRate}}%</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+    <!-- 全省5G发展营服排行榜 -->
+    <el-dialog :visible.sync="isDialog3" width="60%" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">{{mapDate.area_name||'全省'}}5G发展营服排行榜</div>
+        </div>
+        <div class="dialogBtn">
+          <div class="dialogBtn-left">
+            <div @click="dialogSub(1)" :class="['dialogBtn-item',{'dialogBtnOn1': dialogBtnOn == 1}]">日完成率前10</div>
+            <div @click="dialogSub(2)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 2}]">月完成率前10</div>
+            <div @click="dialogSub(3)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 3}]">年完成率前10</div>
+          </div>
+          <div class="dialogBtn-right">
+            <div @click="dialogSub(4)" :class="['dialogBtn-item',{'dialogBtnOn1': dialogBtnOn == 4}]">日完成率后10</div>
+            <div @click="dialogSub(5)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 5}]">月完成率后10</div>
+            <div @click="dialogSub(6)" :class="['dialogBtn-item',{'dialogBtnOn': dialogBtnOn == 6}]">年完成率后10</div>
+          </div>
+        </div>
+        <div class="dialogTable">
+          <el-table :data="dialogTable2" style="width: 100%">
+            <el-table-column prop="a" label="排名">
+              <template slot-scope="scope">
+                <span v-if="scope.$index == 0" class="tableTh tableThTop1"></span>
+                <span v-else-if="scope.$index == 1" class="tableTh tableThTop2"></span>
+                <span v-else-if="scope.$index == 2" class="tableTh tableThTop3"></span>
+                <span v-else class="tableTh">{{ scope.$index + 1 }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="s" label="营服"> </el-table-column>
+            <el-table-column prop="d" label="归属地市"> </el-table-column>
+            <el-table-column prop="f" :label="`${tableLabel}目标`"> </el-table-column>
+            <el-table-column prop="g" :label="`当${tableLabel}发展`"> </el-table-column>
+            <el-table-column prop="h" :label="`${tableLabel}完成率`"> </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+    <el-dialog :visible.sync="isDialog4" width="40%" :modal-append-to-body='false'>
+      <div class="dialogCon">
+        <div class="dialogTitle">
+          <div class="left">5G发展按产品</div>
+          <div class="title-right">
+            <div @click="tabClick(0, 'd')" :class="{'active': tabs[0] === 'd'}">当日</div>
+            <div @click="tabClick(0, 'm')" :class="{'active': tabs[0] === 'm'}">月累</div>
+            <div @click="tabClick(0, 'y')" :class="{'active': tabs[0] === 'y'}">年累</div>
+          </div>
+        </div>
+        <div class="dialogTableBg1">
+          <el-table ref="table" :data="dialogTable1" :key="dialogTableKey" style="width: 100%; height:400px;margin-top:35px;overflow: auto;">
+            <el-table-column prop="name" label="产品">
+              <template slot-scope="scope">
+                <!-- <img v-if="scope.row.value" style="margin-right:15px;height: 13px;width: 13px" src="~@/assets/images/bigScreen/fullService/chanel_add.png" @click="showMore(scope.$index,scope.row)" /> -->
+                <img v-if="!scope.row.show" style="margin-right:15px;height: 13px;width: 13px" src="~@/assets/images/bigScreen/fullService/chanel_jian.png" @click="showMore(scope.$index,scope.row, true)" />
+                <img v-if="scope.row.show" style="margin-right:15px;height: 13px;width: 13px" src="~@/assets/images/bigScreen/fullService/chanel_add.png" @click="showMore(scope.$index,scope.row, false)" />
+                <span>{{scope.row.name.name}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="total" label="发展量">
+              <template slot-scope="scope">
+                <span>{{scope.row.name.total}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column type="expand" width="1">
+              <template slot-scope="props">
+                <el-table class="tableNullBg" :show-header="false" :data="props.row.value" style="width: 100%">
+                  <el-table-column prop="productName" label=""></el-table-column>
+                  <el-table-column prop="total" label=""></el-table-column>
+                </el-table>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/BigScreen/Header'
+import FlexBox from '@/components/BigScreen/FlexBox'
+import leftTopChart from '@/config/bigscreen/fullService-leftTopPie.js'
+import leftLine from '@/config/bigscreen/fullService-leftLine.js'
+import waterPoloChart from '@/config/bigscreen/fullService-waterPoloChart.js'
+import leftBarChart from '@/config/bigscreen/fullService-leftBarChart.js'
+import rightPieChart from '@/config/bigscreen/fullService-rightPieChart.js'
+import rightBottomPieChart from '@/config/bigscreen/fullService-rightBottomPieChart.js'
+import { all5Gservice1, all5Gservice2, detail5G, halfYearTrend, productDetail, Trend5G, campTop10, ywDevelop } from '@/api/develop5G'
+import store from 'store'
+export default {
+  components: {
+    Header,
+    FlexBox,
+  },
+  data() {
+    return {
+      dialogTableKey: false,
+      gisTitle: store.get('userInfo').dataAreaName || '各地市',
+      color: ['#00B050', '#fff', '#C00000'],
+      percent: 1,
+      percent1: 1,
+      percent2: 1,
+      tabs: ['d', 'd', 'd', 'm', 'm'],
+      dialogTable1: [],
+      dialogTable2: [],
+      url: '',
+      bottomList: [{
+        name: '移网发展',
+        url: '/bigscreen/fullService',
+      }, {
+        name: '5G发展',
+        url: '/bigscreen/5Gdevelop/5G',
+        active: true
+      }, {
+        name: '宽带发展',
+        url: '/bigscreen/broadbandPage',
+      }, {
+        name: '2I发展',
+        url: '/bigscreen/5Gdevelop/2I',
+      }],
+      //   waterPoloList: [{
+      //     name: '移宽融合',
+      //     num: 0,
+      //     value: 0
+      //   }, {
+      //     name: '移移融合主副卡',
+      //     num: 0,
+      //     value: 0
+      //   }, {
+      //     name: '金融融合',
+      //     num: 0,
+      //     value: 0
+      //   }],
+      rightPieList: [{
+        name: '移宽融合',
+        num: 0,
+        value: 0
+      }, {
+        name: '移移融合主副卡',
+        num: 0,
+        value: 0
+      }, {
+        name: '金融融合',
+        num: 0,
+        value: 0
+      }],
+      rightBottomPieList: [{
+        name: '三无用户',
+        num: 12345,
+        value: 40
+      }, {
+        name: '极低用户',
+        num: 12345,
+        value: 60
+      }],
+      all5gLabels: {},
+      cptagactive: 'curDay',
+      rhtagactive: 'curDay',
+      qdtagactive: 'd',
+      clrhtagactive: 'curDay',
+      isDialog1: false,
+      isDialog2: false,
+      isDialog3: false,
+      isDialog4: false,
+      dialogBtnOn: 1,
+      dialogTable: [],
+      yfDialogTable: [
+      ],
+      diaxAxis: [],
+      diaLine1: [],
+      diaLine2: [],
+      diaxAxis1: [],
+      diaLine3: [],
+      diaLine4: [],
+      detailColumn: [
+        { title: '地区', filed: 'regionName' },
+        { title: '日目标', filed: 'dayTarget' },
+        { title: '当日发展', filed: 'dayDevelop' },
+        { title: '日完成率', filed: 'dayRate', sortable: true },
+        { title: '月目标', filed: 'monTarget' },
+        { title: '月累发展', filed: 'monDevelop' },
+        { title: '月完成率', filed: 'monRate', sortable: true },
+        { title: '年目标', filed: 'yearTarget' },
+        { title: '年累发展', filed: 'yearDevelop' },
+        { title: '年完成率', filed: 'yearRate', sortable: true },
+
+      ],
+      params: {
+        timest: '',
+        eparchyCode: '',
+        areaCode: '',
+        gridId: '',
+        mLevel: '',
+
+      },
+      mapDate: '',
+      mapParams: '',
+      forthLevel: '1',
+      //   qd: '',
+      channelData: '',
+      tableLabel: '日',
+      morePro: '1',
+    }
+  },
+  computed: {
+    // 5g发展按产品
+    data5g_cp() {
+      var dataV = {
+        allVal: 0,
+        g5tc_p: 0,
+        g5tc_n: 0,
+        sjb_p: 0,
+        sjb_n: 0
+      }
+      dataV.allVal = this.all5gLabels['IC5G0001'] ? this.all5gLabels['IC5G0001'][this.cptagactive] : '-';
+      dataV.sjb_n = this.all5gLabels['IC5G0004'] ? this.all5gLabels['IC5G0004'][this.cptagactive] : '-'; // 升级包
+      dataV.sjb_p = this.all5gLabels['IC5G0005'] ? this.all5gLabels['IC5G0005'][this.cptagactive] : '-';
+      dataV.g5tc_n = this.all5gLabels['IC5G0061'] ? this.all5gLabels['IC5G0061'][this.cptagactive] : '-'; // 5g套餐
+      dataV.g5tc_p = this.all5gLabels['IC5G0057'] ? this.all5gLabels['IC5G0057'][this.cptagactive] : '-';
+      return dataV
+    },
+    // 5g发展按融合
+    data5g_rh() {
+      var waterPoloList = [{
+        name: '移宽融合',
+        num: 0,
+        value: 0
+      }, {
+        name: '移移融合主副卡',
+        num: 0,
+        value: 0
+      }, {
+        name: '金融融合',
+        num: 0,
+        value: 0
+      }];
+
+      waterPoloList[0].num = this.all5gLabels['IC5G0008'] ? this.all5gLabels['IC5G0008'][this.rhtagactive] : '-';
+      waterPoloList[0].value = this.all5gLabels['IC5G0009'] ? this.all5gLabels['IC5G0009'][this.rhtagactive] : '-';
+
+      waterPoloList[1].num = this.all5gLabels['IC5G0010'] ? this.all5gLabels['IC5G0010'][this.rhtagactive] : '-';
+      waterPoloList[1].value = this.all5gLabels['IC5G0011'] ? this.all5gLabels['IC5G0011'][this.rhtagactive] : '-';
+
+      waterPoloList[2].num = this.all5gLabels['IC5G0012'] ? this.all5gLabels['IC5G0012'][this.rhtagactive] : '-';
+      waterPoloList[2].value = this.all5gLabels['IC5G0013'] ? this.all5gLabels['IC5G0013'][this.rhtagactive] : '-';
+
+      this.$nextTick(() => {
+        waterPoloList.map((i, index) => {
+          this.waterPoloChart(index, i);
+        });
+      });
+
+      return waterPoloList;
+    },
+    data5g_zdxl() {
+      var data = [];
+      let item = this.all5gLabels['IC5G0058'] || {};
+      data = [item.curDay || '-', item.curMon || '-', item.curYear || '-']
+      return data
+    },
+    // 5G发展量
+    data5g_center_fzl() {
+      var xdata = ['curDay', 'curMon', 'curYear']
+      var data = {
+        // 5G发展量-发展完成率
+        'IC5G0039': {
+          'curDay': this.all5gLabels.IC5G0039 ? this.all5gLabels.IC5G0039.curDay : '-',
+          'curMon': this.all5gLabels.IC5G0039 ? this.all5gLabels.IC5G0039.curMon : '-',
+          'curYear': this.all5gLabels.IC5G0039 ? this.all5gLabels.IC5G0039.curYear : '-'
+        },
+        // 5G发展量-发展目标用户数
+        'IC5G0038': {
+          'curDay': this.all5gLabels.IC5G0038 ? parseInt(this.all5gLabels.IC5G0038.curDay) : '-',
+          'curMon': this.all5gLabels.IC5G0038 ? parseInt(this.all5gLabels.IC5G0038.curMon) : '-',
+          'curYear': this.all5gLabels.IC5G0038 ? parseInt(this.all5gLabels.IC5G0038.curYear) : '-'
+        },
+        'IC5G0001': {
+          'curDay': this.all5gLabels.IC5G0001 ? this.all5gLabels.IC5G0001.curDay : '-',
+          'curMon': this.all5gLabels.IC5G0001 ? this.all5gLabels.IC5G0001.curMon : '-',
+          'curYear': this.all5gLabels.IC5G0001 ? this.all5gLabels.IC5G0001.curYear : '-'
+        },
+      };
+      //   for (let key in data) {
+      //     xdata.forEach((item) => {
+      //       if (data[key] == 'IC5G0038') {
+      //         data[key][item] = this.all5gLabels[key] ? parseInt(this.all5gLabels[key][item]) : '-';
+      //       } else {
+      //         data[key][item] = this.all5gLabels[key] ? this.all5gLabels[key][item] : '-';
+      //       }
+      //     })
+      //   };
+
+      return data;
+    },
+    data5g_right_ls() {
+      var data = [];
+      var xdcode = ['IC5G0025', 'IC5G0027']; //新发展 拍照
+      var keysitem = ['curDay', 'curMon', 'curYear']
+      keysitem.forEach(keitem => {
+        var dataitem = []
+        xdcode.forEach(item => {
+          var val = this.all5gLabels[item] ? this.all5gLabels[item][keitem] : '-';
+          dataitem.push(val)
+        });
+
+        data.push(dataitem)
+      })
+
+      return data
+    },
+    // 5G携入携出
+    data5g_right_xrxc() {
+      var data = [];
+      var xdcode = ['IC5G0029', 'IC5G0030', 'IC5G0031']; //携入，携出， 进携入
+      var keysitem = ['curDay', 'curMon', 'curYear']
+      xdcode.forEach(item => {
+        var dataitem = []
+        keysitem.forEach(keitem => {
+          var val = this.all5gLabels[item] ? this.all5gLabels[item][keitem] : '-';
+          dataitem.push(val);
+        });
+
+        data.push(dataitem)
+      })
+      return data
+    },
+    // 5G存量——按融合
+    data5g_right_clrh() {
+      var waterPoloList = [{
+        name: '移宽融合',
+        num: 0,
+        value: 0
+      }, {
+        name: '移移融合主副卡',
+        num: 0,
+        value: 0
+      }, {
+        name: '金融融合',
+        num: 0,
+        value: 0
+      }];
+
+      waterPoloList[0].num = this.all5gLabels['IC5G0032'] ? this.all5gLabels['IC5G0032'][this.clrhtagactive] : '-';
+      waterPoloList[0].value = this.all5gLabels['IC5G0033'] ? this.all5gLabels['IC5G0033'][this.clrhtagactive] : '-';
+
+      waterPoloList[1].num = this.all5gLabels['IC5G0034'] ? this.all5gLabels['IC5G0034'][this.clrhtagactive] : '-';
+      waterPoloList[1].value = this.all5gLabels['IC5G0035'] ? this.all5gLabels['IC5G0035'][this.clrhtagactive] : '-';
+
+      waterPoloList[2].num = this.all5gLabels['IC5G0036'] ? this.all5gLabels['IC5G0036'][this.clrhtagactive] : '-';
+      waterPoloList[2].value = this.all5gLabels['IC5G0037'] ? this.all5gLabels['IC5G0037'][this.clrhtagactive] : '-';
+
+      this.$nextTick(() => {
+        waterPoloList.map((i, index) => {
+          this.rightPieChart(index, i);
+        });
+      });
+
+      return waterPoloList;
+    },
+    // 5g端网 协同 IC5G0042
+    right_dwxt() {
+      var data = {
+        val1: this.all5gLabels['IC5G0042'] ? this.all5gLabels['IC5G0042']['curDay'] : '-',
+        val2: this.all5gLabels['IC5G0043'] ? this.all5gLabels['IC5G0043']['curDay'] : '-',
+        val3: this.all5gLabels['IC5G0044'] ? this.all5gLabels['IC5G0044']['curDay'] : '-',
+        val4: this.all5gLabels['IC5G0045'] ? this.all5gLabels['IC5G0045']['curDay'] : '-',
+        val5: this.all5gLabels['IC5G0046'] ? this.all5gLabels['IC5G0046']['curDay'] : '-',
+        valb1: this.all5gLabels['IC5G0047'] ? this.all5gLabels['IC5G0047']['curDay'] : '-',
+        valb2: this.all5gLabels['IC5G0048'] ? this.all5gLabels['IC5G0048']['curDay'] : '-',
+      }
+      return data
+    }
+
+  },
+  created() {
+      this.userInfo = store.get('userInfo');
+      this.params.eparchyCode = this.userInfo.eparchyCode || '';
+      this.params.areaCode = this.userInfo.areaCode || '';
+      this.params.gridId = this.userInfo.gridId || '';
+      if(store.get('userInfo').gridId) {
+        this.params.mLevel = 4;
+        
+      } else if (store.get('userInfo').areaCode) {
+        this.params.mLevel = 3;
+        
+      } else if (store.get('userInfo').eparchyCode && store.get('userInfo').eparchyCode != '0000') {
+        this.params.mLevel = 2;
+        
+      } else {
+        this.params.mLevel = 1;
+      };
+     
+  },
+  mounted() {
+    if (this.userInfo.isAddMask == '1') {
+      this.$watermark(this.userInfo.serialNumber);
+    } else {
+      this.$watermark("");
+    }
+    let item = this.params
+    this.url = `http://134.32.115.253:18080/sdresview/?level=${item.mLevel}&sceneid=1&gis_sceneid=5&area_id=${item.gridId || item.areaCode ||item.eparchyCode}&poi_city_id=370100&timest=${item.timest}`
+    console.log(this.url)
+  },
+  methods: {
+    dialogSub(index) {
+      this.dialogBtnOn = index
+      if (index == 1 || index == 4) {
+        this.tableLabel = '日'
+      }
+      if (index == 2 || index == 5) {
+        this.tableLabel = '月'
+      }
+      if (index == 3 || index == 6) {
+        this.tableLabel = '年'
+      }
+      this.campTop10_5G()
+    },
+    showMore(index, row, val) {
+      this.dialogTable1[index].show = val
+      let $table = this.$refs.table;
+      $table.toggleRowExpansion(row)
+    },
+    tabClick(index, val) {
+      this.$set(this.tabs, index, val)
+      if (index == 0) {
+        if (val == 'd') {
+          this.morePro = '1'
+        } else if (val == 'm') {
+          this.morePro = '2'
+        } else {
+          this.morePro = '3'
+        }
+        this.productDetail_5G('', val)
+        // console.log(this.morePro)
+        // this.leftTopChart(val)
+        // this.productDetailMore(this.tabs[0])
+      } else if (index == 1) {
+        this.waterPoloChartList(val)
+      } else if (index == 2) {
+        this.bandChannelData(val)
+      } else if (index == 3) {
+        this.rightPieChartList(val)
+      } else if (index == 4) {
+        this.rightBottomPieChartList(val)
+      }
+    },
+    // 弹框
+    showDialog(val) {
+      if (val == 1) {
+        this.isDialog1 = true
+        setTimeout(() => {
+          this.dialogLineChart('dialogMouthChart');
+          //   this.dialogLineChart('dialogYearChart');
+        }, 0);
+      }
+      if (val == 2) {
+        this.isDialog2 = true
+      }
+      if (val == 3) {
+        this.isDialog3 = true
+      }
+      if (val == 4) {
+        this.isDialog4 = true
+      }
+    },
+    getDate(date) {
+
+      this.params.timest = date;
+      this.initMap()
+      this.inMap()
+      this.init()
+      console.log(this.url)
+    },
+    listener(e) {
+      if (e.data.message == 'levelSwitch') {
+        this.mapDate = e.data
+        this.forthLevel = e.data.level
+        this.gisTitle = e.data.label
+        if (e.data.level == 1) {
+          this.params.eparchyCode = '0000'
+          this.params.areaCode = ''
+          this.params.gridId = ''
+          this.params.mLevel = '1'
+        } else if (e.data.level == 2) {
+          this.params.eparchyCode = e.data.area_id
+          this.params.areaCode = '00'
+          this.params.gridId = ''
+          this.params.mLevel = '2'
+        } else if (e.data.level == 3) {
+          //   this.params.eparchyCode = ''
+          this.params.areaCode = e.data.area_id
+          this.params.gridId = '00'
+          this.params.mLevel = '3'
+        } else if (e.data.level == 4) {
+          //   this.params.eparchyCode = ''
+          //   this.params.areaCode = ''
+          this.params.gridId = e.data.area_id
+          this.params.mLevel = '4'
+        }
+      }
+      this.init()
+      console.log(this.mapDate)
+    },
+    cptagactiveFn(type) {
+      this.cptagactive = type
+      this.leftTopChart()
+    },
+    qdtagactive1(type) {
+      this.qdtagactive = type
+      this.ywDevelop_5G()
+    },
+    //初始化地图
+    //地图信息
+    inMap() {
+      window.addEventListener('message', this.listener, true)
+    },
+    //初始化地图
+    initMap() {
+
+      let param = {
+        timest: this.params.timest,
+        level: this.params.mLevel,
+        sceneid: '1',
+        gis_sceneid: '7',
+        area_id: this.mapDate && this.mapDate.area_id ? this.mapDate.area_id : '',
+        poi_city_id: '370100',
+        message: "changeTime",
+        city: this.mapDate && this.mapDate.city ? this.mapDate.city : '',
+      }
+      window.frames[0].postMessage(param, "*");
+
+    },
+    async query5GallLabels() {
+      var allLabels01 = await this.query5GallLabels01(this.params)
+      var allLabels02 = await this.query5GallLabels02(this.params)
+      this.all5gLabels = Object.assign({}, allLabels01, allLabels02);
+      setTimeout(() => {
+        this.leftTopChart()
+      }, 0);
+
+      if (this.data5g_center_fzl.IC5G0039.curDay > 100) {
+        this.percent = 0
+      } else if (this.data5g_center_fzl.IC5G0039.curDay < 50) {
+        this.percent = 2
+      } else {
+        this.percent = 1
+      }
+      if (this.data5g_center_fzl.IC5G0039.curMon > 100) {
+        this.percent1 = 0
+      } else if (this.data5g_center_fzl.IC5G0039.curMon < 50) {
+        this.percent1 = 2
+      } else {
+        this.percent1 = 1
+      }
+      if (this.data5g_center_fzl.IC5G0039.curYear > 100) {
+        this.percent2 = 0
+      } else if (this.data5g_center_fzl.IC5G0039.curYear < 50) {
+        this.percent2 = 2
+      } else {
+        this.percent2 = 1
+      }
+    },
+    query5GallLabels01(params) {
+      return new Promise(function (resolve, reject) {
+        all5Gservice1(params).then(data => {
+          if (data.rspCode == '0000') {
+            resolve(data.result.data)
+          } else {
+            resolve({})
+          }
+        })
+      });
+
+    },
+    query5GallLabels02(params) {
+      return new Promise(function (resolve, reject) {
+        all5Gservice2(params).then(data => {
+          if (data.rspCode == '0000') {
+            resolve(data.result.data)
+          } else {
+            resolve({})
+          }
+        })
+      });
+    },
+    detail_5G(params) {
+      detail5G(params).then(data => {
+        this.dialogTable = []
+        this.dialogTable = data.result.data || ''
+        // console.log(data.result.data)
+      });
+    },
+    halfYearTrend_5G(params) {
+      halfYearTrend(params).then(res => {
+        this.diaxAxis = []
+        this.diaLine1 = []
+        this.diaLine2 = []
+        res.result.data[0].value.map((rs) => {
+          this.diaxAxis.push(rs.xi + '日')
+          this.diaLine1.push(rs.value)
+        })
+        res.result.data[1].value.map((rs) => {
+          this.diaLine2.push(rs.value)
+        })
+        setTimeout(() => {
+          this.leftLineChart(res.result.data)
+        }, 0);
+        // console.log('half', res.result.data)
+        // console.log(this.diaxAxis, this.diaLine1, this.diaLine2)
+      });
+    },
+    productDetail_5G(params, val) {
+      productDetail({
+        timest: this.params.timest,
+        eparchyCode: this.params.eparchyCode,
+        areaCode: this.params.areaCode,
+        gridId: this.params.gridId,
+        mLevel: this.params.mLevel,
+        sort: this.morePro
+      }).then(res => {
+        // console.log('pro', res)
+        if (res.rspCode === '0000') {
+          this.dialogTable1 = res.result.data || ''
+          this.dialogTable1.map(i => {
+            if (i.value) {
+              i.show = true
+            } else {
+              i.show = false
+            }
+          })
+          this.productDetailMore(val)
+        }
+        // console.log(this.dialogTable1)
+      });
+    },
+    productDetailMore(val) {
+      if (val == 'd') {
+        this.dialogTable1.map(i => {
+          i.name.total = i.name.dayNew
+          i.value.map(c => {
+            c.total = c.dayNew
+          })
+        })
+      } else if (val == 'm') {
+        this.dialogTable1.map(i => {
+          i.name.total = i.name.monNew
+          i.value.map(c => {
+            c.total = c.monNew
+          })
+        })
+      } else {
+        this.dialogTable1.map(i => {
+          i.name.total = i.name.yearNew
+          i.value.map(c => {
+            c.total = c.yearNew
+          })
+        })
+      }
+      //   this.dialogTable1.map(i => {
+      //     i.name.total = val == 'd' && i.name.dayNew || val == 'm' && i.name.monNew || val == 'y' && i.name.yearNew
+      //     i.value.map(c => {
+      //       c.total = val == 'd' && c.dayNew || val == 'm' && c.monNew || val == 'y' && c.yearNew
+      //     })
+      //   })
+      this.dialogTableKey = Math.ceil(Math.random() * 10);
+      this.$forceUpdate()
+    },
+    Trend5G_5G(params) {
+      Trend5G(params).then(res => {
+        this.diaxAxis1 = []
+        this.diaLine3 = []
+        this.diaLine4 = []
+        res.result.data[0].value.map((rs) => {
+          this.diaxAxis1.push(rs.xi + '日')
+          this.diaLine3.push(rs.curDay)
+        })
+        res.result.data[1].value.map((rs) => {
+          this.diaLine4.push(rs.curDay)
+        })
+
+        // console.log('tre', res.result.data)
+      });
+    },
+    campTop10_5G() {
+      campTop10({
+        timest: this.params.timest,
+        eparchyCode: this.params.eparchyCode == '0000' ? '' : this.params.eparchyCode,
+        areaCode: this.params.areaCode == '00' ? '' : this.params.areaCode,
+        gridId: this.params.gridId == '00' ? '' : this.params.gridId,
+        mLevel: this.params.mLevel,
+        flag: this.dialogBtnOn
+      }).then(res => {
+        this.dialogTable2 = []
+        res.result.data.map((rs) => {
+
+          this.dialogTable2.push({
+            a: rs.rk || '-',
+            s: rs.gridName || '-',
+            d: rs.areaName || '-',
+            f: rs.dayObject || '-',
+            g: rs.dayNew || '-',
+            h: rs.dayAchive + '%' || '-'
+          })
+        })
+        // console.log('camp', res.result.data)
+      });
+    },
+    ywDevelop_5G() {
+      ywDevelop({
+        timest: this.params.timest,
+        eparchyCode: this.params.eparchyCode,
+        areaCode: this.params.areaCode,
+        gridId: this.params.gridId,
+        mLevel: this.params.mLevel,
+        orderType: this.qdtagactive
+      }).then((res) => {
+        // console.log(res)
+        if (res.rspCode === '0000') {
+          this.channelData = res.result.data || ''
+          setTimeout(() => {
+            this.leftBarChart(this.qdtagactive)
+          });
+        }
+      })
+    },
+    // 按渠道
+    leftBarChart(val) {
+      let xAxis = []
+      let value = []
+      let list = this.channelData || ''
+      list && list.length > 0 && list.map(i => {
+        xAxis.push(i.kpiName)
+        value.push(val == 'd' && (i.curDay || '-') || val == 'm' && (i.curMon || '-') || val == 'y' && (i.curYear || '-'))
+      })
+      let data = {
+        id: 'leftBarChart',
+        xAxis: xAxis,
+        value: value
+      }
+      leftBarChart.initChart(data)
+    },
+    init() {
+      let param = {
+        timest: this.params.timest,
+        eparchyCode: this.params.eparchyCode == '0000' ? '' : this.params.eparchyCode,
+        areaCode: this.params.areaCode == '00' ? '' : this.params.areaCode,
+        gridId: this.params.gridId == '00' ? '' : this.params.gridId,
+        mLevel: this.params.mLevel
+      }
+      this.detail_5G(param)
+      this.halfYearTrend_5G(this.params)
+      this.productDetail_5G(this.params, this.tabs[0])
+      this.Trend5G_5G(this.params)
+      this.campTop10_5G()
+      this.ywDevelop_5G()
+      this.query5GallLabels();
+
+
+    },
+    // 按产品-半年发展量趋势
+    leftLineChart(list) {
+      let data = {
+        id: 'leftLineChart',
+        legend: list && list.length > 0 && [list[1].kpiName, list[0].kpiName,],
+        xAxis: this.diaxAxis,
+        data1: this.diaLine1,
+        data2: this.diaLine2
+      }
+      leftLine.initChart(data)
+    },
+    waterPoloChart(index, val) {
+      let data = {
+        id: 'waterPoloChart' + index,
+        value: val.value,
+      }
+      waterPoloChart.initChart(data)
+    },
+    // 5G存量-按融合
+    rightPieChart(index, val) {
+      let data = {
+        id: 'rightPieChart' + index,
+        value: val.value
+      }
+      rightPieChart.initChart(data)
+    },
+    dialogLineChart(id) {
+      let data = {
+        id: id,
+        lable: id == 'dialogMouthChart' ? '月度趋势' : '年度趋势',
+        xAxis: this.diaxAxis1,
+        data1: this.diaLine3,
+        data2: this.diaLine4
+      }
+      leftLine.initChart(data)
+      //   let xAxis = []
+      //   if (id == 'dialogMouthChart') {
+      //     xAxis = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+      //   } else {
+      //     xAxis = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      //   }
+      //   let data = {
+      //     id: id,
+      //     lable: id == 'dialogMouthChart' ? '月度趋势' : '年度趋势',
+      //     xAxis: xAxis,
+      //     data1: [3, 5, 4, 2, 1, 7, 4, 6, 8, 0, 2, 5],
+      //     data2: [4, 7, 5, 6, 3, 5, 5, 4, 2, 1, 7, 9]
+      //   }
+      //   leftLine.initChart(data)
+      // },
+    },
+    leftTopChart() {
+      let data = {
+        id: 'leftTopChart',
+        value: this.data5g_cp.sjb_p,
+        mum: this.data5g_cp.allVal
+      }
+      leftTopChart.initPie(data)
+    },
+    //监听顺序方法
+    tableSortChange(column) {
+      const self = this
+      let index = 0
+      let tmpList = []
+      this.allData = this.dialogTable[0]
+      let string = column.prop
+      this.dialogTable.forEach(obj => {
+        if (index !== 0) {
+          obj[string] = parseFloat(obj[string])
+          tmpList.push(obj)
+        }
+        index = index + 1
+      })
+      if (column.order === 'descending') {
+        this.sortA(tmpList, column.prop)
+      } else {
+        this.sortB(tmpList, column.prop)
+      }
+
+      this.dialogTable.unshift(this.allData)
+    },
+    sortA(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] > arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+
+      }
+      this.dialogTable = arr
+    },
+    sortB(arr, name) {
+      //外层循环，控制趟数，每一次找到一个最大值
+      for (var i = 0; i < arr.length - 1; i++) {
+        // 内层循环,控制比较的次数，并且判断两个数的大小
+        for (var j = 0; j < arr.length - 1 - i; j++) {
+          // 白话解释：如果前面的数大，放到后面(当然是从小到大的冒泡排序)
+          if (arr[j][name] < arr[j + 1][name]) {
+            var temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      this.dialogTable = arr
+    },
+  },
+  destroyed() {
+    window.removeEventListener("message", this.listener, true);
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  z-index: 1;
+  background-image: url('~@/assets/images/bigScreen/bigbg.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  overflow: hidden;
+  .header-smallTitle {
+    font-size: 36px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: -7px;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 100;
+  .left {
+    width: 21%;
+    .left-top {
+      width: 100%;
+      height: 116px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      background-image: url('~@/assets/images/bigScreen/fullService/left-top.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      font-family: DigifaceWide;
+      margin: 10px 0;
+      .con {
+        .color1 {
+          color: #fff;
+        }
+        .color2 {
+          color: #00ffff;
+        }
+        .bigText {
+          font-size: 24px;
+          font-weight: 400;
+          span {
+            font-size: 12px;
+          }
+        }
+        .smallText {
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #02f6ff;
+        }
+      }
+      .chart {
+        width: 120px;
+        height: 120px;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-center.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        font-size: 24px;
+        font-weight: 400;
+        color: #02f6ff;
+        position: relative;
+        // margin-left: 10px;
+        .bigText {
+          margin-top: 35px;
+        }
+        .smallText {
+          font-size: 12px;
+        }
+      }
+    }
+    .left-lineChart {
+      width: 100%;
+      //margin: 10px 0;
+      .chartTitle {
+        width: 148px;
+        height: 29px;
+        line-height: 29px;
+        text-align: center;
+        font-size: 18px;
+        font-family: YouSheBiaoTiHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/header-right.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        // margin: 10px 0;
+      }
+      .more {
+        margin-left: 50%;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #a5e8fe;
+        cursor: pointer;
+        text-align: right;
+      }
+      .lineChart {
+        margin-top: 15px;
+        width: 100%;
+        height: 120px;
+      }
+    }
+    .leftBarChart {
+      width: 100%;
+      margin-top: 10px;
+      height: 250px;
+    }
+    .rightTable {
+      width: 100%;
+      font-size: 10px;
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+      margin-left: -10px;
+      .tHead,
+      .tBody {
+        display: flex;
+        .wid19 {
+          width: 18% !important;
+          text-align: left;
+        }
+      }
+      .tHead {
+        line-height: 30px;
+        div {
+          width: 27%;
+          text-align: center;
+          background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          background-position: center 12px;
+        }
+        .wid19 {
+          background-image: none;
+        }
+      }
+      .tBody {
+        .td {
+          width: 27%;
+          text-align: center;
+          div {
+            padding: 10px 0;
+            line-height: 10px;
+          }
+        }
+        .bg {
+          background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+          background-repeat: no-repeat;
+          background-position: center left;
+          div {
+            font-size: 16px;
+            font-family: DigifaceWide;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+  .leftContent {
+    width: 100%;
+    .title {
+      width: 100%;
+      height: 65px;
+      line-height: 65px;
+      padding: 0 30px;
+      display: flex;
+      justify-content: space-between;
+      background-image: url('~@/assets/images/bigScreen/fullService/title.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      color: #02f6ff;
+      .title-left {
+        font-size: 26px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        span {
+          font-size: 20px;
+        }
+      }
+      .title-right {
+        color: #218cc8;
+        div {
+          width: 38px;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          display: inline-block;
+          cursor: pointer;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+        }
+        .active {
+          color: #02f6ff;
+          background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+        }
+      }
+    }
+  }
+  .left-waterPoloChart {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .left-item {
+      flex: 3;
+      color: #02f6ff;
+      margin-top: 10px;
+    }
+    .waterPoloChart {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto;
+      margin-bottom: 10px;
+    }
+    .itemName {
+      font-size: 12px;
+    }
+    .itemNum {
+      font-family: DigifaceWide;
+      font-size: 18px;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  .center {
+    flex: 1;
+    margin: 0 20px;
+    .centerTop {
+      width: 100%;
+      height: 245px;
+      background-image: url('~@/assets/images/bigScreen/fullService/center-top.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+    .centerTop-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px 0 40px;
+      .titleLeft {
+        width: auto;
+        font-size: 24px;
+        font-family: MFBanHei;
+        font-weight: 400;
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+        background-repeat: no-repeat;
+        background-position: center right;
+      }
+      .titleRight {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #a5e8fe;
+      }
+    }
+    .centerTop-con {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 30px;
+      .centerItem {
+        flex: 3;
+        font-size: 15px;
+        font-family: Microsoft YaHei;
+        color: #02f6ff;
+      }
+      .centerItem-top {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        .itemBg {
+          width: 93px;
+          height: 80px;
+          background-image: url('~@/assets/images/bigScreen/fullService/y-day.png');
+          background-repeat: no-repeat;
+          background-position: 100% 100%;
+        }
+        .month {
+          background-image: url('~@/assets/images/bigScreen/fullService/y-mouth.png');
+        }
+        .year {
+          background-image: url('~@/assets/images/bigScreen/fullService/y-year.png');
+        }
+        .itemText {
+          padding-left: 20px;
+          .color {
+            margin-top: 5px;
+            font-size: 24px;
+            color: #fff;
+            font-family: DigifaceWide;
+            span {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      .marginB {
+        margin-bottom: 22px;
+      }
+      .centerItem-center {
+        display: flex;
+        align-items: center;
+        .itemTitle {
+          width: 100px;
+        }
+        .itemText {
+          color: #fff;
+          font-size: 24px;
+          font-family: DigifaceWide;
+          span {
+            font-size: 15px;
+          }
+        }
+        .itemText1 {
+          color: #02f6ff;
+          .margin {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+    .centerBottom {
+      width: 100%;
+      height: 631px;
+      margin-top: 20px;
+      background-image: url('~@/assets/images/bigScreen/fullService/mapBg.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      .centerTop-title {
+        padding-top: 30px;
+      }
+      .centerBottom-map {
+        width: 98%;
+        height: 87%;
+        margin: 0 0 0 1%;
+      }
+      .margin {
+        margin-right: 20px;
+      }
+    }
+  }
+  .right {
+    width: 24%;
+    .rightTable {
+      width: 100%;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      color: #02f6ff;
+      .tHead,
+      .tBody {
+        display: flex;
+        .wid19 {
+          width: 19% !important;
+          text-align: left;
+        }
+      }
+      .tHead {
+        line-height: 40px;
+        div {
+          width: 27%;
+          text-align: center;
+          background-image: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png');
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          background-position: center 12px;
+        }
+        .wid19 {
+          background-image: none;
+        }
+      }
+      .tBody {
+        .td {
+          width: 27%;
+          text-align: center;
+          div {
+            padding: 10px 0;
+            line-height: 20px;
+          }
+        }
+        .bg {
+          background-image: url('~@/assets/images/bigScreen/fullService/Shape 1387.png');
+          background-repeat: no-repeat;
+          background-position: center left;
+          div {
+            font-size: 18px;
+            font-family: DigifaceWide;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+    .bottom-title {
+      width: 33%;
+      height: 65px;
+      margin: 15px 0 0 1%;
+      text-align: center;
+      background: url('~@/assets/images/bigScreen/fullService/11697.png') no-repeat;
+      background-size: 100% 100%;
+      .numfont {
+        font-family: DigifaceWide;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+    }
+  }
+  .green {
+    color: #66ff00 !important;
+  }
+  .yellow {
+    color: #ffff33;
+  }
+}
+
+.centerTop-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 0 40px;
+  .titleLeft {
+    padding-right: 110px;
+    font-size: 24px;
+    font-family: MFBanHei;
+    font-weight: 400;
+    color: #02f6ff;
+    background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+  .titleRight {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #a5e8fe;
+    cursor: pointer;
+  }
+}
+
+.centerBottom {
+  width: 100%;
+  height: 631px;
+  margin-top: 20px;
+  background-image: url('~@/assets/images/bigScreen/fullService/mapBg.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  .centerTop-title {
+    padding-top: 30px;
+  }
+  .margin {
+    margin-right: 20px;
+  }
+  .map {
+    padding: 10px 30px 30px;
+    height: 90%;
+  }
+}
+/deep/ .el-dialog {
+  -webkit-transform: none;
+  transform: none;
+  left: 0;
+  position: relative;
+  z-index: 20000;
+  margin: 0 auto;
+  //   height: 780px;
+  padding-bottom: 30px;
+  background-image: url('~@/assets/images/bigScreen/kuang.png');
+  background-size: 100% 100%;
+  background-color: rgba(220, 38, 38, 0);
+}
+
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
+}
+/deep/ .el-dialog__headerbtn .el-dialog__close {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 2px 20px 0 0;
+  border: 2px solid #193987;
+  border-radius: 5px;
+  background: #1e1e88;
+}
+/deep/ .el-table {
+  background: none !important;
+  font-size: 14px !important;
+}
+/deep/.dialogTableBg .el-table th {
+  background: none !important;
+  background: url('~@/assets/images/bigScreen/fullService/597bcdc505fa3.png') no-repeat !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 10px !important;
+}
+// /deep/.dialogTableBg td {
+//   background: url('~@/assets/images/bigScreen/fullService/Shape 1387.png') no-repeat left !important;
+// }
+// /deep/.dialogTableBg .el-table td:first-child {
+//   font-family: Microsoft YaHei !important;
+// }
+/deep/.dialogTableBg1 .el-table th {
+  background: rgba(4, 154, 171, 0.2) !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: left !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table tr {
+  background: rgba(4, 154, 171, 0.4) !important;
+  color: #fff !important;
+  padding-left: 30px;
+}
+/deep/.dialogTableBg1 .el-table td {
+  padding: 12px 0;
+  padding-left: 15px;
+  border: rgba(0, 160, 233, 0.42) solid 1px !important;
+  border-top: none !important;
+  text-align: left !important;
+  border-left: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(2) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table td:nth-child(3) {
+  border-right: none !important;
+}
+/deep/.dialogTableBg1 .el-table tr:last-child td {
+  border-bottom: none !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg tr {
+  background: none !important;
+}
+/deep/.dialogTableBg1 .el-table .el-table__expanded-cell {
+  padding: 0 !important;
+}
+/deep/ .dialogTableBg1 .tableNullBg td {
+  padding: 12px 0;
+  padding-left: 15px;
+}
+/deep/ .dialogTableBg1 .tableNullBg td:first-child {
+  padding-left: 45px;
+}
+/deep/.dialogTable .el-table th {
+  background: none !important;
+  background-position: center 11px !important;
+  background-size: contain !important;
+  text-align: center !important;
+  color: #02f6ff !important;
+  font-size: 10px !important;
+}
+/deep/ .el-table tr {
+  background: none !important;
+}
+
+/deep/.dialogTable .el-table tbody tr:nth-child(-n + 3) {
+  width: 100%;
+  height: 43px;
+  background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 663.png') !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% !important;
+}
+
+/deep/.el-table td {
+  background: none !important;
+  border: none !important;
+  text-align: center !important;
+  color: #ffffff;
+  font-family: DigifaceWide !important;
+  padding: 6px 0;
+}
+/deep/.dialogTableBg td {
+  background: url('~@/assets/images/bigScreen/fullService/Shape 1387.png') no-repeat left !important;
+}
+/deep/.el-table td:first-child {
+  background: none !important;
+}
+/deep/.dialogTableBg .el-table td:first-child {
+  font-family: Microsoft YaHei !important;
+}
+/deep/ .el-table th.is-leaf,
+.el-table td {
+  border: none !important;
+  color: #ffffff;
+}
+/deep/.el-table::before {
+  height: 0 !important;
+}
+/deep/.el-table th > .cell {
+  display: contents !important;
+}
+/deep/.el-table .cell {
+  padding: 0;
+}
+/deep/.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: #02f6ff;
+}
+
+/deep/.el-table .descending .sort-caret.descending {
+  border-top-color: #02f6ff;
+}
+.dialogBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 0;
+  .dialogBtn-left,
+  .dialogBtn-right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+  }
+  .dialogBtn-left {
+    justify-content: flex-start;
+  }
+  .dialogBtn-right {
+    justify-content: flex-end;
+  }
+  .dialogBtn-item {
+    width: 165px;
+    height: 38px;
+    text-align: center;
+    font-size: 15px;
+    font-family: Microsoft YaHei;
+    color: #00ffff;
+    margin-left: -15px;
+    line-height: 38px;
+    cursor: pointer;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 2.png') no-repeat;
+  }
+  .dialogBtn-item:first-child {
+    width: 139px;
+    padding-left: 13px;
+    text-align: left;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 3.png') no-repeat;
+  }
+  .dialogBtnOn1 {
+    color: #fff;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657.png') no-repeat 100% !important;
+  }
+  .dialogBtnOn {
+    color: #fff;
+    background: url('~@/assets/images/bigScreen/fullService/Rectangle 657 copy 5.png') no-repeat 100% !important;
+  }
+}
+.dialogTable {
+  .tableTh {
+    width: 21px;
+    height: 19px;
+    background: url('~@/assets/images/bigScreen/fullService/Ellipse 669.png') no-repeat;
+    text-align: center;
+    line-height: 19px;
+    display: block;
+    margin: 0 auto;
+    color: #fff;
+  }
+  .tableThTop1 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/one.png') no-repeat;
+  }
+  .tableThTop2 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/two.png') no-repeat;
+  }
+  .tableThTop3 {
+    width: 20px;
+    height: 25px;
+    line-height: 25px;
+    background: url('~@/assets/images/bigScreen/fullService/three.png') no-repeat;
+  }
+}
+.dialogCon {
+  padding: 0 40px;
+  .dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    margin-top: 15px;
+    .left {
+      display: inline-block;
+      padding-right: 110px;
+      font-size: 24px;
+      font-family: MFBanHei;
+      font-weight: 400;
+      color: #02f6ff;
+      background-image: url('~@/assets/images/bigScreen/fullService/Rectangle 561.png');
+      background-repeat: no-repeat;
+      background-position: center right;
+    }
+    .title-right {
+      color: #218cc8;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      div {
+        width: 38px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-sub.png');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .active {
+        color: #02f6ff;
+        background-image: url('~@/assets/images/bigScreen/fullService/left-subActive.png');
+      }
+    }
+  }
+  .dialogChart {
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+  }
+}
+</style>

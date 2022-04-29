@@ -1,0 +1,1173 @@
+<template>
+  <!-- 移网运营 -->
+  <div class="main">
+    <div class="column">
+      <div class="leftpanel1">
+        <h3 class="title">业务总览</h3>
+        <YwyyL1 :myfiveGdata="myfiveGdata"></YwyyL1>
+        <div class="colorbutton">
+          <div class="button1">
+            <div style="text-align: center; font-size: 20px">用户数</div>
+          </div>
+          <div class="button2">
+            <div style="text-align: center; font-size: 20px">话务量</div>
+          </div>
+          <div class="button3" v-show="flag == 1">
+            <div style="text-align: center; font-size: 20px">流量</div>
+          </div>
+        </div>
+        <div class="button11" @click="ywyyL1(1)" :class="{ active: isActive }">总览</div>
+        <div class="button22" @click="ywyyL1(2)" :class="{ active: ischange }">5G</div>
+        <div class="button33" @click="ywyyL1(3)" :class="{ active: iscolor }">4G</div>
+        <div class="button44" @click="ywyyL1(4)" :class="{ active: isget }">volte</div>
+      </div>
+      <div class="leftpanel2">
+        <dv-decoration-7 class="decoration">覆盖体验</dv-decoration-7>
+        <h3 class="title">感知优化</h3>
+        <YwyyL2 class="feels" :mycovers="mycovers"></YwyyL2>
+
+        <div class="button11" @click="mybutton(1)" :class="{ active: isbutton11 }">5G网络</div>
+        <div class="button22" @click="mybutton(2)" :class="{ active: isbutton22 }">4G网络</div>
+        <div class="button33" @click="mybutton(3)" :class="{ active: isbutton33 }">感知</div>
+        <div class="button44" @click="mybutton(4)" :class="{ active: isbutton44 }">业务体验</div>
+      </div>
+      <div class="leftpanel3">
+        <dv-decoration-7 class="decoration2">业务体验</dv-decoration-7>
+        <div class="container2">
+          <div class="centericon">
+            <div class="douyin" @click="changepicdata(1)" :class="{ mydouyin: mydouyin }"></div>
+            <div class="play" @click="changepicdata(2)" :class="{ myplay: myplay }"></div>
+            <div class="download" @click="changepicdata(3)" :class="{ mydownload: mydownload }"></div>
+            <div class="iphone" @click="changepicdata(4)" :class="{ myiphone: myiphone }"></div>
+          </div>
+        </div>
+        <dv-border-box-7 class="border7">
+          <div style="text-align:center;color:#fff;font-size:16px;line-height:50px">
+            {{ mypicdata.title }}<span style="color:yellow;margin-left:10px;font-size:20px">{{ mypicdata.data }}%</span>
+          </div>
+        </dv-border-box-7>
+
+        <!-- <div class="border111">
+          <div class="left">短视频速率码率比优秀率 <span class="right">32.10%</span></div>
+        </div>
+        <div class="border112">
+          <div class="left">长视频速率码率比优秀率<span class="right">86.65%</span></div>
+        </div>
+        <div class="border113">
+          <div class="left">web下行rtt超长占比<span class="right">11.23%</span></div>
+        </div>
+        <div class="border114">
+          <div class="left">VOLTE单通次数/话务次数占比<span class="right">0.70%</span></div>
+        </div> -->
+      </div>
+    </div>
+    <div class="column">
+      <div class="cneterpanel1">
+        <YwyyMap class="mymap" :mapData="mapData"></YwyyMap>
+        <div class="button111" :class="{ active: mapflag1 }" @click="changeMapDate(1)">用户数</div>
+        <div class="button222" :class="{ active: mapflag2 }" @click="changeMapDate(2)">话务量</div>
+        <div class="button333" :class="{ active: mapflag3 }" @click="changeMapDate(3)">流量热力图</div>
+        <div class="green"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+      </div>
+      <div class="cneterpanel2">
+        <YwyyC2 class="centerline"></YwyyC2>
+      </div>
+    </div>
+    <div class="column">
+      <div class="rightpanel1">
+        <h3 class="title">故障管控</h3>
+        <div class="myddd">
+          <div class="left">
+            <Mypie class="mypic" :myfault="myfault" ></Mypie>
+          </div>
+          <div class="right">
+            <div class="icondemo">
+              <dv-border-box-8
+                ><div class="fonts">
+                  当前断站<span>{{ myfault.current }}</span>
+                </div>
+              </dv-border-box-8>
+              <dv-border-box-8
+                ><div class="fonts">
+                  VIP基站<span>{{ myfault.vipstation }}</span>
+                </div></dv-border-box-8
+              >
+              <dv-border-box-8
+                ><div class="fonts">
+                  超长<span>{{ myfault.long }}</span>
+                </div></dv-border-box-8
+              >
+              <dv-border-box-8>
+                <div class="fonts">
+                  区域性<span>{{ myfault.area }}</span>
+                </div></dv-border-box-8
+              >
+            </div>
+          </div>
+        </div>
+        <dv-decoration-10 style="width: 90%; height: 1px" class="lines" />
+        <div class="mybottonleft">
+          <div class="myfonts">{{ myfault.title }}</div>
+          <div class="clock"></div>
+          <div class="eight">{{ myfault.infivefourG }}%</div>
+          <div class="myfonts">45G等效小区退服率</div>
+          <div class="eight2">{{ myfault.goout }}%</div>
+          <div class="clock"></div>
+          <div class="myfonts1">45G等效小区平均退服时长</div>
+          <div class="eight21">{{ myfault.hours }}分钟</div>
+          <div class="clock11"></div>
+          <div class="eighteight">{{ myfault.inline }}</div>
+          <div class="inline">在线量</div>
+          <div class="eighteight22">{{ myfault.buy }}</div>
+          <div class="buy">采购量</div>
+
+          <Myrectangle class="myrectangle" :myfault="myfault"></Myrectangle>
+        </div>
+        <div class="mybutton">
+          <div class="button123" @click="changebtn(1)" :class="{ active: isbutton123 }">5G</div>
+          <div class="button456" @click="changebtn(2)" :class="{ active: isbutton456 }">4G</div>
+        </div>
+      </div>
+      <div class="rightpanel2">
+        <h3 class="title">网络效能</h3>
+        <YwyyR2 :fiveG="fiveG"></YwyyR2>
+        <div class="button111" @click="changedata(1)" :class="{ active: isgo }">5G</div>
+        <div class="button222" @click="changedata(2)" :class="{ active: isback }">4G</div>
+      </div>
+      <div class="rightpanel3">
+        <h3 class="title">服务指标</h3>
+        <YwyyR3></YwyyR3>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import YwyyL1 from '@/components/Ywyy/YwyyL1.vue'
+import YwyyL2 from '@/components/Ywyy/YwyyL2.vue'
+import YwyyL3 from '@/components/Ywyy/YwyyL3.vue'
+import YwyyC2 from '@/components/Ywyy/YwyyC2.vue'
+import YwyyR3 from '@/components/Ywyy/YwyyR3.vue'
+import YwyyR2 from '@/components/Ywyy/YwyyR2.vue'
+import Mypie from '@/components/Ywyy/components/mypic.vue'
+import Myrectangle from '@/components/Ywyy/components/myrectangle.vue'
+import YwyyMap from '@/components/Ywyy/YwyyMap.vue'
+
+export default {
+  name: 'ywyy',
+  components: {
+    YwyyL1,
+    YwyyL2,
+    YwyyL3,
+    YwyyC2,
+    YwyyR3,
+    YwyyR2,
+    Mypie,
+    Myrectangle,
+    YwyyMap
+  },
+  data() {
+    return {
+      myfiveGdata: [],
+      flag: 1,
+      sumGdata: [],
+      // 随便起的flag标识
+      isActive: true,
+      ischange: false,
+      iscolor: false,
+      isget: false,
+      isgo: true,
+      isback: false,
+      fiveG: [],
+      mycovers: [],
+      // 随便起的flag标识
+      isbutton11: true,
+      isbutton22: false,
+      isbutton33: false,
+      isbutton44: false,
+      myfault: {},
+      // 随便起的flag标识
+      isbutton123: true,
+      isbutton456: false,
+      mypicdata: {},
+      // 随便起的flag标识
+      mydouyin: false,
+      myplay: false,
+      mydownload: false,
+      myiphone: false,
+      mapData: 1,
+      mapflag1: true,
+      mapflag2: false,
+      mapflag3: false,
+      i: 1
+    }
+  },
+  created() {
+    this.ywyyL1(1)
+    this.changedata(1)
+    this.mybutton(1)
+    this.changebtn(1)
+    this.changepicdata(1)
+
+    this.timer = setInterval(() => {
+      this.changeMapDate(this.i)
+      
+      this.i++
+      if (this.i > 3) {
+        this.i = 1
+      }
+    }, 10000)
+  },
+  mounted() {},
+  beforeDestory() {
+    clearInterval(this.timer)
+  },
+  computed: {},
+  methods: {
+    ywyyL1(value) {
+      if (value == 1) {
+        this.isActive = true
+        this.ischange = false
+        this.iscolor = false
+        this.isget = false
+        this.flag = 1
+        this.myfiveGdata = [
+          {
+            topdata: 888,
+            buttomdata: 888
+          },
+          {
+            topdata: 888,
+            buttomdata: 888,
+            flag: 1
+          },
+          {
+            topdata: 888,
+            buttomdata: 888
+          }
+        ]
+      } else if (value == 2) {
+        this.isActive = false
+        this.ischange = true
+        this.iscolor = false
+        this.isget = false
+        this.flag = 1
+        this.myfiveGdata = [
+          {
+            topdata: 888,
+            buttomdata: 254.99
+          },
+          {
+            topdata: 888,
+            buttomdata: 17.65,
+            flag: 1
+          },
+          {
+            topdata: 888,
+            buttomdata: 1268.89
+          }
+        ]
+      } else if (value == 3) {
+        this.iscolor = true
+        this.isActive = false
+        this.ischange = false
+        this.isget = false
+
+        this.flag = 1
+        this.myfiveGdata = [
+          {
+            topdata: 888,
+            buttomdata: 1597.9
+          },
+          {
+            topdata: 888,
+            buttomdata: 44.58,
+            flag: 1
+          },
+          {
+            topdata: 888,
+            buttomdata: 5389.29
+          }
+        ]
+      } else if (value == 4) {
+        this.isget = true
+        this.iscolor = false
+        this.ischange = false
+        this.isActive = false
+        this.flag = 0
+        this.myfiveGdata = [
+          {
+            topdata: 888,
+            buttomdata: 5
+          },
+          {
+            topdata: 888,
+            buttomdata: 62.65,
+            flag: 0
+          },
+          {
+            topdata: null,
+            buttomdata: null
+          }
+        ]
+      }
+    },
+    changedata(value) {
+      if (value == 1) {
+        ;(this.isgo = true), (this.isback = false)
+        this.fiveG = [
+          {
+            count: 462,
+            percentage: 0.36,
+            title: '5G高负荷小区'
+          },
+          {
+            count: 28212,
+            percentage: 22.04,
+            title: '5G低效小区'
+          },
+          {
+            count: 742,
+            percentage: 0.58,
+            title: '5G零业务'
+          }
+        ]
+      } else if (value == 2) {
+        ;(this.isgo = false), (this.isback = true)
+        this.fiveG = [
+          {
+            count: 198,
+            percentage: 0.11,
+            title: '4G高负荷小区'
+          },
+          {
+            count: 30153,
+            percentage: 16.21,
+            title: '4G低效小区'
+          },
+          {
+            count: 354,
+            percentage: 0.19,
+            title: '4G零业务'
+          }
+        ]
+      }
+    },
+    mybutton(value) {
+      if (value == 1) {
+        ;(this.isbutton11 = true), (this.isbutton22 = false), (this.isbutton33 = false), (this.isbutton44 = false)
+        this.mycovers = [
+          {
+            covers: 93.42,
+            title: '5G良好覆盖率',
+            flag: 1
+          },
+          {
+            feels: 252.44,
+            title: '5G用户感知速率'
+          },
+          {
+            business: 18.68,
+            title: '5G数据业务质差小区占比'
+          },
+          {
+            solve: 89.64,
+            title: '5G数据业务质差小区解决率'
+          }
+        ]
+      } else if (value == 2) {
+        ;(this.isbutton11 = false), (this.isbutton22 = true), (this.isbutton33 = false), (this.isbutton44 = false)
+        this.mycovers = [
+          {
+            covers: 97.09,
+            title: '4G良好覆盖率',
+            flag: 1
+          },
+          {
+            feels: 34.67,
+            title: '4G用户感知速率'
+          },
+          {
+            business: 2.25,
+            title: '4G数据业务质差小区占比'
+          },
+          {
+            solve: 98.58,
+            title: '4G数据业务质差小区解决率'
+          }
+        ]
+      } else if (value == 3) {
+        ;(this.isbutton11 = false), (this.isbutton22 = false), (this.isbutton33 = true), (this.isbutton44 = false)
+        this.mycovers = [
+          {
+            covers: 32.1,
+            title: '短视频速率码率比优秀率',
+            flag: 1
+          },
+          {
+            feels: 86.65,
+            title: '长视频速率码率比优秀率'
+          },
+          {
+            business: 4.15,
+            title: 'VOLTE MOS均值'
+          },
+          {
+            solve: 0.7,
+            title: 'VOLTE单通次数/话务次数占比'
+          }
+        ]
+      } else {
+        ;(this.isbutton11 = false), (this.isbutton22 = false), (this.isbutton33 = false), (this.isbutton44 = true)
+        this.mycovers = [
+          {
+            covers: 32.1,
+            title: '短视频速率码率比优秀率',
+            flag: 2
+          },
+          {
+            feels: null,
+            title: ''
+          },
+          {
+            business: 4.15,
+            title: 'VOLTE MOS均值'
+          },
+          {
+            solve: null,
+            title: ''
+          }
+        ]
+      }
+    },
+    changebtn(value) {
+      if (value == 1) {
+        ;(this.isbutton123 = true), (this.isbutton456 = false)
+        this.myfault = {
+          standing: 88,
+          current: 888,
+          vipstation: 888,
+          long: 888,
+          area: 888,
+          infivefourG: 98.07,
+          inline: 13369,
+          buy: 13509,
+          goout: 88,
+          hours: 88,
+          life: 98.96,
+          title: '5G小区在服率'
+        }
+      } else if (value == 2) {
+        ;(this.isbutton123 = false), (this.isbutton456 = true)
+        this.myfault = {
+          standing: 88,
+          current: 888,
+          vipstation: 888,
+          long: 888,
+          area: 888,
+          infivefourG: 99.86,
+          inline: 13369,
+          buy: 13509,
+          goout: 88,
+          hours: 88,
+          life: 98.96,
+          title: '4G小区在服率'
+        }
+      }
+    },
+    changepicdata(value) {
+      if (value == 1) {
+        this.mydouyin = true
+        this.myplay = false
+        this.mydownload = false
+        this.myiphone = false
+        this.mypicdata = {
+          title: '短视频速率码率比优秀率',
+          data: 32.1
+        }
+      } else if (value == 2) {
+        this.mydouyin = false
+        this.myplay = true
+        this.mydownload = false
+        this.myiphone = false
+        this.mypicdata = {
+          title: '长视频速率码率比优秀率',
+          data: 86.65
+        }
+      } else if (value == 3) {
+        this.mydouyin = false
+        this.myplay = false
+        this.mydownload = true
+        this.myiphone = false
+        this.mypicdata = {
+          title: 'web下行rtt超长占比',
+          data: 11.23
+        }
+      } else {
+        this.mydouyin = false
+        this.myplay = false
+        this.mydownload = false
+        this.myiphone = true
+        this.mypicdata = {
+          title: 'VOLTE单通次数/话务次数占比',
+          data: 0.7
+        }
+      }
+    },
+    changeMapDate(value) {
+      this.mapData = value
+      if (value == 1) {
+        ;(this.mapflag1 = true), (this.mapflag2 = false), (this.mapflag3 = false)
+      } else if (value == 2) {
+        ;(this.mapflag1 = false), (this.mapflag2 = true), (this.mapflag3 = false)
+      } else {
+        ;(this.mapflag1 = false), (this.mapflag2 = false), (this.mapflag3 = true)
+      }
+      // if (value == 1) {
+      //   this.mapData = [
+      //     { name: '杭州市', value: 197 },
+      //     { name: '湖州市', value: 199 },
+      //     { name: '嘉兴市', value: 199 },
+      //     { name: '金华市', value: 199 },
+      //     { name: '丽水市', value: 199 },
+      //     { name: '宁波市', value: 199 },
+      //     { name: '衢州市', value: 199 },
+      //     { name: '绍兴市', value: 19 },
+      //     { name: '台州市', value: 199 },
+      //     { name: '温州市', value: 1 },
+      //     { name: '舟山市', value: 199 },
+      //   ]
+      // } else if (value == 2) {
+      //   this.mapData = [
+      //     { name: '杭州市', value: 199 },
+      //     { name: '湖州市', value: 199 },
+      //     { name: '嘉兴市', value: 199 },
+      //     { name: '金华市', value: 199 },
+      //     { name: '丽水市', value: 199 },
+      //     { name: '宁波市', value: 199 },
+      //     { name: '衢州市', value: 199 },
+      //     { name: '绍兴市', value: 19 },
+      //     { name: '台州市', value: 199 },
+      //     { name: '温州市', value: 1 },
+      //     { name: '舟山市', value: 199 },
+      //   ]
+      // } else {
+      //   this.mapData = [
+      //     { name: '杭州市', value: 199 },
+      //     { name: '湖州市', value: 199 },
+      //     { name: '嘉兴市', value: 199 },
+      //     { name: '金华市', value: 199 },
+      //     { name: '丽水市', value: 199 },
+      //     { name: '宁波市', value: 199 },
+      //     { name: '衢州市', value: 199 },
+      //     { name: '绍兴市', value: 19 },
+      //     { name: '台州市', value: 199 },
+      //     { name: '温州市', value: 1 },
+      //     { name: '舟山市', value: 199 },
+      //   ]
+      // }
+    },
+  
+  }
+}
+</script>
+<style lang="less" scoped>
+.main {
+  padding: 1px;
+  //   background-color: red;
+  display: flex;
+  .column {
+    flex: 3;
+  }
+  .column:nth-child(2) {
+    flex: 5;
+    margin: 0 10px 10px;
+    overflow: hidden;
+  }
+  // 左
+  .leftpanel1 {
+    padding: 1px;
+    height: 230px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .button11 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 50px;
+      cursor: pointer;
+    }
+    .button22 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 130px;
+      cursor: pointer;
+    }
+    .button33 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 210px;
+      cursor: pointer;
+    }
+    .button44 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 290px;
+      cursor: pointer;
+    }
+    .active {
+      background: url('~@/assets/img/按钮.png') no-repeat;
+      background-size: 100% 100%;
+      color: #00b8b9;
+    }
+    .title {
+      font-size: 16px;
+      position: absolute;
+      left: 20px;
+      top: -3px;
+      color: #00b8b9;
+    }
+    .colorbutton {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 190px;
+      margin-left: 18px;
+      width: 370px;
+      color: #fff;
+      .button1 {
+        width: 100px;
+        height: 30px;
+        background: url('~@/assets/img/流量背景.png') no-repeat;
+        background-size: 100% 100%;
+        margin-right: 20px;
+      }
+      .button2 {
+        width: 100px;
+        height: 30px;
+        background: url('~@/assets/img/流量背景.png') no-repeat;
+        background-size: 100% 100%;
+        margin-right: 20px;
+      }
+      .button3 {
+        width: 100px;
+        height: 30px;
+        background: url('~@/assets/img/流量背景.png') no-repeat;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .leftpanel2 {
+    height: 300px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+
+    .title {
+      position: absolute;
+      left: 20px;
+      top: 1px;
+      color: #00b8b9;
+      font-size: 16px;
+    }
+    .feels {
+      margin-left: 10px;
+    }
+    .decoration {
+      width: 100px;
+      height: 50px;
+      position: absolute;
+      left: 2px;
+      top: 60px;
+      color: #00b8b9;
+    }
+    .button11 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 75px;
+      left: 107px;
+      cursor: pointer;
+    }
+    .button22 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 75px;
+      left: 180px;
+      cursor: pointer;
+    }
+    .button33 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 75px;
+      left: 255px;
+      cursor: pointer;
+    }
+    .button44 {
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      width: 70px;
+      height: 20px;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 75px;
+      left: 330px;
+      cursor: pointer;
+    }
+    .active {
+      background: url('~@/assets/img/按钮.png') no-repeat;
+      background-size: 100% 100%;
+      color: #00b8b9;
+    }
+  }
+  .leftpanel3 {
+    height: 200px;
+    background: url('~@/assets/img/业务体验.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .decoration2 {
+      width: 100px;
+      height: 50px;
+      position: absolute;
+      left: 20px;
+      top: -10px;
+      color: #00b8b9;
+    }
+    .container2 {
+      .centericon {
+        width: 400px;
+        height: 200px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        .douyin {
+          width: 50px;
+          height: 70px;
+          background: url('../../assets/img/图标1-未选中.png') no-repeat;
+          background-size: 100% 100%;
+          cursor: pointer;
+        }
+        .mydouyin {
+          background: url('../../assets/img/图标1-选中.png') no-repeat;
+          background-size: 100% 100%;
+        }
+        .play {
+          width: 50px;
+          height: 70px;
+          background: url('../../assets/img/图标2-未选中.png') no-repeat;
+          background-size: 100% 100%;
+          cursor: pointer;
+        }
+        .myplay {
+          background: url('../../assets/img/图标2-选中.png') no-repeat;
+          background-size: 100% 100%;
+        }
+        .download {
+          width: 50px;
+          height: 70px;
+          background: url('../../assets/img/图标3-未选中.png') no-repeat;
+          background-size: 100% 100%;
+          cursor: pointer;
+        }
+        .mydownload {
+          background: url('../../assets/img/图标3-选中.png') no-repeat;
+          background-size: 100% 100%;
+        }
+        .iphone {
+          width: 50px;
+          height: 70px;
+          background: url('../../assets/img/图标4-未选中 .png') no-repeat;
+          background-size: 100% 100%;
+          cursor: pointer;
+        }
+        .myiphone {
+          background: url('../../assets/img/图标4-选中 .png') no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+    }
+    .border7 {
+      position: absolute;
+      top: 140px;
+      left: 30px;
+      height: 50px;
+      width: 330px;
+    }
+  }
+  //中
+  .cneterpanel1 {
+    height: 490px;
+    background: url('~@/assets/img/地图.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .mymap {
+      position: absolute;
+      left: 70px;
+    }
+
+    .button111 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #ffff;
+      position: absolute;
+      top: 30px;
+      left: 20px;
+      cursor: pointer;
+      z-index: 888;
+    }
+    .button222 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 30px;
+      left: 100px;
+      cursor: pointer;
+      z-index: 888;
+    }
+    .button333 {
+      width: 90px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 30px;
+      left: 180px;
+      cursor: pointer;
+      z-index: 888;
+    }
+    .active {
+      background: url('~@/assets/img/按钮.png') no-repeat;
+      background-size: 100% 100%;
+
+      color: #00b8b9;
+    }
+    .green {
+      width: 35px;
+      height: 35px;
+      background: url('~@/assets/img/green.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 500px;
+      top: 40px;
+    }
+    .yellow {
+      width: 35px;
+      height: 35px;
+      background: url('~@/assets/img/yellow.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 550px;
+      top: 40px;
+    }
+    .red {
+      width: 35px;
+      height: 35px;
+      background: url('~@/assets/img/red.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      left: 600px;
+      top: 40px;
+    }
+  }
+  .cneterpanel2 {
+    margin: 10px 0 0 0;
+    height: 240px;
+    background: url('~@/assets/img/折线图.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .centerline {
+      position: absolute;
+      top: 20px;
+    }
+  }
+  //   右
+  .rightpanel1 {
+    height: 280px;
+    background: url('~@/assets/img/故障管控.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      top: -5px;
+      color: #00b8b9;
+      font-size: 16px;
+    }
+    .myddd {
+      width: 360px;
+      height: 240px;
+      // background-color: yellow;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .left {
+        width: 200px;
+        height: 100px;
+        // background-color: yellowgreen;
+        position: relative;
+        .mypic {
+          position: absolute;
+          top: -70px;
+          left: -60px;
+        }
+      }
+      .right {
+        width: 200px;
+        height: 100px;
+        // background-color: violet;
+        .icondemo {
+          position: absolute;
+
+          width: 200px;
+          height: 25px;
+
+          line-height: 25px;
+          color: #fff;
+          font-size: 13px;
+          .fonts {
+            position: absolute;
+            left: 30px;
+            span {
+              color: yellow;
+              font-weight: 700;
+              position: absolute;
+              left: 120px;
+            }
+          }
+        }
+      }
+    }
+
+    .lines {
+      position: absolute;
+      top: 180px;
+      left: 13px;
+    }
+    .mybottonleft {
+      position: absolute;
+      top: 180px;
+      left: 16px;
+      .clock {
+        width: 30px;
+        height: 30px;
+        background: url('~@/assets/img/小图标.png') no-repeat;
+        background-size: 100% 100%;
+      }
+      .myfonts {
+        color: #fff;
+        font-size: 12px;
+      }
+      .eight {
+        position: absolute;
+        left: 40px;
+        top: 20px;
+        color: yellow;
+      }
+      .eight2 {
+        position: absolute;
+        left: 40px;
+        top: 70px;
+        color: yellow;
+      }
+      .myrectangle {
+        position: absolute;
+        left: 260px;
+        top: 3px;
+      }
+      .myfonts1 {
+        width: 150px;
+        height: 50px;
+        position: absolute;
+        left: 120px;
+        top: 50px;
+        color: #fff;
+        font-size: 12px;
+      }
+      .eight21 {
+        width: 100px;
+        height: 30px;
+        position: absolute;
+        top: 70px;
+        left: 160px;
+        color: yellow;
+      }
+      .clock11 {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 65px;
+        left: 120px;
+        background: url('~@/assets/img/小图标.png') no-repeat;
+        background-size: 100% 100%;
+      }
+      .eighteight {
+        position: absolute;
+        color: turquoise;
+        top: 2px;
+        left: 150px;
+      }
+      .inline {
+        width: 100px;
+        position: absolute;
+        color: #fff;
+        top: 20px;
+        left: 145px;
+        font-size: 12px;
+      }
+      .eighteight22 {
+        position: absolute;
+        color: turquoise;
+        top: 2px;
+        left: 210px;
+      }
+      .buy {
+        width: 100px;
+        position: absolute;
+        color: #fff;
+        top: 20px;
+        left: 200px;
+        font-size: 12px;
+      }
+    }
+    .mybutton {
+      width: 160px;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      margin-top: -200px;
+      margin-left: 220px;
+      .button123 {
+        width: 70px;
+        height: 20px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 34;
+      }
+      .button456 {
+        width: 70px;
+        height: 20px;
+        background: url('~@/assets/img/按钮1.png') no-repeat;
+        background-size: 100% 100%;
+        text-align: center;
+        color: #fff;
+        cursor: pointer;
+        z-index: 100;
+      }
+      .active {
+        background: url('~@/assets/img/按钮.png') no-repeat;
+        background-size: 100% 100%;
+        color: #00b8b9;
+      }
+    }
+  }
+  .rightpanel2 {
+    height: 230px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      top: 1px;
+      color: #00b8b9;
+      font-size: 16px;
+    }
+    .button111 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 230px;
+      cursor: pointer;
+    }
+    .button222 {
+      width: 70px;
+      height: 20px;
+      background: url('~@/assets/img/按钮1.png') no-repeat;
+      background-size: 100% 100%;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 60px;
+      left: 310px;
+      cursor: pointer;
+    }
+    .active {
+      background: url('~@/assets/img/按钮.png') no-repeat;
+      background-size: 100% 100%;
+      color: #00b8b9;
+    }
+  }
+  .rightpanel3 {
+    height: 240px;
+    background: url('~@/assets/img/网络规模.png') no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    .title {
+      position: absolute;
+      left: 20px;
+      top: 1px;
+      color: #00b8b9;
+      font-size: 16px;
+    }
+  }
+}
+</style>

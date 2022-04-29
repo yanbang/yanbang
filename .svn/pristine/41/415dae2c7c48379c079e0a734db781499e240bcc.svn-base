@@ -1,0 +1,115 @@
+<template>
+  <div class="icondemo">
+    <dv-border-box-8 :reverse="true" class="border"> </dv-border-box-8>
+    <dv-border-box-8 :reverse="true" class="border"> </dv-border-box-8>
+    <dv-border-box-8 :reverse="true" class="border"> </dv-border-box-8>
+    <dv-border-box-8 :reverse="true" class="border"> </dv-border-box-8>
+    <div class="icondemotitel">
+      <div class="icondemoleft">
+        <div class="font1">当前断站</div>
+        <div class="font2">VIP基站</div>
+        <div class="font3">超长</div>
+        <div class="font4">区域性</div>
+      </div>
+      <div class="icondemoright">
+        <div class="font1">888</div>
+        <div class="font2">888</div>
+        <div class="font3">888</div>
+        <div class="font4">888</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Vue2EchartsMasterIcondemo",
+
+  data() {
+    return {};
+  },
+
+  mounted() {},
+
+  methods: {},
+};
+</script>
+
+<style lang="less" scoped>
+.icondemo {
+  .border {
+    width: 400px;
+    height: 100px;
+  }
+  .icondemotitel {
+    display: flex;
+
+    .icondemoleft {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      font-size: 16px;
+      .font1 {
+        position: absolute;
+        top: -376px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+      .font2 {
+        position: absolute;
+        top: -277px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+      .font3 {
+        position: absolute;
+        top: -178px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+      .font4 {
+        position: absolute;
+        top: -78px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+    }
+    .icondemoright {
+      width: 300px;
+      height: 300px;
+      font-size: 38px;
+      color: yellow;
+      position: relative;
+      margin-left: 190px;
+      .font1 {
+        position: absolute;
+        top: -376px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+      .font2 {
+        position: absolute;
+        top: -277px;
+        left: 20px;
+        width: 200px;
+        height: 20px;
+      }
+      .font3 {
+        position: absolute;
+        top: -178px;
+        left: 20px;
+      }
+      .font4 {
+        position: absolute;
+        top: -78px;
+        left: 20px;
+      }
+    }
+  }
+}
+</style>
